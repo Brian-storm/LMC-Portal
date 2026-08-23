@@ -27,7 +27,7 @@ export function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
           <Link
             key={loc.code}
             href={redirectedPathName(loc.code)}
-            className={`px-2 py-0.5 text-[11px] rounded transition-colors ${
+            className={`px-2 py-0.5 text-[9px] rounded transition-colors ${
               isActive
                 ? "bg-slate-800 text-white font-semibold border border-slate-700"
                 : "text-slate-400 hover:text-slate-200"

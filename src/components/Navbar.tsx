@@ -9,7 +9,7 @@ import { AccessibilityMenu } from "./AccessibilityMenu";
 interface NavbarProps {
   dict: {
     brandSubtitle: string;
-    home?: string; // Added optional property in case it's localized
+    home?: string;
     courses: string;
     portal: string;
     about: string;
@@ -26,28 +26,28 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900 border-b border-slate-800 text-white shadow-md">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-800 shadow-xs">
       <div className="container mx-auto px-4 max-w-7xl h-16 flex items-center justify-between">
-        {/* Brand / Logo - Locked against global text scaling */}
+        {/* Brand / Logo - Locked against global text scaling & shifted slightly left with -ml-2 */}
         <Link
           href={`/${currentLocale}`}
-          className="flex items-center space-x-3 shrink-0"
+          className="flex items-center space-x-3 shrink-0 group -ml-12"
         >
           <div
-            className="bg-white text-slate-950 px-2.5 py-1 font-bold font-serif text-lg tracking-wider"
+            className="bg-slate-900 text-white px-2.5 py-1 font-bold font-serif text-lg tracking-wider rounded-xs transition-colors group-hover:bg-blue-900"
             style={{ fontSize: "18px", lineHeight: "28px" }}
           >
             LMC
           </div>
           <div className="hidden lg:flex flex-col">
             <span
-              className="font-serif font-bold text-base leading-none tracking-tight"
+              className="font-serif font-bold text-base leading-none tracking-tight text-slate-900"
               style={{ fontSize: "16px", lineHeight: "1" }}
             >
-              LMC Consultancy
+              LMC Management Consultancy
             </span>
             <span
-              className="text-[9px] text-slate-400 uppercase tracking-widest pt-0.5"
+              className="text-[9px] text-slate-500 uppercase tracking-widest pt-0.5 font-medium"
               style={{ fontSize: "9px" }}
             >
               {dict.brandSubtitle}
@@ -56,38 +56,38 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-300">
+        <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-600">
           <Link
             href={`/${currentLocale}`}
-            className="hover:text-white flex items-center transition-colors"
+            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
           >
             <Home className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.home}
+            {dict.home || "Home"}
           </Link>
           <Link
             href={`/${currentLocale}/courses`}
-            className="hover:text-white flex items-center transition-colors"
+            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
           >
             <BookOpen className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
             {dict.courses}
           </Link>
           <Link
             href={`/${currentLocale}/portal`}
-            className="hover:text-white flex items-center transition-colors"
+            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
           >
             <User className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
             {dict.portal}
           </Link>
           <Link
             href={`/${currentLocale}/about`}
-            className="hover:text-white flex items-center transition-colors"
+            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
           >
             <Info className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
             {dict.about}
           </Link>
           <Link
             href={`/${currentLocale}/contact`}
-            className="hover:text-white flex items-center transition-colors"
+            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
           >
             <PhoneCall className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
             {dict.contact}
@@ -95,12 +95,12 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
         </nav>
 
         {/* Right Utilities: Accessibility Popover + Language Switcher + CTA */}
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-3 -mr-12">
           <AccessibilityMenu accessDict={accessDict} />
           <LanguageSwitcher currentLocale={currentLocale} />
           <Link
             href={`/${currentLocale}/courses`}
-            className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-sm"
+            className="bg-blue-900 hover:bg-blue-800 text-white font-medium px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
           >
             Enroll
           </Link>
@@ -111,7 +111,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
           <AccessibilityMenu accessDict={accessDict} />
           <LanguageSwitcher currentLocale={currentLocale} />
           <button
-            className="text-slate-300 p-1.5"
+            className="text-slate-700 p-1.5"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -125,42 +125,51 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-800 bg-slate-900 px-4 py-3 space-y-2">
+        <div className="md:hidden border-t border-slate-200 bg-white/98 backdrop-blur-md px-4 py-3 space-y-1 shadow-lg">
           <Link
             href={`/${currentLocale}`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
           >
             {dict.home || "Home"}
           </Link>
           <Link
             href={`/${currentLocale}/courses`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
           >
             {dict.courses}
           </Link>
           <Link
             href={`/${currentLocale}/portal`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
           >
             {dict.portal}
           </Link>
           <Link
             href={`/${currentLocale}/about`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
           >
             {dict.about}
           </Link>
           <Link
             href={`/${currentLocale}/contact`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 transition-colors"
           >
             {dict.contact}
           </Link>
+          <div className="pt-2">
+            <Link
+              href={`/${currentLocale}/courses`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center bg-blue-900 hover:bg-blue-800 text-white font-medium px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
+            >
+              Enroll
+            </Link>
+          </div>
         </div>
       )}
     </header>
