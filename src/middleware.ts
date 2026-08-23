@@ -5,14 +5,17 @@ import type { NextRequest } from "next/server";
 const locales = ["en", "zh-hk", "zh-cn"];
 const defaultLocale = "en";
 
-export function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Check if pathname already includes a valid locale prefix
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (pathnameHasLocale) return;
 
+  // Redirect to default locale if missing
   return NextResponse.redirect(
     new URL(`/${defaultLocale}${pathname}`, request.url),
   );
