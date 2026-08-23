@@ -8,9 +8,10 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>; // Change Locale -> string here
 }) {
-  const { locale } = await params;
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale as Locale; // Cast to your custom Locale type
   const dict = await getDictionary(locale);
 
   return (
