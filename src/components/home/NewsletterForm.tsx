@@ -32,7 +32,7 @@ export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
           <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
             Stay Informed
           </span>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
             Subscribe to Consultancy Bulletins
           </h2>
           <p className="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">

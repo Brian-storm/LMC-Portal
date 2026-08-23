@@ -40,7 +40,7 @@ export function FeatureCards({ currentLocale }: FeatureCardsProps) {
           <h2 className="text-xs font-bold uppercase tracking-widest text-blue-900">
             Explore Our Platform
           </h2>
-          <p className="text-2xl font-serif font-bold text-slate-900">
+          <p className="text-2xl font-sans font-bold text-slate-900">
             Institutional Services & Quick Access
           </p>
           <div className="w-12 h-0.5 bg-blue-900 mx-auto mt-3" />
@@ -58,7 +58,7 @@ export function FeatureCards({ currentLocale }: FeatureCardsProps) {
                   <div className="w-10 h-10 bg-slate-100 rounded-xs flex items-center justify-center text-blue-900">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-serif font-bold text-slate-900">
+                  <h3 className="text-lg font-sans font-bold text-slate-900">
                     {feature.title}
                   </h3>
                   <p className="text-slate-600 text-xs leading-relaxed">

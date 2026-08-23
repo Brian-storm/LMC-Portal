@@ -74,7 +74,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
               <span className="inline-block px-2.5 py-1 bg-blue-900/90 text-blue-100 text-[10px] font-semibold uppercase tracking-wider rounded-xs border border-blue-700/50">
                 LMC Management Consultancy
               </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold text-white tracking-tight leading-tight">
                 {slide.title}
               </h1>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">

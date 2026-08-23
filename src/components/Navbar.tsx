@@ -47,7 +47,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
               LMC Management Consultancy
             </span>
             <span
-              className="text-[9px] text-slate-500 uppercase tracking-widest pt-0.5 font-medium"
+              className="font-serif text-[9px] text-slate-500 uppercase tracking-widest pt-0.5 font-medium"
               style={{ fontSize: "9px" }}
             >
               {dict.brandSubtitle}
