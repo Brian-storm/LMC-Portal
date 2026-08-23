@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 
+// Vercel observability packages
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export const metadata: Metadata = {
   title: "LMC Management Consultancy | Professional CPD Training",
   description:
@@ -19,6 +23,11 @@ export default function RootLayout({
       <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
         {/* Global Client Providers (Font size / High contrast state) */}
         <Providers>{children}</Providers>
+        
+        {/* Vercel Observability */}
+        <Analytics />
+        <SpeedInsights />
+        
       </body>
     </html>
   );
