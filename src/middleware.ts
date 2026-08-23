@@ -1,11 +1,11 @@
+// src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const locales = ["en", "zh-hk", "zh-cn"];
 const defaultLocale = "en";
 
-// Renamed from 'middleware' to 'proxy'
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
