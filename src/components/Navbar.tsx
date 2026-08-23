@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
+import { Home, BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { AccessibilityMenu } from "./AccessibilityMenu";
 
 interface NavbarProps {
   dict: {
     brandSubtitle: string;
+    home?: string; // Added optional property in case it's localized
     courses: string;
     portal: string;
     about: string;
@@ -56,6 +57,13 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-300">
+          <Link
+            href={`/${currentLocale}`}
+            className="hover:text-white flex items-center transition-colors"
+          >
+            <Home className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
+            {dict.home}
+          </Link>
           <Link
             href={`/${currentLocale}/courses`}
             className="hover:text-white flex items-center transition-colors"
@@ -118,6 +126,13 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-800 bg-slate-900 px-4 py-3 space-y-2">
+          <Link
+            href={`/${currentLocale}`}
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+          >
+            {dict.home || "Home"}
+          </Link>
           <Link
             href={`/${currentLocale}/courses`}
             onClick={() => setMobileMenuOpen(false)}

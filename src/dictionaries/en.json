@@ -1,7 +1,8 @@
 {
   "nav": {
     "brandSubtitle": "Management & CPD Training",
-    "courses": "CPD Courses",
+    "home": "Home",
+    "courses": "Courses",
     "portal": "Student Portal",
     "about": "About Us",
     "contact": "Contact"
