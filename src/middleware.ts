@@ -1,36 +1,35 @@
-// src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const locales = ["en", "zh-hk", "zh-cn"];
 const defaultLocale = "en";
 
-export default function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if pathname already includes a valid locale prefix
+  // 1. Check if pathname already has a valid locale prefix
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (pathnameHasLocale) return NextResponse.next();
 
-  // Redirect root or non-locale paths to default locale /en
+  // 2. Redirect root / or non-localized paths to /en
   const redirectUrl = new URL(
     `/${defaultLocale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`,
     request.url,
   );
+
   return NextResponse.redirect(redirectUrl);
 }
+
+// Export default to cover all Next.js resolution rules
+export default middleware;
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
-     * - api routes (/api/...)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, images, and public files (.png, .jpg, etc.)
+     * Match all request paths except static files, api routes, and icons
      */
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
