@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "brandSubtitle": "Management & CPD Training",
+    "courses": "CPD Courses",
+    "portal": "Student Portal",
+    "about": "About Us",
+    "contact": "Contact"
+  },
+  "accessibility": {
+    "textSize": "Text Size",
+    "highContrast": "High Contrast"
+  },
+  "footer": {
+    "aboutTitle": "LMC Consultancy",
+    "aboutDesc": "Hong Kong’s professional compliance and management consultancy. Delivering accredited Continuing Professional Development (CPD) modules for finance and insurance practitioners.",
+    "accredited": "HK CPD Accredited",
+    "colCourses": "CPD Training & Directory",
+    "colPortals": "Portals & Services",
+    "colContact": "Hong Kong Advisory Office",
+    "course1": "Insurance Law & Ethics 2026",
+    "course2": "Anti-Money Laundering (AML)",
+    "course3": "Risk Governance & Compliance",
+    "course4": "Browse All CPD Modules",
+    "portal1": "Student Verification Portal",
+    "portal2": "Institutional Staff Access",
+    "portal3": "About LMC Consultancy",
+    "portal4": "Frequently Asked Questions",
+    "location": "Central District, Hong Kong SAR",
+    "copyright": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "disclaimer": "CPD Accreditation Disclaimer"
+  }
+}

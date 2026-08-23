@@ -2,6 +2,40 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* globals.css */
+
+/* Scope font size adjustments to text content rather than document root */
+.accessibility-wrapper.text-size-md {
+  --text-scale: 1;
+}
+
+.accessibility-wrapper.text-size-lg {
+  --text-scale: 1.125;
+}
+
+.accessibility-wrapper.text-size-xl {
+  --text-scale: 1.25;
+}
+
+/* Target paragraph, heading, and link tags specifically */
+.accessibility-wrapper p,
+.accessibility-wrapper span,
+.accessibility-wrapper a,
+.accessibility-wrapper h1,
+.accessibility-wrapper h2,
+.accessibility-wrapper h3 {
+  font-size: calc(100% * var(--text-scale, 1));
+}
+
+/* High Contrast Mode Helper */
+.high-contrast {
+  filter: contrast(125%);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

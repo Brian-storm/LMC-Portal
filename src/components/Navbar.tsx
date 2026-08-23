@@ -2,197 +2,150 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Building2,
-  BookOpen,
-  Info,
-  PhoneCall,
-  User,
-  Menu,
-  X,
-  ChevronDown,
-  ShieldCheck,
-  FileCheck,
-} from "lucide-react";
+import { BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { AccessibilityMenu } from "./AccessibilityMenu";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+interface NavbarProps {
+  dict: {
+    brandSubtitle: string;
+    courses: string;
+    portal: string;
+    about: string;
+    contact: string;
+  };
+  accessDict: {
+    textSize: string;
+    highContrast: string;
+  };
+  currentLocale: string;
+}
 
-export function Navbar() {
+export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-50">
-      {/* Top Bar: Institutional Sub-header */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 border-b border-slate-800">
-        <div className="container mx-auto flex justify-between items-center max-w-7xl">
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center">
-              <ShieldCheck className="w-3.5 h-3.5 mr-1 text-slate-400" />
-              Accredited HK CPD Provider
-            </span>
-            <span className="hidden sm:inline text-slate-600">|</span>
-            <span className="hidden sm:inline">
-              Hong Kong Management & Compliance Advisory
-            </span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/faq" className="hover:text-white transition-colors">
-              FAQ
-            </Link>
-            <Link
-              href="/contact"
-              className="hover:text-white transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation Bar */}
-      <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between h-16">
-        {/* Brand / Logo */}
-        <Link href="/" className="flex items-center space-x-3">
-          <div className="bg-slate-900 text-white p-2 font-bold font-serif text-lg tracking-wider">
+    <header className="sticky top-0 z-50 bg-slate-900 border-b border-slate-800 text-white shadow-md">
+      <div className="container mx-auto px-4 max-w-7xl h-16 flex items-center justify-between">
+        {/* Brand / Logo - Locked against global text scaling */}
+        <Link
+          href={`/${currentLocale}`}
+          className="flex items-center space-x-3 shrink-0"
+        >
+          <div
+            className="bg-white text-slate-950 px-2.5 py-1 font-bold font-serif text-lg tracking-wider"
+            style={{ fontSize: "18px", lineHeight: "28px" }}
+          >
             LMC
           </div>
-          <div className="flex flex-col">
-            <span className="font-serif font-bold text-slate-900 text-base leading-none tracking-tight">
+          <div className="hidden lg:flex flex-col">
+            <span
+              className="font-serif font-bold text-base leading-none tracking-tight"
+              style={{ fontSize: "16px", lineHeight: "1" }}
+            >
               LMC Consultancy
             </span>
-            <span className="text-[10px] text-slate-500 uppercase tracking-widest font-sans pt-0.5">
-              Management & CPD Training
+            <span
+              className="text-[9px] text-slate-400 uppercase tracking-widest pt-0.5"
+              style={{ fontSize: "9px" }}
+            >
+              {dict.brandSubtitle}
             </span>
           </div>
         </Link>
 
-        {/* Desktop Links */}
-        <nav className="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-slate-700">
+        {/* Navigation Links */}
+        <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-300">
           <Link
-            href="/courses"
-            className="hover:text-slate-900 flex items-center transition-colors"
+            href={`/${currentLocale}/courses`}
+            className="hover:text-white flex items-center transition-colors"
           >
-            <BookOpen className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
-            CPD Courses
+            <BookOpen className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
+            {dict.courses}
           </Link>
           <Link
-            href="/about"
-            className="hover:text-slate-900 flex items-center transition-colors"
+            href={`/${currentLocale}/portal`}
+            className="hover:text-white flex items-center transition-colors"
           >
-            <Info className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
-            About LMC
+            <User className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
+            {dict.portal}
           </Link>
           <Link
-            href="/contact"
-            className="hover:text-slate-900 flex items-center transition-colors"
+            href={`/${currentLocale}/about`}
+            className="hover:text-white flex items-center transition-colors"
           >
-            <PhoneCall className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
-            Contact
+            <Info className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
+            {dict.about}
+          </Link>
+          <Link
+            href={`/${currentLocale}/contact`}
+            className="hover:text-white flex items-center transition-colors"
+          >
+            <PhoneCall className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
+            {dict.contact}
           </Link>
         </nav>
 
-        {/* Right Action Area */}
+        {/* Right Utilities: Accessibility Popover + Language Switcher + CTA */}
         <div className="hidden md:flex items-center space-x-3">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="rounded-none text-xs border-slate-300 text-slate-800"
-              >
-                <User className="w-3.5 h-3.5 mr-1.5 text-slate-600" />
-                Portal Access{" "}
-                <ChevronDown className="w-3 h-3 ml-1 text-slate-400" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="rounded-none w-48 border-slate-200"
-            >
-              <DropdownMenuItem asChild>
-                <Link href="/portal" className="text-xs cursor-pointer">
-                  <FileCheck className="w-3.5 h-3.5 mr-2 text-slate-500" />
-                  Student Dashboard
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/portal/admin" className="text-xs cursor-pointer">
-                  <Building2 className="w-3.5 h-3.5 mr-2 text-slate-500" />
-                  Admin Control Panel
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Button
-            asChild
-            className="bg-slate-900 hover:bg-slate-800 text-white rounded-none text-xs uppercase tracking-wider"
+          <AccessibilityMenu accessDict={accessDict} />
+          <LanguageSwitcher currentLocale={currentLocale} />
+          <Link
+            href={`/${currentLocale}/courses`}
+            className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-sm"
           >
-            <Link href="/courses">Enroll Now</Link>
-          </Button>
+            Enroll
+          </Link>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <button
-          className="md:hidden text-slate-700 p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
+        {/* Mobile Controls */}
+        <div className="flex items-center space-x-2 md:hidden">
+          <AccessibilityMenu accessDict={accessDict} />
+          <LanguageSwitcher currentLocale={currentLocale} />
+          <button
+            className="text-slate-300 p-1.5"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Drawer Navigation */}
+      {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-slate-50 px-4 pt-4 pb-6 space-y-3">
+        <div className="md:hidden border-t border-slate-800 bg-slate-900 px-4 py-3 space-y-2">
           <Link
-            href="/courses"
+            href={`/${currentLocale}/courses`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-800 py-2 border-b border-slate-200"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
           >
-            CPD Courses
+            {dict.courses}
           </Link>
           <Link
-            href="/about"
+            href={`/${currentLocale}/portal`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-800 py-2 border-b border-slate-200"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
           >
-            About LMC
+            {dict.portal}
           </Link>
           <Link
-            href="/contact"
+            href={`/${currentLocale}/about`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-800 py-2 border-b border-slate-200"
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
           >
-            Contact Us
+            {dict.about}
           </Link>
-          <div className="pt-2 space-y-2">
-            <Button
-              asChild
-              variant="outline"
-              className="w-full rounded-none text-xs"
-            >
-              <Link href="/portal" onClick={() => setMobileMenuOpen(false)}>
-                Portal Access
-              </Link>
-            </Button>
-            <Button
-              asChild
-              className="w-full bg-slate-900 text-white rounded-none text-xs"
-            >
-              <Link href="/courses" onClick={() => setMobileMenuOpen(false)}>
-                Enroll Now
-              </Link>
-            </Button>
-          </div>
+          <Link
+            href={`/${currentLocale}/contact`}
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-semibold uppercase tracking-wider text-slate-200 py-2 border-b border-slate-800"
+          >
+            {dict.contact}
+          </Link>
         </div>
       )}
     </header>
