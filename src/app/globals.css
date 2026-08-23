@@ -1,3 +1,4 @@
+/* globals.css */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,7 +7,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* globals.css */
+/* Font */
+@theme {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
 
 /* Scope font size adjustments to text content rather than document root */
 .accessibility-wrapper.text-size-md {
