@@ -2,6 +2,7 @@
 import { getDictionary, Locale } from "@/dictionaries/get-dictionary";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CookieConsent } from "@/components/CookieConsent";
 
 export default async function LocaleLayout({
   children,
@@ -24,6 +25,9 @@ export default async function LocaleLayout({
       />
 
       <main className="flex-1">{children}</main>
+      
+      {/* Cookie Consent Dialogue*/}
+      <CookieConsent locale={locale} />
 
       <Footer dict={dict.footer} currentLocale={locale} />
     </div>
