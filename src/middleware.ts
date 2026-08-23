@@ -13,14 +13,25 @@ export default function middleware(request: NextRequest) {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) return;
+  if (pathnameHasLocale) return NextResponse.next();
 
-  // Redirect to default locale if missing
-  return NextResponse.redirect(
-    new URL(`/${defaultLocale}${pathname}`, request.url),
+  // Redirect root or non-locale paths to default locale /en
+  const redirectUrl = new URL(
+    `/${defaultLocale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`,
+    request.url,
   );
+  return NextResponse.redirect(redirectUrl);
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - api routes (/api/...)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, images, and public files (.png, .jpg, etc.)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+  ],
 };
