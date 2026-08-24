@@ -1,4 +1,5 @@
-import { CoursesView, Course } from "@/components/courses/CourseView";
+import { Course } from "@/components/courses/types";
+import { CoursesView } from "@/components/courses/CourseView";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 
 interface PageProps {

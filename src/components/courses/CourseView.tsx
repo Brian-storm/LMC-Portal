@@ -5,26 +5,7 @@ import { CourseViewDict } from "@/dictionaries/types";
 import { CourseHeader } from "./CourseHeader";
 import { CourseFilters } from "./CourseFilters";
 import { CourseList } from "./CourseList";
-
-interface Course {
-  id: string;
-  slug?: string;
-  title: string;
-  category: "cpd" | "compliance" | "management" | string;
-  description: string;
-  cpdHours: number | string;
-  iaCode?: string;
-  date?: string;
-  venue?: string;
-  speaker?: string;
-  deliveryMode?: string;
-  language?: string;
-  feeHKD?: number;
-  fee?: string;
-  seatsLeft?: number;
-  accreditationBody?: string;
-  isMandatory?: boolean;
-}
+import { Course } from "./types";
 
 interface CoursesViewProps {
   dict: CourseViewDict;
