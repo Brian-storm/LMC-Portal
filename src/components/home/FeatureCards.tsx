@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, UserCheck, Newspaper, ArrowRight } from "lucide-react";
+import { FeatureCardsDict } from "@/dictionaries/types";
 
 export interface FeatureCardItem {
   title: string;
@@ -9,11 +10,7 @@ export interface FeatureCardItem {
 
 interface FeatureCardsProps {
   currentLocale: string;
-  dict?: {
-    sectionTag?: string;
-    sectionTitle?: string;
-    items?: FeatureCardItem[];
-  };
+  dict?: FeatureCardsDict;
 }
 
 const DEFAULT_FEATURES = [

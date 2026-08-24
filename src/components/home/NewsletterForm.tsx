@@ -3,21 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, User, Mail } from "lucide-react";
+import { NewsletterFormDict } from "@/dictionaries/types";
 
 interface NewsletterFormProps {
   currentLocale: string;
-  dict?: {
-    tag?: string;
-    title?: string;
-    description?: string;
-    namePlaceholder?: string;
-    emailPlaceholder?: string;
-    submitButton?: string;
-    submittingButton?: string;
-    successMessage?: string;
-    privacyPrefix?: string;
-    privacyLinkText?: string;
-  };
+  dict?: NewsletterFormDict;
 }
 
 export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {

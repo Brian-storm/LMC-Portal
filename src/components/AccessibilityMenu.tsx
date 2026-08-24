@@ -3,12 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useAccessibility, TextSize } from "@/app/context/AccessibilityContext";
 import { Eye, ChevronDown } from "lucide-react";
+import { AccessibilityDict } from "@/dictionaries/types";
+
 
 interface AccessibilityMenuProps {
-  accessDict: {
-    textSize: string;
-    highContrast: string;
-  };
+  accessDict: AccessibilityDict;
 }
 
 export function AccessibilityMenu({ accessDict }: AccessibilityMenuProps) {

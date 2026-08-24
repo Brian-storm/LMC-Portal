@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { HeroCarouselDict } from "@/dictionaries/types"
 
 export interface HeroSlideData {
   title: string;
@@ -12,10 +13,7 @@ export interface HeroSlideData {
 
 interface HeroCarouselProps {
   currentLocale: string;
-  dict?: {
-    badge?: string;
-    slides?: HeroSlideData[];
-  };
+  dict?: HeroCarouselDict;
 }
 
 const DEFAULT_SLIDES = [

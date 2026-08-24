@@ -6,20 +6,11 @@ import { useState } from "react";
 import { Home, BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { AccessibilityMenu } from "./AccessibilityMenu";
+import { NavDict, AccessibilityDict } from "@/dictionaries/types";
 
 interface NavbarProps {
-  dict: {
-    brandSubtitle: string;
-    home?: string;
-    courses: string;
-    portal: string;
-    about: string;
-    contact: string;
-  };
-  accessDict: {
-    textSize: string;
-    highContrast: string;
-  };
+  dict: NavDict;
+  accessDict: AccessibilityDict;
   currentLocale: string;
 }
 

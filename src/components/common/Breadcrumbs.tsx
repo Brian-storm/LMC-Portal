@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { Home, ChevronRight } from "lucide-react";
+import { BreadcrumbsDict } from "@/dictionaries/types";
+
 
 export interface BreadcrumbItem {
   label: string;
@@ -11,11 +13,7 @@ export interface BreadcrumbItem {
 interface BreadcrumbsProps {
   currentLocale: string;
   items?: BreadcrumbItem[];
-  dict?: {
-    ariaLabel?: string;
-    home?: string;
-    overview?: string;
-  };
+  dict?: BreadcrumbsDict;
 }
 
 export function Breadcrumbs({

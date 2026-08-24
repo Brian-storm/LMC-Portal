@@ -2,30 +2,11 @@
 
 import Link from "next/link";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
+import { FooterDict } from "@/dictionaries/types";
 
 interface FooterProps {
-  dict: {
-    aboutTitle: string;
-    aboutDesc: string;
-    accredited: string;
-    colCourses: string;
-    colPortals: string;
-    colContact: string;
-    course1: string;
-    course2: string;
-    course3: string;
-    course4: string;
-    portal1: string;
-    portal2: string;
-    portal3: string;
-    portal4: string;
-    location: string;
-    copyright: string;
-    privacy: string;
-    terms: string;
-    disclaimer: string;
-  };
   currentLocale: string;
+  dict: FooterDict;
 }
 
 export function Footer({ dict, currentLocale }: FooterProps) {
