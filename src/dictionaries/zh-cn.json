@@ -11,6 +11,78 @@
     "textSize": "字体大小",
     "highContrast": "高对比度"
   },
+  "breadcrumbs": {
+    "ariaLabel": "面包屑导航",
+    "home": "首页",
+    "overview": "概览"
+  },
+  "heroCarousel": {
+    "badge": "LMC 管理顾问",
+    "slides": [
+      {
+        "title": "高管培训与专业咨询服务",
+        "subtitle": "为企业与专业人士提供机构级管理咨询及认可课程，全面赋能业务发展。",
+        "ctaText": "探索课程"
+      },
+      {
+        "title": "通过学员与客户专区无缝访问",
+        "subtitle": "提供企业级安全保障，轻松追踪认证证书、获取课程资料及管理账户。",
+        "ctaText": "进入专区"
+      },
+      {
+        "title": "行业领导力与战略前瞻洞察",
+        "subtitle": "紧跟监管合规要求、金融科技演进及企业管治标准的最新动态。",
+        "ctaText": "阅读洞察"
+      }
+    ]
+  },
+  "credentialsBar": {
+    "accredited": {
+      "title": "权威认可课程",
+      "description": "获区域监管及专业机构认证。"
+    },
+    "advisory": {
+      "title": "高管顾问团队",
+      "description": "由资深行业领袖及专家亲授。"
+    },
+    "portal": {
+      "title": "安全企业级专区",
+      "description": "全天候 24/7 访问学员记录与学习资源。"
+    }
+  },
+  "featureCards": {
+    "sectionTag": "探索我们的平台",
+    "sectionTitle": "机构服务与快捷通道",
+    "items": [
+      {
+        "title": "专业课程",
+        "description": "浏览我们涵盖高管培训、合规监管计划及管理证书的完整课程目录。",
+        "cta": "探索课程目录"
+      },
+      {
+        "title": "学员与客户专区",
+        "description": "安全登录您的课程仪表板、查看成绩单历史或管理机构培训记录。",
+        "cta": "登录专区"
+      },
+      {
+        "title": "最新动态与洞察",
+        "description": "阅读我们关于顾问洞察、企业政策发展及研讨会通知的最新出版物。",
+        "cta": "查看公告"
+      }
+    ]
+  },
+  "newsletterForm": {
+    "tag": "保持资讯同步",
+    "title": "订阅顾问服务简讯",
+    "description": "直接在您的收件箱中接收每季度监管更新、最新课程安排及高管行业洞察。",
+    "namePlaceholder": "姓名",
+    "emailPlaceholder": "电子邮箱",
+    "submitButton": "订阅",
+    "submittingButton": "提交中...",
+    "successMessage": "感谢您的订阅！您已成功加入我们的邮件列表。",
+    "privacyPrefix": "我们尊重您的隐私，您可以随时取消订阅。查看我们的 ",
+    "privacyLinkText": "隐私政策"
+  },
   "footer": {
     "aboutTitle": "LMC 顾问服务",
     "aboutDesc": "香港专业合规与管理顾问机构，为金融及保险从业员提供获认可的持续专业培训（CPD）课程。",
@@ -26,7 +98,7 @@
     "portal2": "机构教职员登录",
     "portal3": "关于 LMC 顾问服务",
     "portal4": "常见问题",
-    "location": "香港特别行政区中山区",
+    "location": "香港特别行政区中环",
     "copyright": "版权所有，不得转载。",
     "privacy": "隐私政策",
     "terms": "服务条款",

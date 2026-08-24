@@ -1,11 +1,22 @@
 import Link from "next/link";
 import { BookOpen, UserCheck, Newspaper, ArrowRight } from "lucide-react";
 
-interface FeatureCardsProps {
-  currentLocale: string;
+export interface FeatureCardItem {
+  title: string;
+  description: string;
+  cta: string;
 }
 
-const FEATURES = [
+interface FeatureCardsProps {
+  currentLocale: string;
+  dict?: {
+    sectionTag?: string;
+    sectionTitle?: string;
+    items?: FeatureCardItem[];
+  };
+}
+
+const DEFAULT_FEATURES = [
   {
     icon: BookOpen,
     title: "Professional Courses",
@@ -32,22 +43,33 @@ const FEATURES = [
   },
 ];
 
-export function FeatureCards({ currentLocale }: FeatureCardsProps) {
+export function FeatureCards({ currentLocale, dict }: FeatureCardsProps) {
+  const features = DEFAULT_FEATURES.map((feature, idx) => ({
+    ...feature,
+    title: dict?.items?.[idx]?.title || feature.title,
+    description: dict?.items?.[idx]?.description || feature.description,
+    cta: dict?.items?.[idx]?.cta || feature.cta,
+  }));
+
+  const sectionTag = dict?.sectionTag || "Explore Our Platform";
+  const sectionTitle =
+    dict?.sectionTitle || "Institutional Services & Quick Access";
+
   return (
     <section className="py-16 bg-background text-foreground transition-colors duration-200">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
           <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
-            Explore Our Platform
+            {sectionTag}
           </h2>
           <p className="text-2xl font-sans font-bold text-foreground">
-            Institutional Services & Quick Access
+            {sectionTitle}
           </p>
           <div className="w-12 h-0.5 bg-accent mx-auto mt-3" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {FEATURES.map((feature, idx) => {
+          {features.map((feature, idx) => {
             const Icon = feature.icon;
             return (
               <div

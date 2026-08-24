@@ -11,6 +11,78 @@
     "textSize": "Text Size",
     "highContrast": "High Contrast"
   },
+  "breadcrumbs": {
+    "ariaLabel": "Breadcrumb",
+    "home": "Home",
+    "overview": "Overview"
+  },
+  "heroCarousel": {
+    "badge": "LMC Management Consultancy",
+    "slides": [
+      {
+        "title": "Executive Training & Professional Advisory",
+        "subtitle": "Empowering organizations and professionals with institutional-grade management consulting and accredited courses.",
+        "ctaText": "Explore Courses"
+      },
+      {
+        "title": "Seamless Access via Student & Client Portals",
+        "subtitle": "Track certifications, access course materials, and manage accounts with enterprise security.",
+        "ctaText": "Access Portal"
+      },
+      {
+        "title": "Industry Leadership & Strategic Insight",
+        "subtitle": "Stay ahead of compliance regulations, financial technologies, and corporate governance standards.",
+        "ctaText": "Read Insights"
+      }
+    ]
+  },
+  "credentialsBar": {
+    "accredited": {
+      "title": "Accredited Curriculums",
+      "description": "Recognized by regional governing bodies."
+    },
+    "advisory": {
+      "title": "Executive Advisory",
+      "description": "Taught by seasoned industry leaders."
+    },
+    "portal": {
+      "title": "Secure Enterprise Portal",
+      "description": "24/7 access to student records and resources."
+    }
+  },
+  "featureCards": {
+    "sectionTag": "Explore Our Platform",
+    "sectionTitle": "Institutional Services & Quick Access",
+    "items": [
+      {
+        "title": "Professional Courses",
+        "description": "Browse our comprehensive registry of executive training, regulatory compliance programs, and management certificates.",
+        "cta": "Explore Catalog"
+      },
+      {
+        "title": "Student & Client Portal",
+        "description": "Access your course dashboards, view transcript history, or manage organizational training records securely.",
+        "cta": "Sign In To Portal"
+      },
+      {
+        "title": "Latest News & Insights",
+        "description": "Read our latest publications on consultancy insights, corporate policy developments, and scheduled seminar announcements.",
+        "cta": "View Announcements"
+      }
+    ]
+  },
+  "newsletterForm": {
+    "tag": "Stay Informed",
+    "title": "Subscribe to Consultancy Bulletins",
+    "description": "Receive quarterly regulatory updates, upcoming course schedules, and executive industry insights directly in your inbox.",
+    "namePlaceholder": "Full Name",
+    "emailPlaceholder": "Email Address",
+    "submitButton": "Subscribe",
+    "submittingButton": "Submitting...",
+    "successMessage": "Thank you for subscribing. You have been added to our mailing list.",
+    "privacyPrefix": "We respect your privacy. Unsubscribe at any time. View our ",
+    "privacyLinkText": "Privacy Policy"
+  },
   "footer": {
     "aboutTitle": "LMC Consultancy",
     "aboutDesc": "Hong Kong’s professional compliance and management consultancy. Delivering accredited Continuing Professional Development (CPD) modules for finance and insurance practitioners.",

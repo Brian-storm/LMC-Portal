@@ -6,12 +6,41 @@ import { CheckCircle2, User, Mail } from "lucide-react";
 
 interface NewsletterFormProps {
   currentLocale: string;
+  dict?: {
+    tag?: string;
+    title?: string;
+    description?: string;
+    namePlaceholder?: string;
+    emailPlaceholder?: string;
+    submitButton?: string;
+    submittingButton?: string;
+    successMessage?: string;
+    privacyPrefix?: string;
+    privacyLinkText?: string;
+  };
 }
 
-export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
+export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {
   const [formData, setFormData] = useState({ fullName: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const tag = dict?.tag || "Stay Informed";
+  const title = dict?.title || "Subscribe to Consultancy Bulletins";
+  const description =
+    dict?.description ||
+    "Receive quarterly regulatory updates, upcoming course schedules, and executive industry insights directly in your inbox.";
+  const namePlaceholder = dict?.namePlaceholder || "Full Name";
+  const emailPlaceholder = dict?.emailPlaceholder || "Email Address";
+  const submitButton = dict?.submitButton || "Subscribe";
+  const submittingButton = dict?.submittingButton || "Submitting...";
+  const successMessage =
+    dict?.successMessage ||
+    "Thank you for subscribing. You have been added to our mailing list.";
+  const privacyPrefix =
+    dict?.privacyPrefix ||
+    "We respect your privacy. Unsubscribe at any time. View our ";
+  const privacyLinkText = dict?.privacyLinkText || "Privacy Policy";
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,24 +59,20 @@ export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
       <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
         <div className="space-y-2">
           <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
-            Stay Informed
+            {tag}
           </span>
           <h2 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-            Subscribe to Consultancy Bulletins
+            {title}
           </h2>
           <p className="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-            Receive quarterly regulatory updates, upcoming course schedules, and
-            executive industry insights directly in your inbox.
+            {description}
           </p>
         </div>
 
         {isSubmitted ? (
           <div className="bg-slate-800 border border-slate-700 text-blue-200 p-4 rounded-xs max-w-lg mx-auto flex items-center justify-center space-x-2 text-xs">
             <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0" />
-            <span>
-              Thank you for subscribing. You have been added to our mailing
-              list.
-            </span>
+            <span>{successMessage}</span>
           </div>
         ) : (
           <form
@@ -59,7 +84,7 @@ export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
               <input
                 type="text"
                 required
-                placeholder="Full Name"
+                placeholder={namePlaceholder}
                 value={formData.fullName}
                 onChange={(e) =>
                   setFormData({ ...formData, fullName: e.target.value })
@@ -73,7 +98,7 @@ export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
               <input
                 type="email"
                 required
-                placeholder="Email Address"
+                placeholder={emailPlaceholder}
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
@@ -87,18 +112,18 @@ export function NewsletterForm({ currentLocale }: NewsletterFormProps) {
               disabled={isSubmitting}
               className="w-full sm:w-auto bg-blue-900 hover:bg-blue-800 text-white font-medium px-5 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shrink-0 disabled:opacity-50"
             >
-              {isSubmitting ? "Submitting..." : "Subscribe"}
+              {isSubmitting ? submittingButton : submitButton}
             </button>
           </form>
         )}
 
         <p className="text-[10px] text-slate-500">
-          We respect your privacy. Unsubscribe at any time. View our{" "}
+          {privacyPrefix}
           <Link
             href={`/${currentLocale}/privacy`}
             className="underline hover:text-slate-400"
           >
-            Privacy Policy
+            {privacyLinkText}
           </Link>
           .
         </p>

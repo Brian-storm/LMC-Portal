@@ -11,6 +11,78 @@
     "textSize": "字型大小",
     "highContrast": "高對比度"
   },
+  "breadcrumbs": {
+    "ariaLabel": "導航路徑",
+    "home": "首頁",
+    "overview": "概覽"
+  },
+  "heroCarousel": {
+    "badge": "LMC 管理顧問",
+    "slides": [
+      {
+        "title": "高管培訓與專業諮詢服務",
+        "subtitle": "為企業與專業人士提供機構級管理諮詢及認可課程，全面賦能業務發展。",
+        "ctaText": "探索課程"
+      },
+      {
+        "title": "透過學員與客戶專區無縫存取",
+        "subtitle": "提供企業級安全保障，輕鬆追蹤認證證書、獲取課程資料及管理帳戶。",
+        "ctaText": "進入專區"
+      },
+      {
+        "title": "行業領導力與戰略前瞻洞察",
+        "subtitle": "緊貼監管合規要求、金融科技演進及企業管治標準的最新動態。",
+        "ctaText": "閱讀洞察"
+      }
+    ]
+  },
+  "credentialsBar": {
+    "accredited": {
+      "title": "權威認可課程",
+      "description": "獲區域監管及專業機構認證。"
+    },
+    "advisory": {
+      "title": "高管顧問團隊",
+      "description": "由資深行業領袖及專家親授。"
+    },
+    "portal": {
+      "title": "安全企業級專區",
+      "description": "全天候 24/7 存取學員記錄與學習資源。"
+    }
+  },
+  "featureCards": {
+    "sectionTag": "探索我們的平台",
+    "sectionTitle": "機構服務與快捷通道",
+    "items": [
+      {
+        "title": "專業課程",
+        "description": "瀏覽我們涵蓋高管培訓、合規監管計劃及管理證書的完整課程目錄。",
+        "cta": "探索課程目錄"
+      },
+      {
+        "title": "學員與客戶專區",
+        "description": "安全登入您的課程儀表板、檢視成績單歷史或管理機構培訓記錄。",
+        "cta": "登入專區"
+      },
+      {
+        "title": "最新動態與洞察",
+        "description": "閱讀我們關於顧問洞察、企業政策發展及研討會通告的最新出版物。",
+        "cta": "檢視通告"
+      }
+    ]
+  },
+  "newsletterForm": {
+    "tag": "保持資訊同步",
+    "title": "訂閱顧問服務簡訊",
+    "description": "直接在您的收件箱中接收每季度監管更新、最新課程安排及高管行業洞察。",
+    "namePlaceholder": "全名",
+    "emailPlaceholder": "電郵地址",
+    "submitButton": "訂閱",
+    "submittingButton": "提交中...",
+    "successMessage": "感謝您的訂閱！您已成功加入我們的郵件清單。",
+    "privacyPrefix": "我們尊重您的私隱，您可以隨時取消訂閱。檢視我們的 ",
+    "privacyLinkText": "私隱政策"
+  },
   "footer": {
     "aboutTitle": "LMC 顧問服務",
     "aboutDesc": "香港專業合規與管理顧問機構，為金融及保險從業員提供獲認可的持續專業培訓（CPD）課程。",
@@ -26,7 +98,7 @@
     "portal2": "機構教職員登入",
     "portal3": "關於 LMC 顧問服務",
     "portal4": "常見問題",
-    "location": "香港特別行政區中環區",
+    "location": "香港特別行政區中環",
     "copyright": "版權所有，不得轉載。",
     "privacy": "私隱政策",
     "terms": "服務條款",

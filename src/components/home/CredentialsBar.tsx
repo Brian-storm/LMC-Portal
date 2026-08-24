@@ -1,6 +1,39 @@
 import { ShieldCheck, Award, CheckCircle2 } from "lucide-react";
 
-export function CredentialsBar() {
+export interface CredentialItem {
+  title: string;
+  description: string;
+}
+
+interface CredentialsBarProps {
+  dict?: {
+    accredited?: CredentialItem;
+    advisory?: CredentialItem;
+    portal?: CredentialItem;
+  };
+}
+
+export function CredentialsBar({ dict }: CredentialsBarProps) {
+  const accredited = {
+    title: dict?.accredited?.title || "Accredited Curriculums",
+    description:
+      dict?.accredited?.description ||
+      "Recognized by regional governing bodies.",
+  };
+
+  const advisory = {
+    title: dict?.advisory?.title || "Executive Advisory",
+    description:
+      dict?.advisory?.description || "Taught by seasoned industry leaders.",
+  };
+
+  const portal = {
+    title: dict?.portal?.title || "Secure Enterprise Portal",
+    description:
+      dict?.portal?.description ||
+      "24/7 access to student records and resources.",
+  };
+
   return (
     <section className="bg-card border-b border-border/80 py-6 transition-colors duration-200">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -9,10 +42,10 @@ export function CredentialsBar() {
             <ShieldCheck className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                Accredited Curriculums
+                {accredited.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                Recognized by regional governing bodies.
+                {accredited.description}
               </p>
             </div>
           </div>
@@ -20,10 +53,10 @@ export function CredentialsBar() {
             <Award className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                Executive Advisory
+                {advisory.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                Taught by seasoned industry leaders.
+                {advisory.description}
               </p>
             </div>
           </div>
@@ -31,10 +64,10 @@ export function CredentialsBar() {
             <CheckCircle2 className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                Secure Enterprise Portal
+                {portal.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                24/7 access to student records and resources.
+                {portal.description}
               </p>
             </div>
           </div>

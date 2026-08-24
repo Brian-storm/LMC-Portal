@@ -4,11 +4,21 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-interface HeroCarouselProps {
-  currentLocale: string;
+export interface HeroSlideData {
+  title: string;
+  subtitle: string;
+  ctaText: string;
 }
 
-const HERO_SLIDES = [
+interface HeroCarouselProps {
+  currentLocale: string;
+  dict?: {
+    badge?: string;
+    slides?: HeroSlideData[];
+  };
+}
+
+const DEFAULT_SLIDES = [
   {
     id: 1,
     title: "Executive Training & Professional Advisory",
@@ -41,19 +51,29 @@ const HERO_SLIDES = [
   },
 ];
 
-export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
+export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Merge image & link metadata with localized text content from dict
+  const slides = DEFAULT_SLIDES.map((slide, index) => ({
+    ...slide,
+    title: dict?.slides?.[index]?.title || slide.title,
+    subtitle: dict?.slides?.[index]?.subtitle || slide.subtitle,
+    ctaText: dict?.slides?.[index]?.ctaText || slide.ctaText,
+  }));
+
+  const badgeText = dict?.badge || "LMC Management Consultancy";
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
     <section className="relative h-[480px] sm:h-[540px] md:h-[600px] overflow-hidden bg-slate-900 text-white">
-      {HERO_SLIDES.map((slide, index) => (
+      {slides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -73,7 +93,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
           <div className="relative z-20 container mx-auto px-4 max-w-7xl h-full flex flex-col justify-center items-start">
             <div className="max-w-2xl space-y-4">
               <span className="inline-block px-2.5 py-1 bg-blue-900/90 text-blue-100 text-[10px] font-semibold uppercase tracking-wider rounded-xs border border-blue-700/50">
-                LMC Management Consultancy
+                {badgeText}
               </span>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold text-white tracking-tight leading-tight">
                 {slide.title}
@@ -97,7 +117,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
 
       {/* Slide Indicators */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
-        {HERO_SLIDES.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
