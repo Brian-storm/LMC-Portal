@@ -1,10 +1,12 @@
 # TODO
 This is the todo section for developers
 
+## Blocked by Backend (not now)
+1. Email notification
+
 ## Key Features
-1. Payment related
-2. Email notification
-3. Chatbot
+1. Payment related (just show a example payment slip)
+2. Chatbot (deterministic fallback first)
 
 ## Sitemap
 1. Courses

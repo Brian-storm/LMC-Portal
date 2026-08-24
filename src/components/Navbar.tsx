@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import NextImage from "next/image";
 import { useState } from "react";
 import { Home, BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -26,138 +27,140 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-800 shadow-xs">
-      <div className="container mx-auto px-4 max-w-7xl h-16 flex items-center justify-between">
-        {/* Brand / Logo - Locked against global text scaling & shifted slightly left with -ml-2 */}
+    <header className="sticky top-0 z-50 bg-navbar-bg/95 backdrop-blur-md text-foreground shadow-xs border-b border-primary/10">
+      <div className="w-full flex items-center justify-between">
+        {/* ================= LEFT SECTION: FLUSH EDGE LOGO ================= */}
         <Link
           href={`/${currentLocale}`}
-          className="flex items-center space-x-3 shrink-0 group -ml-12"
+          className="shrink-0 flex items-center group focus:outline-none"
         >
           <div
-            className="bg-slate-900 text-white px-2.5 py-1 font-bold font-serif text-lg tracking-wider rounded-xs transition-colors group-hover:bg-blue-900"
-            style={{ fontSize: "18px", lineHeight: "28px" }}
+            className="bg-gradient-to-r from-navbar-brand-start via-navbar-brand-mid to-navbar-brand-end pl-6 pr-24 pt-3.5 pb-3.5 shadow-md border-t border-r border-white/10 transition-all duration-300 group-hover:from-navbar-brand-mid group-hover:to-primary"
+            style={{
+              clipPath: "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)",
+            }}
           >
-            LMC
-          </div>
-          <div className="hidden lg:flex flex-col">
-            <span
-              className="font-serif font-bold text-base leading-none tracking-tight text-slate-900"
-              style={{ fontSize: "16px", lineHeight: "1" }}
-            >
-              LMC Management Consultancy
-            </span>
-            <span
-              className="text-[9px] text-slate-500 uppercase tracking-widest pt-0.5 font-medium"
-              style={{ fontSize: "9px" }}
-            >
-              {dict.brandSubtitle}
-            </span>
+            <NextImage
+              src="/company/logo-text-white.svg"
+              alt="LMC Management Consultancy Logo"
+              width={60}
+              height={60}
+              className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
+              priority
+            />
           </div>
         </Link>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider text-slate-600">
-          <Link
-            href={`/${currentLocale}`}
-            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
-          >
-            <Home className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.home || "Home"}
-          </Link>
-          <Link
-            href={`/${currentLocale}/courses`}
-            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
-          >
-            <BookOpen className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.courses}
-          </Link>
-          <Link
-            href={`/${currentLocale}/portal`}
-            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
-          >
-            <User className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.portal}
-          </Link>
-          <Link
-            href={`/${currentLocale}/about`}
-            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
-          >
-            <Info className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.about}
-          </Link>
-          <Link
-            href={`/${currentLocale}/contact`}
-            className="hover:text-blue-900 flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-blue-900"
-          >
-            <PhoneCall className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
-            {dict.contact}
-          </Link>
-        </nav>
+        {/* ================= RIGHT SECTION: NAVIGATION & UTILITIES ================= */}
+        <div className="flex-1 flex flex-col justify-center pr-4 md:pr-8 pl-6 max-w-7xl">
+          {/* TOP ROW: Utilities (Accessibility, Language, Enroll) */}
+          <div className="hidden md:flex items-center justify-end space-x-4 py-1.5 border-b border-primary/10 text-xs">
+            <AccessibilityMenu accessDict={accessDict} />
+            <span className="h-3 w-px bg-primary/20" />
+            <LanguageSwitcher currentLocale={currentLocale} />
+            <span className="h-3 w-px bg-primary/20" />
+            <Link
+              href={`/${currentLocale}/courses`}
+              className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
+            >
+              Enroll
+            </Link>
+          </div>
 
-        {/* Right Utilities: Accessibility Popover + Language Switcher + CTA */}
-        <div className="hidden md:flex items-center space-x-3 -mr-12">
-          <AccessibilityMenu accessDict={accessDict} />
-          <LanguageSwitcher currentLocale={currentLocale} />
-          <Link
-            href={`/${currentLocale}/courses`}
-            className="bg-blue-900 hover:bg-blue-800 text-white font-medium px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
-          >
-            Enroll
-          </Link>
-        </div>
+          {/* LOWER ROW: Main Navigation Links */}
+          <div className="hidden md:flex items-center justify-end space-x-8 py-2 text-xs font-semibold uppercase tracking-wider text-secondary">
+            <Link
+              href={`/${currentLocale}`}
+              className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
+            >
+              <Home className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />
+              {dict.home || "Home"}
+            </Link>
+            <Link
+              href={`/${currentLocale}/courses`}
+              className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
+            >
+              <BookOpen className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />
+              {dict.courses}
+            </Link>
+            <Link
+              href={`/${currentLocale}/portal`}
+              className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
+            >
+              <User className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />
+              {dict.portal}
+            </Link>
+            <Link
+              href={`/${currentLocale}/about`}
+              className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
+            >
+              <Info className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />
+              {dict.about}
+            </Link>
+            <Link
+              href={`/${currentLocale}/contact`}
+              className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
+            >
+              <PhoneCall className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />
+              {dict.contact}
+            </Link>
+          </div>
 
-        {/* Mobile Controls */}
-        <div className="flex items-center space-x-2 md:hidden">
-          <AccessibilityMenu accessDict={accessDict} />
-          <LanguageSwitcher currentLocale={currentLocale} />
-          <button
-            className="text-slate-700 p-1.5"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile Menu Trigger */}
+          <div className="flex md:hidden items-center justify-end py-3">
+            <button
+              className="text-primary p-1.5 hover:text-accent transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white/98 backdrop-blur-md px-4 py-3 space-y-1 shadow-lg">
+        <div className="md:hidden border-t border-primary/10 bg-navbar-bg px-4 py-3 space-y-2 shadow-lg">
+          <div className="flex items-center justify-between pb-2 border-b border-primary/10">
+            <AccessibilityMenu accessDict={accessDict} />
+            <LanguageSwitcher currentLocale={currentLocale} />
+          </div>
           <Link
             href={`/${currentLocale}`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
+            className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 border-b border-primary/5 transition-colors"
           >
             {dict.home || "Home"}
           </Link>
           <Link
             href={`/${currentLocale}/courses`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
+            className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 border-b border-primary/5 transition-colors"
           >
             {dict.courses}
           </Link>
           <Link
             href={`/${currentLocale}/portal`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
+            className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 border-b border-primary/5 transition-colors"
           >
             {dict.portal}
           </Link>
           <Link
             href={`/${currentLocale}/about`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 border-b border-slate-100 transition-colors"
+            className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 border-b border-primary/5 transition-colors"
           >
             {dict.about}
           </Link>
           <Link
             href={`/${currentLocale}/contact`}
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold uppercase tracking-wider text-slate-700 hover:text-blue-900 hover:bg-slate-50 px-2 py-2 transition-colors"
+            className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 transition-colors"
           >
             {dict.contact}
           </Link>
@@ -165,7 +168,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
             <Link
               href={`/${currentLocale}/courses`}
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-center bg-blue-900 hover:bg-blue-800 text-white font-medium px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
+              className="block text-center bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
             >
               Enroll
             </Link>

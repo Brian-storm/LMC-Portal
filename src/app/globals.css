@@ -1,3 +1,4 @@
+/* globals.css */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,9 +7,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* globals.css */
+/* Font Definition */
+@theme {
+  --font-sans: Arial, "Helvetica Neue", Helvetica, "PingFang HK", "Microsoft JhengHei", "微軟正黑體", sans-serif;
+}
 
-/* Scope font size adjustments to text content rather than document root */
+/* Accessibility Text Scaling */
 .accessibility-wrapper.text-size-md {
   --text-scale: 1;
 }
@@ -22,13 +26,13 @@
 }
 
 /* Target paragraph, heading, and link tags specifically */
-.accessibility-wrapper p,
-.accessibility-wrapper span,
-.accessibility-wrapper a,
-.accessibility-wrapper h1,
-.accessibility-wrapper h2,
-.accessibility-wrapper h3 {
-  font-size: calc(100% * var(--text-scale, 1));
+.accessibility-wrapper p:not(.no-scale),
+.accessibility-wrapper span:not(.no-scale),
+.accessibility-wrapper a:not(.no-scale),
+.accessibility-wrapper h1:not(.no-scale),
+.accessibility-wrapper h2:not(.no-scale),
+.accessibility-wrapper h3:not(.no-scale) {
+  font-size: calc(1em * var(--text-scale, 1));
 }
 
 /* High Contrast Mode Helper */
@@ -41,9 +45,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-mono);
-  --font-heading: var(--font-mono);
+  --font-sans: Arial, "Helvetica Neue", Helvetica, "PingFang HK", "Microsoft JhengHei", "微軟正黑體", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-heading: Arial, "Helvetica Neue", Helvetica, "PingFang HK", "Microsoft JhengHei", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -80,75 +84,122 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Navbar Custom Theme Variables */
+  --color-navbar-bg: var(--navbar-bg);
+  --color-navbar-brand-start: var(--navbar-brand-start);
+  --color-navbar-brand-mid: var(--navbar-brand-mid);
+  --color-navbar-brand-end: var(--navbar-brand-end);
+  --color-navbar-accent-hover: var(--navbar-accent-hover);
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Canvas & Cards */
+  --background: oklch(0.985 0.003 140); /* Light Cream / Off-White (#F8F9FA) */
+  --foreground: oklch(0.18 0.01 140);   /* Obsidian / Dark Green-Black */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.18 0.01 140);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.18 0.01 140);
+
+  /* Primary Branding - Deep Forest Green (#0F2F24) */
+  --primary: oklch(0.28 0.05 160);
+  --primary-foreground: oklch(0.98 0.01 140);
+
+  /* Secondary - Sage Slate (#4A6056) */
+  --secondary: oklch(0.48 0.03 160);
+  --secondary-foreground: oklch(0.98 0 0);
+
+  /* Accent - Warm Gold (#C5A059) */
+  --accent: oklch(0.72 0.11 85);
+  --accent-foreground: oklch(0.20 0.04 160);
+
+  /* Navbar Specific Tokens (Light Mode) */
+  --navbar-bg: oklch(0.985 0.003 140);            /* #F8F9FA */
+  --navbar-brand-start: oklch(0.22 0.04 160);      /* #0c281e */
+  --navbar-brand-mid: oklch(0.28 0.05 160);        /* #0F2F24 */
+  --navbar-brand-end: oklch(0.33 0.05 160);        /* #154132 */
+  --navbar-accent-hover: oklch(0.66 0.10 85);     /* #b08e4c */
+
+  /* UI Neutral States */
+  --muted: oklch(0.94 0.01 140);
+  --muted-foreground: oklch(0.48 0.03 160);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --border: oklch(0.90 0.01 140);
+  --input: oklch(0.90 0.01 140);
+  --ring: oklch(0.72 0.11 85); /* Accent Gold Focus Ring */
+
+  /* Data Visualization & Charts */
+  --chart-1: oklch(0.28 0.05 160); /* Forest */
+  --chart-2: oklch(0.72 0.11 85);  /* Gold */
+  --chart-3: oklch(0.48 0.03 160); /* Sage */
+  --chart-4: oklch(0.85 0.05 140); /* Soft Mint */
+  --chart-5: oklch(0.38 0.04 150); /* Dark Sage */
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.24 0.05 160);
+  --sidebar-foreground: oklch(0.98 0.01 140);
+  --sidebar-primary: oklch(0.72 0.11 85);
+  --sidebar-primary-foreground: oklch(0.20 0.04 160);
+  --sidebar-accent: oklch(0.32 0.05 160);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.32 0.04 160);
+  --sidebar-ring: oklch(0.72 0.11 85);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Dark Canvas */
+  --background: oklch(0.18 0.02 160); /* Deep Emerald-Black */
+  --foreground: oklch(0.98 0.005 140);
+  --card: oklch(0.22 0.03 160);
+  --card-foreground: oklch(0.98 0.005 140);
+  --popover: oklch(0.22 0.03 160);
+  --popover-foreground: oklch(0.98 0.005 140);
+
+  /* Primary Inversion */
+  --primary: oklch(0.72 0.11 85); /* Gold Primary in Dark Mode */
+  --primary-foreground: oklch(0.18 0.02 160);
+
+  /* Secondary & Muted */
+  --secondary: oklch(0.32 0.04 160);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.28 0.03 160);
+  --muted-foreground: oklch(0.70 0.02 140);
+
+  /* Accent - Warm Gold Highlight */
+  --accent: oklch(0.72 0.11 85);
+  --accent-foreground: oklch(0.18 0.02 160);
+
+  /* Navbar Specific Tokens (Dark Mode) */
+  --navbar-bg: oklch(0.18 0.02 160);
+  --navbar-brand-start: oklch(0.14 0.02 160);
+  --navbar-brand-mid: oklch(0.20 0.03 160);
+  --navbar-brand-end: oklch(0.26 0.04 160);
+  --navbar-accent-hover: oklch(0.80 0.12 85);
+
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.72 0.11 85);
+
+  /* Dark Data Visualization */
+  --chart-1: oklch(0.72 0.11 85);
+  --chart-2: oklch(0.48 0.03 160);
+  --chart-3: oklch(0.85 0.05 140);
+  --chart-4: oklch(0.60 0.08 150);
+  --chart-5: oklch(0.38 0.04 150);
+
+  /* Dark Sidebar Tokens */
+  --sidebar: oklch(0.15 0.02 160);
+  --sidebar-foreground: oklch(0.98 0.005 140);
+  --sidebar-primary: oklch(0.72 0.11 85);
+  --sidebar-primary-foreground: oklch(0.18 0.02 160);
+  --sidebar-accent: oklch(0.26 0.03 160);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.72 0.11 85);
 }
 
 @layer base {
@@ -156,9 +207,28 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
   html {
-    @apply font-mono;
+    @apply font-sans;
   }
+}
+
+@keyframes indeterminate {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 60%;
+    margin-left: 20%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
+}
+
+.animate-indeterminate {
+  animation: indeterminate 1.6s infinite ease-in-out;
 }
