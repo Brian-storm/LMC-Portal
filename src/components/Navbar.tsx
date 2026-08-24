@@ -51,10 +51,10 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
             <LanguageSwitcher currentLocale={currentLocale} />
             <span className="h-3 w-px bg-primary/20" />
             <Link
-              href={`/${currentLocale}/courses`}
+              href={`/${currentLocale}/login`}
               className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
             >
-              Enroll
+              Sign in
             </Link>
           </div>
 
@@ -75,7 +75,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
               {dict.courses}
             </Link>
             <Link
-              href={`/${currentLocale}/portal`}
+              href={`/${currentLocale}/dashboard`}
               className="hover:text-primary flex items-center transition-colors py-1 border-b-2 border-transparent hover:border-accent"
             >
               <User className="w-3.5 h-3.5 mr-1.5 text-secondary/70" />

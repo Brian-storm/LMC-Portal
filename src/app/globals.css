@@ -25,7 +25,6 @@
   --text-scale: 1.25;
 }
 
-/* Target paragraph, heading, and link tags specifically */
 .accessibility-wrapper p:not(.no-scale),
 .accessibility-wrapper span:not(.no-scale),
 .accessibility-wrapper a:not(.no-scale),
@@ -35,7 +34,6 @@
   font-size: calc(1em * var(--text-scale, 1));
 }
 
-/* High Contrast Mode Helper */
 .high-contrast {
   filter: contrast(125%);
 }
@@ -85,7 +83,6 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Navbar Custom Theme Variables */
   --color-navbar-bg: var(--navbar-bg);
   --color-navbar-brand-start: var(--navbar-brand-start);
   --color-navbar-brand-mid: var(--navbar-brand-mid);
@@ -94,51 +91,50 @@
 }
 
 :root {
+  /* Dynamic Layout Offsets */
+  --navbar-height: 3.5rem;    /* Height of top root Navbar */
+  --subbar-height: 3rem;     /* Height of sub-portal verification header */
+
+  --portal-top-offset: calc(var(--navbar-height) + var(--portal-subheader-height));
+
   /* Canvas & Cards */
-  --background: oklch(0.985 0.003 140); /* Light Cream / Off-White (#F8F9FA) */
-  --foreground: oklch(0.18 0.01 140);   /* Obsidian / Dark Green-Black */
+  --background: oklch(0.985 0.003 140);
+  --foreground: oklch(0.18 0.01 140);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.01 140);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.01 140);
 
-  /* Primary Branding - Deep Forest Green (#0F2F24) */
+  /* Primary Branding */
   --primary: oklch(0.28 0.05 160);
   --primary-foreground: oklch(0.98 0.01 140);
-
-  /* Secondary - Sage Slate (#4A6056) */
   --secondary: oklch(0.48 0.03 160);
   --secondary-foreground: oklch(0.98 0 0);
-
-  /* Accent - Warm Gold (#C5A059) */
   --accent: oklch(0.72 0.11 85);
   --accent-foreground: oklch(0.20 0.04 160);
 
-  /* Navbar Specific Tokens (Light Mode) */
-  --navbar-bg: oklch(0.985 0.003 140);            /* #F8F9FA */
-  --navbar-brand-start: oklch(0.22 0.04 160);      /* #0c281e */
-  --navbar-brand-mid: oklch(0.28 0.05 160);        /* #0F2F24 */
-  --navbar-brand-end: oklch(0.33 0.05 160);        /* #154132 */
-  --navbar-accent-hover: oklch(0.66 0.10 85);     /* #b08e4c */
+  /* Navbar Specific Tokens */
+  --navbar-bg: oklch(0.985 0.003 140);
+  --navbar-brand-start: oklch(0.22 0.04 160);
+  --navbar-brand-mid: oklch(0.28 0.05 160);
+  --navbar-brand-end: oklch(0.33 0.05 160);
+  --navbar-accent-hover: oklch(0.66 0.10 85);
 
-  /* UI Neutral States */
   --muted: oklch(0.94 0.01 140);
   --muted-foreground: oklch(0.48 0.03 160);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.90 0.01 140);
   --input: oklch(0.90 0.01 140);
-  --ring: oklch(0.72 0.11 85); /* Accent Gold Focus Ring */
+  --ring: oklch(0.72 0.11 85);
 
-  /* Data Visualization & Charts */
-  --chart-1: oklch(0.28 0.05 160); /* Forest */
-  --chart-2: oklch(0.72 0.11 85);  /* Gold */
-  --chart-3: oklch(0.48 0.03 160); /* Sage */
-  --chart-4: oklch(0.85 0.05 140); /* Soft Mint */
-  --chart-5: oklch(0.38 0.04 150); /* Dark Sage */
+  --chart-1: oklch(0.28 0.05 160);
+  --chart-2: oklch(0.72 0.11 85);
+  --chart-3: oklch(0.48 0.03 160);
+  --chart-4: oklch(0.85 0.05 140);
+  --chart-5: oklch(0.38 0.04 150);
 
   --radius: 0.625rem;
 
-  /* Sidebar Tokens */
   --sidebar: oklch(0.24 0.05 160);
   --sidebar-foreground: oklch(0.98 0.01 140);
   --sidebar-primary: oklch(0.72 0.11 85);
@@ -150,29 +146,24 @@
 }
 
 .dark {
-  /* Dark Canvas */
-  --background: oklch(0.18 0.02 160); /* Deep Emerald-Black */
+  --background: oklch(0.18 0.02 160);
   --foreground: oklch(0.98 0.005 140);
   --card: oklch(0.22 0.03 160);
   --card-foreground: oklch(0.98 0.005 140);
   --popover: oklch(0.22 0.03 160);
   --popover-foreground: oklch(0.98 0.005 140);
 
-  /* Primary Inversion */
-  --primary: oklch(0.72 0.11 85); /* Gold Primary in Dark Mode */
+  --primary: oklch(0.72 0.11 85);
   --primary-foreground: oklch(0.18 0.02 160);
 
-  /* Secondary & Muted */
   --secondary: oklch(0.32 0.04 160);
   --secondary-foreground: oklch(0.98 0 0);
   --muted: oklch(0.28 0.03 160);
   --muted-foreground: oklch(0.70 0.02 140);
 
-  /* Accent - Warm Gold Highlight */
   --accent: oklch(0.72 0.11 85);
   --accent-foreground: oklch(0.18 0.02 160);
 
-  /* Navbar Specific Tokens (Dark Mode) */
   --navbar-bg: oklch(0.18 0.02 160);
   --navbar-brand-start: oklch(0.14 0.02 160);
   --navbar-brand-mid: oklch(0.20 0.03 160);
@@ -184,14 +175,12 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.72 0.11 85);
 
-  /* Dark Data Visualization */
   --chart-1: oklch(0.72 0.11 85);
   --chart-2: oklch(0.48 0.03 160);
   --chart-3: oklch(0.85 0.05 140);
   --chart-4: oklch(0.60 0.08 150);
   --chart-5: oklch(0.38 0.04 150);
 
-  /* Dark Sidebar Tokens */
   --sidebar: oklch(0.15 0.02 160);
   --sidebar-foreground: oklch(0.98 0.005 140);
   --sidebar-primary: oklch(0.72 0.11 85);
@@ -211,21 +200,6 @@
   }
   html {
     @apply font-sans;
-  }
-}
-
-@keyframes indeterminate {
-  0% {
-    width: 0%;
-    margin-left: 0%;
-  }
-  50% {
-    width: 60%;
-    margin-left: 20%;
-  }
-  100% {
-    width: 0%;
-    margin-left: 100%;
   }
 }
 

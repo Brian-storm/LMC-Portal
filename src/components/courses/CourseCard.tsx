@@ -107,7 +107,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
 
           <div className="flex items-center gap-1.5">
             <Link
-              href={`/${currentLocale}/courses/${targetSlug}`}
+              href={`/${currentLocale}/courses/${targetSlug}/enroll`}
               className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] text-white font-bold px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#0d2118]"
             >
               <span>{dict.enrollCta}</span>
