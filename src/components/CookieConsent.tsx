@@ -58,11 +58,11 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
         transition={{ duration: 0.3, ease: "easeOut" }}
         className="fixed bottom-5 right-5 z-50 w-full max-w-sm px-4 sm:px-0"
       >
-        <div className="bg-white border border-slate-200 rounded-sm shadow-xl p-5 text-slate-800 text-xs sm:text-sm relative">
+        <div className="bg-white border border-slate-200 rounded-xs shadow-xl p-5 text-slate-800 text-xs sm:text-sm relative">
           {/* Header */}
           <div className="flex items-start justify-between gap-3 mb-3">
-            <div className="flex items-center gap-2 text-blue-900 font-serif font-bold text-base">
-              <Cookie className="w-5 h-5 text-blue-900 shrink-0" />
+            <div className="flex items-center gap-2 text-emerald-900 font-serif font-bold text-base">
+              <Cookie className="w-5 h-5 text-emerald-800 shrink-0" />
               <span>Cookie Preferences</span>
             </div>
             <button
@@ -83,7 +83,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                 your user experience. Read our{" "}
                 <Link
                   href={`/${locale}/privacy`}
-                  className="text-blue-900 underline font-medium hover:text-blue-700"
+                  className="text-emerald-900 underline font-medium hover:text-emerald-700"
                 >
                   Privacy Policy
                 </Link>{" "}
@@ -95,7 +95,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={handleAcceptAll}
-                    className="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                    className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
                   >
                     <Check className="w-3.5 h-3.5" />
                     Accept All
@@ -109,7 +109,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                 </div>
                 <button
                   onClick={() => setShowPreferences(true)}
-                  className="w-full text-center text-slate-500 hover:text-blue-900 text-[11px] font-medium py-1 transition-colors underline"
+                  className="w-full text-center text-slate-500 hover:text-emerald-900 text-[11px] font-medium py-1 transition-colors underline"
                 >
                   Customize Preferences
                 </button>
@@ -134,7 +134,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                     type="checkbox"
                     checked={true}
                     disabled
-                    className="h-4 w-4 rounded border-slate-300 text-blue-900 focus:ring-blue-900 cursor-not-allowed opacity-60"
+                    className="h-4 w-4 rounded-xs border-slate-300 text-emerald-900 focus:ring-emerald-900 cursor-not-allowed opacity-60"
                   />
                 </div>
 
@@ -157,7 +157,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                         analytics: e.target.checked,
                       })
                     }
-                    className="h-4 w-4 rounded border-slate-300 text-blue-900 focus:ring-blue-900 cursor-pointer"
+                    className="h-4 w-4 rounded-xs border-slate-300 text-emerald-900 focus:ring-emerald-900 accent-emerald-900 cursor-pointer"
                   />
                 </div>
               </div>
@@ -166,7 +166,7 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
               <div className="flex items-center gap-2 pt-1">
                 <button
                   onClick={handleSavePreferences}
-                  className="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors"
+                  className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors"
                 >
                   Save Choices
                 </button>
