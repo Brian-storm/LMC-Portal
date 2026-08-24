@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 import { FooterDict } from "@/dictionaries/types";
 
@@ -18,20 +19,19 @@ export function Footer({ dict, currentLocale }: FooterProps) {
           {/* Column 1: Brand Overview */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center space-x-3">
-              <div
-                className="bg-slate-900 text-white px-2.5 py-1 font-bold font-serif text-lg tracking-wider rounded-xs"
-                style={{ fontSize: "18px", lineHeight: "28px" }}
+              <Link
+                href={`/${currentLocale}`}
+                className="inline-flex items-center"
               >
-                LMC
-              </div>
-              <div className="flex flex-col">
-                <span
-                  className="font-serif font-bold text-slate-900 text-base leading-none tracking-tight"
-                  style={{ fontSize: "16px", lineHeight: "1" }}
-                >
-                  {dict.aboutTitle}
-                </span>
-              </div>
+                <Image
+                  src="/company/logo-text-black.svg"
+                  alt="LMC Logo"
+                  width={360}
+                  height={36}
+                  priority
+                  className="h-18 w-auto shrink-0 object-contain"
+                />
+              </Link>
             </div>
 
             <p className="text-slate-600 text-xs leading-relaxed">
@@ -39,7 +39,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
             </p>
 
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-slate-200 rounded-xs text-[11px] text-slate-700 shadow-2xs">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-900 shrink-0" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
               <span>{dict.accredited}</span>
             </div>
           </div>
@@ -53,7 +53,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/courses`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.course1}
                 </Link>
@@ -61,7 +61,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/courses`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.course2}
                 </Link>
@@ -69,7 +69,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/courses`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.course3}
                 </Link>
@@ -77,7 +77,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/courses`}
-                  className="hover:text-blue-900 transition-colors font-medium text-slate-800"
+                  className="hover:text-emerald-800 transition-colors font-medium text-slate-800"
                 >
                   {dict.course4}
                 </Link>
@@ -94,7 +94,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/portal`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal1}
                 </Link>
@@ -102,7 +102,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/portal/admin`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal2}
                 </Link>
@@ -110,7 +110,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/about`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal3}
                 </Link>
@@ -118,7 +118,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li>
                 <Link
                   href={`/${currentLocale}/faq`}
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal4}
                 </Link>
@@ -133,20 +133,20 @@ export function Footer({ dict, currentLocale }: FooterProps) {
             </h3>
             <ul className="space-y-2 text-slate-600">
               <li className="flex items-start">
-                <MapPin className="w-4 h-4 mr-2 text-blue-900 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 mr-2 text-emerald-800 shrink-0 mt-0.5" />
                 <span>{dict.location}</span>
               </li>
               <li className="flex items-center">
-                <Mail className="w-4 h-4 mr-2 text-blue-900 shrink-0" />
+                <Mail className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
                 <a
                   href="mailto:info@lmcconsulting.hk"
-                  className="hover:text-blue-900 transition-colors"
+                  className="hover:text-emerald-800 transition-colors"
                 >
                   info@LMCconsulting.hk
                 </a>
               </li>
               <li className="flex items-center">
-                <Phone className="w-4 h-4 mr-2 text-blue-900 shrink-0" />
+                <Phone className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
                 <span>+852 2151 8022</span>
               </li>
             </ul>
@@ -164,21 +164,21 @@ export function Footer({ dict, currentLocale }: FooterProps) {
           <div className="flex space-x-4 text-slate-600">
             <Link
               href={`/${currentLocale}/privacy`}
-              className="hover:text-blue-900 transition-colors"
+              className="hover:text-emerald-800 transition-colors"
             >
               {dict.privacy}
             </Link>
             <span>•</span>
             <Link
               href={`/${currentLocale}/terms`}
-              className="hover:text-blue-900 transition-colors"
+              className="hover:text-emerald-800 transition-colors"
             >
               {dict.terms}
             </Link>
             <span>•</span>
             <Link
               href={`/${currentLocale}/disclaimer`}
-              className="hover:text-blue-900 transition-colors"
+              className="hover:text-emerald-800 transition-colors"
             >
               {dict.disclaimer}
             </Link>
