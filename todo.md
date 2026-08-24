@@ -16,3 +16,4 @@ This is the todo section for developers
 ## Smaller Tasks
 1. Course teachers and Directive
 2. Connect terms and conditions
+
