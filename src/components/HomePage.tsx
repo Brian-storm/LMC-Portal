@@ -10,7 +10,7 @@ interface HomePageProps {
 
 export function HomePage({ currentLocale }: HomePageProps) {
   return (
-    <div className="bg-slate-50 text-slate-800">
+    <div className="bg-background text-foreground transition-colors duration-200">
       <Breadcrumbs currentLocale={currentLocale} />
       <HeroCarousel currentLocale={currentLocale} />
       <CredentialsBar />

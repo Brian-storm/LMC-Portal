@@ -66,6 +66,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('${slide.image}')` }}
           >
+            {/* Preserved dark blue image overlay */}
             <div className="absolute inset-0 bg-slate-950/70 backdrop-brightness-90" />
           </div>
 
@@ -83,7 +84,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
               <div className="pt-2">
                 <Link
                   href={`/${currentLocale}${slide.ctaLink}`}
-                  className="inline-flex items-center space-x-2 bg-blue-900 hover:bg-blue-800 text-white font-medium px-5 py-2.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-md"
+                  className="inline-flex items-center space-x-2 bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-5 py-2.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-md"
                 >
                   <span>{slide.ctaText}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -94,6 +95,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
         </div>
       ))}
 
+      {/* Slide Indicators */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
         {HERO_SLIDES.map((_, index) => (
           <button
@@ -101,7 +103,7 @@ export function HeroCarousel({ currentLocale }: HeroCarouselProps) {
             onClick={() => setCurrentSlide(index)}
             className={`h-1.5 transition-all rounded-xs ${
               index === currentSlide
-                ? "w-8 bg-blue-500"
+                ? "w-8 bg-accent"
                 : "w-2 bg-white/50 hover:bg-white/80"
             }`}
             aria-label={`Go to slide ${index + 1}`}

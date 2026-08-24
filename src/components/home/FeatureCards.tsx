@@ -34,16 +34,16 @@ const FEATURES = [
 
 export function FeatureCards({ currentLocale }: FeatureCardsProps) {
   return (
-    <section className="py-16">
+    <section className="py-16 bg-background text-foreground transition-colors duration-200">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-blue-900">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-primary">
             Explore Our Platform
           </h2>
-          <p className="text-2xl font-sans font-bold text-slate-900">
+          <p className="text-2xl font-sans font-bold text-foreground">
             Institutional Services & Quick Access
           </p>
-          <div className="w-12 h-0.5 bg-blue-900 mx-auto mt-3" />
+          <div className="w-12 h-0.5 bg-accent mx-auto mt-3" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -52,23 +52,23 @@ export function FeatureCards({ currentLocale }: FeatureCardsProps) {
             return (
               <div
                 key={idx}
-                className="bg-white border border-slate-200 rounded-xs p-6 flex flex-col justify-between shadow-2xs hover:shadow-md transition-shadow"
+                className="bg-card text-card-foreground border border-border/80 rounded-xs p-6 flex flex-col justify-between shadow-xs hover:shadow-md hover:border-primary/30 transition-all duration-200"
               >
                 <div className="space-y-4">
-                  <div className="w-10 h-10 bg-slate-100 rounded-xs flex items-center justify-center text-blue-900">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xs flex items-center justify-center text-primary">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-sans font-bold text-slate-900">
+                  <h3 className="text-lg font-sans font-bold text-foreground">
                     {feature.title}
                   </h3>
-                  <p className="text-slate-600 text-xs leading-relaxed">
+                  <p className="text-secondary text-xs leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
-                <div className="pt-6 border-t border-slate-100 mt-6">
+                <div className="pt-6 border-t border-border/60 mt-6">
                   <Link
                     href={`/${currentLocale}${feature.link}`}
-                    className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-blue-900 hover:text-blue-800 transition-colors group"
+                    className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-primary hover:text-accent transition-colors group"
                   >
                     <span>{feature.cta}</span>
                     <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" />

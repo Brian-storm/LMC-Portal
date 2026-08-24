@@ -27,10 +27,10 @@ export function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
           <Link
             key={loc.code}
             href={redirectedPathName(loc.code)}
-            className={`px-2 py-0.5 text-[9px] rounded transition-colors ${
+            className={`no-scale px-2 py-0.5 text-sm rounded transition-colors ${
               isActive
-                ? "bg-slate-800 text-white font-semibold border border-slate-700"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-primary text-primary-foreground font-semibold border border-primary/20 shadow-xs"
+                : "text-secondary hover:text-primary hover:bg-primary/5"
             }`}
           >
             {loc.label}
