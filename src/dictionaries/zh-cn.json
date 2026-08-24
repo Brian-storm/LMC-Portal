@@ -12,9 +12,11 @@
     "highContrast": "高对比度"
   },
   "breadcrumbs": {
-    "ariaLabel": "面包屑导航",
+    "ariaLabel": "导航路径",
     "home": "首页",
-    "overview": "概览"
+    "overview": "概览",
+    "courses": "课程",
+    "courseDetail": "课程详情"
   },
   "heroCarousel": {
     "badge": "LMC 管理顾问",
@@ -26,12 +28,12 @@
       },
       {
         "title": "通过学员与客户专区无缝访问",
-        "subtitle": "提供企业级安全保障，轻松追踪认证证书、获取课程资料及管理账户。",
+        "subtitle": "提供企业级安全保障，轻松跟踪认证证书、获取课程资料及管理账户。",
         "ctaText": "进入专区"
       },
       {
         "title": "行业领导力与战略前瞻洞察",
-        "subtitle": "紧跟监管合规要求、金融科技演进及企业管治标准的最新动态。",
+        "subtitle": "紧贴监管合规要求、金融科技演进及企业管治标准的最新动态。",
         "ctaText": "阅读洞察"
       }
     ]
@@ -66,17 +68,59 @@
       },
       {
         "title": "最新动态与洞察",
-        "description": "阅读我们关于顾问洞察、企业政策发展及研讨会通知的最新出版物。",
-        "cta": "查看公告"
+        "description": "阅读我们关于顾问洞察、企业政策发展及研讨会通告的最新出版物。",
+        "cta": "查看通告"
       }
     ]
+  },
+  "courseView": {
+    "sectionTag": "认可课程名录",
+    "catalogTitle": "CPD 课程目录",
+    "catalogDescription": "符合法定监管要求的合资格持续专业培训 (CPD) 课程官方名录。完成课程后将获发可核实的出席证书。",
+    "regulatoryComplianceBadge": "符合香港特区法律监管标准",
+    "searchPlaceholder": "按课程名称、主题或关键字搜索...",
+    "filterAll": "所有类别",
+    "filterCPD": "CPD 认可课程",
+    "filterCompliance": "监管合规",
+    "filterManagement": "行政管理",
+    "searchCriteria": "搜索条件",
+    "resetAll": "重置全部",
+    "keywordRefCode": "关键字 / 参考编号",
+    "subjectArea": "主题范畴",
+    "cpdHours": "CPD 学时",
+    "cpdHoursMin": "CPD 学时 (最低)",
+    "hour": "小时",
+    "hours": "小时",
+    "filingNotice": "所有课程清单均已根据官方监管申报记录更新。",
+    "activeRegister": "现行课程登记册",
+    "totalListings": "课程总数：",
+    "emptyState": "没有找到符合您筛选条件的课程。",
+    "resetSearchParameters": "重置搜索条件",
+    "iaRef": "保监局参考编号：",
+    "coreRegulatoryRequirement": "核心监管强制要求",
+    "deliveryMode": "授课模式",
+    "language": "教学语言",
+    "free": "免费",
+    "quotaRemaining": "剩余名额：",
+    "seats": "个学位",
+    "fee": "课程费用",
+    "accreditationBody": "认可机构",
+    "overviewTab": "课程概览",
+    "curriculumTab": "课程大纲及单元",
+    "instructorTab": "导师简介",
+    "scheduleTab": "即将开办班别",
+    "enrollCta": "立即报名",
+    "downloadBrochure": "下载课程大纲",
+    "prerequisites": "报名资格",
+    "targetAudience": "目标学员",
+    "certificateBadge": "完成课程可获 CPD 证书"
   },
   "newsletterForm": {
     "tag": "保持资讯同步",
     "title": "订阅顾问服务简讯",
     "description": "直接在您的收件箱中接收每季度监管更新、最新课程安排及高管行业洞察。",
     "namePlaceholder": "姓名",
-    "emailPlaceholder": "电子邮箱",
+    "emailPlaceholder": "电邮地址",
     "submitButton": "订阅",
     "submittingButton": "提交中...",
     "successMessage": "感谢您的订阅！您已成功加入我们的邮件列表。",
@@ -85,11 +129,11 @@
   },
   "footer": {
     "aboutTitle": "德智管理顾问有限公司",
-    "aboutDesc": "香港专业合规与管理顾问机构，为金融及保险从业员提供获认可的持续专业培训（CPD）课程。",
+    "aboutDesc": "香港专业合规与管理顾问机构，为金融及保险从业人员提供获认可的持续专业培训（CPD）课程。",
     "accredited": "香港 CPD 认可培训机构",
     "colCourses": "CPD 培训与课程目录",
     "colPortals": "学员专区与服务",
-    "colContact": "香港咨询办事处",
+    "colContact": "香港咨询办公室",
     "course1": "遗产规划课程",
     "course2": "香港医疗体制发展、大湾区医疗概况与医疗保障",
     "course3": "浏览所有 CPD 课程",

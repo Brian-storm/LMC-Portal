@@ -14,7 +14,9 @@
   "breadcrumbs": {
     "ariaLabel": "導航路徑",
     "home": "首頁",
-    "overview": "概覽"
+    "overview": "概覽",
+    "courses": "課程",
+    "courseDetail": "課程詳情"
   },
   "heroCarousel": {
     "badge": "LMC 管理顧問",
@@ -70,6 +72,48 @@
         "cta": "檢視通告"
       }
     ]
+  },
+  "courseView": {
+    "sectionTag": "認可課程名錄",
+    "catalogTitle": "CPD 課程目錄",
+    "catalogDescription": "符合法定監管要求的合資格持續專業培訓 (CPD) 課程官方名錄。完成課程後將獲發可核實的出席證書。",
+    "regulatoryComplianceBadge": "符合香港特區法例監管標準",
+    "searchPlaceholder": "按課程名稱、主題或關鍵字搜尋...",
+    "filterAll": "所有類別",
+    "filterCPD": "CPD 認可課程",
+    "filterCompliance": "監管合規",
+    "filterManagement": "行政管理",
+    "searchCriteria": "搜尋條件",
+    "resetAll": "重設全部",
+    "keywordRefCode": "關鍵字 / 參考編號",
+    "subjectArea": "主題範疇",
+    "cpdHours": "CPD 時數",
+    "cpdHoursMin": "CPD 時數 (最低)",
+    "hour": "小時",
+    "hours": "小時",
+    "filingNotice": "所有課程清單均已根據官方監管申報紀錄更新。",
+    "activeRegister": "現行課程登記冊",
+    "totalListings": "課程總數：",
+    "emptyState": "沒有找到符合您篩選條件的課程。",
+    "resetSearchParameters": "重設搜尋條件",
+    "iaRef": "保監局參考編號：",
+    "coreRegulatoryRequirement": "核心監管強制要求",
+    "deliveryMode": "授課模式",
+    "language": "教學語言",
+    "free": "免費",
+    "quotaRemaining": "剩餘名額：",
+    "seats": "個學位",
+    "fee": "課程費用",
+    "accreditationBody": "認可機構",
+    "overviewTab": "課程概覽",
+    "curriculumTab": "課程大綱及單元",
+    "instructorTab": "導師簡介",
+    "scheduleTab": "即將開辦班別",
+    "enrollCta": "立即報讀",
+    "downloadBrochure": "下載課程大綱",
+    "prerequisites": "報讀資格",
+    "targetAudience": "目標學員",
+    "certificateBadge": "完成課程可獲 CPD 證書"
   },
   "newsletterForm": {
     "tag": "保持資訊同步",

@@ -12,3 +12,4 @@ export type CredentialsBarDict = Dictionary["credentialsBar"];
 export type FeatureCardsDict = Dictionary["featureCards"];
 export type NewsletterFormDict = Dictionary["newsletterForm"];
 export type FooterDict = Dictionary["footer"];
+export type CourseViewDict = Dictionary["courseView"]
