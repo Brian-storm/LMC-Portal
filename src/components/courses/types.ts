@@ -53,6 +53,7 @@ export interface Course {
   fee: string;
   feeHKD?: number | string;
   status?: CourseStatus;
+  brochureUrl?: string;
   iaRefNumber?: string;
   iaCode?: string;
   speaker?: string;
