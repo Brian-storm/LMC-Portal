@@ -12,16 +12,14 @@ import {
   ExternalLink,
   ShieldCheck,
   Building2,
-  User,
-  CheckCircle2,
-  ArrowRight,
-  TrendingUp,
   AlertCircle,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function LearnerDashboardPage() {
   const params = useParams();
-  const locale = (params.locale as string) || "en";
+  const rawLocale = (params.locale as string) || "en";
+  const locale = rawLocale.replace(/^\/+/, "");
 
   // Mock Learner Data
   const learner = {
@@ -88,116 +86,141 @@ export default function LearnerDashboardPage() {
   );
 
   return (
-    <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-[#f2f6f3] text-slate-900 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-5xl mx-auto space-y-6">
+        {/* Top Governance Utility Banner */}
+        <div className="bg-[#1b4332] text-emerald-100 text-[11px] font-mono px-4 py-2 border-b-2 border-[#2d6a4f] flex flex-col sm:flex-row items-center justify-between gap-2 shadow-xs">
+          <div className="flex items-center space-x-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+            <span className="font-semibold tracking-wider uppercase">
+              HK SAR REGULATORY COMPLIANCE DASHBOARD
+            </span>
+          </div>
+          <div className="flex items-center space-x-4 text-emerald-200">
+            <span>Cycle Status: Active</span>
+            <span>•</span>
+            <span>Tamper-Proof Ledger</span>
+          </div>
+        </div>
+
         {/* Header Block */}
-        <header className="bg-white border border-slate-300 p-6 shadow-2xs border-t-4 border-t-[#1b4332] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+        <header className="bg-white border border-emerald-950/20 p-6 md:p-8 shadow-xs border-t-4 border-t-[#1b4332] flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="space-y-1.5">
+            <div className="flex items-center space-x-2 text-[10px] font-bold tracking-widest text-[#2d6a4f] uppercase">
               <Building2 className="w-3.5 h-3.5 text-[#1b4332]" />
-              <span>Learner Portal & License Log</span>
+              <span>Learner Portal & License Compliance Log</span>
             </div>
-            <h1 className="text-2xl font-serif font-bold text-[#1b4332]">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1b4332] tracking-tight">
               Welcome back, {learner.name}
             </h1>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 font-mono pt-0.5">
-              <span>
-                IA Reg No:{" "}
-                <strong className="text-slate-900">{learner.licenseNo}</strong>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 font-mono pt-1">
+              <span className="bg-emerald-50 text-[#1b4332] border border-emerald-200/80 px-2 py-0.5 font-bold">
+                IA Reg No: {learner.licenseNo}
               </span>
-              <span>•</span>
+              <span className="text-slate-300">•</span>
               <span>
                 Organization:{" "}
-                <strong className="text-slate-900">
+                <strong className="text-slate-800">
                   {learner.organization}
                 </strong>
               </span>
             </div>
           </div>
 
-          <Link
-            href={`/${locale}/courses`}
-            className="inline-flex items-center justify-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] text-white font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors shadow-2xs self-start md:self-auto"
+          {/* Browse Catalog Button */}
+          <Button
+            asChild
+            className="bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-none text-xs font-bold uppercase tracking-wider px-5 py-2.5 self-start md:self-auto border border-emerald-900 shadow-xs"
           >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Browse Catalog</span>
-          </Link>
+            <Link href={`/${locale}/courses`}>
+              <BookOpen className="w-4 h-4 mr-2" />
+              Browse Catalog
+            </Link>
+          </Button>
         </header>
 
         {/* CPD Requirement Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
           {/* Main Progress Bar Card */}
-          <div className="md:col-span-2 bg-white border border-slate-300 p-5 shadow-2xs space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <div className="flex items-center space-x-2">
-                <Award className="w-4 h-4 text-[#1b4332]" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-                  Annual CPD Fulfillment ({learner.cpdCycle})
-                </h2>
-              </div>
-              <span className="text-xs font-mono font-bold text-[#1b4332] bg-emerald-50 border border-emerald-200 px-2 py-0.5">
-                {learner.earnedCpd} / {learner.requiredCpd} Hours
-              </span>
-            </div>
-
-            {/* Visual Progress Bar */}
-            <div className="space-y-1.5 pt-1">
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-600 font-medium">
-                  Progress towards requirement
-                </span>
-                <span className="font-bold text-slate-900">
-                  {cpdPercentage}%
+          <div className="md:col-span-2 bg-white border border-emerald-950/20 p-6 shadow-xs space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-emerald-900/10 pb-3">
+                <div className="flex items-center space-x-2">
+                  <Award className="w-4 h-4 text-[#1b4332]" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332]">
+                    Annual CPD Fulfillment ({learner.cpdCycle})
+                  </h2>
+                </div>
+                <span className="text-xs font-mono font-bold text-[#1b4332] bg-emerald-50 border border-emerald-200 px-2.5 py-1">
+                  {learner.earnedCpd} / {learner.requiredCpd} Hours
                 </span>
               </div>
-              <div className="w-full bg-slate-100 border border-slate-200 h-3.5 rounded-xs overflow-hidden p-0.5">
-                <div
-                  className="bg-[#1b4332] h-full rounded-2xs transition-all duration-500"
-                  style={{ width: `${cpdPercentage}%` }}
-                />
+
+              {/* Visual Progress Bar */}
+              <div className="space-y-2 pt-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-600 font-medium">
+                    Progress towards requirement
+                  </span>
+                  <span className="font-bold font-mono text-[#1b4332]">
+                    {cpdPercentage}%
+                  </span>
+                </div>
+                <div className="w-full bg-slate-100 border border-slate-200 h-4 p-0.5 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-[#1b4332] to-[#2d6a4f] h-full transition-all duration-500"
+                    style={{ width: `${cpdPercentage}%` }}
+                  />
+                </div>
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-500 leading-relaxed pt-1">
+            <p className="text-xs text-slate-600 leading-relaxed pt-2 border-t border-slate-100">
               Remaining requirement:{" "}
-              <strong>
+              <strong className="text-[#1b4332] font-semibold">
                 {(learner.requiredCpd - learner.earnedCpd).toFixed(1)} CPD hours
               </strong>{" "}
               prior to cycle declaration deadline.
             </p>
           </div>
 
-          {/* Ethics Hours Requirement Card (Height Reduced) */}
-          <div className="bg-white border border-slate-300 p-3.5 shadow-2xs space-y-2">
-            <div className="border-b border-slate-200 pb-1.5 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center space-x-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#1b4332]" />
-                <span>Mandatory Ethics</span>
-              </span>
-              <span className="text-xs font-mono font-bold text-slate-800">
-                {learner.mandatoryEthicsEarned} /{" "}
-                {learner.mandatoryEthicsRequired} hrs
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-amber-900 bg-amber-50 border border-amber-200 p-1.5 rounded-xs">
-              <div className="flex items-center space-x-1.5">
-                <AlertCircle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-                <span className="text-[11px] leading-tight font-medium">
-                  1.0 Ethics CPD hour required before cycle end.
+          {/* Ethics Hours Requirement Card */}
+          <div className="bg-white border border-emerald-950/20 p-5 shadow-xs space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="border-b border-emerald-900/10 pb-2 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-1.5">
+                  <ShieldCheck className="w-4 h-4 text-[#1b4332]" />
+                  <span>Mandatory Ethics</span>
+                </span>
+                <span className="text-xs font-mono font-bold text-emerald-900 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
+                  {learner.mandatoryEthicsEarned} /{" "}
+                  {learner.mandatoryEthicsRequired} hrs
                 </span>
               </div>
-              <span className="text-[9px] text-amber-800/70 shrink-0 ml-2 font-mono">
-                IA Guidelines
-              </span>
+
+              <div className="flex items-start space-x-2 text-xs text-amber-900 bg-amber-50/80 border border-amber-200/80 p-2.5">
+                <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <span className="text-[11px] leading-snug font-medium block">
+                    1.0 Ethics CPD hour required before cycle end.
+                  </span>
+                  <span className="text-[9px] text-amber-800/80 font-mono block uppercase">
+                    IA Compliance Mandate
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-[10px] text-slate-500 font-mono flex items-center justify-between pt-2 border-t border-slate-100">
+              <span>Status: Pending Ethics Unit</span>
             </div>
           </div>
         </div>
 
         {/* Upcoming Active Enrolments */}
-        <section className="bg-white border border-slate-300 p-6 shadow-2xs space-y-4">
-          <div className="border-b border-slate-200 pb-2 flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+        <section className="bg-white border border-emerald-950/20 p-6 shadow-xs space-y-4">
+          <div className="border-b border-emerald-900/10 pb-3 flex items-center justify-between">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
               <Calendar className="w-4 h-4" />
               <span>Upcoming & Active Enrolments</span>
             </h2>
@@ -210,14 +233,14 @@ export default function LearnerDashboardPage() {
             {activeEnrolments.map((item) => (
               <div
                 key={item.id}
-                className="border border-slate-200 bg-slate-50/50 p-4 rounded-xs hover:border-slate-300 transition-colors space-y-3"
+                className="border border-slate-200 bg-[#fbfdfb] p-4 hover:border-emerald-700/40 transition-colors space-y-3"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                   <div>
                     <div className="flex items-center space-x-2 text-[11px] font-mono text-slate-500 mb-1">
                       <span>Ref: {item.id}</span>
                       <span>•</span>
-                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">
+                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-2 py-0.5 border border-emerald-200">
                         {item.cpdHours}
                       </span>
                     </div>
@@ -226,26 +249,33 @@ export default function LearnerDashboardPage() {
                     </h3>
                   </div>
 
+                  {/* Smaller Receipt Button using Button asChild */}
                   <div className="flex items-center space-x-2 shrink-0">
-                    <Link
-                      href={`/${locale}/dashboard/enrolments/${item.id}/confirmation`}
-                      className="inline-flex items-center space-x-1 border border-slate-300 hover:bg-white text-slate-700 text-xs font-bold px-2.5 py-1 rounded-xs transition-colors"
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className="rounded-none border-slate-300 text-slate-800 hover:bg-slate-100 text-[10px] font-bold uppercase tracking-wider h-7 px-2.5"
                     >
-                      <span>Receipt</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </Link>
+                      <Link
+                        href={`/${locale}/dashboard/enrolments/${item.id}/confirmation`}
+                      >
+                        Receipt
+                        <ExternalLink className="w-3 h-3 ml-1 text-slate-500" />
+                      </Link>
+                    </Button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 pt-2 border-t border-slate-200/80">
                   <div className="flex items-center space-x-2">
-                    <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-[#2d6a4f] shrink-0" />
                     <span>
                       {item.date} ({item.time})
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <Building2 className="w-3.5 h-3.5 text-[#2d6a4f] shrink-0" />
                     <span className="truncate">{item.venue}</span>
                   </div>
                 </div>
@@ -255,59 +285,67 @@ export default function LearnerDashboardPage() {
         </section>
 
         {/* Completed CPD Records & Certificates */}
-        <section className="bg-white border border-slate-300 p-6 shadow-2xs space-y-4">
-          <div className="border-b border-slate-200 pb-2 flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+        <section className="bg-white border border-emerald-950/20 p-6 shadow-xs space-y-4">
+          <div className="border-b border-emerald-900/10 pb-3 flex items-center justify-between">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
               <FileCheck2 className="w-4 h-4" />
-              <span>Completed CPD Log & Certificates</span>
+              <span>Completed CPD Log & Verified Certificates</span>
             </h2>
+            <span className="text-[10px] font-mono uppercase bg-emerald-50 text-[#1b4332] border border-emerald-200 px-2 py-0.5">
+              Audited Records
+            </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
-                  <th className="py-2.5 px-3">Module Name & Code</th>
-                  <th className="py-2.5 px-3">Date Completed</th>
-                  <th className="py-2.5 px-3">CPD Hours</th>
-                  <th className="py-2.5 px-3">Certificate ID</th>
-                  <th className="py-2.5 px-3 text-right">Action</th>
+                <tr className="border-b-2 border-[#1b4332] bg-emerald-50/50 text-[#1b4332] uppercase font-bold text-[10px] tracking-wider">
+                  <th className="py-3 px-3">Module Name & Code</th>
+                  <th className="py-3 px-3">Date Completed</th>
+                  <th className="py-3 px-3">CPD Hours</th>
+                  <th className="py-3 px-3">Certificate ID</th>
+                  <th className="py-3 px-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
                 {completedHistory.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50/80">
-                    <td className="py-3 px-3">
-                      <div className="font-serif font-bold text-slate-900">
+                  <tr
+                    key={item.id}
+                    className="hover:bg-emerald-50/30 transition-colors"
+                  >
+                    <td className="py-3.5 px-3">
+                      <div className="font-serif font-bold text-slate-900 text-sm">
                         {item.title}
                       </div>
                       <div className="font-mono text-[10px] text-slate-500">
                         {item.code}
                       </div>
                     </td>
-                    <td className="py-3 px-3 text-slate-600 font-mono whitespace-nowrap">
+                    <td className="py-3.5 px-3 text-slate-700 font-mono whitespace-nowrap">
                       {item.completionDate}
                     </td>
-                    <td className="py-3 px-3">
-                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-1.5 py-0.5 border border-emerald-200 whitespace-nowrap">
+                    <td className="py-3.5 px-3">
+                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-2 py-0.5 border border-emerald-200 whitespace-nowrap">
                         {item.cpdHours}
                       </span>
                     </td>
-                    <td className="py-3 px-3 font-mono text-slate-600 whitespace-nowrap">
+                    <td className="py-3.5 px-3 font-mono text-slate-700 whitespace-nowrap">
                       {item.certificateNo}
                     </td>
-                    <td className="py-3 px-3 text-right whitespace-nowrap">
-                      <button
+                    <td className="py-3.5 px-3 text-right whitespace-nowrap">
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() =>
                           alert(
-                            `Downloading Certificate ${item.certificateNo}...`,
+                            `Downloading Official Certificate ${item.certificateNo}...`,
                           )
                         }
-                        className="inline-flex items-center space-x-1 text-[#1b4332] hover:text-[#112a1f] font-bold text-xs"
+                        className="text-[#1b4332] hover:text-[#2d6a4f] hover:bg-emerald-50 text-[10px] font-bold uppercase tracking-wider h-6 px-2"
                       >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>PDF</span>
-                      </button>
+                        <Download className="w-3 h-3 mr-1" />
+                        PDF
+                      </Button>
                     </td>
                   </tr>
                 ))}

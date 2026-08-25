@@ -1,6 +1,7 @@
 // src/app/[locale]/courses/[slug]/page.tsx
 
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { CourseDetailView } from "@/components/courses/CourseDetailView";
 import { DetailedCourse } from "@/components/courses/types";
@@ -12,7 +13,10 @@ interface PageProps {
   }>;
 }
 
-async function getCourseBySlug(slug: string): Promise<DetailedCourse | null> {
+async function getCourseBySlug(
+  slug: string,
+  locale: string,
+): Promise<DetailedCourse | null> {
   const courses: Record<string, DetailedCourse> = {
     "cpd-101": {
       id: "cpd-101",
@@ -104,8 +108,28 @@ async function getCourseBySlug(slug: string): Promise<DetailedCourse | null> {
         {
           id: "faq-101-5",
           question: "What is the refund or rescheduling policy?",
-          answer:
-            "Cancellations requested at least 7 calendar days prior to the start date are eligible for a 90% refund (10% processing fee). You may request to transfer your enrollment to a future date free of charge up to 3 days before the session.",
+          answer: (
+            <span>
+              Cancellations requested at least 7 calendar days prior to the
+              start date are eligible for a 90% refund (10% processing fee).
+              Please review our full{" "}
+              <Link
+                href={`/${locale}/terms`}
+                className="text-emerald-700 underline font-medium hover:text-emerald-800"
+              >
+                Terms and Conditions
+              </Link>{" "}
+              and{" "}
+              <Link
+                href={`/${locale}/privacy`}
+                className="text-emerald-700 underline font-medium hover:text-emerald-800"
+              >
+                Privacy Policy
+              </Link>{" "}
+              for complete details on transfers, rescheduling, and data
+              handling.
+            </span>
+          ) as unknown as string,
         },
       ],
     },
@@ -203,8 +227,27 @@ async function getCourseBySlug(slug: string): Promise<DetailedCourse | null> {
         {
           id: "faq-102-5",
           question: "Can my employer be billed directly or issued an invoice?",
-          answer:
-            "Yes. During checkout or by contacting our support team, select corporate billing to request a tax invoice and official receipt.",
+          answer: (
+            <span>
+              Yes. Corporate billing options are subject to verification under
+              our standard{" "}
+              <Link
+                href={`/${locale}/terms`}
+                className="text-emerald-700 underline font-medium hover:text-emerald-800"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href={`/${locale}/privacy`}
+                className="text-emerald-700 underline font-medium hover:text-emerald-800"
+              >
+                Privacy Policy
+              </Link>
+              . Select corporate billing during checkout to request a tax
+              invoice.
+            </span>
+          ) as unknown as string,
         },
       ],
     },
@@ -218,7 +261,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
   const [dict, course] = await Promise.all([
     getDictionary(locale),
-    getCourseBySlug(slug),
+    getCourseBySlug(slug, locale),
   ]);
 
   if (!course) {

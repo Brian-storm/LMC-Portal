@@ -1,125 +1,206 @@
 import Link from "next/link";
-import { Clock, User, MapPin, Award, ArrowRight, FileText } from "lucide-react";
+import {
+  Clock,
+  User,
+  MapPin,
+  Award,
+  ArrowRight,
+  FileText,
+  ExternalLink,
+  ShieldAlert,
+} from "lucide-react";
 import { CourseViewDict } from "@/dictionaries/types";
 import { Course } from "./types";
 
 interface CourseCardProps {
+  /** Course data payload following HK IA compliance structures */
   course: Course;
+  /** Dictionary translation keys for localized UI strings */
   dict: CourseViewDict;
+  /** Active locale code (e.g., "en", "zh-HK") for route prefixing */
   currentLocale: string;
 }
 
+/**
+ * CourseCard Component
+ * Renders an individual course entry formatted in a strict institutional/statutory
+ * HK governance registry style with compact typography.
+ */
 export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
+  // Resolve unique identifier slug for Next.js dynamic routing
   const targetSlug = course.slug || course.id;
+
+  // Format fee value with fallback logic for local currency (HKD) or free courses
   const formattedFee =
     course.fee ??
     (course.feeHKD ? `HK$ ${course.feeHKD.toLocaleString()}` : dict.free);
 
   return (
-    <article className="bg-white border border-slate-300 hover:border-[#1b4332] rounded-xs shadow-2xs transition-all duration-150 relative overflow-hidden">
-      {/* Top Governance Bar */}
-      <div className="bg-slate-100 border-b border-slate-200 px-4 py-1.5 flex flex-wrap items-center justify-between text-[10px] gap-2">
-        <div className="flex items-center space-x-2 font-mono text-slate-600">
-          <span className="font-bold text-slate-800">{dict.iaRef}</span>
-          <span className="bg-white px-1.5 py-0.2 border border-slate-300 text-slate-900 font-semibold">
+    <article className="group bg-white border border-slate-300 hover:border-[#1b4332] rounded-xs shadow-2xs transition-all duration-150 relative overflow-hidden pl-1">
+      {/* ------------------------------------------------------------------ */}
+      {/* 1. STATUTORY ACCENT PILLAR                                         */}
+      {/* Visual anchor bar signaling an accredited regulatory entry         */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="absolute top-0 bottom-0 left-0 w-1 bg-[#1b4332] transition-colors group-hover:bg-[#0d2118]" />
+
+      {/* ------------------------------------------------------------------ */}
+      {/* 2. REGISTRATION & ACCREDITATION HEADER BAR                          */}
+      {/* Displays official reference codes, authority body & core flags    */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="bg-slate-100/90 border-b border-slate-200 px-3 py-1 flex flex-wrap items-center justify-between text-[9px] gap-1.5 font-mono">
+        {/* IA Reference Code Section */}
+        <div className="flex items-center space-x-1.5 text-slate-600">
+          <span className="font-bold text-slate-700 tracking-wider uppercase">
+            {dict.iaRef || "IA REF"}:
+          </span>
+          <span className="bg-white px-1 py-0.2 border border-slate-300 text-slate-900 font-bold tracking-tight text-[9px]">
             {course.iaCode || `REF-${course.id}`}
           </span>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <span className="text-slate-600 font-medium border-r border-slate-300 pr-2">
+        {/* Accreditation Body & Mandatory Core Badge */}
+        <div className="flex items-center space-x-1.5">
+          <span className="text-slate-600 font-medium uppercase tracking-tight text-[9px]">
             {course.accreditationBody || dict.certificateBadge}
           </span>
           {course.isMandatory && (
-            <span className="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.2 border border-amber-300 uppercase tracking-wider">
-              {dict.coreRegulatoryRequirement}
+            <span className="bg-amber-100 text-amber-900 font-bold px-1 py-0.2 border border-amber-300 uppercase tracking-wider flex items-center gap-0.5 text-[8.5px]">
+              <ShieldAlert className="w-2.5 h-2.5 shrink-0" />
+              <span>{dict.coreRegulatoryRequirement || "MANDATORY CORE"}</span>
             </span>
           )}
         </div>
       </div>
 
-      <div className="p-4 sm:p-5 flex flex-col md:flex-row md:items-start justify-between gap-4">
-        {/* Course Details */}
-        <div className="space-y-2 flex-1">
+      {/* ------------------------------------------------------------------ */}
+      {/* 3. CARD CONTENT BODY                                               */}
+      {/* Primary title, accredited domain category, and description text   */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="p-3 sm:p-3.5 flex flex-col md:flex-row md:items-stretch justify-between gap-3">
+        {/* Course Core Details Column */}
+        <div className="space-y-1.5 flex-1">
+          {/* Accredited Category Badge */}
           <div className="flex items-center space-x-2">
-            <span className="px-2 py-0.5 bg-[#1b4332]/10 text-[#1b4332] text-[10px] font-bold uppercase tracking-wider rounded-xs border border-[#1b4332]/20">
+            <span className="px-1.5 py-0.2 bg-slate-100 text-slate-800 text-[8.5px] font-mono font-bold uppercase tracking-wider rounded-xs border border-slate-300">
               {course.category}
             </span>
           </div>
 
-          <h2 className="text-base sm:text-lg font-serif font-bold text-slate-900 hover:text-[#1b4332] transition-colors leading-snug">
-            <Link href={`/${currentLocale}/courses/${targetSlug}`}>
-              {course.title}
+          {/* Official Course Title Link */}
+          <h2 className="text-xs sm:text-sm font-serif font-bold text-slate-900 group-hover:text-[#1b4332] transition-colors leading-snug">
+            <Link
+              href={`/${currentLocale}/courses/${targetSlug}`}
+              className="hover:underline flex items-start gap-1"
+            >
+              <span>{course.title}</span>
+              <ExternalLink className="w-2.5 h-2.5 text-slate-400 inline shrink-0 opacity-0 group-hover:opacity-100 transition-opacity mt-0.5" />
             </Link>
           </h2>
 
-          <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed border-l-2 border-slate-200 pl-2.5 my-1">
+          {/* Executive Overview Summary */}
+          <p className="text-slate-600 text-[10.5px] line-clamp-2 leading-normal border-l-2 border-slate-300 pl-2 py-0.5 my-1">
             {course.description}
           </p>
 
-          {/* Formal Metadata Table */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 gap-x-4 pt-2 text-[11px] text-slate-700 bg-slate-50 p-2.5 border border-slate-200 rounded-xs">
-            <div className="flex items-center space-x-2">
-              <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="font-medium text-slate-900">
-                {course.date ||
-                  `${dict.deliveryMode}: ${course.deliveryMode || "Online"}`}
-              </span>
+          {/* -------------------------------------------------------------- */}
+          {/* 4. INSTITUTIONAL METADATA GRID                                 */}
+          {/* Structured Key-Value specification grid for course details     */}
+          {/* -------------------------------------------------------------- */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-3 pt-1 text-[9.5px] font-mono text-slate-700 bg-slate-50/80 p-1.5 border border-slate-200 rounded-xs">
+            {/* Delivery Mode / Date */}
+            <div className="flex items-start space-x-1.5">
+              <Clock className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
+              <div>
+                <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
+                  {dict.deliveryMode || "DELIVERY MODE"}
+                </span>
+                <span className="font-semibold text-slate-900">
+                  {course.date || course.deliveryMode || "Online"}
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <User className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="truncate">
-                {course.speaker ||
-                  `${dict.language}: ${course.language || "English"}`}
-              </span>
+            {/* Faculty / Language Parameter */}
+            <div className="flex items-start space-x-1.5">
+              <User className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
+              <div className="truncate">
+                <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
+                  {dict.language || "SPEAKER / FACULTY"}
+                </span>
+                <span className="truncate block font-semibold text-slate-900">
+                  {course.speaker || course.language || "English"}
+                </span>
+              </div>
             </div>
 
+            {/* Optional Physical Venue Parameter */}
             {course.venue && (
-              <div className="flex items-center space-x-2 sm:col-span-2">
-                <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                <span className="truncate">{course.venue}</span>
+              <div className="flex items-start space-x-1.5 sm:col-span-2 pt-1 border-t border-slate-200/60">
+                <MapPin className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
+                <div className="truncate">
+                  <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
+                    VENUE
+                  </span>
+                  <span className="truncate block font-medium text-slate-800">
+                    {course.venue}
+                  </span>
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Right Panel: Fee & Enrolment */}
-        <div className="flex flex-row md:flex-col items-center md:items-end justify-between border-t md:border-t-0 pt-3 md:pt-0 border-slate-200 min-w-[150px] shrink-0 gap-3 self-stretch md:self-auto">
-          <div className="text-left md:text-right space-y-1">
-            <div className="inline-flex items-center space-x-1 text-[#1b4332] font-bold text-xs bg-emerald-50/80 px-2 py-0.5 border border-emerald-200">
-              <Award className="w-3.5 h-3.5 text-[#1b4332]" />
+        {/* ------------------------------------------------------------------ */}
+        {/* 5. RIGHT PANEL: CPD HOURS, FEES & REGISTRATION CTAS                */}
+        {/* Financial info, regulatory credit badge, and direct view trigger  */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="flex flex-row md:flex-col items-center md:items-end justify-between border-t md:border-t-0 md:border-l border-slate-200 pt-2 md:pt-0 md:pl-3.5 min-w-[140px] shrink-0 gap-2">
+          {/* Fee & CPD Accreditation Badges */}
+          <div className="text-left md:text-right space-y-0.5 font-mono">
+            {/* Accredited CPD Hour Badge */}
+            <div className="inline-flex items-center space-x-1 text-[#1b4332] font-bold text-[8.5px] bg-emerald-50 px-1.5 py-0.5 border border-emerald-300 rounded-xs">
+              <Award className="w-2.5 h-2.5 text-[#1b4332] shrink-0" />
               <span>
-                {course.cpdHours} {dict.cpdHours}
+                {course.cpdHours} {dict.cpdHours || "CPD HOURS"}
               </span>
             </div>
 
-            <div className="text-lg font-bold font-serif text-slate-900">
+            {/* Course Fee Display */}
+            <div className="text-sm font-serif font-bold text-slate-900 pt-0.5">
               {formattedFee}
             </div>
 
+            {/* Low Quota Warning Threshold Alert */}
             {course.seatsLeft !== undefined && course.seatsLeft <= 5 && (
-              <span className="block text-[10px] text-red-700 font-bold uppercase tracking-wider">
-                {dict.quotaRemaining} {course.seatsLeft} {dict.seats}
+              <span className="block text-[8px] text-rose-700 font-bold uppercase tracking-wider bg-rose-50 px-1 py-0.2 border border-rose-200">
+                {dict.quotaRemaining || "QUOTA:"} {course.seatsLeft}{" "}
+                {dict.seats || "SEATS"}
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <Link
-              href={`/${currentLocale}/courses/${targetSlug}/enroll`}
-              className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] text-white font-bold px-3.5 py-1.5 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#0d2118]"
-            >
-              <span>{dict.enrollCta}</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
+          {/* Action Control Trigger Buttons */}
+          <div className="flex items-center gap-1 w-full md:w-auto">
+            {/* Action Control Trigger Buttons */}
+            <div className="flex items-center gap-1 w-full md:w-auto">
+              {/* Direct Official Navigation CTA */}
+              <Link
+                href={`/${currentLocale}/courses/${targetSlug}`}
+                className="flex-1 md:flex-none inline-flex items-center justify-center space-x-1 bg-[#1b4332] hover:bg-[#112a1f] active:bg-[#091711] text-white font-mono font-bold px-2 py-1 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#0d2118]"
+                style={{ fontSize: "12px", lineHeight: "12px" }}
+              >
+                <span>{dict.viewCourse || "VIEW COURSE"}</span>
+                <ArrowRight className="w-2.5 h-2.5 shrink-0" />
+              </Link>
+            </div>
 
+            {/* Secondary Syllabus Brochure Download Trigger */}
             <button
               type="button"
-              className="p-1.5 border border-slate-300 hover:bg-slate-100 text-slate-600 transition-colors rounded-xs"
-              title={dict.downloadBrochure}
+              className="p-1 border border-slate-300 hover:bg-slate-100 text-slate-700 transition-colors rounded-xs bg-slate-50"
+              title={dict.downloadBrochure || "Download Official Syllabus"}
             >
-              <FileText className="w-3.5 h-3.5" />
+              <FileText className="w-3 h-3 shrink-0" />
             </button>
           </div>
         </div>

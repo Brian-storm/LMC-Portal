@@ -301,8 +301,18 @@ export default function CourseEnrollmentPage() {
                         className="mt-0.5 border-slate-400 text-[#1b4332] focus:ring-0 accent-[#1b4332]"
                       />
                       <span className="leading-relaxed">
-                        I agree to the Institutional Terms of Registration, CPD
-                        Attendance Monitoring Policy, and Cancellation Rules.
+                        I agree to the{" "}
+                        <Link
+                          href={`/${locale}/terms`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()} // Prevents the checkbox from toggling twice when clicking the link
+                          className="text-[#1b4332] underline hover:text-emerald-900 font-semibold"
+                        >
+                          Institutional Terms of Registration
+                        </Link>
+                        , CPD Attendance Monitoring Policy, and Cancellation
+                        Rules.
                       </span>
                     </label>
                   </div>

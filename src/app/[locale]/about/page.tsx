@@ -169,7 +169,7 @@ export default function AboutPage() {
               asChild
               className="bg-white text-slate-900 hover:bg-slate-100 rounded-none text-xs font-semibold"
             >
-              <Link href="/student/courses">Go to Student Portal</Link>
+              <Link href="/dashboard">Go to Student Portal</Link>
             </Button>
           </CardContent>
         </Card>

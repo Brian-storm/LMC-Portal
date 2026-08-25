@@ -94,11 +94,11 @@ export function CourseFilters({
 
       {/* CPD Range Slider */}
       <div className="space-y-1.5 pt-2 border-t border-slate-200">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center font-mono">
           <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">
             {dict.cpdHoursMin}
           </label>
-          <span className="text-xs font-bold text-[#1b4332] bg-emerald-50/80 px-1.5 py-0.5 border border-emerald-200/80">
+          <span className="text-[10px] font-semibold text-[#1b4332] bg-emerald-50 px-1 py-0 border border-emerald-300 rounded-xs">
             {minCpdHours} {minCpdHours === 1 ? dict.hour : dict.hours}
           </span>
         </div>
@@ -109,7 +109,7 @@ export function CourseFilters({
           step="1"
           value={minCpdHours}
           onChange={(e) => setMinCpdHours(Number(e.target.value))}
-          className="w-full accent-[#1b4332] bg-slate-200 rounded-xs h-1 cursor-pointer"
+          className="w-full h-1 accent-[#1b4332] bg-slate-200 rounded-xs cursor-pointer appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:bg-[#1b4332] [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:bg-[#1b4332] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full"
         />
       </div>
 

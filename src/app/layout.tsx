@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.variable}>
-      <body className="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-accent selection:text-accent-foreground">
+      <body className="bg-background text-foreground min-h-screen min-w-[320px] flex flex-col font-sans antialiased selection:bg-accent selection:text-accent-foreground">
         {/* Global Client Providers (Font size / High contrast state) */}
         <Providers>{children}</Providers>
 

@@ -46,10 +46,17 @@ export default async function CoursesPage({ params }: PageProps) {
   ]);
 
   return (
-    <CoursesView
-      currentLocale={locale}
-      dict={dict.courseView}
-      initialCourses={courses}
-    />
+    <main className="min-h-screen bg-slate-100/80 border-t border-slate-300 py-6 sm:py-8">
+      {/* Decorative top institutional header rule */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white border border-slate-300 rounded-xs p-4 sm:p-6 shadow-2xs">
+          <CoursesView
+            currentLocale={locale}
+            dict={dict.courseView}
+            initialCourses={courses}
+          />
+        </div>
+      </div>
+    </main>
   );
 }
