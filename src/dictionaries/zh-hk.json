@@ -113,7 +113,27 @@
     "downloadBrochure": "下載課程大綱",
     "prerequisites": "報讀資格",
     "targetAudience": "目標學員",
-    "certificateBadge": "完成課程可獲 CPD 證書"
+    "certificateBadge": "完成課程可獲 CPD 證書",
+    "sections": {
+      "syllabus": "課程大綱",
+      "scheduleAndLocation": "上課時間及地點",
+      "instructors": "講師簡介及照片",
+      "reviews": "學員評價與課程心得",
+      "faqs": "常見問題（FAQ）"
+    },
+    "status": {
+      "open": "接受報名中",
+      "fewSeats": "剩餘名額",
+      "full": "已額滿",
+      "closed": "截止報名"
+    },
+    "labels": {
+      "dateAndTime": "上課時間",
+      "venue": "上課地點",
+      "module": "課程單元",
+      "duration": "單元時數",
+      "topics": "單元主題"
+    }
   },
   "newsletterForm": {
     "tag": "保持資訊同步",

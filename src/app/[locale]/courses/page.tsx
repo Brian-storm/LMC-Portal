@@ -1,5 +1,5 @@
 import { Course } from "@/components/courses/types";
-import { CoursesView } from "@/components/courses/CourseView";
+import { CoursesView } from "@/components/courses/CoursesView";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 
 interface PageProps {
@@ -8,7 +8,6 @@ interface PageProps {
   }>;
 }
 
-// Example data source (replace with your DB query or API fetch)
 async function getCourses(): Promise<Course[]> {
   return [
     {
@@ -21,6 +20,7 @@ async function getCourses(): Promise<Course[]> {
       deliveryMode: "Online / In-person",
       language: "Cantonese / English",
       fee: "HKD 2,800",
+      status: "fewSeats",
     },
     {
       id: "cpd-102",
@@ -32,6 +32,7 @@ async function getCourses(): Promise<Course[]> {
       deliveryMode: "Online",
       language: "Cantonese",
       fee: "HKD 1,500",
+      status: "open",
     },
   ];
 }

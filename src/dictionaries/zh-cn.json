@@ -113,7 +113,27 @@
     "downloadBrochure": "下载课程大纲",
     "prerequisites": "报名资格",
     "targetAudience": "目标学员",
-    "certificateBadge": "完成课程可获 CPD 证书"
+    "certificateBadge": "完成课程可获 CPD 证书",
+    "sections": {
+      "syllabus": "课程大纲",
+      "scheduleAndLocation": "上课时间及地点",
+      "instructors": "讲师简介及照片",
+      "reviews": "学员评价与课程心得",
+      "faqs": "常见问题（FAQ）"
+    },
+    "status": {
+      "open": "接受报名中",
+      "fewSeats": "剩余名额",
+      "full": "已额满",
+      "closed": "截止报名"
+    },
+    "labels": {
+      "dateAndTime": "上课时间",
+      "venue": "上课地点",
+      "module": "课程单元",
+      "duration": "单元学时",
+      "topics": "单元主题"
+    }
   },
   "newsletterForm": {
     "tag": "保持资讯同步",
