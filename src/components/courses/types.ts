@@ -40,9 +40,10 @@ export interface CourseFAQ {
   answer: string;
 }
 
-// Base Course interface used in catalog view
+// Base Course interface used in catalog view and CourseCard
 export interface Course {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   category: string;
@@ -50,10 +51,16 @@ export interface Course {
   deliveryMode: string;
   language: string;
   fee: string;
+  feeHKD?: number | string;
   status?: CourseStatus;
   iaRefNumber?: string;
-  iaCode?: string; // Added optional property
-  speaker?: string; // Added optional property
+  iaCode?: string;
+  speaker?: string;
+  accreditationBody?: string;
+  isMandatory?: boolean;
+  date?: string;
+  venue?: string;
+  seatsLeft?: number;
 }
 
 // Extended interface for single detailed page

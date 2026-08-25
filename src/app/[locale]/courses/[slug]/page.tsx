@@ -125,10 +125,10 @@ async function getCourseBySlug(slug: string): Promise<DetailedCourse | null> {
       instructors: [
         {
           id: "ins-2",
-          name: "Dr. Karen Kwok",
+          name: "Mr. Wilson Cheung",
           title: "Greater Bay Area Health Policy Specialist",
-          photoUrl: "/members/profile-karen-kwok.svg",
-          bio: "Specialist in GBA cross-border medical policies, insurance claims integration, and health regulation compliance.",
+          photoUrl: "/members/profile-wilson-cheung.svg",
+          bio: "With global fellowships in insurance, risk management, property casualty, loss adjusting, and arbitration.",
         },
       ],
       syllabus: [
