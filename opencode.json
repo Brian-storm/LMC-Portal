@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openrouter/free",
+  "instructions": ".github/skills/monstrare/AGENTS.md",
+  "provider": {
+    "openrouter": {
+      "models": {
+        "~openrouter/free": {},
+        "~deepseek/deepseek-r1:free": {}
+      }
+    }
+  }
+}
