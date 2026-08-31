@@ -3,7 +3,7 @@
   "title": "S4: 核心元件庫",
   "epic": "專案設置",
   "userStory": "UI 設計系統",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "dependsOn": ["PS-009"],
   "order": 10,

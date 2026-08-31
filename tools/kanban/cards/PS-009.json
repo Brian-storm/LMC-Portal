@@ -3,7 +3,7 @@
   "title": "S3: Design Token 定義",
   "epic": "專案設置",
   "userStory": "UI 設計系統",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "dependsOn": ["PS-008"],
   "order": 9,
