@@ -3,7 +3,7 @@
   "title": "Prisma schema + 資料庫遷移 + seed 腳本",
   "epic": "專案設置",
   "userStory": "核心資料模型",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "dependsOn": [],
   "order": 2,
