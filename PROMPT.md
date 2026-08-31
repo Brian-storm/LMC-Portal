@@ -1,4 +1,5 @@
 # This is prompt used to prompt AI chat for this repo
+**if you are a coding agent, please ignore this file**
 
 ---
 
