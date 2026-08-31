@@ -1,0 +1,25 @@
+{
+  "id": "PS-004",
+  "title": "註冊 API endpoint (後端)",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["PS-002", "PS-003"],
+  "order": 4,
+  "acceptance": [
+    "POST /api/auth/register accepts: nameZh, nameEn, email, password, phone, idDocNumber, iaLicense?, organization?",
+    "Password hashed with bcrypt (10 rounds) before storage",
+    "Email uniqueness check — 409 if duplicate",
+    "Zod validation on all inputs (email format, required fields, password min 8 chars)",
+    "Returns 201 with { success: true } on success (no auto-login)",
+    "Rate limiting: 3 attempts per IP per 15 min"
+  ],
+  "files": [
+    "src/app/api/auth/register/route.ts (new)",
+    "src/lib/validation/register.ts (new — Zod schema)",
+    "package.json (add zod)"
+  ],
+  "dependencies": "npm install zod",
+  "verification": "POST /api/auth/register with valid body → 201. Duplicate email → 409. Missing fields → 400."
+}

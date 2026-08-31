@@ -1,0 +1,28 @@
+{
+  "id": "PS-008",
+  "title": "S2: 視覺風格方向 (Style Tiles)",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "stage": "backlog",
+  "risk": "low",
+  "dependsOn": ["PS-007"],
+  "order": 8,
+  "acceptance": [
+    "Produce 2-3 style tile variants showing: color mood, typography personality, radius/shadow tendency, density, light/dark mode",
+    "Variant A: Current institutional slate/emerald (#1b4332 primary, amber accent) — the default",
+    "Variant B: Lighter, airier version (more white space, softer greens)",
+    "Variant C: Higher contrast, more authoritative (darker slates, bolder typography)",
+    "Each variant references 1-2 production products (PEAK, CII HK, or from design-craft reference list)",
+    "Present with comparison table: clarity, authority, accessibility, implementation effort",
+    "Human picks one — record in design-system.md '風格方向'"
+  ],
+  "files": [
+    "ai/artifacts/專案設置/mockups/style-tile-a.html (new)",
+    "ai/artifacts/專案設置/mockups/style-tile-b.html (new)",
+    "ai/artifacts/專案設置/mockups/style-tile-c.html (new)",
+    "ai/artifacts/專案設置/mockup-decision-style-tile.md (new)",
+    "ai/context/design-system.md (update — style direction)"
+  ],
+  "notes": "Apply design-craft discipline: type scale, 4px spacing, color as system, depth rules. Current style is already close to institutional slate/emerald from proposal — variants should explore adjacent directions, not radical departures.",
+  "verification": "Human selects a style direction. Selected variant written to design-system.md."
+}

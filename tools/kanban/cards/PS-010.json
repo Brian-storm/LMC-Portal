@@ -1,0 +1,40 @@
+{
+  "id": "PS-010",
+  "title": "S4: 核心元件庫",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["PS-009"],
+  "order": 10,
+  "acceptance": [
+    "Build/verify core components using ONLY S3-approved tokens:",
+    "Button (variants: default/outline/ghost/destructive, sizes: sm/default/lg, states: default/hover/focus/disabled/loading)",
+    "Input (states: default/hover/focus/disabled/error)",
+    "Select (with options, states: default/focus/disabled/error)",
+    "Checkbox & Radio (with labels, states: unchecked/checked/disabled)",
+    "Card (variants: default/bordered, with header/content/footer slots)",
+    "Navigation (existing Navbar — verify token compliance)",
+    "Modal/Dialog (overlay, close on Escape/click-outside, focus trap)",
+    "Table (header, rows, hover state, sortable columns)",
+    "Form (layout, label/input/error grouping, submit handling)",
+    "Toast/Alert (success/warning/error/info variants, auto-dismiss)",
+    "Each component registered in design-system.md '元件庫 inventory' with: name, states, tokens used, file path",
+    "shadcn/ui components already exist in components/ui/ — verify they match tokens, update if needed",
+    "Human approves component library before S5"
+  ],
+  "files": [
+    "src/components/ui/button.tsx (verify/update)",
+    "src/components/ui/input.tsx (verify/update)",
+    "src/components/ui/select.tsx (verify/update)",
+    "src/components/ui/card.tsx (verify/update)",
+    "src/components/ui/dialog.tsx (verify/update)",
+    "src/components/ui/table.tsx (verify/update)",
+    "src/components/ui/badge.tsx (verify/update)",
+    "src/components/ui/dropdown-menu.tsx (verify/update)",
+    "src/components/ui/form.tsx (new — if needed)",
+    "src/components/ui/toast.tsx (new — if needed)",
+    "ai/context/design-system.md (update — 元件庫 inventory)"
+  ],
+  "verification": "Every component exists. All states implemented. Token compliance verified. Human approves component library."
+}

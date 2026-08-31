@@ -1,0 +1,23 @@
+{
+  "id": "PS-005",
+  "title": "登入頁面 → 真實驗證 (前端)",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["PS-003"],
+  "order": 5,
+  "acceptance": [
+    "Login form uses signIn('credentials', { email, password, redirect: false })",
+    "Success redirects to /[locale]/dashboard",
+    "Error displays inline message (invalid credentials, unverified)",
+    "Remove hardcoded demo emails, passwords, role-switching tabs",
+    "Add 'Register' link at bottom of form",
+    "Locale-aware: accepts locale from params, passes to links",
+    "Loading state on submit button"
+  ],
+  "files": [
+    "src/app/[locale]/login/page.tsx (rewrite)"
+  ],
+  "verification": "Login with valid credentials → redirect to dashboard. Wrong password → error message. No demo tabs visible. Register link navigates to registration form."
+}

@@ -1,0 +1,12 @@
+{
+  "id": "PS-001",
+  "title": "環境變數與金鑰設定",
+  "epic": "專案設置",
+  "userStory": "環境變數與金鑰設定",
+  "stage": "done",
+  "risk": "low",
+  "dependsOn": [],
+  "order": 1,
+  "verification": ".env.example exists with all required vars, documented in AGENTS.md and README.md",
+  "notes": "Already completed. .env.example covers DATABASE_URL, AUTH_SECRET, AWS_*, SES_*, NEXT_PUBLIC_SITE_URL."
+}

@@ -1,0 +1,26 @@
+{
+  "id": "PS-002",
+  "title": "Prisma schema + 資料庫遷移 + seed 腳本",
+  "epic": "專案設置",
+  "userStory": "核心資料模型",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": [],
+  "order": 2,
+  "acceptance": [
+    "Prisma schema defines all 6 models: User, Organization, Course, Instructor, Registrant, Admin",
+    "All enums: Role, RegistrationStatus, EnrollmentType, PaymentStatus, PaymentMethod, AdminPermission",
+    "npx prisma migrate dev runs successfully against local PostgreSQL",
+    "Seed script inserts 2 instructors + 2 courses + syllabus items + schedules + FAQs + reviews",
+    "Prisma client singleton in src/lib/prisma.ts"
+  ],
+  "files": [
+    "prisma/schema.prisma (new)",
+    "prisma/seed.ts (new)",
+    "prisma/migrations/ (auto)",
+    "src/lib/prisma.ts (new)",
+    ".env (add DATABASE_URL)"
+  ],
+  "dependencies": "npm install prisma @prisma/client; npx prisma init",
+  "verification": "npx prisma migrate dev && npx prisma db seed && npx prisma studio"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "PS-007",
+  "title": "S1: 底層框架與元件庫策略",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "stage": "backlog",
+  "risk": "low",
+  "dependsOn": [],
+  "order": 7,
+  "acceptance": [
+    "Confirm: Tailwind CSS v4 + shadcn/ui + lucide-react + framer-motion (already in use)",
+    "Confirm: Montserrat via next/font, PingFang HK / Microsoft JhengHei fallback",
+    "Confirm: oklch color space in globals.css",
+    "Document choice in ai/context/design-system.md → '底層框架' section",
+    "No changes needed — just formalize what's already built"
+  ],
+  "files": [
+    "ai/context/design-system.md (new — framework section)"
+  ],
+  "verification": "design-system.md '底層框架' section accurately lists current stack. Human approves framework strategy."
+}

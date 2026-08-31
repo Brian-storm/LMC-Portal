@@ -1,0 +1,25 @@
+{
+  "id": "PS-003",
+  "title": "NextAuth.js 設定與 API 路由 (後端)",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "stage": "backlog",
+  "risk": "high",
+  "dependsOn": ["PS-002"],
+  "order": 3,
+  "acceptance": [
+    "src/auth.ts with NextAuth v5 config: PrismaAdapter, JWT sessions, Credentials provider",
+    "src/app/api/auth/[...nextauth]/route.ts exports GET + POST",
+    "bcrypt password hashing on credential validation",
+    "Session callback includes user.id and user.role in JWT token",
+    "AUTH_SECRET set in .env (generated via openssl rand -base64 32)"
+  ],
+  "files": [
+    "src/auth.ts (new)",
+    "src/app/api/auth/[...nextauth]/route.ts (new)",
+    ".env (add AUTH_SECRET)",
+    "package.json (add next-auth, @auth/prisma-adapter, bcryptjs)"
+  ],
+  "dependencies": "npm install next-auth@beta @auth/prisma-adapter bcryptjs && npm install -D @types/bcryptjs",
+  "verification": "Test: GET /api/auth/csrf returns CSRF token. POST /api/auth/callback/credentials with valid email+password returns session cookie."
+}

@@ -1,0 +1,28 @@
+{
+  "id": "PS-009",
+  "title": "S3: Design Token 定義",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "stage": "backlog",
+  "risk": "low",
+  "dependsOn": ["PS-008"],
+  "order": 9,
+  "acceptance": [
+    "Extract complete token set from approved style direction:",
+    "Color: grey scale (9-10 shades), primary/emerald scale, accent/amber scale, semantic (success/warning/danger/info)",
+    "Typography: type scale (11-48px), font weights (400/500/600/700), line heights (1.2/1.3/1.5/1.7)",
+    "Spacing: 4px grid (4/8/12/16/20/24/32/40/48/64)",
+    "Radius: xs/sm/md/lg/xl/2xl/3xl/4xl values",
+    "Shadow: elevation levels with specific y-offset/blur/spread/opacity",
+    "Z-index: navbar, sidebar, modal, dropdown, tooltip layers",
+    "Motion: duration (150/200/300/500ms), easing curves",
+    "All tokens written to design-system.md 'Design Token 清單'",
+    "Corresponding Tailwind v4 theme extensions mapped in globals.css (verify existing tokens align)",
+    "Human approves token set before proceeding to S4"
+  ],
+  "files": [
+    "ai/context/design-system.md (update — Design Token 清單 section)",
+    "src/app/globals.css (update — ensure tokens match, add missing)"
+  ],
+  "verification": "Token list complete. Human approves. All values match design-craft scale rules."
+}

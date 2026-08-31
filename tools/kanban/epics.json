@@ -1,0 +1,63 @@
+{
+  "epics": [
+    {
+      "name": "專案設置",
+      "definition": "Project skeleton: Prisma schema + RDS, NextAuth.js, design system formalization, env config. Must complete before any functional Epic.",
+      "stories": [
+        { "name": "環境變數與金鑰設定", "definition": ".env.example, secret storage convention, AWS credential placeholders" },
+        { "name": "核心資料模型", "definition": "Prisma schema (User, Course, Registrant, Organization, Instructor, Admin), migrations, seed script" },
+        { "name": "認證框架", "definition": "NextAuth.js v5 setup, JWT sessions, login page → real auth, registration endpoint, role-based middleware" },
+        { "name": "UI 設計系統", "definition": "5-stage design process: S1 framework → S2 style tile → S3 design tokens → S4 component library → S5 page layouts. Persisted to ai/context/design-system.md" }
+      ]
+    },
+    {
+      "name": "課程管理",
+      "definition": "Course CRUD from database, catalog/search/filter, course detail with real data",
+      "stories": [
+        { "name": "課程 API", "definition": "GET courses (filtered), GET course/[slug] (with relations), POST/PATCH/DELETE (admin)" },
+        { "name": "課程目錄頁", "definition": "Fetch courses from API instead of inline mock data, search/filter wired to real data" },
+        { "name": "課程詳情頁", "definition": "Fetch single course from API with syllabus, instructors, schedules, reviews, FAQs" }
+      ]
+    },
+    {
+      "name": "報名與結帳",
+      "definition": "Enrollment API, individual + group registration, multi-course checkout, payment proof upload",
+      "stories": [
+        { "name": "報名 API", "definition": "POST /api/enroll — validate course availability, check capacity, create registrant, handle group enrollment" },
+        { "name": "個人報名流程", "definition": "Wire 3-step wizard to real submission, redirect to confirmation with registrant ID" },
+        { "name": "團體報名表單", "definition": "Individual/Organization toggle, multi-registrant dynamic form, running total calculation" },
+        { "name": "付款證明上傳", "definition": "S3 presigned URL upload, file type/size validation, AES256 encryption, DB update with proof URL" }
+      ]
+    },
+    {
+      "name": "金流與收據",
+      "definition": "S3 upload, admin verification, PDF receipt generation, SES email delivery",
+      "stories": [
+        { "name": "管理員審核後台", "definition": "Real DB enrolments in admin table, payment proof image preview (presigned S3 URL), approve/reject actions" },
+        { "name": "PDF 電子收據生成", "definition": "@react-pdf/renderer receipt template, generate + store in S3, pdf-lib password lock, auto receipt number" },
+        { "name": "SES 郵件自動發送", "definition": "nodemailer + SES transport, bilingual email template (ZH+EN), PDF attachment, triggered on admin approval" }
+      ]
+    },
+    {
+      "name": "內容與靜態頁面",
+      "definition": "i18n migration for static pages, contact page, bug fixes, content fill",
+      "stories": [
+        { "name": "條款與隱私頁 i18n", "definition": "Migrate terms, privacy pages to use dictionary system with all 3 locales" },
+        { "name": "關於我們頁 i18n", "definition": "Migrate about page to dictionary system, add real content (我們是誰、我們的服務、我們的課程)" },
+        { "name": "聯絡我們頁", "definition": "New contact page: map embed, phone, email, WhatsApp links, i18n dictionary" },
+        { "name": "Bug 修復與重構", "definition": "Fix CourseSyllabus duplicate, enrolments placeholder duplicate, locale prefix missing in links, remove alert() calls" }
+      ]
+    },
+    {
+      "name": "第二階段：學員與講師功能",
+      "definition": "Phase 2: student dashboard, instructor dashboard, certificates, online payment, recorded video, chatbot. DEPENDS ON: all Phase 1 Epics complete",
+      "stories": [
+        { "name": "學員會員中心", "definition": "Enrolment history, receipt download, certificate access, profile management" },
+        { "name": "講師後台", "definition": "Class roster view, upload course materials, attendance tracking" },
+        { "name": "自動化證書", "definition": "Auto-generate PDF certificate on course completion, unique anti-forgery ID, S3 storage" },
+        { "name": "線上支付", "definition": "Stripe/PayPal integration for credit card, Alipay online payment" },
+        { "name": "聊天機器人", "definition": "Deterministic FAQ QnA first, Microsoft Foundry AI integration later" }
+      ]
+    }
+  ]
+}

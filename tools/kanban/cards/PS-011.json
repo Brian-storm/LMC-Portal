@@ -1,0 +1,30 @@
+{
+  "id": "PS-011",
+  "title": "S5: 各介面版面 Mockup",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["PS-010"],
+  "order": 11,
+  "acceptance": [
+    "Using approved tokens (S3) + component library (S4), produce 2-3 layout variants for each interface:",
+    "Interface A: Public-facing (home page layout, course catalog, course detail, enrollment form, login)",
+    "Interface B: Portal/dashboard (sidebar + content area, dashboard cards, enrolments list)",
+    "Interface C: Admin (top nav KPIs + audit table, course management table)",
+    "Each interface gets: mockup HTML files, comparison table, human selection",
+    "Selected variants recorded in design-system.md '各介面版面'",
+    "This is the final stage — after S5, all subsequent Epics reuse these layouts with the token/component system"
+  ],
+  "files": [
+    "ai/artifacts/專案設置/mockups/public-layout-variant-a.html (new)",
+    "ai/artifacts/專案設置/mockups/public-layout-variant-b.html (new)",
+    "ai/artifacts/專案設置/mockups/portal-layout-variant-a.html (new)",
+    "ai/artifacts/專案設置/mockups/portal-layout-variant-b.html (new)",
+    "ai/artifacts/專案設置/mockups/admin-layout-variant-a.html (new)",
+    "ai/artifacts/專案設置/mockups/admin-layout-variant-b.html (new)",
+    "ai/artifacts/專案設置/mockup-decision-*.md (3 files, new)",
+    "ai/context/design-system.md (update — 各介面版面 section)"
+  ],
+  "verification": "All 3 interfaces have approved layouts. designs-system.md is complete. Human confirms readiness for functional Epics."
+}

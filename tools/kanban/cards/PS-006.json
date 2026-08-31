@@ -1,0 +1,23 @@
+{
+  "id": "PS-006",
+  "title": "Middleware 路由保護 + auth 串接 (整合)",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "stage": "backlog",
+  "risk": "high",
+  "dependsOn": ["PS-003", "PS-005"],
+  "order": 6,
+  "acceptance": [
+    "middleware.ts auth() checks on /admin → redirects non-admin to /login",
+    "auth() checks on /dashboard → redirects unauthenticated to /login",
+    "Public routes (/, /courses, /about, /privacy, /terms, /login, /api/auth/*) pass through",
+    "Session available in all server components via auth()",
+    "Role-based UI: admin pages reject non-ADMIN even if they bypass middleware",
+    "Admin seed script: first admin user created via prisma/seed.ts"
+  ],
+  "files": [
+    "src/middleware.ts (rewrite — merge locale redirect + auth guard)",
+    "prisma/seed.ts (add admin user seed)"
+  ],
+  "verification": "Visit /en/admin without login → redirect to /en/login. Visit /en/dashboard without login → redirect to /en/login. Visit /en/courses without login → works. Admin user logs in → can access /en/admin."
+}
