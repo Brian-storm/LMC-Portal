@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/free",
-  "instructions": ".github/skills/monstrare/AGENTS.md",
+  "model": "openrouter/google/gemini-2.0-flash-exp:free",
+  "instructions": [".github/skills/monstrare/AGENTS.md"],
   "provider": {
     "openrouter": {
       "models": {

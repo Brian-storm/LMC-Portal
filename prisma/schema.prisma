@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+  INSTRUCTOR
+}
+
+enum RegistrationStatus {
+  OPEN
+  FEW_SEATS
+  FULL
+  CLOSED
+}
+
+enum EnrollmentType {
+  INDIVIDUAL
+  ORGANIZATION
+}
+
+enum PaymentStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  REJECTED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  FPS
+  ALIPAY
+  E_BANKING
+  CHEQUE
+  CASH
+  CORPORATE_INVOICE
+}
+
+enum AdminPermission {
+  SUPER_ADMIN
+  AUDITOR
+}
+
+model User {
+  id           String       @id @default(cuid())
+  role         Role         @default(STUDENT)
+  isMember     Boolean      @default(false)
+  memberId     String?      @unique
+  nameZh       String
+  nameEn       String
+  idDocNumber  String
+  iaLicense    String?
+  organization String?
+  phone        String
+  email        String       @unique
+  passwordHash String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  registrants  Registrant[]
+  admin        Admin?
+  org          Organization?
+
+  @@map("users")
+}
+
+model Organization {
+  id               String   @id @default(cuid())
+  name             String
+  contactPhone     String
+  contactEmail     String
+  mailingAddress   String
+  designatedUserId String   @unique
+  designatedUser   User     @relation(fields: [designatedUserId], references: [id])
+
+  @@map("organizations")
+}
+
+model Course {
+  id                String             @id @default(cuid())
+  slug              String             @unique
+  nameZh            String
+  nameEn            String
+  descriptionZh     String?
+  descriptionEn     String?
+  category          String
+  iaRefNumber       String?
+  accreditationBody String?
+  cpdHours          Int
+  price             Decimal            @db.Decimal(10, 2)
+  capacity          Int
+  isOpen            Boolean            @default(true)
+  registrationStatus RegistrationStatus @default(OPEN)
+  deliveryMode      String?
+  language          String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  instructors       CourseInstructor[]
+  syllabusItems     SyllabusItem[]
+  schedules         Schedule[]
+  reviews           Review[]
+  faqs              Faq[]
+  registrants       Registrant[]
+
+  @@map("courses")
+}
+
+model Instructor {
+  id        String   @id @default(cuid())
+  nameZh    String
+  nameEn    String
+  titleZh   String?
+  titleEn   String?
+  bioZh     String?
+  bioEn     String?
+  avatarUrl String?
+
+  courses   CourseInstructor[]
+
+  @@map("instructors")
+}
+
+model CourseInstructor {
+  courseId     String
+  instructorId String
+  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@id([courseId, instructorId])
+  @@map("course_instructors")
+}
+
+model SyllabusItem {
+  id           String @id @default(cuid())
+  courseId     String
+  moduleNumber Int
+  titleZh      String
+  titleEn      String
+  duration     String
+  topicsZh     String[]
+  topicsEn     String[]
+  sortOrder    Int    @default(0)
+
+  course       Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("syllabus_items")
+}
+
+model Schedule {
+  id             String  @id @default(cuid())
+  courseId       String
+  dateAndTime    String
+  venue          String
+  quotaRemaining Int
+  isActive       Boolean @default(true)
+
+  course         Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("schedules")
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  courseId   String
+  authorName String
+  authorRole String?
+  rating     Int
+  comment    String
+  date       DateTime
+
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Faq {
+  id        String @id @default(cuid())
+  courseId  String
+  questionZh String
+  questionEn String
+  answerZh  String
+  answerEn  String
+  sortOrder Int    @default(0)
+
+  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("faqs")
+}
+
+model Registrant {
+  id              String         @id @default(cuid())
+  courseId        String
+  userId          String
+  enrollmentType  EnrollmentType
+  groupId         String?
+  paymentStatus   PaymentStatus  @default(PENDING_VERIFICATION)
+  paymentMethod   PaymentMethod?
+  isThirdPartyPay Boolean        @default(false)
+  payerFullName   String?
+  paymentProofUrl String?
+  receiptNumber   String?
+  submittedAt     DateTime       @default(now())
+
+  course          Course         @relation(fields: [courseId], references: [id])
+  user            User           @relation(fields: [userId], references: [id])
+
+  @@map("registrants")
+}
+
+model Admin {
+  id          String          @id @default(cuid())
+  userId      String          @unique
+  permissions AdminPermission @default(AUDITOR)
+  lastLoginAt DateTime?
+
+  user        User            @relation(fields: [userId], references: [id])
+
+  @@map("admins")
+}
