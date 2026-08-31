@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Tile C — Higher Contrast, Authoritative</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.972 0.004 140);
+    --fg: oklch(0.10 0.008 140);
+    --surface: oklch(1 0 0);
+    --surface2: oklch(0.92 0.01 140);
+    --primary: oklch(0.18 0.045 160);
+    --primary-hover: oklch(0.12 0.035 160);
+    --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.35 0.02 150);
+    --accent: oklch(0.78 0.14 85);
+    --accent-hover: oklch(0.72 0.13 85);
+    --accent-fg: oklch(0.14 0.03 160);
+    --border: oklch(0.82 0.015 140);
+    --border-strong: oklch(0.60 0.02 140);
+    --muted: oklch(0.92 0.01 140);
+    --muted-fg: oklch(0.40 0.025 150);
+    --destructive: oklch(0.50 0.22 26);
+    --success: oklch(0.48 0.08 158);
+    --warning: oklch(0.78 0.14 85);
+    --radius: 0;
+    --shadow-none: none;
+    --font-sans: 'Montserrat', Arial, 'Helvetica Neue', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+  }
+  .dark {
+    --bg: oklch(0.10 0.01 150);
+    --fg: oklch(0.97 0.004 140);
+    --surface: oklch(0.14 0.015 155);
+    --surface2: oklch(0.20 0.02 150);
+    --primary: oklch(0.82 0.14 85);
+    --primary-fg: oklch(0.10 0.01 150);
+    --secondary: oklch(0.45 0.03 155);
+    --accent: oklch(0.82 0.14 85);
+    --accent-fg: oklch(0.10 0.01 150);
+    --border: oklch(1 0 0 / 18%);
+    --border-strong: oklch(1 0 0 / 30%);
+    --muted: oklch(0.20 0.02 150);
+    --muted-fg: oklch(0.62 0.02 145);
+    --destructive: oklch(0.60 0.18 24);
+    --success: oklch(0.58 0.09 158);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.5; font-size: 13px; transition: background .3s, color .3s; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 4px; }
+  h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 24px; }
+  h3 { font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 12px; color: var(--primary); }
+  h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  p { color: var(--secondary); font-size: 12px; line-height: 1.6; }
+  .mono { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; letter-spacing: 0.04em; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 36px; padding-bottom: 20px; border-bottom: solid var(--primary); border-width: 3px; }
+  .mode-toggle { display: flex; gap: 0; border: 2px solid var(--border); }
+  .mode-toggle button { padding: 8px 18px; border: none; background: var(--surface); color: var(--fg); cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; transition: all .15s; }
+  .mode-toggle button:first-child { border-right: 2px solid var(--border); }
+  .mode-toggle button.active { background: var(--primary); color: var(--primary-fg); }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .section { margin-bottom: 32px; }
+  .section-full { grid-column: 1 / -1; }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  .swatch { width: 72px; height: 72px; display: flex; align-items: flex-end; padding: 4px; font-size: 8px; font-weight: 800; font-family: 'Consolas', monospace; letter-spacing: 0.04em; position: relative; border: 2px solid var(--border-strong); }
+  .swatch-label { position: absolute; bottom: 3px; left: 4px; right: 4px; font-size: 7px; }
+
+  .radius-row { display: flex; gap: 12px; align-items: end; }
+  .radius-block { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; font-family: 'Consolas', monospace; color: var(--muted-fg); font-weight: 700; }
+  .radius-box { width: 48px; height: 48px; background: var(--primary); }
+  .r-none { border-radius: 0; }
+  .r-xs { border-radius: 2px; }
+  .r-sm { border-radius: 4px; }
+  .r-md { border-radius: 8px; }
+  .r-lg { border-radius: 12px; }
+  .r-current { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .shadow-row { display: flex; gap: 16px; }
+  .shadow-box { width: 80px; height: 60px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 8px; font-family: 'Consolas', monospace; font-weight: 700; text-align: center; }
+  .sh-bg { background: var(--surface2); }
+  .sh-border { border: 2px solid var(--border-strong); }
+  .sh-section { background: var(--bg); border-top: 3px solid var(--primary); }
+  .sh-current { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; border: 2px solid transparent; cursor: pointer; transition: all .12s; }
+  .btn-primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary-hover); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: var(--surface); color: var(--fg); border: 2px solid var(--border-strong); }
+  .btn-secondary:hover { background: var(--muted); border-color: var(--primary); }
+  .btn-accent { background: var(--accent); color: var(--accent-fg); border-color: var(--accent-hover); font-weight: 900; }
+  .btn-accent:hover { background: var(--accent-hover); }
+  .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; }
+  .btn-ghost:hover { background: var(--muted); }
+  .btn-disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border: 2px solid; }
+  .badge-primary { background: oklch(0.18 0.045 160 / 0.1); color: var(--primary); border-color: var(--primary); }
+  .badge-success { background: oklch(0.48 0.08 158 / 0.1); color: oklch(0.25 0.06 158); border-color: oklch(0.48 0.08 158 / 0.5); }
+  .badge-warning { background: oklch(0.78 0.14 85 / 0.15); color: oklch(0.45 0.10 80); border-color: oklch(0.78 0.14 85 / 0.6); }
+  .badge-destructive { background: oklch(0.50 0.22 26 / 0.1); color: oklch(0.40 0.18 25); border-color: oklch(0.50 0.22 26 / 0.4); }
+  .badge-outline { background: transparent; color: var(--muted-fg); border-color: var(--border-strong); }
+
+  .input-row { display: flex; flex-direction: column; gap: 8px; max-width: 300px; }
+  .input { padding: 10px 14px; font-size: 13px; font-family: 'Montserrat', sans-serif; border: 2px solid var(--border-strong); background: var(--surface); color: var(--fg); outline: none; font-weight: 500; }
+  .input:focus { border-color: var(--primary); }
+  .input::placeholder { color: var(--muted-fg); font-weight: 500; }
+
+  .card { background: var(--surface); border: 2px solid var(--border-strong); padding: 16px; position: relative; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 2px solid var(--border); }
+  .card-section { background: var(--surface2); padding: 10px; margin: 12px -16px; border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); }
+  .card-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.005em; }
+  .card-desc { font-size: 12px; color: var(--secondary); margin-bottom: 10px; }
+  .card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-family: 'Consolas', monospace; font-size: 10px; }
+  .card-meta-label { color: var(--muted-fg); text-transform: uppercase; font-size: 8px; font-weight: 700; letter-spacing: 0.06em; }
+  .card-meta-value { font-weight: 700; }
+  .card-divider { height: 2px; background: var(--border-strong); margin: 12px 0; }
+
+  .density-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px; }
+  .density-level { padding: 10px; background: var(--surface2); border: 2px solid var(--border); }
+  .density-level.active { border-color: var(--primary); }
+  .density-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--muted-fg); letter-spacing: 0.08em; margin-bottom: 8px; }
+  .density-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 12px; font-family: 'Consolas', monospace; font-weight: 700; }
+  .density-bar .bar { height: 10px; background: var(--primary); }
+
+  .reference { display: flex; align-items: flex-start; gap: 20px; padding: 16px; background: var(--surface2); border-left: 4px solid var(--primary); margin-top: 40px; }
+  .ref-badge { padding: 6px 14px; background: var(--primary); color: var(--primary-fg); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+  .ref-text { font-size: 11px; color: var(--secondary); line-height: 1.6; }
+
+  .tag { display: inline-block; padding: 2px 8px; background: var(--primary); color: var(--primary-fg); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-right: 6px; }
+
+  .label-row { display: flex; gap: 12px; margin-top: 8px; }
+  .label-block { padding: 8px 16px; background: var(--surface); border: 2px solid var(--border-strong); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .label-block.active { border-color: var(--primary); color: var(--primary); }
+
+  blockquote { border-left: 4px solid var(--primary); padding-left: 16px; margin: 8px 0; color: var(--secondary); font-size: 12px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span class="tag">VARIANT C</span>
+        <span style="font-size:10px;color:var(--muted-fg);font-family:'Consolas',monospace;font-weight:700;">HIGH CONTRAST · AUTHORITATIVE</span>
+      </div>
+      <h1>Style Tile C</h1>
+      <p>Maximum authority: near-black slates, zero-radius corners, bold 2px borders, layered background sections. Government/regulatory-grade visual weight. Strong weight hierarchy with 800+ headings.</p>
+    </div>
+    <div class="mode-toggle">
+      <button id="btn-light-c" class="active" onclick="setMode('light','c')">Light</button>
+      <button id="btn-dark-c" onclick="setMode('dark','c')">Dark</button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- COLOR MOOD -->
+    <div class="section">
+      <h3>Color Mood</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:oklch(0.18 0.045 160);color:#fff;"><span class="swatch-label">Primary</span></div>
+        <div class="swatch" style="background:oklch(0.12 0.035 160);color:#fff;"><span class="swatch-label">P-Darker</span></div>
+        <div class="swatch" style="background:oklch(0.35 0.02 150);color:#fff;"><span class="swatch-label">Secondary</span></div>
+        <div class="swatch" style="background:oklch(0.78 0.14 85);color:oklch(0.14 0.03 160);"><span class="swatch-label">Accent</span></div>
+        <div class="swatch" style="background:oklch(0.10 0.008 140);color:#fff;"><span class="swatch-label">FG</span></div>
+        <div class="swatch" style="background:oklch(0.972 0.004 140);color:oklch(0.10 0.008 140);border-color:oklch(0.60 0.02 140);"><span class="swatch-label">BG</span></div>
+        <div class="swatch" style="background:oklch(1 0 0);color:oklch(0.10 0.008 140);border-color:oklch(0.60 0.02 140);"><span class="swatch-label">Surface</span></div>
+        <div class="swatch" style="background:oklch(0.92 0.01 140);color:oklch(0.10 0.008 140);"><span class="swatch-label">Muted</span></div>
+        <div class="swatch" style="background:oklch(0.50 0.22 26);color:#fff;"><span class="swatch-label">Danger</span></div>
+      </div>
+      <p style="margin-top:8px;">Darker primary (L=0.18). Higher chroma accent (C=0.14 vs 0.11). Near-black foreground (L=0.10). Strong borders at 2px. Zero radius throughout.</p>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="section">
+      <h3>Typography Personality</h3>
+      <div style="font-size:26px;font-weight:800;margin-bottom:2px;">MONSERRAT HEADING 800</div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--primary);margin-bottom:6px;">SECTION LABEL · 12PX 700 · WIDE TRACKING</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Card Title · 15px 700</div>
+      <p style="margin-bottom:4px;">Body text at 12px, medium contrast. Strong weight differentiation: 800 → 700 → 500 → 400. All-caps labels with wide tracking for institutional formality.</p>
+      <div class="mono" style="background:var(--surface2);padding:10px;margin-top:8px;">
+        <div>CONSOLAS · 10px · MONOSPACE</div>
+        <div style="font-size:9px;color:var(--muted-fg);font-weight:700;">IA REF: HK-2024-001 | CPD: 3 HOURS</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Weight range:</strong> 400 body · 500 emphasis · 700 subheading · 800 heading<br>
+      <strong>Distinction:</strong> 800 for h1-h2, 700 for h3, 500 for body emphasis, 400 default. Wider letter-spacing on labels.</p>
+    </div>
+
+    <!-- RADIUS & SHADOW/DEPTH -->
+    <div class="section">
+      <h3>Radius Tendency</h3>
+      <div class="radius-row">
+        <div class="radius-block"><div class="radius-box r-none r-current"></div>0✓</div>
+        <div class="radius-block"><div class="radius-box r-xs"></div>2px</div>
+        <div class="radius-block"><div class="radius-box r-sm"></div>4px</div>
+        <div class="radius-block"><div class="radius-box r-md"></div>8px</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Default: 0px</strong> — zero radius. Sharp, rectilinear. Government/legal document aesthetic. No softening. Authority through precision.</p>
+    </div>
+
+    <div class="section">
+      <h3>Depth: Background Layers</h3>
+      <div class="shadow-row">
+        <div class="shadow-box sh-bg">bg color<br>layer</div>
+        <div class="shadow-box sh-border sh-current">2px border<br>✓ default</div>
+        <div class="shadow-box sh-section">section<br>divider</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Background-only depth:</strong> sections separated by alternating bg colors + 2px borders. No shadows anywhere. Pure structural authority.</p>
+    </div>
+
+    <!-- DENSITY -->
+    <div class="section section-full">
+      <h3>Density: Structured</h3>
+      <div class="card" style="max-width:500px;">
+        <div class="card-header">
+          <span style="font-family:'Consolas',monospace;font-size:9px;font-weight:700;letter-spacing:0.06em;">IA REF: HK-2024-001</span>
+          <span class="badge badge-warning">MANDATORY CORE</span>
+        </div>
+        <div class="card-title">Regulatory Compliance for Insurance Intermediaries</div>
+        <div class="card-desc">Comprehensive overview of updated IA guidelines covering conduct requirements, CPD obligations, and regulatory reporting frameworks.</div>
+        <div class="card-section">
+          <div class="card-meta">
+            <div><div class="card-meta-label">Delivery Mode</div><div class="card-meta-value">Online · Self-paced</div></div>
+            <div><div class="card-meta-label">Language</div><div class="card-meta-value">English / Cantonese</div></div>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="badge badge-success">3 CPD HOURS</span>
+            <span style="font-size:16px;font-weight:800;">HK$ 1,200</span>
+          </div>
+          <button class="btn btn-primary">VIEW COURSE →</button>
+        </div>
+      </div>
+      <p style="margin-top:8px;">Paddings: card 16px, section 10px. All-caps labels. 2px borders consistently. Background sections for metadata grouping. No shadows.</p>
+      <div class="density-compare" style="margin-top:12px;">
+        <div class="density-level">
+          <div class="density-label">A · Compact</div>
+          <div class="density-bar"><div class="bar" style="width:48px;"></div> 12px</div>
+        </div>
+        <div class="density-level">
+          <div class="density-label">B · Spacious</div>
+          <div class="density-bar"><div class="bar" style="width:96px;"></div> 24px</div>
+        </div>
+        <div class="density-level active">
+          <div class="density-label" style="color:var(--primary);">C · Structured</div>
+          <div class="density-bar"><div class="bar" style="width:64px;background:var(--primary);"></div> 16px</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPONENT SAMPLES -->
+    <div class="section">
+      <h3>Buttons</h3>
+      <div class="btn-row">
+        <button class="btn btn-primary">PRIMARY</button>
+        <button class="btn btn-secondary">SECONDARY</button>
+        <button class="btn btn-accent">ACCENT CTA</button>
+        <button class="btn btn-ghost">GHOST</button>
+        <button class="btn btn-primary btn-disabled">DISABLED</button>
+      </div>
+      <blockquote style="margin-top:12px;">All buttons: 800 weight, 0.08em letter-spacing, 2px borders, instant transitions (no animation easing).</blockquote>
+    </div>
+
+    <div class="section">
+      <h3>Badges & Inputs</h3>
+      <div class="badge-row">
+        <span class="badge badge-primary">ACTIVE</span>
+        <span class="badge badge-success">OPEN</span>
+        <span class="badge badge-warning">FEW SEATS</span>
+        <span class="badge badge-destructive">FULL</span>
+        <span class="badge badge-outline">DRAFT</span>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="input-row">
+          <input class="input" type="text" placeholder="SEARCH COURSES...">
+        </div>
+      </div>
+      <div class="label-row" style="margin-top:10px;">
+        <div class="label-block active">COURSES</div>
+        <div class="label-block">PORTAL</div>
+        <div class="label-block">ABOUT</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reference">
+    <span class="ref-badge">REFERENCE</span>
+    <div class="ref-text">
+      <strong>HK Government (gov.hk)</strong> — Zero-radius, border-heavy layout with high-contrast typography and strict structural hierarchy. Formal, authoritative information architecture.<br>
+      <strong>IA Hong Kong (ia.org.hk)</strong> — Insurance Authority portal: dark navy/emerald identity, bold borders, regulatory-grade formality, strong weight differentiation in headings.
+    </div>
+  </div>
+
+</div>
+<script>
+  function setMode(mode, tile) {
+    document.body.classList.toggle('dark', mode === 'dark');
+    document.getElementById('btn-light-' + tile).classList.toggle('active', mode === 'light');
+    document.getElementById('btn-dark-' + tile).classList.toggle('active', mode === 'dark');
+  }
+</script>
+</body>
+</html>

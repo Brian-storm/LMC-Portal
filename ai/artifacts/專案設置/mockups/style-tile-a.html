@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Tile A — Institutional Slate/Emerald (Current)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.985 0.003 140);
+    --fg: oklch(0.18 0.01 140);
+    --surface: oklch(1 0 0);
+    --surface2: oklch(0.94 0.01 140);
+    --primary: oklch(0.28 0.05 160);
+    --primary-hover: oklch(0.22 0.05 160);
+    --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.48 0.03 160);
+    --accent: oklch(0.72 0.11 85);
+    --accent-hover: oklch(0.66 0.10 85);
+    --accent-fg: oklch(0.20 0.04 160);
+    --border: oklch(0.90 0.01 140);
+    --muted: oklch(0.94 0.01 140);
+    --muted-fg: oklch(0.48 0.03 160);
+    --destructive: oklch(0.577 0.245 27.325);
+    --success: oklch(0.55 0.08 160);
+    --warning: oklch(0.72 0.11 85);
+    --radius: 0.25rem;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  .dark {
+    --bg: oklch(0.18 0.02 160);
+    --fg: oklch(0.98 0.005 140);
+    --surface: oklch(0.22 0.03 160);
+    --surface2: oklch(0.28 0.03 160);
+    --primary: oklch(0.72 0.11 85);
+    --primary-fg: oklch(0.18 0.02 160);
+    --secondary: oklch(0.32 0.04 160);
+    --border: oklch(1 0 0 / 12%);
+    --muted: oklch(0.28 0.03 160);
+    --muted-fg: oklch(0.70 0.02 140);
+    --destructive: oklch(0.704 0.191 22.216);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', Arial, 'Helvetica Neue', Helvetica, 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; font-size: 13px; transition: background .3s, color .3s; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+  h2 { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 24px; }
+  h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px; color: var(--primary); }
+  h4 { font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+  p { color: var(--secondary); font-size: 12px; line-height: 1.7; }
+  .mono { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.03em; }
+  .text-xs { font-size: 10px; }
+  .text-sm { font-size: 12px; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid var(--primary); }
+  .mode-toggle { display: flex; gap: 4px; }
+  .mode-toggle button { padding: 6px 14px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: var(--radius); transition: all .15s; }
+  .mode-toggle button.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .section { margin-bottom: 36px; }
+  .section-full { grid-column: 1 / -1; }
+
+  /* SWATCHES */
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  .swatch { width: 72px; height: 72px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: flex-end; padding: 6px; font-size: 8px; font-weight: 600; font-family: var(--font-mono); letter-spacing: 0.02em; position: relative; }
+  .swatch-label { position: absolute; bottom: 4px; left: 4px; right: 4px; font-size: 7px; opacity: 0.8; }
+
+  /* RADIUS COMPARISON */
+  .radius-row { display: flex; gap: 12px; align-items: end; }
+  .radius-block { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; font-family: var(--font-mono); color: var(--muted-fg); }
+  .radius-box { width: 48px; height: 48px; background: var(--primary); }
+  .r-none { border-radius: 0; }
+  .r-xs { border-radius: 0.125rem; }
+  .r-sm { border-radius: 0.25rem; }
+  .r-md { border-radius: 0.375rem; }
+  .r-lg { border-radius: 0.5rem; }
+  .r-xl { border-radius: 0.75rem; }
+  .r-full { border-radius: 9999px; }
+  .r-current { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* SHADOW */
+  .shadow-row { display: flex; gap: 16px; }
+  .shadow-box { width: 80px; height: 60px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 8px; font-family: var(--font-mono); text-align: center; }
+  .sh-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+  .sh-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+  .sh-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+  .sh-border { box-shadow: none; border: 2px solid var(--border); }
+  .sh-combo { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid var(--border); }
+  .sh-current { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* BUTTONS */
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid transparent; cursor: pointer; border-radius: var(--radius); transition: all .15s; }
+  .btn-primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary-hover); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: var(--surface); color: var(--fg); border-color: var(--border); }
+  .btn-secondary:hover { background: var(--muted); }
+  .btn-accent { background: var(--accent); color: var(--accent-fg); }
+  .btn-accent:hover { background: var(--accent-hover); }
+  .btn-destructive { background: var(--destructive); color: white; }
+  .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; }
+  .btn-ghost:hover { background: var(--muted); }
+  .btn-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* BADGES */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; font-family: var(--font-mono); }
+  .badge-primary { background: oklch(0.28 0.05 160 / 0.12); color: var(--primary); border-color: oklch(0.28 0.05 160 / 0.3); }
+  .badge-success { background: oklch(0.55 0.08 160 / 0.12); color: oklch(0.35 0.07 160); border-color: oklch(0.55 0.08 160 / 0.3); }
+  .badge-warning { background: oklch(0.72 0.11 85 / 0.15); color: oklch(0.45 0.08 80); border-color: oklch(0.72 0.11 85 / 0.4); }
+  .badge-destructive { background: oklch(0.577 0.245 27.325 / 0.1); color: oklch(0.45 0.2 27); border-color: oklch(0.577 0.245 27.325 / 0.3); }
+  .badge-outline { background: transparent; color: var(--muted-fg); border-color: var(--border); }
+
+  /* INPUTS */
+  .input-row { display: flex; flex-direction: column; gap: 8px; max-width: 280px; }
+  .input { padding: 8px 12px; font-size: 12px; font-family: 'Montserrat', sans-serif; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); outline: none; }
+  .input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px oklch(0.28 0.05 160 / 0.2); }
+  .input::placeholder { color: var(--muted-fg); font-size: 11px; }
+
+  /* CARD SAMPLE */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); }
+  .card-accent { position: absolute; top: 0; bottom: 0; left: 0; width: 3px; background: var(--primary); }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: var(--surface2); margin: -12px -12px 8px -12px; padding: 6px 12px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 9px; }
+  .card-body { padding-left: 8px; }
+  .card-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .card-desc { font-size: 11px; color: var(--secondary); margin-bottom: 8px; }
+  .card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-family: var(--font-mono); font-size: 9px; background: var(--surface2); padding: 8px; }
+  .card-meta-label { color: var(--muted-fg); text-transform: uppercase; font-size: 7px; }
+  .card-meta-value { font-weight: 600; }
+
+  /* DENSITY */
+  .density-row { display: flex; flex-direction: column; gap: 12px; }
+  .density-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--muted-fg); letter-spacing: 0.05em; margin-bottom: 4px; }
+
+  /* REFERENCE */
+  .reference { display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--surface2); margin-top: 40px; }
+  .ref-badge { padding: 4px 12px; background: var(--primary); color: var(--primary-fg); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+  .ref-text { font-size: 11px; color: var(--secondary); }
+
+  .tag { display: inline-block; padding: 1px 6px; background: var(--accent); color: var(--accent-fg); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span class="tag">VARIANT A</span>
+        <span style="font-size:10px;color:var(--muted-fg);font-family:var(--font-mono);">Institutional Slate/Emerald</span>
+      </div>
+      <h1>Style Tile A</h1>
+      <p>Current institutional direction: deep emerald authority, amber accent, compact density, border-heavy statutory aesthetic. Mirrors the existing globals.css token system.</p>
+    </div>
+    <div class="mode-toggle">
+      <button id="btn-light-a" class="active" onclick="setMode('light','a')">Light</button>
+      <button id="btn-dark-a" onclick="setMode('dark','a')">Dark</button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- COLOR MOOD -->
+    <div class="section">
+      <h3>Color Mood</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:oklch(0.28 0.05 160);color:#fff;"><span class="swatch-label">Primary</span></div>
+        <div class="swatch" style="background:oklch(0.22 0.05 160);color:#fff;"><span class="swatch-label">P-Dark</span></div>
+        <div class="swatch" style="background:oklch(0.48 0.03 160);color:#fff;"><span class="swatch-label">Secondary</span></div>
+        <div class="swatch" style="background:oklch(0.72 0.11 85);color:oklch(0.20 0.04 160);"><span class="swatch-label">Accent</span></div>
+        <div class="swatch" style="background:oklch(0.66 0.10 85);color:oklch(0.20 0.04 160);"><span class="swatch-label">A-Dark</span></div>
+        <div class="swatch" style="background:oklch(0.985 0.003 140);color:oklch(0.18 0.01 140);border:2px solid oklch(0.90 0.01 140);"><span class="swatch-label">BG</span></div>
+        <div class="swatch" style="background:oklch(1 0 0);color:oklch(0.18 0.01 140);border:2px solid oklch(0.90 0.01 140);"><span class="swatch-label">Surface</span></div>
+        <div class="swatch" style="background:oklch(0.18 0.01 140);color:#fff;"><span class="swatch-label">Foreground</span></div>
+        <div class="swatch" style="background:oklch(0.94 0.01 140);color:oklch(0.18 0.01 140);"><span class="swatch-label">Muted</span></div>
+        <div class="swatch" style="background:oklch(0.577 0.245 27.325);color:#fff;"><span class="swatch-label">Danger</span></div>
+        <div class="swatch" style="background:#1b4332;color:#fff;"><span class="swatch-label">#1b4332</span></div>
+      </div>
+      <p style="margin-top:8px;">Deep slate-green foundation with amber pop. High-contrast foreground on near-white background. All values in oklch.</p>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="section">
+      <h3>Typography Personality</h3>
+      <div style="font-size:24px;font-weight:700;margin-bottom:2px;">Montserrat Heading 700</div>
+      <div style="font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--primary);margin-bottom:4px;">Section Label · 14px 600</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:2px;">Card Title · 16px 600</div>
+      <p style="margin-bottom:4px;">Body text at 12px in Montserrat. Institutional voice — compact, authoritative, but readable. CPD metadata in monospace for regulatory feel.</p>
+      <div class="mono" style="background:var(--surface2);padding:8px;margin-top:8px;">
+        <div>MONOSPACE · 10px · Courier New</div>
+        <div style="font-size:9px;color:var(--muted-fg);">IA REF: HK-2024-001 · CPD: 3 HOURS</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Weight range:</strong> 400 body · 500 emphasis · 600 subheading · 700 heading+buttons<br>
+      <strong>Fallback:</strong> Arial → Helvetica Neue → PingFang HK → Microsoft JhengHei</p>
+    </div>
+
+    <!-- RADIUS & SHADOW -->
+    <div class="section">
+      <h3>Radius Tendency</h3>
+      <div class="radius-row">
+        <div class="radius-block"><div class="radius-box r-none"></div>0</div>
+        <div class="radius-block"><div class="radius-box r-xs r-current"></div>2px✓</div>
+        <div class="radius-block"><div class="radius-box r-sm"></div>4px</div>
+        <div class="radius-block"><div class="radius-box r-md"></div>6px</div>
+        <div class="radius-block"><div class="radius-box r-lg"></div>8px</div>
+        <div class="radius-block"><div class="radius-box r-xl"></div>12px</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Default: 2px</strong> — sharp, institutional corners. Statutory feel. Matches formal document aesthetics.</p>
+    </div>
+
+    <div class="section">
+      <h3>Shadow Tendency</h3>
+      <div class="shadow-row">
+        <div class="shadow-box sh-sm">minimal<br>1px shadow</div>
+        <div class="shadow-box sh-border">border<br>no shadow</div>
+        <div class="shadow-box sh-combo sh-current">border+shadow<br>✓ current</div>
+        <div class="shadow-box sh-md">medium<br>shadow</div>
+      </div>
+      <p style="margin-top:8px;"><strong>Stacked approach:</strong> light border + subtle shadow. Both depth signals used together per statutory card pattern.</p>
+    </div>
+
+    <!-- DENSITY -->
+    <div class="section section-full">
+      <h3>Density: Compact</h3>
+      <div class="card" style="max-width:480px;">
+        <div class="card-accent"></div>
+        <div class="card-header">
+          <span>IA REF: HK-2024-001</span>
+          <span class="badge badge-warning">MANDATORY CORE</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Regulatory Compliance for Insurance Intermediaries</div>
+          <div class="card-desc">Comprehensive overview of updated IA guidelines. Module 1 of the mandatory CPD series.</div>
+          <div class="card-meta">
+            <div><div class="card-meta-label">Delivery</div><div class="card-meta-value">Online · Self-paced</div></div>
+            <div><div class="card-meta-label">Language</div><div class="card-meta-value">English / Cantonese</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="badge badge-success">3 CPD HOURS</span>
+              <span class="mono" style="font-size:10px;font-weight:700;">HK$ 1,200</span>
+            </div>
+            <button class="btn btn-primary">View Course →</button>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:8px;">Paddings: card 12px, section 8px, gap 6px. Tight statutory grid with accent pillar bar and monospace metadata. Border + shadow combined.</p>
+    </div>
+
+    <!-- COMPONENT SAMPLES -->
+    <div class="section">
+      <h3>Buttons</h3>
+      <div class="btn-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-accent">Accent CTA</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-primary btn-disabled">Disabled</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Badges</h3>
+      <div class="badge-row">
+        <span class="badge badge-primary">Active</span>
+        <span class="badge badge-success">Open</span>
+        <span class="badge badge-warning">Few Seats</span>
+        <span class="badge badge-destructive">Full</span>
+        <span class="badge badge-outline">Draft</span>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="input-row">
+          <input class="input" type="text" placeholder="Search courses...">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reference">
+    <span class="ref-badge">REFERENCE</span>
+    <div class="ref-text">
+      <strong>PEAK (VTC Hong Kong)</strong> — Professional education portal with formal institutional green palette, compact metadata tables, and bordered card layouts.<br>
+      <strong>CII Hong Kong</strong> — Chartered Insurance Institute HK branch; authoritative navy/emerald identity with amber highlights for CTA actions.
+    </div>
+  </div>
+
+</div>
+<script>
+  function setMode(mode, tile) {
+    document.body.classList.toggle('dark', mode === 'dark');
+    document.getElementById('btn-light-' + tile).classList.toggle('active', mode === 'light');
+    document.getElementById('btn-dark-' + tile).classList.toggle('active', mode === 'dark');
+  }
+</script>
+</body>
+</html>

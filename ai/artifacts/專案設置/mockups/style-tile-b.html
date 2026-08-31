@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Tile B — Lighter, Airier</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.99 0.002 150);
+    --fg: oklch(0.22 0.015 155);
+    --surface: oklch(1 0 0);
+    --surface2: oklch(0.97 0.006 150);
+    --primary: oklch(0.40 0.06 158);
+    --primary-hover: oklch(0.34 0.055 158);
+    --primary-fg: oklch(0.99 0.002 150);
+    --secondary: oklch(0.52 0.03 158);
+    --accent: oklch(0.78 0.10 80);
+    --accent-hover: oklch(0.72 0.09 80);
+    --accent-fg: oklch(0.25 0.04 158);
+    --border: oklch(0.93 0.005 150);
+    --muted: oklch(0.97 0.006 150);
+    --muted-fg: oklch(0.50 0.025 155);
+    --destructive: oklch(0.577 0.245 27.325);
+    --success: oklch(0.55 0.08 160);
+    --warning: oklch(0.76 0.12 82);
+    --radius: 0.625rem;
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04);
+    --shadow-md: 0 4px 16px -4px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 12px 32px -8px rgb(0 0 0 / 0.10);
+    --shadow-xl: 0 20px 48px -12px rgb(0 0 0 / 0.12);
+    --font-sans: 'Montserrat', 'Helvetica Neue', Arial, 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+  }
+  .dark {
+    --bg: oklch(0.16 0.015 160);
+    --fg: oklch(0.96 0.005 150);
+    --surface: oklch(0.20 0.02 158);
+    --surface2: oklch(0.24 0.018 158);
+    --primary: oklch(0.68 0.09 83);
+    --primary-fg: oklch(0.16 0.015 160);
+    --secondary: oklch(0.42 0.04 158);
+    --accent: oklch(0.82 0.12 83);
+    --accent-fg: oklch(0.18 0.03 160);
+    --border: oklch(1 0 0 / 8%);
+    --muted: oklch(0.24 0.018 158);
+    --muted-fg: oklch(0.68 0.02 150);
+    --destructive: oklch(0.65 0.2 24);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.65; font-size: 14px; -webkit-font-smoothing: antialiased; transition: background .3s, color .3s; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 6px; }
+  h2 { font-size: 16px; font-weight: 500; color: var(--muted-fg); margin-bottom: 32px; letter-spacing: 0; text-transform: none; }
+  h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--primary); letter-spacing: 0; text-transform: none; }
+  h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  p { color: var(--secondary); font-size: 14px; line-height: 1.7; }
+  .mono { font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace; font-size: 12px; letter-spacing: 0; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .mode-toggle { display: flex; gap: 4px; background: var(--surface2); padding: 3px; border-radius: 8px; }
+  .mode-toggle button { padding: 8px 18px; border: none; background: transparent; color: var(--secondary); cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 500; border-radius: 6px; transition: all .2s; }
+  .mode-toggle button.active { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .section { margin-bottom: 40px; }
+  .section-full { grid-column: 1 / -1; }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+  .swatch { width: 64px; height: 64px; border-radius: 8px; display: flex; align-items: flex-end; padding: 6px; font-size: 9px; font-weight: 600; letter-spacing: 0; position: relative; }
+  .swatch-label { position: absolute; bottom: 4px; left: 6px; right: 6px; font-size: 8px; opacity: 0.75; font-weight: 500; }
+
+  .radius-row { display: flex; gap: 16px; align-items: end; }
+  .radius-block { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--muted-fg); }
+  .radius-box { width: 48px; height: 48px; background: var(--primary); }
+  .r-none { border-radius: 0; }
+  .r-xs { border-radius: 4px; }
+  .r-sm { border-radius: 8px; }
+  .r-md { border-radius: 12px; }
+  .r-lg { border-radius: 16px; }
+  .r-xl { border-radius: 24px; }
+  .r-full { border-radius: 9999px; }
+  .r-current { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .shadow-row { display: flex; gap: 20px; }
+  .shadow-box { width: 80px; height: 64px; background: var(--surface); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 10px; text-align: center; }
+  .sh-none { box-shadow: none; border: 1px dashed var(--border); }
+  .sh-sm { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04); }
+  .sh-md { box-shadow: 0 4px 16px -4px rgb(0 0 0 / 0.08); }
+  .sh-lg { box-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.10); }
+  .sh-focus { box-shadow: 0 0 0 3px oklch(0.40 0.06 158 / 0.15); }
+  .sh-current { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; border: none; cursor: pointer; border-radius: 8px; transition: all .2s; }
+  .btn-primary { background: var(--primary); color: var(--primary-fg); box-shadow: 0 1px 3px rgb(0 0 0 / 0.08); }
+  .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 12px rgb(0 0 0 / 0.12); transform: translateY(-1px); }
+  .btn-secondary { background: var(--surface2); color: var(--fg); }
+  .btn-secondary:hover { background: oklch(0.93 0.006 150); }
+  .btn-accent { background: var(--accent); color: var(--accent-fg); }
+  .btn-accent:hover { background: var(--accent-hover); }
+  .btn-ghost { background: transparent; color: var(--secondary); }
+  .btn-ghost:hover { background: var(--surface2); color: var(--fg); }
+  .btn-disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .badge-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .badge { display: inline-flex; align-items: center; padding: 4px 12px; font-size: 12px; font-weight: 500; border-radius: 6px; }
+  .badge-primary { background: oklch(0.40 0.06 158 / 0.1); color: var(--primary); }
+  .badge-success { background: oklch(0.55 0.08 160 / 0.1); color: oklch(0.40 0.07 160); }
+  .badge-warning { background: oklch(0.78 0.10 80 / 0.15); color: oklch(0.50 0.10 78); }
+  .badge-destructive { background: oklch(0.577 0.245 27.325 / 0.08); color: oklch(0.50 0.22 26); }
+  .badge-outline { background: transparent; color: var(--muted-fg); border: 1px solid var(--border); }
+
+  .input-row { display: flex; flex-direction: column; gap: 12px; max-width: 300px; }
+  .input { padding: 12px 16px; font-size: 14px; font-family: 'Montserrat', sans-serif; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--fg); outline: none; transition: all .2s; }
+  .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px oklch(0.40 0.06 158 / 0.1); }
+  .input::placeholder { color: var(--muted-fg); }
+
+  .card { background: var(--surface); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); transition: all .2s; }
+  .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .card-category { display: inline-block; padding: 4px 12px; background: oklch(0.40 0.06 158 / 0.08); color: var(--primary); font-size: 12px; font-weight: 600; border-radius: 6px; margin-bottom: 16px; }
+  .card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.35; }
+  .card-desc { font-size: 14px; color: var(--secondary); margin-bottom: 20px; line-height: 1.65; }
+  .card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; background: var(--surface2); border-radius: 12px; }
+  .card-meta-label { color: var(--muted-fg); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+  .card-meta-value { font-weight: 600; font-size: 14px; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+
+  .density-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px; }
+  .density-level { padding: 12px; background: var(--surface2); border-radius: 8px; }
+  .density-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted-fg); letter-spacing: 0.05em; margin-bottom: 8px; }
+  .density-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 13px; }
+  .density-bar .bar { height: 8px; background: var(--primary); border-radius: 4px; }
+
+  .reference { display: flex; align-items: center; gap: 20px; padding: 20px 24px; background: var(--surface2); border-radius: 12px; margin-top: 48px; }
+  .ref-badge { padding: 6px 16px; background: var(--primary); color: var(--primary-fg); font-size: 12px; font-weight: 600; border-radius: 6px; }
+  .ref-text { font-size: 13px; color: var(--secondary); line-height: 1.6; }
+
+  .tag { display: inline-block; padding: 3px 10px; background: oklch(0.78 0.10 80 / 0.2); color: oklch(0.50 0.10 78); font-size: 10px; font-weight: 600; border-radius: 4px; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span class="tag">VARIANT B</span>
+        <span style="font-size:11px;color:var(--muted-fg);">Lighter, Airier</span>
+      </div>
+      <h1>Style Tile B</h1>
+      <p>Breathable, modern SaaS aesthetic: softer greens, generous whitespace, shadow-only depth, rounded corners. Prioritizes readability and calm over density.</p>
+    </div>
+    <div class="mode-toggle">
+      <button id="btn-light-b" class="active" onclick="setMode('light','b')">Light</button>
+      <button id="btn-dark-b" onclick="setMode('dark','b')">Dark</button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- COLOR MOOD -->
+    <div class="section">
+      <h3>Color Mood</h3>
+      <div class="swatches">
+        <div class="swatch" style="background:oklch(0.40 0.06 158);color:#fff;"><span class="swatch-label">Primary</span></div>
+        <div class="swatch" style="background:oklch(0.34 0.055 158);color:#fff;"><span class="swatch-label">P-Dark</span></div>
+        <div class="swatch" style="background:oklch(0.52 0.03 158);color:#fff;"><span class="swatch-label">Secondary</span></div>
+        <div class="swatch" style="background:oklch(0.78 0.10 80);color:oklch(0.25 0.04 158);"><span class="swatch-label">Accent</span></div>
+        <div class="swatch" style="background:oklch(0.72 0.09 80);color:oklch(0.25 0.04 158);"><span class="swatch-label">A-Dark</span></div>
+        <div class="swatch" style="background:oklch(0.99 0.002 150);color:oklch(0.22 0.015 155);border:1px solid oklch(0.93 0.005 150);"><span class="swatch-label">BG</span></div>
+        <div class="swatch" style="background:oklch(1 0 0);color:oklch(0.22 0.015 155);border:1px solid oklch(0.93 0.005 150);"><span class="swatch-label">Surface</span></div>
+        <div class="swatch" style="background:oklch(0.22 0.015 155);color:#fff;"><span class="swatch-label">FG</span></div>
+        <div class="swatch" style="background:oklch(0.97 0.006 150);color:oklch(0.22 0.015 155);"><span class="swatch-label">Muted</span></div>
+      </div>
+      <p style="margin-top:10px;">Lighter primary (L=0.40 vs 0.28). Softer contrast. Layers use shadow instead of borders. Pure white cards on near-white background.</p>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="section">
+      <h3>Typography Personality</h3>
+      <div style="font-size:28px;font-weight:700;margin-bottom:4px;letter-spacing:-0.02em;">Montserrat Heading 700</div>
+      <div style="font-size:16px;font-weight:500;color:var(--muted-fg);margin-bottom:8px;">Section description · 16px 500 — lowercase, conversational</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:4px;">Card Title · 18px 600</div>
+      <p style="margin-bottom:4px;">Body text at 14px — larger, more readable. Fewer weight jumps. Section labels use weight, not uppercase. Mixed case throughout for readability.</p>
+      <div class="mono" style="background:var(--surface2);padding:12px;border-radius:8px;margin-top:10px;">
+        <div>SF Mono · 12px — for code & data</div>
+        <div style="font-size:12px;color:var(--muted-fg);">REF: HK-2024-001 · CPD: 3 hours</div>
+      </div>
+      <p style="margin-top:10px;"><strong>Weight range:</strong> 400 body · 500 emphasis · 600 subheading · 700 heading<br>
+      <strong>Body size:</strong> 14px (vs current 12px) — +2px for accessibility</p>
+    </div>
+
+    <!-- RADIUS & SHADOW -->
+    <div class="section">
+      <h3>Radius Tendency</h3>
+      <div class="radius-row">
+        <div class="radius-block"><div class="radius-box r-none"></div>0</div>
+        <div class="radius-block"><div class="radius-box r-xs"></div>4px</div>
+        <div class="radius-block"><div class="radius-box r-sm r-current"></div>8px✓</div>
+        <div class="radius-block"><div class="radius-box r-md"></div>12px</div>
+        <div class="radius-block"><div class="radius-box r-lg"></div>16px</div>
+        <div class="radius-block"><div class="radius-box r-xl"></div>24px</div>
+      </div>
+      <p style="margin-top:10px;"><strong>Default: 8px</strong> — rounded, approachable. Cards at 16px. Inputs at 8px. Softens institutional feel while staying professional.</p>
+    </div>
+
+    <div class="section">
+      <h3>Shadow Tendency</h3>
+      <div class="shadow-row">
+        <div class="shadow-box sh-none">none<br>dashed</div>
+        <div class="shadow-box sh-sm">subtle<br>elevation</div>
+        <div class="shadow-box sh-md sh-current">medium<br>✓ default</div>
+        <div class="shadow-box sh-lg">hover<br>lift</div>
+      </div>
+      <p style="margin-top:10px;"><strong>Shadow-only:</strong> no borders on cards. Four shadow tiers: none, subtle (1px), default (4px blur), hover lift (12px). Depth is purely elevation-based.</p>
+    </div>
+
+    <!-- DENSITY -->
+    <div class="section section-full">
+      <h3>Density: Spacious</h3>
+      <div class="card" style="max-width:520px;">
+        <div class="card-category">Regulatory Compliance</div>
+        <div class="card-title">Regulatory Compliance for Insurance Intermediaries</div>
+        <div class="card-desc">Comprehensive overview of updated IA guidelines covering conduct requirements, continuing professional development obligations, and regulatory reporting frameworks.</div>
+        <div class="card-meta">
+          <div><div class="card-meta-label">Delivery Mode</div><div class="card-meta-value">Online · Self-paced</div></div>
+          <div><div class="card-meta-label">Language</div><div class="card-meta-value">English / Cantonese</div></div>
+        </div>
+        <div class="card-footer">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-success">3 CPD Hours</span>
+            <span style="font-size:18px;font-weight:700;">HK$ 1,200</span>
+          </div>
+          <button class="btn btn-primary">View Course →</button>
+        </div>
+      </div>
+      <p style="margin-top:10px;">Paddings: card 24px, section 16px, gap 16-20px. Shadow-only depth. No accent pillar. Larger body text. Rounded corners everywhere.</p>
+      <div class="density-compare" style="margin-top:16px;">
+        <div class="density-level">
+          <div class="density-label">Variant A (compact)</div>
+          <div class="density-bar"><div class="bar" style="width:48px;"></div> 12px card</div>
+          <div class="density-bar"><div class="bar" style="width:32px;"></div> 8px gap</div>
+          <div class="density-bar"><div class="bar" style="width:42px;"></div> 12px body</div>
+        </div>
+        <div class="density-level" style="border: 1px solid var(--primary);">
+          <div class="density-label" style="color:var(--primary);">Variant B (spacious)</div>
+          <div class="density-bar"><div class="bar" style="width:96px;background:var(--primary);"></div> 24px card</div>
+          <div class="density-bar"><div class="bar" style="width:64px;background:var(--primary);"></div> 16px gap</div>
+          <div class="density-bar"><div class="bar" style="width:56px;background:var(--primary);"></div> 14px body</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPONENT SAMPLES -->
+    <div class="section">
+      <h3>Buttons</h3>
+      <div class="btn-row">
+        <button class="btn btn-primary">Primary Action</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-accent">Accent CTA</button>
+        <button class="btn btn-ghost">Ghost Link</button>
+        <button class="btn btn-primary btn-disabled">Disabled</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Badges & Inputs</h3>
+      <div class="badge-row">
+        <span class="badge badge-primary">Active</span>
+        <span class="badge badge-success">Open</span>
+        <span class="badge badge-warning">Few Seats</span>
+        <span class="badge badge-destructive">Full</span>
+        <span class="badge badge-outline">Draft</span>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="input-row">
+          <input class="input" type="text" placeholder="Search courses by keyword...">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reference">
+    <span class="ref-badge">REFERENCE</span>
+    <div class="ref-text">
+      <strong>Linear.app</strong> — Clean, airy SaaS dashboard with shadow-only card layers, generous whitespace, rounded corners, and muted green accent.<br>
+      <strong>Vercel Design</strong> — Modern web platform aesthetic: minimal borders, elevation-based depth, larger body type (14px+), subtle color system.
+    </div>
+  </div>
+
+</div>
+<script>
+  function setMode(mode, tile) {
+    document.body.classList.toggle('dark', mode === 'dark');
+    document.getElementById('btn-light-' + tile).classList.toggle('active', mode === 'light');
+    document.getElementById('btn-dark-' + tile).classList.toggle('active', mode === 'dark');
+  }
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
   "title": "S2: 視覺風格方向 (Style Tiles)",
   "epic": "專案設置",
   "userStory": "UI 設計系統",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "dependsOn": ["PS-007"],
   "order": 8,

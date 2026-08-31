@@ -1,6 +1,6 @@
 # Design System — LMC Portal
 
-> Last updated: 2026-08-31 | Built by: PS-007
+> Last updated: 2026-09-01 | Built by: PS-007, PS-008
 
 ## 底層框架 (Foundation Framework)
 
@@ -77,3 +77,53 @@ All follow shadcn/ui conventions: `cn()` utility for className merging, radix-ui
 4. **oklch only**: All new design tokens must use oklch color space.
 5. **cn() for merging**: Always use `cn()` from `@/lib/utils` when composing classNames.
 6. **Montserrat variable**: Font loaded in root layout; available site-wide via `var(--font-montserrat)`.
+
+## 風格方向 (Style Direction)
+
+> Selected: **Variant A — Institutional Slate/Emerald** | 2026-09-01 | Recorded in `ai/artifacts/專案設置/mockup-decision-style-tile.md`
+
+### 色彩調性 (Color Mood)
+
+| Role | Token | Hex Equivalent | Description |
+|---|---|---|---|
+| Primary | `oklch(0.28 0.05 160)` | `#1b4332` | Deep emerald — institutional authority |
+| Primary Dark | `oklch(0.22 0.05 160)` | `#0d2118` | Hover/active states |
+| Secondary | `oklch(0.48 0.03 160)` | — | Medium green for supporting text |
+| Accent | `oklch(0.72 0.11 85)` | `#c4920a` | Amber pop for CTAs and highlights |
+| Accent Hover | `oklch(0.66 0.10 85)` | — | Darker amber on hover |
+| Background | `oklch(0.985 0.003 140)` | — | Near-white with green tint |
+| Foreground | `oklch(0.18 0.01 140)` | `#1a202c` | Dark slate text |
+| Surface | `oklch(1 0 0)` | `#ffffff` | Pure white cards |
+| Muted | `oklch(0.94 0.01 140)` | — | Soft slate gray background |
+| Destructive | `oklch(0.577 0.245 27.325)` | — | Rose red for errors/warnings |
+
+### 字型個性 (Typography Personality)
+
+- **Montserrat** primary (400/500/600/700 weights) via `next/font/google`
+- 12px body text, tight institutional tracking on labels
+- Monospace (`Courier New`) for CPD metadata and IA reference codes
+- Fallback: Arial → Helvetica Neue → PingFang HK → Microsoft JhengHei
+
+### 深度策略 (Depth Strategy)
+
+- **Border + Shadow stacked** — current approach. Cards use `border` (1px) + `shadow-xs/sm` for layered depth
+- Cards: 1px border + subtle shadow
+- Navbar: 1px bottom border + backdrop blur
+- Future consideration: evaluate border-only vs shadow-only to comply with design-craft depth principle
+
+### 圓角傾向 (Radius Tendency)
+
+- Default: `rounded-xs` (2px) — sharp, institutional corners
+- Buttons/inputs: 2px radius
+- Cards: 2px radius with accent pillar bar
+
+### 密度 (Density)
+
+- **Compact** — card padding 12px, section gaps 6-8px, body text 12px
+- Optimized for information-dense CPD course cards with statutory metadata grids
+- Future consideration: increase to 16px card padding for accessibility (from Variant B inspiration)
+
+### 參考產品 (Reference Products)
+
+- **PEAK (VTC Hong Kong)** — Professional education portal, institutional green, compact metadata tables
+- **CII Hong Kong** — Chartered Insurance Institute HK, authoritative navy/emerald, amber CTA highlights
