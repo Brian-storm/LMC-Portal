@@ -414,9 +414,41 @@
 
     var dependsOnText = (tk.dependsOn && tk.dependsOn.length) ? tk.dependsOn.join("、") : "無";
 
-    var refs = tk.refs.length
-      ? '<div class="refs-list">' + tk.refs.map(function (r) { return "<span class=\"mono\">" + escapeHtml(r) + "</span>"; }).join("") + "</div>"
-      : '<p class="no-comment">尚無關聯檔案。</p>';
+    var filesHtml = '';
+    if (tk.files && tk.files.length) {
+      filesHtml = '<div><span class="modal-section-label">相關檔案</span><div class="refs-list">' +
+        tk.files.map(function (f) { return "<span class=\"mono\">" + escapeHtml(f) + "</span>"; }).join("") +
+        "</div></div>";
+    }
+
+    var acceptanceHtml = '';
+    if (tk.acceptance && tk.acceptance.length) {
+      acceptanceHtml = '<div><span class="modal-section-label">驗收條件</span><ul style="margin:0 0 0 16px;padding:0;font-size:13px;color:var(--ink-dim);line-height:1.6;">' +
+        tk.acceptance.map(function (a) { return "<li>" + escapeHtml(a) + "</li>"; }).join("") +
+        "</ul></div>";
+    }
+
+    var verificationHtml = '';
+    if (tk.verification) {
+      verificationHtml = '<div><span class="modal-section-label">驗證方式</span><p style="font-size:13px;color:var(--ink-dim);line-height:1.5;">' + escapeHtml(tk.verification) + "</p></div>";
+    }
+
+    var notesHtml = '';
+    if (tk.notes) {
+      notesHtml = '<div><span class="modal-section-label">備註</span><p style="font-size:13px;color:var(--ink-dim);line-height:1.5;">' + escapeHtml(tk.notes) + "</p></div>";
+    }
+
+    var depsHtml = '';
+    if (tk.dependencies) {
+      depsHtml = '<div><span class="modal-section-label">相依套件 / 指令</span><p class="mono" style="font-size:12px;color:var(--ink-dim);line-height:1.5;background:var(--surface-sunken);padding:6px 8px;border-radius:6px;">' + escapeHtml(tk.dependencies) + "</p></div>";
+    }
+
+    var refsHtml = '';
+    if (tk.refs && tk.refs.length) {
+      refsHtml = '<div><span class="modal-section-label">關聯參考</span><div class="refs-list">' +
+        tk.refs.map(function (r) { return "<span class=\"mono\">" + escapeHtml(r) + "</span>"; }).join("") +
+        "</div></div>";
+    }
 
     var commentsHtml = tk.comments.length
       ? tk.comments.map(function (c) {
@@ -443,7 +475,12 @@
       "</div>" +
       '<div class="modal-body">' +
       '<div><span class="modal-section-label">描述</span><textarea class="content-input" id="field-content" placeholder="補充說明…">' + escapeHtml(tk.content) + "</textarea></div>" +
-      '<div><span class="modal-section-label">相關檔案</span>' + refs + "</div>" +
+      acceptanceHtml +
+      filesHtml +
+      refsHtml +
+      verificationHtml +
+      depsHtml +
+      notesHtml +
       '<div><span class="modal-section-label">留言</span>' + commentsHtml +
       '<div class="comment-form"><textarea id="new-comment" placeholder="留個言…"></textarea><button type="button" id="add-comment">送出</button></div></div>' +
       "</div>" +

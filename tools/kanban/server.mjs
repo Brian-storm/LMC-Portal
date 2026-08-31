@@ -21,7 +21,7 @@ fs.mkdirSync(CARDS_DIR, { recursive: true });
 
 // Customize this per project (e.g. team or product initials). Card IDs are
 // generated as `${ID_PREFIX}-001`, `${ID_PREFIX}-002`, ...
-const ID_PREFIX = 'TASK';
+const ID_PREFIX = 'PS';
 
 // 新卡片 owner 與看板留言作者的預設值：取本機 git 身分（這個看板本來就以
 // git 為同步機制），沒有 git 或沒設 user.name 時留空字串（未指派）。
@@ -32,7 +32,7 @@ const DEFAULT_OWNER = (() => {
     return '';
   }
 })();
-const ID_RE = new RegExp('^' + ID_PREFIX + '-\\d{3,}$');
+const ID_RE = /^[A-Z]+-\d{3,}$/;
 const STAGES = ['backlog', 'blocked', 'ready', 'implementing', 'verify', 'done'];
 const ADVANCED_STAGES = ['ready', 'implementing', 'verify', 'done'];
 const RISKS = ['low', 'medium', 'high'];
@@ -67,7 +67,7 @@ function isPlainObject(v) {
 
 function validateCard(c) {
   if (!isPlainObject(c)) return 'card 必須是 object';
-  if (typeof c.id !== 'string' || !ID_RE.test(c.id)) return 'id 必須符合 ^' + ID_PREFIX + '-\\d{3,}$';
+  if (typeof c.id !== 'string' || !ID_RE.test(c.id)) return 'id 必須符合 ^XX-\\d{3,}$ (大寫英文字母 + 連字號 + 最少三位數)';
   if (typeof c.title !== 'string' || c.title.trim() === '') return 'title 必須是非空字串';
   if (typeof c.content !== 'string') return 'content 必須是字串';
   if (!STAGES.includes(c.stage)) return 'stage 只允許 ' + STAGES.join('/');
@@ -81,7 +81,7 @@ function validateCard(c) {
   if (typeof c.userStory !== 'string') return 'userStory 必須是字串';
   if (!TRACKS.includes(c.track)) return 'track 只允許 ' + TRACKS.join('/');
   if (!Array.isArray(c.dependsOn) || c.dependsOn.some((x) => typeof x !== 'string' || !ID_RE.test(x))) {
-    return 'dependsOn 必須是字串陣列，且每個元素需符合 id 格式 ^' + ID_PREFIX + '-\\d{3,}$';
+    return 'dependsOn 必須是字串陣列，且每個元素需符合 id 格式 ^XX-\\d{3,}$';
   }
   if (c.dependsOn.includes(c.id)) return 'dependsOn 不可包含自己的 id';
 
@@ -128,6 +128,8 @@ function defaultObj(keys, value) {
 function fillDefaults(c) {
   if (!isPlainObject(c)) return c;
   if (c.content === undefined) c.content = '';
+  if (c.owner === undefined) c.owner = DEFAULT_OWNER;
+  if (c.createdAt === undefined) c.createdAt = '';
   if (c.agent === undefined) c.agent = '';
   if (c.approvalRequired === undefined) c.approvalRequired = false;
   if (c.epic === undefined) c.epic = '';
@@ -146,7 +148,7 @@ function fillDefaults(c) {
   return c;
 }
 
-/** 固定 key 順序寫檔，2 空格縮排 + 結尾換行，減少 git diff 噪音 */
+/** 固定 key 順序寫檔，2 空格縮排 + 結尾換行，減少 git diff 噪音。保留自訂欄位不覆蓋。 */
 function writeCard(c) {
   const normalized = {
     id: c.id,
@@ -171,6 +173,11 @@ function writeCard(c) {
     comments: c.comments
   };
   const file = path.join(CARDS_DIR, c.id + '.json');
+  let existing = {};
+  try { existing = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* new card */ }
+  for (const key of Object.keys(existing)) {
+    if (!(key in normalized)) normalized[key] = existing[key];
+  }
   fs.writeFileSync(file, JSON.stringify(normalized, null, 2) + '\n', 'utf8');
 }
 
@@ -293,11 +300,16 @@ function handlePost(res, body) {
   const input = JSON.parse(body);
   if (!isPlainObject(input)) return sendJson(res, 400, { error: 'body 必須是 object' });
   const existing = readAllCards();
-  const maxNum = existing.reduce((m, c) => Math.max(m, parseInt(c.id.slice(ID_PREFIX.length + 1), 10)), 0);
+  const prefix = (typeof input.id === 'string' && ID_RE.test(input.id))
+    ? input.id.split('-')[0]
+    : (typeof input.idPrefix === 'string' && /^[A-Z]+$/.test(input.idPrefix) ? input.idPrefix : ID_PREFIX);
+  const samePrefix = existing.filter((c) => c.id.startsWith(prefix + '-'));
+  const maxNum = samePrefix.reduce((m, c) => Math.max(m, parseInt(c.id.slice(prefix.length + 1), 10)), 0);
+  const cardId = (typeof input.id === 'string' && ID_RE.test(input.id)) ? input.id : prefix + '-' + String(maxNum + 1).padStart(3, '0');
   const stage = STAGES.includes(input.stage) ? input.stage : 'backlog';
   const inColumn = existing.filter((c) => c.stage === stage);
   const card = fillDefaults({
-    id: ID_PREFIX + '-' + String(maxNum + 1).padStart(3, '0'),
+    id: cardId,
     title: typeof input.title === 'string' ? input.title.trim() : '',
     content: typeof input.content === 'string' ? input.content : '',
     stage,
