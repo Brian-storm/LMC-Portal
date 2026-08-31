@@ -3,7 +3,7 @@
   "title": "Middleware 路由保護 + auth 串接 (整合)",
   "epic": "專案設置",
   "userStory": "認證框架",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "high",
   "dependsOn": ["PS-003", "PS-005"],
   "order": 6,

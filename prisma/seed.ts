@@ -1,4 +1,5 @@
 import { PrismaClient, Role, RegistrationStatus, AdminPermission } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -276,6 +277,8 @@ async function main() {
   });
 
   // ─── Admin user ───────────────────────────────────────────
+  const adminPasswordHash = await bcrypt.hash("admin123", 10);
+
   const adminUser = await prisma.user.upsert({
     where: { email: "admin@lmcconsulting.hk" },
     update: {},
@@ -286,7 +289,7 @@ async function main() {
       idDocNumber: "ADMIN-001",
       phone: "+852 0000 0000",
       role: Role.ADMIN,
-      passwordHash: "PLACEHOLDER_HASH",
+      passwordHash: adminPasswordHash,
     },
   });
 

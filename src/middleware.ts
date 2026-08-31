@@ -1,37 +1,79 @@
-// src/middleware.ts
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 const locales = ["en", "zh-hk", "zh-cn"];
 const defaultLocale = "en";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+const publicSegments = [
+  "courses",
+  "about",
+  "privacy",
+  "terms",
+  "login",
+  "register",
+];
 
-  // 1. Check if pathname already has a valid locale prefix
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-
-  if (pathnameHasLocale) return NextResponse.next();
-
-  // 2. Redirect root / or non-localized paths to /en
-  const redirectUrl = new URL(
-    `/${defaultLocale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`,
-    request.url,
-  );
-
-  return NextResponse.redirect(redirectUrl);
+function getLocale(pathname: string): string | null {
+  for (const locale of locales) {
+    if (pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)) {
+      return locale;
+    }
+  }
+  return null;
 }
 
-// Export default to cover all Next.js resolution rules
-export default middleware;
+function isPublicPath(locale: string, pathname: string): boolean {
+  if (pathname === `/${locale}` || pathname === `/${locale}/`) return true;
+  return publicSegments.some(
+    (seg) =>
+      pathname === `/${locale}/${seg}` ||
+      pathname.startsWith(`/${locale}/${seg}/`),
+  );
+}
+
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+
+  const locale = getLocale(pathname);
+
+  if (!locale) {
+    const redirectUrl = new URL(
+      `/${defaultLocale}${pathname.startsWith("/") ? pathname : `/${pathname}`}`,
+      req.url,
+    );
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (isPublicPath(locale, pathname)) {
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith(`/${locale}/admin`)) {
+    if (!req.auth) {
+      const loginUrl = new URL(`/${locale}/login`, req.url);
+      loginUrl.searchParams.set("from", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    if (req.auth.user?.role !== "ADMIN") {
+      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith(`/${locale}/dashboard`)) {
+    if (!req.auth) {
+      const loginUrl = new URL(`/${locale}/login`, req.url);
+      loginUrl.searchParams.set("from", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except static files, api routes, and icons
-     */
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
