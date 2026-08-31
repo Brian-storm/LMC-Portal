@@ -19,53 +19,70 @@ declare module "next-auth" {
   }
 }
 
+declare module "@auth/core/jwt" {
+  interface JWT {
+    role?: string;
+    userId?: string;
+  }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   providers: [
-    Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+  Credentials({
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      // 1. Check if both fields were provided
+      if (!credentials?.email || !credentials?.password) return null;
 
-        const email = credentials.email as string;
-        const password = credentials.password as string;
+      const email = credentials.email as string;
+      const password = credentials.password as string;
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
+      // 2. Find the user in the database by email
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
 
-        if (!user) return null;
-        if (!user.passwordHash) return null;
+      // 3. Reject if user doesn't exist or has no password hash saved
+      if (!user) return null;
+      if (!user.passwordHash) return null;
 
-        const isValid = await bcrypt.compare(password, user.passwordHash);
-        if (!isValid) return null;
+      // 4. Compare the raw password with the hashed password in DB
+      const isValid = await bcrypt.compare(password, user.passwordHash);
+      if (!isValid) return null; // Passwords do not match
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.nameEn,
-          role: user.role,
-        };
-      },
-    }),
+      // 5. Success! Return the user object (this gets passed to the jwt callback)
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.nameEn,
+        role: user.role,
+      };
+    },
+  }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role as string;
-        token.userId = user.id as string;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user.role = token.role as string | undefined;
-      session.user.id = token.userId as string;
-      return session;
-    },
+  // Step 1: Modifies the encrypted cookie payload
+  async jwt({ token, user }) {
+    if (user) { 
+      // 'user' is only defined on the VERY FIRST login attempt
+      token.role = user.role as string;
+      token.userId = user.id as string;
+    }
+    return token; // Saved to browser cookie
+  },
+
+  // Step 2: Controls what data is accessible in your app via auth() or useSession()
+  async session({ session, token }) {
+    // Reads from the token created above and attaches it to the session object
+    session.user.role = token.role as string | undefined;
+    session.user.id = (token.userId ?? token.sub) as string;
+    return session; 
+  },
   },
   pages: {
     signIn: "/en/login",
