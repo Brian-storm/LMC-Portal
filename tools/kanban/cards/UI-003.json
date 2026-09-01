@@ -2,7 +2,7 @@
   "id": "UI-003",
   "title": "替換 Hero Carousel 圖片素材",
   "content": "將 Hero Carousel 中 3 張 Unsplash 圖片替換為與 LMC 業務（香港金融/保險業 CPD 培訓、企業顧問）更相關的高品質圖片。建議圖片主題：專業培訓場景、香港金融天際線、線上學習、證書認證等。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -20,15 +20,15 @@
     "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
-    "human_approval_recorded": false
+    "human_approval_recorded": true
   },
   "gates": {
     "product": false,
-    "ui": false,
+    "ui": true,
     "architecture": false,
     "security": false,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -40,9 +40,9 @@
   },
   "refs": ["src/components/home/HeroCarousel.tsx"],
   "evidence": {
-    "commands": ["npm run lint", "npm run build"],
-    "findings": [],
-    "residual": ""
+    "commands": ["npm run typecheck", "npm run lint"],
+    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "residual": "僅更換 Slide 2 圖片，Slide 1 與 Slide 3 保留原圖"
   },
   "comments": [],
   "acceptance": [

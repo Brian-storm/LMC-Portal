@@ -2,7 +2,7 @@
   "id": "UI-002",
   "title": "UI 色票調整 — Variant C Rich Jewel",
   "content": "將 globals.css :root 區塊的色票調整為 Variant C（高飽和深翠綠 primary、暖 parchment 背景、較濃邊框與陰影）。保留現有 radius 不變。Hero overlay 改 emerald-950/60，Newsletter 背景改品牌深翠綠 #1b4332。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",
@@ -28,7 +28,7 @@
     "architecture": false,
     "security": false,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -41,8 +41,8 @@
   "refs": ["src/app/globals.css", "src/components/home/HeroCarousel.tsx", "src/components/home/NewsletterForm.tsx"],
   "evidence": {
     "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": [],
-    "residual": ""
+    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)", "build: compiled successfully"],
+    "residual": "無"
   },
   "comments": [],
   "acceptance": [

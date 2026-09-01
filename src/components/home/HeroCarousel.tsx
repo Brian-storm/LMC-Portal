@@ -35,7 +35,7 @@ const DEFAULT_SLIDES = [
     ctaText: "Access Portal",
     ctaLink: "/portal",
     image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?q=80&w=1600&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -70,7 +70,7 @@ export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
   }, [slides.length]);
 
   return (
-    <section className="relative !h-[460px] sm:!h-[520px] md:!h-[560px] overflow-hidden bg-slate-900 text-white">
+    <section className="relative !h-[460px] sm:!h-[520px] md:!h-[560px] overflow-hidden bg-[#1b4332] text-white">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -85,7 +85,7 @@ export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
             style={{ backgroundImage: `url('${slide.image}')` }}
           >
             {/* Preserved dark blue image overlay */}
-            <div className="absolute inset-0 bg-slate-950/70 backdrop-brightness-90" />
+            <div className="absolute inset-0 bg-emerald-950/60 backdrop-brightness-90" />
           </div>
 
           <div className="relative z-20 container mx-auto px-4 max-w-7xl h-full flex flex-col justify-center items-start">
