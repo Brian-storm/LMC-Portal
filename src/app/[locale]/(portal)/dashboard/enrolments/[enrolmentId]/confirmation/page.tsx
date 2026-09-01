@@ -17,12 +17,14 @@ import {
   ShieldCheck,
   UserCheck,
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
 
 export default function EnrollmentConfirmationPage() {
   const params = useParams();
 
   const locale = (params.locale as string) || "en";
   const enrolmentId = (params.enrolmentId as string) || "DEMO-88392";
+  const { addToast } = useToast();
 
   // Mock enrollment record
   const enrolment = {
@@ -67,7 +69,7 @@ export default function EnrollmentConfirmationPage() {
               <span>Print Official Receipt</span>
             </button>
             <button
-              onClick={() => alert("Downloading PDF Invoice...")}
+              onClick={() => addToast({ title: "Downloading PDF Invoice...", variant: "info" })}
               className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] text-white text-xs font-bold px-3 py-1.5 rounded-xs transition-colors shadow-2xs"
             >
               <Download className="w-3.5 h-3.5" />

@@ -16,6 +16,7 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
 
 export default function PortalLayout({
   children,
@@ -29,6 +30,7 @@ export default function PortalLayout({
   const locale = (params.locale as string) || "en";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { addToast } = useToast();
 
   const user = {
     name: "CHAN Tai Man",
@@ -81,7 +83,7 @@ export default function PortalLayout({
 
         <div className="flex items-center space-x-3">
           <button
-            onClick={() => alert("No new notifications.")}
+            onClick={() => addToast({ title: "No new notifications.", variant: "info" })}
             className="p-1.5 text-slate-400 hover:text-slate-700 border border-slate-200/70 rounded-md relative bg-slate-50/50"
           >
             <Bell className="w-4 h-4" />

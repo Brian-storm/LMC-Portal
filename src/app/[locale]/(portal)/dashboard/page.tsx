@@ -15,11 +15,13 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
 
 export default function LearnerDashboardPage() {
   const params = useParams();
   const rawLocale = (params.locale as string) || "en";
   const locale = rawLocale.replace(/^\/+/, "");
+  const { addToast } = useToast();
 
   // Mock Learner Data
   const learner = {
@@ -337,9 +339,7 @@ export default function LearnerDashboardPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() =>
-                          alert(
-                            `Downloading Official Certificate ${item.certificateNo}...`,
-                          )
+                          addToast({ title: `Downloading Official Certificate ${item.certificateNo}...`, variant: "info" })
                         }
                         className="text-[#1b4332] hover:text-[#2d6a4f] hover:bg-emerald-50 text-[10px] font-bold uppercase tracking-wider h-6 px-2"
                       >

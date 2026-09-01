@@ -17,10 +17,12 @@ export function PaymentSlipUploader({ orderId }: { orderId: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleUpload() {
     if (!file) return;
     setIsUploading(true);
+    setError("");
 
     const formData = new FormData();
     formData.append("slip", file);
@@ -35,10 +37,10 @@ export function PaymentSlipUploader({ orderId }: { orderId: string }) {
       if (res.ok) {
         setIsSuccess(true);
       } else {
-        alert("Upload failed. Please try again.");
+        setError("Upload failed. Please try again.");
       }
-    } catch (err) {
-      alert("Network error encountered.");
+    } catch {
+      setError("Network error encountered.");
     } finally {
       setIsUploading(false);
     }
@@ -77,13 +79,19 @@ export function PaymentSlipUploader({ orderId }: { orderId: string }) {
             type="file"
             accept="image/*,.pdf"
             className="rounded-none cursor-pointer border-slate-300 text-xs"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e) => { setFile(e.target.files?.[0] || null); setError(""); }}
           />
           {file && (
             <p className="text-xs text-slate-600 flex items-center pt-1">
               <FileText className="w-3.5 h-3.5 mr-1 text-slate-500" />
               Selected: <strong>{file.name}</strong> (
               {(file.size / 1024).toFixed(1)} KB)
+            </p>
+          )}
+          {error && (
+            <p className="text-xs text-red-600 flex items-center pt-1" role="alert">
+              <AlertCircle className="w-3.5 h-3.5 mr-1 shrink-0" />
+              {error}
             </p>
           )}
         </div>

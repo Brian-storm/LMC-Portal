@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useToast } from "@/components/ui/toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -23,6 +24,7 @@ import {
 export default function AdminDashboardPage() {
   const params = useParams();
   const locale = (params.locale as string) || "en";
+  const { addToast } = useToast();
 
   // Mock Admin Metrics
   const stats = {
@@ -95,7 +97,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center space-x-2">
             <button
               onClick={() =>
-                alert("Exporting Regulatory CPD Return XML/CSV...")
+                addToast({ title: "Exporting Regulatory CPD Return XML/CSV...", variant: "info" })
               }
               className="inline-flex items-center space-x-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold px-3.5 py-2 rounded-xs transition-colors shadow-2xs"
             >

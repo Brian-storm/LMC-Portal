@@ -1,27 +1,31 @@
 {
-  "id": "CT-005",
-  "title": "Bug 修復與重構 — 全站",
-  "epic": "內容與靜態頁面",
-  "userStory": "Bug 修復與重構",
-  "stage": "backlog",
-  "risk": "low",
-  "dependsOn": ["CT-001", "CT-002", "CT-003"],
-  "order": 54,
-  "acceptance": [
-    "Fix duplicate CourseSyllabus rendering (check for accidental double render in course detail page)",
-    "Fix enrolments placeholder duplicate in dashboard (check for duplicate 'Under Development' cards)",
-    "Fix missing locale prefix in internal links: audit all <Link href=...> and router.push() calls — ensure /{locale}/ prefix",
-    "Remove all alert() calls: PaymentSlipUploader, login page 'forgot password', any other instances",
-    "Replace alert() with inline error state or shadcn toast component",
-    "ESLint: zero warnings from new code (pre-existing warnings in other files acceptable)",
-    "TypeScript: tsc --noEmit passes with zero errors (fix the pre-existing form.tsx SubmitEvent issue if scope permits)"
-  ],
-  "files": [
-    "src/app/[locale]/courses/[slug]/page.tsx (fix duplicate syllabus)",
-    "src/app/[locale]/(portal)/dashboard/page.tsx (fix duplicate placeholder)",
-    "src/components/PaymentSlipUploader.tsx (remove alert)",
-    "src/app/[locale]/login/page.tsx (remove forgot-password alert)",
-    "Multiple files (audit locale prefix in links)"
-  ],
-  "verification": "Course detail page: syllabus renders once. Dashboard: no duplicate placeholders. All links include /{locale}/. No alert() calls anywhere. ESLint/tsc clean for touched files."
+    "id":  "CT-005",
+    "title":  "Bug 修復與重構 — 全站",
+    "epic":  "內容與靜態頁面",
+    "userStory":  "Bug 修復與重構",
+    "stage": "done",
+    "risk":  "low",
+    "dependsOn":  [
+                      "CT-001",
+                      "CT-002",
+                      "CT-003"
+                  ],
+    "order":  54,
+    "acceptance":  [
+                       "Fix duplicate CourseSyllabus rendering (check for accidental double render in course detail page)",
+                       "Fix enrolments placeholder duplicate in dashboard (check for duplicate \u0027Under Development\u0027 cards)",
+                       "Fix missing locale prefix in internal links: audit all \u003cLink href=...\u003e and router.push() calls — ensure /{locale}/ prefix",
+                       "Remove all alert() calls: PaymentSlipUploader, login page \u0027forgot password\u0027, any other instances",
+                       "Replace alert() with inline error state or shadcn toast component",
+                       "ESLint: zero warnings from new code (pre-existing warnings in other files acceptable)",
+                       "TypeScript: tsc --noEmit passes with zero errors (fix the pre-existing form.tsx SubmitEvent issue if scope permits)"
+                   ],
+    "files":  [
+                  "src/app/[locale]/courses/[slug]/page.tsx (fix duplicate syllabus)",
+                  "src/app/[locale]/(portal)/dashboard/page.tsx (fix duplicate placeholder)",
+                  "src/components/PaymentSlipUploader.tsx (remove alert)",
+                  "src/app/[locale]/login/page.tsx (remove forgot-password alert)",
+                  "Multiple files (audit locale prefix in links)"
+              ],
+    "verification":  "Course detail page: syllabus renders once. Dashboard: no duplicate placeholders. All links include /{locale}/. No alert() calls anywhere. ESLint/tsc clean for touched files."
 }
