@@ -1,0 +1,62 @@
+{
+  "id": "UI-001",
+  "title": "修正 Footer 導航連結路徑",
+  "content": "修正 Footer 中所有錯誤的連結路徑：Student Portal → /dashboard, Admin Portal → /admin, 移除 FAQ 與 Disclaimer 失效連結。確認三語系字典同步。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "導航與頁面修復",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-001-footer-nav.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/Footer.tsx", "src/dictionaries/en.json", "src/dictionaries/zh-hk.json", "src/dictionaries/zh-cn.json"],
+  "evidence": {
+    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Footer 中每一個導航連結點擊後都能到達正確頁面（無 404）",
+    "Student Portal 連結導向 /dashboard，Admin Portal 導向 /admin",
+    "FAQ 項目已移除或改為有效的 Contact 頁面",
+    "Disclaimer 連結已處理（移除或指向有效頁面）",
+    "三種語系的 Footer 字串都已同步更新"
+  ],
+  "files": [
+    "src/components/Footer.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "verification": "點擊 Footer 所有連結確認無 404；切換三種語系確認 Footer 字串正確"
+}

@@ -1,0 +1,75 @@
+{
+  "id": "UI-005",
+  "title": "實現公開頁麵包屑導航",
+  "content": "在 6 個公開頁面（Courses 列表、課程詳細、About、Contact、Privacy、Terms）頂部加入 Breadcrumbs 元件。Home > [頁面名稱] 格式，最後一項為當前頁面不可點擊。Breadcrumbs 元件已存在 src/components/common/Breadcrumbs.tsx。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "導航與頁面修復",
+  "track": "frontend",
+  "dependsOn": [
+    "UI-001"
+  ],
+  "order": 5,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-005-breadcrumbs.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/common/Breadcrumbs.tsx",
+    "src/app/[locale]/courses/page.tsx",
+    "src/app/[locale]/courses/[slug]/page.tsx",
+    "src/app/[locale]/about/page.tsx",
+    "src/app/[locale]/contact/page.tsx",
+    "src/app/[locale]/privacy/page.tsx",
+    "src/app/[locale]/terms/page.tsx"
+  ],
+  "evidence": {
+    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "6 個公開頁面都有 Breadcrumbs",
+    "Breadcrumbs 顯示正確的導航層級（Home > [頁面名稱]）",
+    "最後一項為當前頁面（不可點擊），樣式為 font-medium text-slate-800",
+    "中間項目可點擊回到上層頁面",
+    "三種語系的 breadcrumb labels 正確顯示",
+    "Breadcrumbs 不影響頁面其他元件的版面與功能"
+  ],
+  "files": [
+    "courses/page.tsx（加入 Breadcrumbs）",
+    "courses/[slug]/page.tsx（加入 Breadcrumbs）",
+    "about/page.tsx（加入 Breadcrumbs）",
+    "contact/page.tsx（加入 Breadcrumbs）",
+    "privacy/page.tsx（加入 Breadcrumbs）",
+    "terms/page.tsx（加入 Breadcrumbs）"
+  ],
+  "verification": "瀏覽 6 個頁面確認 Breadcrumbs 正確渲染；切換三語系確認 labels 正確"
+}

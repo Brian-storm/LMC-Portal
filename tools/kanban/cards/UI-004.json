@@ -1,0 +1,65 @@
+{
+  "id": "UI-004",
+  "title": "重新設計 Newsletter 為課程諮詢 CTA 區塊",
+  "content": "將首頁現有「Subscribe to Consultancy Bulletins」改為「免費課程諮詢 / Book a Free Consultation」主題。二方案待選擇：A) 保留 name+email 表單；B) 改為大型 CTA 按鈕跳轉聯絡頁。背景從 slate-900 改為品牌深翠綠。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "首頁區域重新設計",
+  "track": "frontend",
+  "dependsOn": [
+    "UI-002"
+  ],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-004-newsletter-redesign.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/home/NewsletterForm.tsx", "src/dictionaries/en.json", "src/dictionaries/zh-hk.json", "src/dictionaries/zh-cn.json", "src/dictionaries/types.ts"],
+  "evidence": {
+    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "首頁原訂閱區塊已變更為「課程諮詢」主題",
+    "所有 UI 字串來自 dict，無 hardcoded 文案",
+    "三種語系均已同步翻譯",
+    "表單提交（若保留方案 A）正確顯示成功狀態",
+    "CTA 按鈕（方案 B）正確導向 contact 頁面"
+  ],
+  "files": [
+    "src/components/home/NewsletterForm.tsx",
+    "src/dictionaries/en.json（newsletterForm 區段）",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts（NewsletterFormDict）"
+  ],
+  "verification": "首頁截圖對比 before/after；切換三語系確認文案正確"
+}

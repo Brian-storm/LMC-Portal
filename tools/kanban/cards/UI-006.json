@@ -1,0 +1,62 @@
+{
+  "id": "UI-006",
+  "title": "Contact 頁 UI 重新設計（字型、字級、地圖）",
+  "content": "重新設計聯絡頁的字型（font-mono → font-sans）、字級放大（text-xs → text-sm）、Google Maps iframe 改為 aspect-square 正方形比例。加入 Breadcrumbs。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "聯絡頁 UI 改版",
+  "track": "frontend",
+  "dependsOn": [
+    "UI-005"
+  ],
+  "order": 6,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-006-contact-redesign.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/app/[locale]/contact/page.tsx"],
+  "evidence": {
+    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "所有文字使用 font-sans，無 font-mono",
+    "字級符合規範（address/phone/email 為 text-sm 14px，hours 為 text-xs 12px）",
+    "地圖 iframe 呈現為正方形比例（aspect-square 或 md:aspect-square）",
+    "Breadcrumbs 正確顯示（Home > Contact Us）",
+    "三種語系排版一致",
+    "頁面整體視覺不再擁擠，行距舒適"
+  ],
+  "files": [
+    "src/app/[locale]/contact/page.tsx"
+  ],
+  "verification": "瀏覽 Contact 頁 desktop + mobile 確認文字字級、地圖比例、Breadcrumbs 正確"
+}

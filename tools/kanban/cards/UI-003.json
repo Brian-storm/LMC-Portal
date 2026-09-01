@@ -1,0 +1,59 @@
+{
+  "id": "UI-003",
+  "title": "替換 Hero Carousel 圖片素材",
+  "content": "將 Hero Carousel 中 3 張 Unsplash 圖片替換為與 LMC 業務（香港金融/保險業 CPD 培訓、企業顧問）更相關的高品質圖片。建議圖片主題：專業培訓場景、香港金融天際線、線上學習、證書認證等。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "視覺與色票更新",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-003-hero-images.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/home/HeroCarousel.tsx"],
+  "evidence": {
+    "commands": ["npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "3 張 slide 圖片皆已更換為建議的主題圖片",
+    "圖片載入後正確顯示（bg-cover、無破版）",
+    "所有 overlay 與文字依然清晰可讀",
+    "圖片回應式顯示正常（mobile/tablet/desktop）",
+    "輪播自動播放與指示器不受影響"
+  ],
+  "files": [
+    "src/components/home/HeroCarousel.tsx（僅 DEFAULT_SLIDES 的 image URL）"
+  ],
+  "verification": "開啟首頁確認三張 slide 圖片正確顯示；切換桌面/手機 viewport 確認無破版"
+}

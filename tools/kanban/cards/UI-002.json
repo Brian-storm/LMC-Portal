@@ -1,0 +1,62 @@
+{
+  "id": "UI-002",
+  "title": "UI 色票調整 — Variant C Rich Jewel",
+  "content": "將 globals.css :root 區塊的色票調整為 Variant C（高飽和深翠綠 primary、暖 parchment 背景、較濃邊框與陰影）。保留現有 radius 不變。Hero overlay 改 emerald-950/60，Newsletter 背景改品牌深翠綠 #1b4332。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-01",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "視覺與色票更新",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "ai/artifacts/UI-Consistency-Fixes/screen-spec-color-refresh.md",
+    "mockupDecision": "ai/artifacts/UI-Consistency-Fixes/mockup-decision-color-refresh.md",
+    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-002-color-refresh.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/app/globals.css", "src/components/home/HeroCarousel.tsx", "src/components/home/NewsletterForm.tsx"],
+  "evidence": {
+    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "頁面整體不再感覺晦暗沉悶，文字可讀性提升",
+    "品牌 emerald 識別度保留，色票變更不偏離 institutional 調性",
+    "三種語言頁面呈現一致",
+    "Hero overlay 從 slate-950/70 改為 emerald-950/60",
+    "Newsletter 背景從 slate-900 改為品牌深翠綠 (#1b4332)",
+    "沒有 CSS 回歸問題（按鈕、卡片、導航等正常顯示）"
+  ],
+  "files": [
+    "src/app/globals.css（:root 區塊色票）",
+    "src/components/home/HeroCarousel.tsx（overlay class）",
+    "src/components/home/NewsletterForm.tsx（bg class）"
+  ],
+  "verification": "瀏覽首頁截圖對比 before/after；確認導航、按鈕、卡片、深色區塊皆正常顯示"
+}

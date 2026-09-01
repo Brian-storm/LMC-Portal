@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Style Tile — Variant A: Warm Emerald · High Contrast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── VARIANT A: Warm Emerald · High Contrast ── */
+    :root {
+      --primary: oklch(0.33 0.07 155);
+      --primary-hover: oklch(0.30 0.08 155);
+      --primary-foreground: oklch(0.98 0.01 140);
+      --background: oklch(0.98 0.006 80);
+      --card: oklch(0.995 0.005 85);
+      --card-foreground: oklch(0.18 0.01 140);
+      --accent: oklch(0.74 0.12 82);
+      --accent-hover: oklch(0.68 0.14 82);
+      --accent-foreground: oklch(0.20 0.04 160);
+      --secondary: oklch(0.52 0.04 155);
+      --secondary-foreground: oklch(0.98 0 0);
+      --muted: oklch(0.93 0.015 80);
+      --muted-foreground: oklch(0.50 0.03 155);
+      --border: oklch(0.88 0.015 80);
+      --destructive: oklch(0.60 0.20 27);
+      --success: oklch(0.55 0.12 150);
+      --warning: oklch(0.76 0.13 80);
+      --info: oklch(0.65 0.08 230);
+      --radius: 0.5rem;
+      --shadow-sm: 0 1px 2px oklch(0 0 0 / 6%);
+      --shadow-md: 0 4px 12px oklch(0 0 0 / 8%);
+    }
+
+    body { font-family: 'Montserrat', system-ui, sans-serif; background: var(--background); color: var(--card-foreground); padding: 40px; }
+    .container { max-width: 1000px; margin: auto; }
+
+    /* ── Header ── */
+    .header { margin-bottom: 48px; border-bottom: 2px solid var(--border); padding-bottom: 16px; }
+    .header h1 { font-weight: 800; font-size: 1.75rem; color: var(--primary); letter-spacing: -0.02em; }
+    .header p { font-size: 0.8rem; color: var(--muted-foreground); margin-top: 4px; }
+    .badge-variant { display: inline-block; background: var(--accent); color: var(--accent-foreground); font-weight: 700; font-size: 0.65rem; padding: 2px 10px; border-radius: var(--radius); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 8px; }
+
+    /* ── Swatch Grid ── */
+    .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 48px; }
+    .swatch { border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .swatch-color { height: 60px; border-radius: calc(var(--radius) * 0.6); margin-bottom: 8px; }
+    .swatch label { font-size: 0.7rem; font-weight: 600; display: block; }
+    .swatch code { font-size: 0.6rem; color: var(--muted-foreground); }
+
+    /* ── Typography ── */
+    .typo-section { margin-bottom: 48px; }
+    .typo-section h2 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--secondary); margin-bottom: 16px; }
+    .typo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; }
+    .typo-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .typo-item .label { font-size: 0.6rem; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; }
+    .h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
+    .h2 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.35; }
+    .body { font-size: 0.875rem; font-weight: 400; line-height: 1.65; }
+    .body-sm { font-size: 0.75rem; font-weight: 400; line-height: 1.5; }
+    .caption { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── Component Demos ── */
+    .component-section { margin-bottom: 48px; }
+    .component-section h2 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--secondary); margin-bottom: 16px; }
+    .component-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; font-family: 'Montserrat', system-ui, sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .btn-primary { background: var(--primary); color: var(--primary-foreground); box-shadow: var(--shadow-sm); }
+    .btn-primary:hover { background: var(--primary-hover); box-shadow: var(--shadow-md); }
+    .btn-accent { background: var(--accent); color: var(--accent-foreground); box-shadow: var(--shadow-sm); }
+    .btn-accent:hover { background: var(--accent-hover); box-shadow: var(--shadow-md); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); background: oklch(0 0 0 / 3%); }
+    .btn-ghost { background: transparent; color: var(--secondary); }
+    .btn-ghost:hover { background: var(--muted); }
+
+    /* Card demo */
+    .card-demo { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); max-width: 300px; }
+    .card-demo h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .card-demo p { font-size: 0.8rem; color: var(--muted-foreground); line-height: 1.55; }
+    .card-demo .badge { display: inline-block; background: var(--primary); color: var(--primary-foreground); font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: calc(var(--radius) * 0.6); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Dark section demo */
+    .dark-section { background: var(--primary); color: var(--primary-foreground); padding: 32px; border-radius: var(--radius); margin-top: 24px; }
+    .dark-section h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .dark-section p { font-size: 0.8rem; opacity: 0.85; line-height: 1.6; max-width: 500px; }
+    .dark-section .btn { margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Variant A: Warm Emerald · High Contrast</h1>
+      <p>Warmer background, higher saturation primary, warm-grey borders — maximum readability</p>
+      <span class="badge-variant">Recommended</span>
+    </div>
+
+    <!-- Colors -->
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--primary)"></div>
+        <label>Primary</label>
+        <code>oklch(0.33 0.07 155)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--background)"></div>
+        <label>Background</label>
+        <code>oklch(0.98 0.006 80)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--card)"></div>
+        <label>Card</label>
+        <code>oklch(0.995 0.005 85)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--accent)"></div>
+        <label>Accent (Gold)</label>
+        <code>oklch(0.74 0.12 82)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--muted)"></div>
+        <label>Muted</label>
+        <code>oklch(0.93 0.015 80)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--secondary)"></div>
+        <label>Secondary</label>
+        <code>oklch(0.52 0.04 155)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--border)"></div>
+        <label>Border</label>
+        <code>oklch(0.88 0.015 80)</code>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:var(--success)"></div>
+        <label>Success</label>
+        <code>oklch(0.55 0.12 150)</code>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="typo-section">
+      <h2>Typography</h2>
+      <div class="typo-grid">
+        <div class="typo-item"><span class="label">H1 800 · 2.5rem</span><div class="h1">Executive Training</div></div>
+        <div class="typo-item"><span class="label">H2 700 · 1.75rem</span><div class="h2">Professional Courses</div></div>
+        <div class="typo-item"><span class="label">H3 600 · 1.25rem</span><div class="h3">Course Categories</div></div>
+        <div class="typo-item"><span class="label">Body 400 · 0.875rem</span><div class="body">This is body text at 14px with comfortable line-height for reading paragraphs of moderate length on screen.</div></div>
+        <div class="typo-item"><span class="label">Body Small 400 · 0.75rem</span><div class="body-sm">Small body at 12px — used for metadata, descriptions, and secondary information.</div></div>
+        <div class="typo-item"><span class="label">Caption 600 · 0.65rem</span><div class="caption">Uppercase Caption Label</div></div>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div class="component-section">
+      <h2>Components</h2>
+      <div class="component-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-accent">Accent</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:12px;">
+        <div class="card-demo">
+          <span class="badge">New</span>
+          <h3>Risk Management</h3>
+          <p>12 CPD hours · Regulatory compliance course for insurance professionals. In-person delivery.</p>
+        </div>
+        <div class="dark-section">
+          <h3>Newsletter / CTA Section</h3>
+          <p>Deep emerald background with warm-accent CTA. Comfortable contrast ratio for long-form reading.</p>
+          <button class="btn btn-accent" style="color:var(--primary-foreground);background:var(--accent)">Subscribe Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
