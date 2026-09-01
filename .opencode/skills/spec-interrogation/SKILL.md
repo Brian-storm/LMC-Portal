@@ -13,7 +13,7 @@ Use before implementation. Scope is a single feature module (Epic). For brand ne
 1. Restate the request as a **problem**, not a solution.
 2. Identify **users, goals, non-goals, and risks**.
 3. Only ask **blocking** questions. If an assumption is reasonable and safe, document it and move on.
-4. Produce `ai/artifacts/<Epic>/feature-spec.md` using `ai/templates/feature-spec.md` as template (template is read-only).
+4. Produce `ai/artifacts/<Epic>/feature-spec.md` using `.github/skills/monstrare/ai/templates/feature-spec.md` as template (template is read-only).
 5. Write in **testable** requirement language.
 6. **Stop and wait for human approval** before entering architecture planning.
 

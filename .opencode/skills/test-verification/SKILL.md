@@ -4,7 +4,7 @@ description: Runs tests, typecheck, lint, and build verification before declarin
 ---
 # Test Verification
 
-Use before declaring a task complete. Produces the verification evidence required by `ai/process/definition-of-done.md`.
+Use before declaring a task complete. Produces the verification evidence required by `.github/skills/monstrare/ai/process/definition-of-done.md`.
 
 **Canonical rules**: `.github/skills/monstrare/ai/skills/test-verification.md`
 
@@ -15,12 +15,12 @@ Use before declaring a task complete. Produces the verification evidence require
 3. Run targeted tests first.
 4. Run lint, typecheck, and build as applicable.
 5. For UI changes: capture desktop and mobile screenshots (if tooling allows).
-6. Check against `ai/checklists/testing-checklist.md`:
+6. Check against `.github/skills/monstrare/ai/checklists/testing-checklist.md`:
    - Does each test fail before the fix?
    - Are edge cases covered?
    - Are permission/error paths tested?
-7. For UI changes: also check against `ai/checklists/design-review-checklist.md`.
-8. Record evidence using `ai/templates/verification-report.md` as template, output to `ai/artifacts/<Epic>/verification/<card-id>.md`.
+7. For UI changes: also check against `.github/skills/monstrare/ai/checklists/design-review-checklist.md`.
+8. Record evidence using `.github/skills/monstrare/ai/templates/verification-report.md` as template, output to `ai/artifacts/<Epic>/verification/<card-id>.md`.
 
 ## What to Run
 

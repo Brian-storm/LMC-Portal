@@ -28,7 +28,7 @@ Principles adapted from *Refactoring UI* (Adam Wathan & Steve Schoger).
 7. **Borders are visual noise** — preference order: spacing → background color → shadow → border (last resort). Use borders only for table rows, inputs, and other hard-boundary needs.
 8. **Depth: pick ONE** — shadow (floating), background color (layered sections), border (sharp division). Don't stack them. Shadows simulate overhead light: y-offset > x-offset, blur > y-offset.
 9. **5 states per interactive element** — default / hover / focus / disabled / loading. Data regions need: loading / empty / error / unauthorized. Default-only is half-done.
-10. **Polish check** — compare against `ai/checklists/design-review-checklist.md` before delivery. Every ❌ is a fix opportunity.
+10. **Polish check** — compare against `.github/skills/monstrare/ai/checklists/design-review-checklist.md` before delivery. Every ❌ is a fix opportunity.
 
 ## Reference-First Design
 
