@@ -1,12 +1,52 @@
 {
   "id": "EN-005",
   "title": "PaymentSlipUploader → 直接上傳至 S3 (整合)",
-  "epic": "報名與結帳",
-  "userStory": "付款證明上傳",
+  "content": "",
   "stage": "backlog",
   "risk": "medium",
-  "dependsOn": ["EN-004"],
-  "order": 34,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "報名與結帳",
+  "userStory": "付款證明上傳",
+  "track": "n/a",
+  "dependsOn": [
+    "EN-004"
+  ],
+  "order": 5,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Update PaymentSlipUploader to use presigned URL flow instead of FormData POST to /api/upload-slip",
     "Step 1: Call POST /api/upload/presigned-url to get upload URL",

@@ -1,12 +1,52 @@
 {
   "id": "EN-003",
   "title": "團體報名表單 (前端)",
-  "epic": "報名與結帳",
-  "userStory": "團體報名表單",
+  "content": "",
   "stage": "backlog",
   "risk": "medium",
-  "dependsOn": ["EN-001"],
-  "order": 32,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "報名與結帳",
+  "userStory": "團體報名表單",
+  "track": "n/a",
+  "dependsOn": [
+    "EN-001"
+  ],
+  "order": 4,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Add Individual/Organization enrollment type toggle in Step 1 of the enrollment wizard",
     "When 'Organization' selected: show dynamic multi-registrant form (Add Member / Remove Member buttons)",

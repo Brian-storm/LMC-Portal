@@ -1,12 +1,69 @@
 {
   "id": "EN-001",
   "title": "報名 API endpoint (後端)",
+  "content": "",
+  "stage": "verify",
+  "risk": "high",
+  "owner": "Brian",
+  "agent": "opencode (deepseek-v4-flash)",
+  "approvalRequired": false,
+  "createdAt": "",
   "epic": "報名與結帳",
   "userStory": "報名 API",
-  "stage": "backlog",
-  "risk": "high",
-  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006", "PS-007", "PS-008", "PS-009", "PS-010", "PS-011", "CM-001"],
-  "order": 30,
+  "track": "n/a",
+  "dependsOn": [
+    "PS-001",
+    "PS-002",
+    "PS-003",
+    "PS-004",
+    "PS-005",
+    "PS-006",
+    "PS-007",
+    "PS-008",
+    "PS-009",
+    "PS-010",
+    "PS-011",
+    "CM-001"
+  ],
+  "order": 1,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npx eslint src/app/api/enroll/route.ts src/lib/validation/enroll.ts"
+    ],
+    "findings": [
+      "TypeScript: no errors",
+      "ESLint: no errors, no warnings"
+    ],
+    "residual": "Frontend enrollment wizard still uses mock data — wiring to this API is a separate task."
+  },
+  "comments": [],
   "acceptance": [
     "POST /api/enroll accepts: courseId, userId (from session), enrollmentType (INDIVIDUAL/ORGANIZATION), paymentMethod",
     "Validate course exists and registrationStatus is OPEN or FEW_SEATS — 400 if not",

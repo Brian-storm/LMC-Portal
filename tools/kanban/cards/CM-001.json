@@ -1,12 +1,62 @@
 {
   "id": "CM-001",
   "title": "課程管理 API (後端) — GET + POST + PATCH + DELETE",
-  "epic": "課程管理",
-  "userStory": "課程 API",
+  "content": "",
   "stage": "done",
   "risk": "medium",
-  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006", "PS-007", "PS-008", "PS-009", "PS-010", "PS-011"],
-  "order": 20,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "課程管理",
+  "userStory": "課程 API",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-001",
+    "PS-002",
+    "PS-003",
+    "PS-004",
+    "PS-005",
+    "PS-006",
+    "PS-007",
+    "PS-008",
+    "PS-009",
+    "PS-010",
+    "PS-011"
+  ],
+  "order": 12,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "GET /api/courses?locale=en&category=cpd — returns paginated, filtered course list with schedules",
     "GET /api/courses/[slug]?locale=en — returns single course with instructors, syllabus, schedules, reviews, FAQs",

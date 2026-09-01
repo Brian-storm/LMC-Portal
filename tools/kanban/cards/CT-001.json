@@ -1,28 +1,66 @@
 {
-    "id":  "CT-001",
-    "title":  "條款頁 i18n — 移至字典系統",
-    "epic":  "內容與靜態頁面",
-    "userStory":  "條款與隱私頁 i18n",
-    "stage":  "done",
-    "risk":  "low",
-    "dependsOn":  [
-                      "PS-011"
-                  ],
-    "order":  50,
-    "acceptance":  [
-                       "Extract all hardcoded English/Chinese text from terms page into dictionary JSON files (en.json, zh-hk.json, zh-cn.json)",
-                       "Add \u0027termsPage\u0027 key to dictionary types (Dictionary type in src/dictionaries/types.ts)",
-                       "Terms page imports getDictionary and passes dict prop for all text",
-                       "Page heading, section titles, bullet points, footer text all read from dict",
-                       "All 3 locales render correct language content",
-                       "Section structure preserved: 1. General Terms, 2. Course Registration \u0026 Payment, 3. Cancellation \u0026 Refund, 4. CPD Accreditation, 5. Intellectual Property, 6. Limitation of Liability, 7. Governing Law"
-                   ],
-    "files":  [
-                  "src/app/[locale]/terms/page.tsx (rewrite — dict-driven)",
-                  "src/dictionaries/en.json (add termsPage section)",
-                  "src/dictionaries/zh-hk.json (add termsPage section)",
-                  "src/dictionaries/zh-cn.json (add termsPage section)",
-                  "src/dictionaries/types.ts (add TermsPageDict type)"
-              ],
-    "verification":  "Visit /en/terms → English terms. Visit /zh-hk/terms → Traditional Chinese terms. Visit /zh-cn/terms → Simplified Chinese terms. All sections present."
+  "id": "CT-001",
+  "title": "條款頁 i18n — 移至字典系統",
+  "content": "",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "內容與靜態頁面",
+  "userStory": "條款與隱私頁 i18n",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-011"
+  ],
+  "order": 13,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Extract all hardcoded English/Chinese text from terms page into dictionary JSON files (en.json, zh-hk.json, zh-cn.json)",
+    "Add 'termsPage' key to dictionary types (Dictionary type in src/dictionaries/types.ts)",
+    "Terms page imports getDictionary and passes dict prop for all text",
+    "Page heading, section titles, bullet points, footer text all read from dict",
+    "All 3 locales render correct language content",
+    "Section structure preserved: 1. General Terms, 2. Course Registration & Payment, 3. Cancellation & Refund, 4. CPD Accreditation, 5. Intellectual Property, 6. Limitation of Liability, 7. Governing Law"
+  ],
+  "files": [
+    "src/app/[locale]/terms/page.tsx (rewrite — dict-driven)",
+    "src/dictionaries/en.json (add termsPage section)",
+    "src/dictionaries/zh-hk.json (add termsPage section)",
+    "src/dictionaries/zh-cn.json (add termsPage section)",
+    "src/dictionaries/types.ts (add TermsPageDict type)"
+  ],
+  "verification": "Visit /en/terms → English terms. Visit /zh-hk/terms → Traditional Chinese terms. Visit /zh-cn/terms → Simplified Chinese terms. All sections present."
 }

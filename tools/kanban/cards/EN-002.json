@@ -1,12 +1,52 @@
 {
   "id": "EN-002",
   "title": "個人報名流程 → 真實 API 串接 (整合)",
-  "epic": "報名與結帳",
-  "userStory": "個人報名流程",
+  "content": "",
   "stage": "backlog",
   "risk": "medium",
-  "dependsOn": ["EN-001"],
-  "order": 31,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "track": "n/a",
+  "dependsOn": [
+    "EN-001"
+  ],
+  "order": 3,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Wire 3-step enrollment wizard to POST /api/enroll on form submission",
     "Step 1 (Personal Details): pre-fill name/email/phone from session user data via useSession()",

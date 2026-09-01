@@ -1,12 +1,53 @@
 {
   "id": "PR-003",
   "title": "PDF 電子收據生成 + SES 郵件發送 (後端)",
-  "epic": "金流與收據",
-  "userStory": "PDF 電子收據生成",
+  "content": "",
   "stage": "backlog",
   "risk": "high",
-  "dependsOn": ["PR-001", "EN-004"],
-  "order": 42,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "金流與收據",
+  "userStory": "PDF 電子收據生成",
+  "track": "n/a",
+  "dependsOn": [
+    "PR-001",
+    "EN-004"
+  ],
+  "order": 8,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Trigger on admin approval: after PATCH /api/admin/enrolments/[id] APPROVE, auto-generate PDF receipt",
     "PDF template using @react-pdf/renderer: bilingual ZH+EN, includes receipt number, registrant name, course name, fee, payment date, LMC letterhead",

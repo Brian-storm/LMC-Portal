@@ -1,12 +1,53 @@
 {
   "id": "EN-004",
   "title": "付款證明上傳 — S3 presigned URL (後端)",
-  "epic": "報名與結帳",
-  "userStory": "付款證明上傳",
+  "content": "",
   "stage": "ready",
   "risk": "high",
-  "dependsOn": ["PS-001", "PS-002"],
-  "order": 33,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "報名與結帳",
+  "userStory": "付款證明上傳",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-001",
+    "PS-002"
+  ],
+  "order": 1,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "POST /api/upload/presigned-url accepts: fileName, fileType, registrantId",
     "Generate S3 presigned PUT URL with 5-minute expiry via @aws-sdk/client-s3",
