@@ -1,6 +1,6 @@
 # 治理看板
 
-以 git 為同步機制的本地 Kanban 小工具，零依賴（只用 Node 內建模組），用來把 [`ai/process/kanban.md`](../../ai/process/kanban.md) 定義的 AI 協作治理流程視覺化：每張任務卡從 Backlog 一路推進到 Done 的過程中，會經過哪些欄位、需要哪些 Readiness 檢查與人工核准，都在這個看板上一目了然。
+以 git 為同步機制的本地 Kanban 小工具，零依賴（只用 Node 內建模組），用來把 [`.github/skills/monstrare/ai/process/kanban.md`](.github/skills/monstrare/ai/process/kanban.md) 定義的 AI 協作治理流程視覺化：每張任務卡從 Backlog 一路推進到 Done 的過程中，會經過哪些欄位、需要哪些 Readiness 檢查與人工核准，都在這個看板上一目了然。
 
 **看板分頁**（水平車道，Backlog → Blocked → Ready → Implementing → Verify → Done）：
 

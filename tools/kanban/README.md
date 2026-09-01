@@ -1,6 +1,6 @@
 # 治理看板
 
-以 git 為同步機制的本地 Kanban 小工具，零依賴（只用 Node 內建模組），用來把 [`ai/process/kanban.md`](../../ai/process/kanban.md) 定義的 AI 協作治理流程視覺化：每張任務卡從 Backlog 一路推進到 Done 的過程中，會經過哪些欄位、需要哪些 Readiness 檢查與人工核准，都在這個看板上一目了然。
+以 git 為同步機制的本地 Kanban 小工具，零依賴（只用 Node 內建模組），用來把 [`.github/skills/monstrare/ai/process/kanban.md`](../.github/skills/monstrare/ai/process/kanban.md) 定義的 AI 協作治理流程視覺化：每張任務卡從 Backlog 一路推進到 Done 的過程中，會經過哪些欄位、需要哪些 Readiness 檢查與人工核准，都在這個看板上一目了然。
 
 **看板分頁**（水平車道，Backlog → Blocked → Ready → Implementing → Verify → Done）：
 
@@ -14,7 +14,7 @@
 
 治理套件（Monstrare）要求每個非小型變更都要經過「規格 → 架構 → 任務卡 → 實作 → 驗證 → 審查 → 人工驗收」的關卡流程。光靠文件很難追蹤「現在有哪些任務卡在哪個關卡、卡在誰手上、是不是超過 WIP 上限」，這個看板就是那個流程的即時視覺化 + 輕量資料庫：每張卡是一個 git tracked 的 JSON 檔，拖曳、勾選、留言都會即時寫回檔案，靠 `git commit` / `git push` 同步給團隊或其他 agent，不需要額外的資料庫或帳號系統。
 
-原本 1:1 對應 `ai/process/kanban.md` 的 12 個治理階段，後改為 6 欄的精簡流程：`backlog`（Backlog 待辦）→ `blocked`（Blocked）→ `ready`（Ready 就緒）→ `implementing`（Implementing 進行中）→ `verify`（Verify 驗證中）→ `done`（Done 完成）。`ai/process/kanban.md` 本身未變，仍是完整的 12 階段治理政策；本工具是該政策的一種簡化實作，不要求逐欄對應（`ai/process/kanban.md` 也明講這一點）。
+原本 1:1 對應 `.github/skills/monstrare/ai/process/kanban.md` 的 12 個治理階段，後改為 6 欄的精簡流程：`backlog`（Backlog 待辦）→ `blocked`（Blocked）→ `ready`（Ready 就緒）→ `implementing`（Implementing 進行中）→ `verify`（Verify 驗證中）→ `done`（Done 完成）。`.github/skills/monstrare/ai/process/kanban.md` 本身未變，仍是完整的 12 階段治理政策；本工具是該政策的一種簡化實作，不要求逐欄對應（`.github/skills/monstrare/ai/process/kanban.md` 也明講這一點）。
 
 版面沿用 Mockup 階段選定的 **Variant A（控制塔）** 風格：水平車道逐一對應每個階段。另外兩個候選版面（階段分組、稽核清單表格）保留在 [`mockups/index.html`](mockups/index.html) 供參考，詳見 [`mockup-decision.md`](mockup-decision.md)（該文件與種子資料仍反映舊的 12 階段命名，僅供追溯選型過程，不代表目前欄位）。這些選型紀錄只存在 Monstrare 原始 repo；`scripts/install-into-project.sh` 安裝到其他專案時不會複製，所以在你的專案裡看不到這幾個檔案是正常的。
 
@@ -23,7 +23,7 @@
 - **看板**：6 車道控制塔（上述 Variant A）。
 - **藍圖**：功能模組（Epic）→ 用戶需求（User Story）→ 任務（Task）的階層檢視，每個 Epic／User Story 都會即時算出完成度（`stage === "done"` 的卡片數 / 總卡片數）。資料來自 [`epics.json`](epics.json)，任務卡透過 `epic` / `userStory` 兩個欄位對應回去；卡片若指定了 Epic 但沒指定對應的 User Story，會落在該 Epic 底下的「（未分類任務）」桶，不會憑空消失。
 
-`epics.json` 與 `cards/` 預設是空的模板狀態。開始一個新專案時，走 `ai/skills/project-kickoff.md` 的流程：先確認技術棧，再逐層讓人工勾選 Epic、User Story，最後把拆好的 Task 一張張寫成 `cards/` 底下的 JSON 檔（或透過本機 server 的 `POST /api/cards`）。
+`epics.json` 與 `cards/` 預設是空的模板狀態。開始一個新專案時，走 `.opencode/skills/project-kickoff/SKILL.md` 的流程：先確認技術棧，再逐層讓人工勾選 Epic、User Story，最後把拆好的 Task 一張張寫成 `cards/` 底下的 JSON 檔（或透過本機 server 的 `POST /api/cards`）。
 
 ## 啟動
 
@@ -53,7 +53,7 @@ npm run kanban
 
 ## WIP 上限
 
-`implementing`（Implementing 進行中）上限 3、`verify`（Verify 驗證中）上限 5，沿用 `ai/process/kanban.md` 對 Agent Working / Needs Review 的建議值。車道張數超過上限時，車道標頭的計數 badge 會變紅。上限只在 `index.html` 的 `WIP_CAPS` 裡（純前端視覺化，server 不做強制）。
+`implementing`（Implementing 進行中）上限 3、`verify`（Verify 驗證中）上限 5，沿用 `.github/skills/monstrare/ai/process/kanban.md` 對 Agent Working / Needs Review 的建議值。車道張數超過上限時，車道標頭的計數 badge 會變紅。上限只在 `index.html` 的 `WIP_CAPS` 裡（純前端視覺化，server 不做強制）。
 
 ## Card JSON schema
 
@@ -72,7 +72,7 @@ npm run kanban
 | `userStory` | string | 對應該 Epic 底下某個 User Story 的 `name`，留空代表未分類 |
 | `dependsOn` | array | 前置任務卡片 id 陣列（字串），預設 `[]`；要推進到 `ready`／`implementing`／`verify`／`done` 前，陣列裡列出的卡片都必須是 `done`，見下方「dependsOn 硬防呆」 |
 | `order` | number | 欄內排序，整數、欄內從 1 起 |
-| `readiness` | object | 對應 `ai/templates/kanban-card.md` 的 7 項 Readiness，各為 boolean |
+| `readiness` | object | 對應 `.github/skills/monstrare/ai/templates/kanban-card.md` 的 7 項 Readiness，各為 boolean |
 | `gates` | object | 6 個 Review Gates（product/ui/architecture/security/test/code_review），各為 boolean |
 | `links` | object | 6 種關聯文件路徑（featureSpec/screenSpec/mockupDecision/taskCard/verificationReport/pr），字串、可留空 |
 | `refs` | array | repo 相對路徑（string 陣列，唯讀顯示） |
