@@ -4,6 +4,12 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 export type TextSize = "md" | "lg" | "xl";
 
+const SCALE_MAP: Record<TextSize, number> = {
+  md: 1,
+  lg: 1.125,
+  xl: 1.25,
+};
+
 interface AccessibilityContextType {
   textSize: TextSize;
   setTextSize: (size: TextSize) => void;
@@ -25,12 +31,10 @@ export function AccessibilityProvider({
 
   useEffect(() => {
     const root = document.documentElement;
-
-    // Remove old scaling classes
-    root.classList.remove("text-size-md", "text-size-lg", "text-size-xl");
-
-    // Apply new tier class to HTML root
-    root.classList.add(`text-size-${textSize}`);
+    // Scale the root font-size so all rem values (including Tailwind text-*)
+    // scale proportionally. This preserves relative sizing (text-xs stays
+    // smaller than text-sm) while still respecting the accessibility tier.
+    root.style.fontSize = `calc(100% * ${SCALE_MAP[textSize]})`;
   }, [textSize]);
 
   return (

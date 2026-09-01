@@ -12,27 +12,7 @@
   --font-sans: Arial, "Helvetica Neue", Helvetica, "PingFang HK", "Microsoft JhengHei", "微軟正黑體", sans-serif;
 }
 
-/* Accessibility Text Scaling */
-.accessibility-wrapper.text-size-md {
-  --text-scale: 1;
-}
-
-.accessibility-wrapper.text-size-lg {
-  --text-scale: 1.125;
-}
-
-.accessibility-wrapper.text-size-xl {
-  --text-scale: 1.25;
-}
-
-.accessibility-wrapper p:not(.no-scale),
-.accessibility-wrapper span:not(.no-scale),
-.accessibility-wrapper a:not(.no-scale),
-.accessibility-wrapper h1:not(.no-scale),
-.accessibility-wrapper h2:not(.no-scale),
-.accessibility-wrapper h3:not(.no-scale) {
-  font-size: calc(1em * var(--text-scale, 1));
-}
+/* Accessibility Text Scaling — now handled inline via root font-size in AccessibilityContext.tsx */
 
 .high-contrast {
   filter: contrast(125%);
