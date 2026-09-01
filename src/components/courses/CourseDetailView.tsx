@@ -54,9 +54,10 @@ export function CourseDetailView({
 
   const statusBadge = getStatusBadge(course.status);
   const isEnrollable = course.status === "open" || course.status === "fewSeats";
+  const targetSlug = course.slug || course.id;
   const enrollUrl = currentLocale
-    ? `/${currentLocale}/courses/${course.id}/enroll`
-    : `/courses/${course.id}/enroll`;
+    ? `/${currentLocale}/courses/${targetSlug}/enroll`
+    : `/courses/${targetSlug}/enroll`;
 
   return (
     <div className="bg-slate-100/80 min-h-screen py-6 sm:py-8 border-t border-slate-300">

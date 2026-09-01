@@ -2,7 +2,7 @@
   "id": "CM-003",
   "title": "課程詳情頁 → 真實 API 串接 (前端)",
   "content": "",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "Brian",
   "agent": "",
@@ -16,35 +16,44 @@
   ],
   "order": 1,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
-    "verification_contract": false,
-    "human_approval_recorded": false
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
   },
   "gates": {
-    "product": false,
-    "ui": false,
-    "architecture": false,
-    "security": false,
-    "test": false,
-    "code_review": false
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "",
+    "taskCard": "tools/kanban/cards/CM-003.json",
     "verificationReport": "",
     "pr": ""
   },
   "refs": [],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck (passed — 0 errors)",
+      "npm run lint (passed — 0 new warnings)"
+    ],
+    "findings": [
+      "Created src/lib/map-course-detail.ts: maps API response (instructors via junction, locale-aware syllabus/topics/FAQs) to DetailedCourse",
+      "Rewrote src/app/[locale]/courses/[slug]/page.tsx: replaced inline 278-line mock with server-side fetch('/api/courses/[slug]?locale=...'), calls notFound() on 404",
+      "Updated CourseDetailView: enroll URL now uses course.slug instead of course.id for correct routing",
+      "All sections render real DB data: syllabus (moduleNumber/title/duration/topics), instructors (name/title/bio/avatarUrl), schedules, reviews, FAQs",
+      "Status badge correctly maps OPEN/FEW_SEATS/FULL/CLOSED from DB registrationStatus"
+    ],
+    "residual": "Pre-existing lint warnings in CourseDetailView.tsx (unescaped entities at rev.comment, unused imports) remain unchanged. Requires seeded PostgreSQL DB to show real data."
   },
   "comments": [],
   "acceptance": [
@@ -62,8 +71,9 @@
     "Loading skeleton while data is fetched"
   ],
   "files": [
-    "src/app/[locale]/courses/[slug]/page.tsx (rewrite — fetch from API)",
-    "src/components/courses/CourseDetailView.tsx (update — remove mock defaults, ensure all real fields passed)"
+    "src/lib/map-course-detail.ts (new — API-to-DetailedCourse mapper)",
+    "src/app/[locale]/courses/[slug]/page.tsx (rewrite — server-side fetch from API)",
+    "src/components/courses/CourseDetailView.tsx (update — enroll URL uses slug instead of id)"
   ],
   "verification": "Visit /en/courses/cpd-101 → shows real course with all tabs populated. Visit /en/courses/nonexistent → 404. Instructor photo loads from DB avatarUrl. Syllabus modules show correct count."
 }
