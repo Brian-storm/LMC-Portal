@@ -2,7 +2,7 @@
   "id": "CM-002",
   "title": "課程目錄頁 → 真實 API 串接 (前端)",
   "content": "",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "Brian",
   "agent": "",
@@ -14,7 +14,7 @@
   "dependsOn": [
     "CM-001"
   ],
-  "order": 1,
+  "order": 13,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

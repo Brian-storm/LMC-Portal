@@ -1,12 +1,52 @@
 {
   "id": "PS-009",
   "title": "S3: Design Token 定義",
-  "epic": "專案設置",
-  "userStory": "UI 設計系統",
+  "content": "",
   "stage": "done",
   "risk": "low",
-  "dependsOn": ["PS-008"],
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-008"
+  ],
   "order": 9,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Extract complete token set from approved style direction:",
     "Color: grey scale (9-10 shades), primary/emerald scale, accent/amber scale, semantic (success/warning/danger/info)",

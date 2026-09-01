@@ -1,12 +1,50 @@
 {
   "id": "PS-002",
   "title": "Prisma schema + 資料庫遷移 + seed 腳本",
-  "epic": "專案設置",
-  "userStory": "核心資料模型",
+  "content": "",
   "stage": "done",
   "risk": "medium",
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "核心資料模型",
+  "track": "n/a",
   "dependsOn": [],
   "order": 2,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Prisma schema defines all 6 models: User, Organization, Course, Instructor, Registrant, Admin",
     "All enums: Role, RegistrationStatus, EnrollmentType, PaymentStatus, PaymentMethod, AdminPermission",

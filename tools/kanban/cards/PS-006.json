@@ -1,12 +1,53 @@
 {
   "id": "PS-006",
   "title": "Middleware 路由保護 + auth 串接 (整合)",
-  "epic": "專案設置",
-  "userStory": "認證框架",
+  "content": "",
   "stage": "done",
   "risk": "high",
-  "dependsOn": ["PS-003", "PS-005"],
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-003",
+    "PS-005"
+  ],
   "order": 6,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "middleware.ts auth() checks on /admin → redirects non-admin to /login",
     "auth() checks on /dashboard → redirects unauthenticated to /login",

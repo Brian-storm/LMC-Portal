@@ -1,12 +1,53 @@
 {
   "id": "PS-004",
   "title": "註冊 API endpoint (後端)",
-  "epic": "專案設置",
-  "userStory": "認證框架",
+  "content": "",
   "stage": "done",
   "risk": "medium",
-  "dependsOn": ["PS-002", "PS-003"],
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "認證框架",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-002",
+    "PS-003"
+  ],
   "order": 4,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "POST /api/auth/register accepts: nameZh, nameEn, email, password, phone, idDocNumber, iaLicense?, organization?",
     "Password hashed with bcrypt (10 rounds) before storage",

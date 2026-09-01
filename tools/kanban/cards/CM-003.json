@@ -14,7 +14,7 @@
   "dependsOn": [
     "CM-001"
   ],
-  "order": 2,
+  "order": 1,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

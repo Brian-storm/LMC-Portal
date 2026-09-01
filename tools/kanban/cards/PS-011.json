@@ -1,12 +1,52 @@
 {
   "id": "PS-011",
   "title": "S5: 各介面版面 Mockup",
-  "epic": "專案設置",
-  "userStory": "UI 設計系統",
+  "content": "",
   "stage": "done",
   "risk": "medium",
-  "dependsOn": ["PS-010"],
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "UI 設計系統",
+  "track": "n/a",
+  "dependsOn": [
+    "PS-010"
+  ],
   "order": 11,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Using approved tokens (S3) + component library (S4), produce 2-3 layout variants for each interface:",
     "Interface A: Public-facing (home page layout, course catalog, course detail, enrollment form, login)",

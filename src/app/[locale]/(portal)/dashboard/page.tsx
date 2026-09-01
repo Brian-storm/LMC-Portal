@@ -14,7 +14,8 @@ import {
   Building2,
   AlertCircle,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
 
 export default function LearnerDashboardPage() {
@@ -130,15 +131,16 @@ export default function LearnerDashboardPage() {
           </div>
 
           {/* Browse Catalog Button */}
-          <Button
-            asChild
-            className="bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-none text-xs font-bold uppercase tracking-wider px-5 py-2.5 self-start md:self-auto border border-emerald-900 shadow-xs"
+          <Link
+            href={`/${locale}/courses`}
+            className={cn(
+              buttonVariants({ variant: "default", size: "default" }),
+              "bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-none text-xs font-bold uppercase tracking-wider px-5 py-2.5 self-start md:self-auto border border-emerald-900 shadow-xs",
+            )}
           >
-            <Link href={`/${locale}/courses`}>
-              <BookOpen className="w-4 h-4 mr-2" />
-              Browse Catalog
-            </Link>
-          </Button>
+            <BookOpen className="w-4 h-4 mr-2" />
+            Browse Catalog
+          </Link>
         </header>
 
         {/* CPD Requirement Overview Cards */}
@@ -251,21 +253,18 @@ export default function LearnerDashboardPage() {
                     </h3>
                   </div>
 
-                  {/* Smaller Receipt Button using Button asChild */}
+                  {/* Smaller Receipt Button using Link + buttonVariants */}
                   <div className="flex items-center space-x-2 shrink-0">
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="rounded-none border-slate-300 text-slate-800 hover:bg-slate-100 text-[10px] font-bold uppercase tracking-wider h-7 px-2.5"
+                    <Link
+                      href={`/${locale}/dashboard/enrolments/${item.id}/confirmation`}
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "rounded-none border-slate-300 text-slate-800 hover:bg-slate-100 text-[10px] font-bold uppercase tracking-wider h-7 px-2.5",
+                      )}
                     >
-                      <Link
-                        href={`/${locale}/dashboard/enrolments/${item.id}/confirmation`}
-                      >
-                        Receipt
-                        <ExternalLink className="w-3 h-3 ml-1 text-slate-500" />
-                      </Link>
-                    </Button>
+                      Receipt
+                      <ExternalLink className="w-3 h-3 ml-1 text-slate-500" />
+                    </Link>
                   </div>
                 </div>
 

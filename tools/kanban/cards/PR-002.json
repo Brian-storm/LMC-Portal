@@ -14,7 +14,7 @@
   "dependsOn": [
     "PR-001"
   ],
-  "order": 7,
+  "order": 6,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

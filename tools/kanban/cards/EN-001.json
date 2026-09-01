@@ -2,7 +2,7 @@
   "id": "EN-001",
   "title": "報名 API endpoint (後端)",
   "content": "",
-  "stage": "verify",
+  "stage": "done",
   "risk": "high",
   "owner": "Brian",
   "agent": "opencode (deepseek-v4-flash)",
@@ -55,15 +55,23 @@
   "evidence": {
     "commands": [
       "npm run typecheck",
-      "npx eslint src/app/api/enroll/route.ts src/lib/validation/enroll.ts"
+      "npx eslint src/app/api/enroll/route.ts src/lib/validation/enroll.ts",
+      "curl POST /api/enroll with valid session → 201"
     ],
     "findings": [
       "TypeScript: no errors",
-      "ESLint: no errors, no warnings"
+      "ESLint: no errors, no warnings",
+      "Manual test: 201 with registrantId + groupId returned"
     ],
     "residual": "Frontend enrollment wizard still uses mock data — wiring to this API is a separate task."
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "Brian",
+      "time": "2026-09-01T16:15:00+08:00",
+      "text": "Verified manually via browser DevTools — POST /api/enroll returned 201 with registrantId and groupId."
+    }
+  ],
   "acceptance": [
     "POST /api/enroll accepts: courseId, userId (from session), enrollmentType (INDIVIDUAL/ORGANIZATION), paymentMethod",
     "Validate course exists and registrationStatus is OPEN or FEW_SEATS — 400 if not",
