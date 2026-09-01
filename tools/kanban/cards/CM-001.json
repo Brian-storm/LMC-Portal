@@ -3,9 +3,9 @@
   "title": "課程管理 API (後端) — GET + POST + PATCH + DELETE",
   "epic": "課程管理",
   "userStory": "課程 API",
-  "stage": "backlog",
+  "stage": "ready",
   "risk": "medium",
-  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006"],
+  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006", "PS-007", "PS-008", "PS-009", "PS-010", "PS-011"],
   "order": 20,
   "acceptance": [
     "GET /api/courses?locale=en&category=cpd — returns paginated, filtered course list with schedules",

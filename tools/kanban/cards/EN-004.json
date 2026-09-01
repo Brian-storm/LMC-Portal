@@ -1,0 +1,29 @@
+{
+  "id": "EN-004",
+  "title": "付款證明上傳 — S3 presigned URL (後端)",
+  "epic": "報名與結帳",
+  "userStory": "付款證明上傳",
+  "stage": "ready",
+  "risk": "high",
+  "dependsOn": ["PS-001", "PS-002"],
+  "order": 33,
+  "acceptance": [
+    "POST /api/upload/presigned-url accepts: fileName, fileType, registrantId",
+    "Generate S3 presigned PUT URL with 5-minute expiry via @aws-sdk/client-s3",
+    "Validate fileType is image/jpeg, image/png, image/webp, or application/pdf — reject others",
+    "Validate file size < 10MB (check via Content-Length header expectation)",
+    "Store S3 key pattern: uploads/{registrantId}/{timestamp}-{sanitized-filename}",
+    "Return { uploadUrl, key } to client",
+    "POST /api/upload/confirm accepts: registrantId, key",
+    "Update Registrant.paymentProofUrl in DB to the S3 key",
+    "Auth check: only the registrant's user or admin can upload"
+  ],
+  "files": [
+    "src/app/api/upload/presigned-url/route.ts (new)",
+    "src/app/api/upload/confirm/route.ts (new)",
+    "src/lib/s3.ts (new — S3 client singleton)",
+    "package.json (add @aws-sdk/client-s3, @aws-sdk/s3-request-presigner)"
+  ],
+  "dependencies": "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner",
+  "verification": "POST /api/upload/presigned-url with valid fileType → returns uploadUrl. Upload file to that URL via curl → 200. POST /api/upload/confirm → DB updated with paymentProofUrl. Invalid fileType → 400."
+}

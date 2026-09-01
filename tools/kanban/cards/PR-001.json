@@ -1,0 +1,25 @@
+{
+  "id": "PR-001",
+  "title": "管理員審核 API (後端)",
+  "epic": "金流與收據",
+  "userStory": "管理員審核後台",
+  "stage": "backlog",
+  "risk": "high",
+  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006", "PS-007", "PS-008", "PS-009", "PS-010", "PS-011", "EN-001"],
+  "order": 40,
+  "acceptance": [
+    "GET /api/admin/enrolments?status=PENDING_VERIFICATION&page=1 — returns paginated enrolments with user + course info",
+    "PATCH /api/admin/enrolments/[id] — accepts { action: 'APPROVE' | 'REJECT', reason?: string }",
+    "APPROVE sets paymentStatus to VERIFIED, updates receiptNumber with auto-generated sequential number",
+    "REJECT sets paymentStatus to REJECTED, stores rejection reason",
+    "Admin-only: use middleware role check (only ADMIN role can access)",
+    "Payment proof image served via presigned GET URL from S3 (generate temporary download URL)",
+    "Zod validation on PATCH inputs"
+  ],
+  "files": [
+    "src/app/api/admin/enrolments/route.ts (new — GET list)",
+    "src/app/api/admin/enrolments/[id]/route.ts (new — PATCH approve/reject)",
+    "src/lib/validation/admin.ts (new — Zod schema)"
+  ],
+  "verification": "GET /api/admin/enrolments as ADMIN → returns list with user.nameEn, course.nameEn, paymentStatus. PATCH to approve → paymentStatus=VERIFIED. PATCH to reject → paymentStatus=REJECTED. Non-admin → 403."
+}

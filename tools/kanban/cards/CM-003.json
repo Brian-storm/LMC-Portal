@@ -1,0 +1,29 @@
+{
+  "id": "CM-003",
+  "title": "課程詳情頁 → 真實 API 串接 (前端)",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["CM-001"],
+  "order": 22,
+  "acceptance": [
+    "Replace inline mock getCourseBySlug() with fetch('/api/courses/' + slug + '?locale=' + locale) in server component",
+    "CourseDetailView receives real data via props from server component",
+    "All sections display real data: overview, syllabus/modules, instructor profiles, upcoming schedules, reviews, FAQs",
+    "Syllabus tab shows moduleNumber, title, duration, topics from DB",
+    "Instructor tab shows name, title, bio, photo from DB (avatarUrl → <img>)",
+    "Schedule tab shows dateAndTime, venue, quotaRemaining from DB",
+    "Reviews tab shows authorName, authorRole, rating, comment, date from DB",
+    "FAQs tab shows question/answer pairs from DB",
+    "Enroll button links preserved to /[locale]/courses/[slug]/enroll",
+    "404 page shown when course slug not found (notFound())",
+    "Status badge logic correct: OPEN/FEW_SEATS/FULL/CLOSED from DB registrationStatus",
+    "Loading skeleton while data is fetched"
+  ],
+  "files": [
+    "src/app/[locale]/courses/[slug]/page.tsx (rewrite — fetch from API)",
+    "src/components/courses/CourseDetailView.tsx (update — remove mock defaults, ensure all real fields passed)"
+  ],
+  "verification": "Visit /en/courses/cpd-101 → shows real course with all tabs populated. Visit /en/courses/nonexistent → 404. Instructor photo loads from DB avatarUrl. Syllabus modules show correct count."
+}

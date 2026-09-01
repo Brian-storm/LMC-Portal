@@ -1,0 +1,29 @@
+{
+  "id": "PR-003",
+  "title": "PDF 電子收據生成 + SES 郵件發送 (後端)",
+  "epic": "金流與收據",
+  "userStory": "PDF 電子收據生成",
+  "stage": "backlog",
+  "risk": "high",
+  "dependsOn": ["PR-001", "EN-004"],
+  "order": 42,
+  "acceptance": [
+    "Trigger on admin approval: after PATCH /api/admin/enrolments/[id] APPROVE, auto-generate PDF receipt",
+    "PDF template using @react-pdf/renderer: bilingual ZH+EN, includes receipt number, registrant name, course name, fee, payment date, LMC letterhead",
+    "Generate auto-incrementing receipt number format: RCPT-{YYYY}-{NNNNN}",
+    "Store PDF in S3: receipts/{receiptNumber}.pdf",
+    "Apply pdf-lib password protection: password = registrant's idDocNumber",
+    "Update Registrant.receiptNumber in DB with generated number",
+    "Send email via nodemailer + SES transport: bilingual template (ZH+EN subject/body), PDF as attachment",
+    "Email to: registrant's email (from User model); BCC: admin@lmcconsulting.hk",
+    "Error handling: if email fails, receipt is still stored in S3 and DB — log failure, do not roll back approval"
+  ],
+  "files": [
+    "src/lib/receipt/generate.ts (new — @react-pdf/renderer template + S3 upload + pdf-lib lock)",
+    "src/lib/email/send.ts (new — nodemailer + SES transport)",
+    "src/app/api/admin/enrolments/[id]/route.ts (update — trigger receipt + email on approve)",
+    "package.json (add @react-pdf/renderer, pdf-lib, nodemailer, @aws-sdk/client-ses)"
+  ],
+  "dependencies": "npm install @react-pdf/renderer pdf-lib nodemailer @aws-sdk/client-ses @types/nodemailer",
+  "verification": "Admin approves enrolment → PDF generated in S3, receiptNumber set in DB, email received with PDF attachment. PDF password-protected with idDocNumber. Receipt format: RCPT-2026-00001."
+}

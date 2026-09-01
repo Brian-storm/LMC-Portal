@@ -1,0 +1,24 @@
+{
+  "id": "PR-002",
+  "title": "管理員審核後台 → 真實數據串接 (前端)",
+  "epic": "金流與收據",
+  "userStory": "管理員審核後台",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["PR-001"],
+  "order": 41,
+  "acceptance": [
+    "Replace placeholder 'Module Under Development' in /admin/enrolments with real data table",
+    "Table columns: enrollee name, course name, enrollment type, payment method, payment status badge, submitted date, actions",
+    "Payment proof preview: click row → modal/drawer with image loaded via presigned GET URL",
+    "Approve button: calls PATCH /api/admin/enrolments/[id] with action=APPROVE, shows success toast",
+    "Reject button: opens confirm dialog with optional reason textarea, calls PATCH with action=REJECT",
+    "Status filter tabs: All / Pending / Verified / Rejected — filters API query",
+    "Loading state: skeleton table rows while data fetches",
+    "Empty state: 'No enrolments found' message with icon"
+  ],
+  "files": [
+    "src/app/[locale]/admin/enrolments/page.tsx (rewrite — real data table)"
+  ],
+  "verification": "Visit /en/admin/enrolments → table loads with real enrolments. Click 'Approve' → row updates to VERIFIED. Click payment proof → S3 image shown in modal. Filter by 'Rejected' → only rejected rows shown."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "CM-002",
+  "title": "課程目錄頁 → 真實 API 串接 (前端)",
+  "epic": "課程管理",
+  "userStory": "課程目錄頁",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["CM-001"],
+  "order": 21,
+  "acceptance": [
+    "Replace inline mock getCourses() with fetch('/api/courses?locale=' + locale + '&category=' + filter) in page server component",
+    "Search input filters courses by title/description client-side on keyup",
+    "Category filter dropdown (All Categories / CPD / Compliance / Management) updates query param and re-fetches",
+    "CPD Hours range filter (min/max inputs) passes to API query params",
+    "Loading skeleton shown while course list is fetched",
+    "Empty state message when no courses match filters (from dict.courseView.emptyState)",
+    "Each course card shows: title, description, cpdHours, deliveryMode, language, fee, status badge, quota remaining",
+    "Course cards link to /[locale]/courses/[slug]",
+    "Pagination or 'Load More' if result count exceeds page size",
+    "Error state: if API fetch fails, show retry button"
+  ],
+  "files": [
+    "src/app/[locale]/courses/page.tsx (rewrite — fetch from API)",
+    "src/components/courses/CoursesView.tsx (rewrite — accept data prop, add loading/empty/error states)"
+  ],
+  "verification": "Visit /en/courses → courses load from real DB. Select 'CPD' filter → only CPD courses shown. Search 'Legacy' → filters to matching courses. Empty search → shows empty state message. API down → shows error with retry button."
+}

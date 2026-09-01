@@ -1,0 +1,28 @@
+{
+  "id": "EN-001",
+  "title": "報名 API endpoint (後端)",
+  "epic": "報名與結帳",
+  "userStory": "報名 API",
+  "stage": "backlog",
+  "risk": "high",
+  "dependsOn": ["PS-001", "PS-002", "PS-003", "PS-004", "PS-005", "PS-006", "PS-007", "PS-008", "PS-009", "PS-010", "PS-011", "CM-001"],
+  "order": 30,
+  "acceptance": [
+    "POST /api/enroll accepts: courseId, userId (from session), enrollmentType (INDIVIDUAL/ORGANIZATION), paymentMethod",
+    "Validate course exists and registrationStatus is OPEN or FEW_SEATS — 400 if not",
+    "Check schedule quotaRemaining > 0 — 400 if full",
+    "Decrement quotaRemaining atomically (use prisma.$transaction with findFirst + update)",
+    "Create Registrant record in DB with paymentStatus: PENDING_VERIFICATION",
+    "For group enrollment (enrollmentType ORGANIZATION): accept registrants array with nameZh, nameEn, email, idDocNumber for each member",
+    "Auth check: only authenticated users can POST (use auth() from middleware/session)",
+    "Return 201 with { registrantId, groupId } on success",
+    "Zod validation on all inputs",
+    "Error handling: return appropriate 400/401/404/500 with messages"
+  ],
+  "files": [
+    "src/app/api/enroll/route.ts (new)",
+    "src/lib/validation/enroll.ts (new — Zod schema)"
+  ],
+  "dependencies": "npm install zod (already installed)",
+  "verification": "POST /api/enroll with valid courseId + authenticated session → 201 with registrantId. POST to full course → 400. POST without auth → 401. POST with invalid courseId → 404."
+}

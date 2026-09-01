@@ -1,0 +1,27 @@
+{
+  "id": "CT-003",
+  "title": "關於我們頁 i18n — 移至字典系統",
+  "epic": "內容與靜態頁面",
+  "userStory": "關於我們頁 i18n",
+  "stage": "ready",
+  "risk": "low",
+  "dependsOn": ["PS-011"],
+  "order": 52,
+  "acceptance": [
+    "Extract all hardcoded text from about page into dictionary JSON files",
+    "Add 'aboutPage' key to dictionary types",
+    "About page imports getDictionary and uses dict prop for all text",
+    "Section structure preserved: 1. Hero/使命, 2. 我們是誰 (Who We Are), 3. 我們的服務 (Our Services), 4. 我們的課程 (Our Courses), 5. CTA (Contact Us)",
+    "Add real bilingual content for each section (not Lorem Ipsum — actual institutional copy)",
+    "All 3 locales render correct language content",
+    "CTA button links to contact page (if exists) or mailto:"
+  ],
+  "files": [
+    "src/app/[locale]/about/page.tsx (rewrite — dict-driven + real content)",
+    "src/dictionaries/en.json (add aboutPage section)",
+    "src/dictionaries/zh-hk.json (add aboutPage section)",
+    "src/dictionaries/zh-cn.json (add aboutPage section)",
+    "src/dictionaries/types.ts (add AboutPageDict type)"
+  ],
+  "verification": "Visit /en/about → English institutional content. Visit /zh-hk/about → Traditional Chinese. All sections present with real copy (no lorem ipsum). CTA linked correctly."
+}

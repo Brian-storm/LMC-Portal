@@ -1,0 +1,24 @@
+{
+  "id": "EN-003",
+  "title": "團體報名表單 (前端)",
+  "epic": "報名與結帳",
+  "userStory": "團體報名表單",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["EN-001"],
+  "order": 32,
+  "acceptance": [
+    "Add Individual/Organization enrollment type toggle in Step 1 of the enrollment wizard",
+    "When 'Organization' selected: show dynamic multi-registrant form (Add Member / Remove Member buttons)",
+    "Each member row: nameZh, nameEn, email, idDocNumber fields",
+    "Running total calculation: course fee × number of members displayed in review step",
+    "Form validation: all member fields required when enrollment type is ORGANIZATION",
+    "Submit sends enrollmentType + registrants[] array to POST /api/enroll",
+    "Loading/error states preserved from EN-002",
+    "Members list persists across wizard steps (state not lost on back/next)"
+  ],
+  "files": [
+    "src/app/[locale]/courses/[slug]/enroll/page.tsx (update — add group mode)"
+  ],
+  "verification": "Select 'Organization' → add 3 members → review step shows fee × 3 → submit → succeeds. Remove a member → total updates. Switch back to Individual → group fields hidden."
+}

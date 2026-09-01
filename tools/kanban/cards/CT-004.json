@@ -1,0 +1,28 @@
+{
+  "id": "CT-004",
+  "title": "聯絡我們頁 (新頁面 + i18n)",
+  "epic": "內容與靜態頁面",
+  "userStory": "聯絡我們頁",
+  "stage": "ready",
+  "risk": "low",
+  "dependsOn": ["PS-011"],
+  "order": 53,
+  "acceptance": [
+    "New page at /[locale]/contact with server component + dict prop",
+    "Sections: 1. Office address with embedded Google Maps iframe (Tsim Sha Tsui office), 2. Contact methods (phone, email, WhatsApp links), 3. Office hours",
+    "WhatsApp link: use wa.me international format with HK country code",
+    "Email link: mailto: with subject pre-filled",
+    "Phone link: tel: with HK number",
+    "All text from dictionary (add 'contactPage' key to all 3 locale JSONs)",
+    "Page styled consistently with institutional slate/emerald theme (match about page card style)",
+    "Responsive: single column on mobile, 2-column on desktop (map left, info right)"
+  ],
+  "files": [
+    "src/app/[locale]/contact/page.tsx (new)",
+    "src/dictionaries/en.json (add contactPage section)",
+    "src/dictionaries/zh-hk.json (add contactPage section)",
+    "src/dictionaries/zh-cn.json (add contactPage section)",
+    "src/dictionaries/types.ts (add ContactPageDict type)"
+  ],
+  "verification": "Visit /en/contact → map embedded, phone/email/WhatsApp links functional. /zh-hk/contact → Chinese content. Mobile: single column layout. Desktop: side-by-side."
+}

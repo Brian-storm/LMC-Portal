@@ -1,0 +1,25 @@
+{
+  "id": "EN-002",
+  "title": "個人報名流程 → 真實 API 串接 (整合)",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["EN-001"],
+  "order": 31,
+  "acceptance": [
+    "Wire 3-step enrollment wizard to POST /api/enroll on form submission",
+    "Step 1 (Personal Details): pre-fill name/email/phone from session user data via useSession()",
+    "Step 2 (Review): display course name, fee, schedule date from API fetch, plus user details from Step 1",
+    "Step 3 (Confirmation): on success, redirect to /[locale]/checkout/confirmation?orderId=<registrantId>",
+    "Replace setTimeout mock with real API call",
+    "Loading state on submit button ('Processing Enrollment...')",
+    "Error handling: display inline error message if API returns 4xx/5xx",
+    "Remove hardcoded 'demo-123' redirect — use real registrantId from API response",
+    "Locale-aware: links and redirects respect current locale from useParams"
+  ],
+  "files": [
+    "src/app/[locale]/courses/[slug]/enroll/page.tsx (rewrite — wire to real API)"
+  ],
+  "verification": "Fill form in all 3 steps → submit → redirected to /en/checkout/confirmation?orderId=<real-id>. API returns 400 → error message shown in wizard. Pre-filled name/email from session."
+}

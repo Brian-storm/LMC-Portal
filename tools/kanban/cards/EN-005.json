@@ -1,0 +1,26 @@
+{
+  "id": "EN-005",
+  "title": "PaymentSlipUploader → 直接上傳至 S3 (整合)",
+  "epic": "報名與結帳",
+  "userStory": "付款證明上傳",
+  "stage": "backlog",
+  "risk": "medium",
+  "dependsOn": ["EN-004"],
+  "order": 34,
+  "acceptance": [
+    "Update PaymentSlipUploader to use presigned URL flow instead of FormData POST to /api/upload-slip",
+    "Step 1: Call POST /api/upload/presigned-url to get upload URL",
+    "Step 2: PUT file directly to S3 presigned URL (client-side upload, bypass server)",
+    "Step 3: Call POST /api/upload/confirm to record paymentProofUrl in DB",
+    "Show upload progress bar during client-side PUT",
+    "File type validation on client (before API call): reject non-image/PDF",
+    "File size validation on client: reject > 10MB",
+    "Replace alert() error handling with inline error message using AlertCircle icon",
+    "Success state: show green check + 'Payment proof uploaded successfully'"
+  ],
+  "files": [
+    "src/components/PaymentSlipUploader.tsx (rewrite — presigned URL flow)",
+    "src/app/[locale]/checkout/confirmation/page.tsx (update — pass real orderId from searchParams)"
+  ],
+  "verification": "Select PDF file < 10MB → upload progress bar → success message. Select 15MB file → client-side error. Select .exe file → rejected on client. Check DB: paymentProofUrl populated."
+}
