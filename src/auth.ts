@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 declare module "next-auth" {
   interface User {
     role?: string;
+    organization?: string | null;
   }
   interface Session {
     user: {
@@ -15,6 +16,7 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
+      organization?: string | null;
     };
   }
 }
@@ -23,6 +25,7 @@ declare module "@auth/core/jwt" {
   interface JWT {
     role?: string;
     userId?: string;
+    organization?: string | null;
   }
 }
 
@@ -61,6 +64,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: user.email,
         name: user.nameEn,
         role: user.role,
+        organization: user.organization,
       };
     },
   }),
@@ -72,6 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // 'user' is only defined on the VERY FIRST login attempt
       token.role = user.role as string;
       token.userId = user.id as string;
+      token.organization = user.organization as string | null;
     }
     return token; // Saved to browser cookie
   },
@@ -81,6 +86,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // Reads from the token created above and attaches it to the session object
     session.user.role = token.role as string | undefined;
     session.user.id = (token.userId ?? token.sub) as string;
+    session.user.organization = token.organization as string | null | undefined;
     return session; 
   },
   },

@@ -17,6 +17,9 @@ import {
   FileCheck,
   Building,
   Loader2,
+  Plus,
+  Users,
+  Trash2,
 } from "lucide-react";
 
 interface CourseData {
@@ -70,6 +73,45 @@ export default function CourseEnrollmentPage() {
     paymentMethod: "credit_card",
   });
 
+  // Enrollment type toggle: INDIVIDUAL vs ORGANIZATION
+  const [enrollmentType, setEnrollmentType] = useState<"INDIVIDUAL" | "ORGANIZATION">("INDIVIDUAL");
+
+  // Multi-registrant rows for ORGANIZATION enrollment
+  const [registrantMembers, setRegistrantMembers] = useState<
+    { nameZh: string; nameEn: string; email: string; idDocNumber: string }[]
+  >([]);
+
+  // Handler for individual registrant member fields
+  const handleMemberChange = (
+    index: number,
+    field: "nameZh" | "nameEn" | "email" | "idDocNumber",
+    value: string,
+  ) => {
+    setRegistrantMembers((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  // Add a blank member row
+  const addMember = () => {
+    setRegistrantMembers((prev) => [
+      ...prev,
+      { nameZh: "", nameEn: "", email: "", idDocNumber: "" },
+    ]);
+  };
+
+  // Remove a member row by index
+  const removeMember = (index: number) => {
+    setRegistrantMembers((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Computed head count for ORGANIZATION (payer + registrant members)
+  const totalRegistrants = enrollmentType === "ORGANIZATION"
+    ? 1 + registrantMembers.length
+    : 1;
+
   // 1: Fetch course data from the API once on mount
   useEffect(() => {
     async function loadCourse() {
@@ -100,6 +142,7 @@ export default function CourseEnrollmentPage() {
         ...prev,
         fullName: session.user.name || prev.fullName,
         email: session.user.email || prev.email,
+        company: session.user.organization || prev.company,
       }));
     }
   }, [session]);
@@ -118,11 +161,17 @@ export default function CourseEnrollmentPage() {
     setSubmitError("");
 
     try {
+      // Build the registrants array for ORGANIZATION enrollment
+      const registrants = enrollmentType === "ORGANIZATION" && registrantMembers.length > 0
+        ? registrantMembers
+        : [];
+
       const payload = {
         courseId: course!.id,
         scheduleId: course!.schedules[0]?.id,
-        enrollmentType: "INDIVIDUAL",
+        enrollmentType,
         paymentMethod: paymentMethodMap[formData.paymentMethod] || "E_BANKING",
+        ...(registrants.length > 0 && { registrants }),
       };
 
       const res = await fetch("/api/enroll", {
@@ -264,14 +313,57 @@ export default function CourseEnrollmentPage() {
               {/* STEP 1: ATTENDEE DETAILS */}
               {step === 1 && (
                 <div className="space-y-4">
+                  {/* Enrollment Type Toggle — Individual vs Organization */}
+                  <div className="bg-slate-50 border border-slate-200 p-3 rounded-xs">
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-600 block mb-2">
+                      <Users className="w-3.5 h-3.5 inline mr-1 -mt-0.5" />
+                      Enrollment Type
+                    </label>
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => { setEnrollmentType("INDIVIDUAL"); setRegistrantMembers([]); }}
+                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
+                          enrollmentType === "INDIVIDUAL"
+                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
+                        }`}
+                      >
+                        <User className="w-3.5 h-3.5 inline mr-1" />
+                        Individual
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEnrollmentType("ORGANIZATION")}
+                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
+                          enrollmentType === "ORGANIZATION"
+                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
+                        }`}
+                      >
+                        <Building2 className="w-3.5 h-3.5 inline mr-1" />
+                        Organization
+                      </button>
+                    </div>
+                    {enrollmentType === "ORGANIZATION" && (
+                      <p className="text-[10px] text-slate-500 mt-1.5">
+                        Register multiple attendees under a single billing. The person completing this form is the primary contact.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Payer / Primary Attendee Information (shown for both types) */}
                   <div className="pb-2 border-b border-slate-200">
                     <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
                       <User className="w-4 h-4" />
-                      <span>Attendee Information</span>
+                      <span>{enrollmentType === "ORGANIZATION" ? "Primary Contact Details" : "Attendee Information"}</span>
                     </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Enter details as they appear on your professional license.
-                    </p>
+                    {enrollmentType === "ORGANIZATION" && (
+                      <p className="text-xs text-amber-700 mt-0.5">The person submitting this enrollment. Group members are added below.</p>
+                    )}
+                    {enrollmentType === "INDIVIDUAL" && (
+                      <p className="text-xs text-slate-500 mt-0.5">Enter details as they appear on your professional license.</p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -355,13 +447,96 @@ export default function CourseEnrollmentPage() {
                     </div>
                   </div>
 
+                  {/* Dynamic Group Member Rows (only for ORGANIZATION) */}
+                  {enrollmentType === "ORGANIZATION" && (
+                    <div className="pt-2 border-t border-slate-200 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
+                          <Users className="w-3.5 h-3.5 mr-1" />
+                          Group Members ({registrantMembers.length})
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={addMember}
+                          className="inline-flex items-center space-x-1 text-[#1b4332] hover:text-[#112a1f] disabled:opacity-40 text-xs font-bold"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add Member</span>
+                        </button>
+                      </div>
+
+                      {registrantMembers.length === 0 && (
+                        <p className="text-xs text-slate-400 italic py-2">
+                          No additional members added yet. Click &quot;Add Member&quot; to add group attendees.
+                        </p>
+                      )}
+
+                      {registrantMembers.map((member, index) => (
+                        <div
+                          key={index}
+                          className="border border-slate-200 bg-slate-50/50 p-3 rounded-xs space-y-2"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase text-slate-500">
+                              Member {index + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeMember(index)}
+                              className="text-rose-600 hover:text-rose-800 p-0.5"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input
+                              type="text"
+                              placeholder="Name (Chinese)"
+                              value={member.nameZh}
+                              onChange={(e) => handleMemberChange(index, "nameZh", e.target.value)}
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Name (English) *"
+                              required
+                              value={member.nameEn}
+                              onChange={(e) => handleMemberChange(index, "nameEn", e.target.value)}
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                            />
+                            <input
+                              type="email"
+                              placeholder="Email *"
+                              required
+                              value={member.email}
+                              onChange={(e) => handleMemberChange(index, "email", e.target.value)}
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                            />
+                            <input
+                              type="text"
+                              placeholder="ID / License No. *"
+                              required
+                              value={member.idDocNumber}
+                              onChange={(e) => handleMemberChange(index, "idDocNumber", e.target.value)}
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <div className="pt-4 flex justify-end">
                     <button
                       type="button"
                       disabled={
                         !formData.fullName ||
                         !formData.email ||
-                        !formData.iaLicenseNo
+                        !formData.iaLicenseNo ||
+                        (enrollmentType === "ORGANIZATION" &&
+                          registrantMembers.some(
+                            (m) => !m.nameEn || !m.email || !m.idDocNumber,
+                          ))
                       }
                       onClick={() => setStep(2)}
                       className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] disabled:opacity-50 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
@@ -599,12 +774,19 @@ export default function CourseEnrollmentPage() {
                 </span>
               </div>
 
+              {enrollmentType === "ORGANIZATION" && (
+                <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
+                  <span>Registrants:</span>
+                  <span className="font-mono font-bold text-slate-800">{totalRegistrants}</span>
+                </div>
+              )}
+
               <div className="pt-3 border-t-2 border-slate-900 flex justify-between items-baseline">
                 <span className="font-bold text-slate-900 uppercase">
                   Total Fee:
                 </span>
                 <span className="text-lg font-serif font-bold text-[#1b4332]">
-                  HK$ {fee}
+                  HK$ {enrollmentType === "ORGANIZATION" ? (parseFloat(String(fee)) * totalRegistrants).toLocaleString() : fee}
                 </span>
               </div>
             </div>
