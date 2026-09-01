@@ -2,7 +2,7 @@
   "id": "PR-002",
   "title": "管理員審核後台 → 真實數據串接 (前端)",
   "content": "",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "Brian",
   "agent": "",
@@ -16,21 +16,21 @@
   ],
   "order": 6,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
-    "verification_contract": false,
-    "human_approval_recorded": false
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
   },
   "gates": {
-    "product": false,
-    "ui": false,
-    "architecture": false,
-    "security": false,
-    "test": false,
-    "code_review": false
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -42,9 +42,24 @@
   },
   "refs": [],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck — passed",
+      "npm run lint — no new warnings/errors in admin/enrolments/page.tsx"
+    ],
+    "findings": [
+      "Replaced placeholder 'Module Under Development' with full data table wired to GET /api/admin/enrolments",
+      "Table columns: enrollee name+org+IA license, course name+ref+CPD hours, enrollment type (Individual/Group), payment method+receipt number, status badge (Pending/Verified/Rejected/Refunded), submitted date, actions",
+      "Status filter tabs: All / Pending / Verified / Rejected — each triggers API call with ?status= filter",
+      "Approve button: calls PATCH /api/admin/enrolments/[id] with action=APPROVE, shows success toast, optimistic UI update",
+      "Reject button: opens confirm dialog with enrolment summary + reason textarea, calls PATCH with action=REJECT + reason, shows warning toast",
+      "Payment proof preview: dialog modal with placeholder text (S3 presigned URL not yet available — shows ImageIcon + URL string)",
+      "Loading state: 5-row skeleton pulse animation with Loader2 spinner",
+      "Empty state: CheckCircle2 icon + contextual message per filter tab",
+      "Error state: AlertTriangle icon + error message + Retry button",
+      "Pagination: prev/next buttons with page info footer, appears only when totalPages > 1",
+      "Design tokens: follows existing admin page pattern (bg-[#f6f8f6], border-t-4 primary, font-serif headings, rounded-xs, 12px body text)"
+    ],
+    "residual": "Payment proof preview shows placeholder image icon + URL string — actual S3 presigned URL display deferred until S3 infra is available. Rejection reason stored in payerFullName (temporary)."
   },
   "comments": [],
   "acceptance": [
