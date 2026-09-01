@@ -1,26 +1,28 @@
 {
-  "id": "CT-002",
-  "title": "隱私頁 i18n — 移至字典系統",
-  "epic": "內容與靜態頁面",
-  "userStory": "條款與隱私頁 i18n",
-  "stage": "ready",
-  "risk": "low",
-  "dependsOn": ["PS-011"],
-  "order": 51,
-  "acceptance": [
-    "Extract all hardcoded text from privacy page into dictionary JSON files",
-    "Add 'privacyPage' key to dictionary types",
-    "Privacy page imports getDictionary and uses dict prop for all text",
-    "Section structure preserved: 1. Data Collection, 2. Use of Personal Data, 3. Data Storage & Security, 4. Cookies, 5. Third-Party Disclosure, 6. Your Rights, 7. Contact DPO",
-    "All 3 locales render correct language content",
-    "Link to terms page uses locale-aware href"
-  ],
-  "files": [
-    "src/app/[locale]/privacy/page.tsx (rewrite — dict-driven)",
-    "src/dictionaries/en.json (add privacyPage section)",
-    "src/dictionaries/zh-hk.json (add privacyPage section)",
-    "src/dictionaries/zh-cn.json (add privacyPage section)",
-    "src/dictionaries/types.ts (add PrivacyPageDict type)"
-  ],
-  "verification": "Visit /en/privacy → English content. Visit /zh-hk/privacy → Traditional Chinese. All sections present. Internal links locale-aware."
+    "id":  "CT-002",
+    "title":  "隱私頁 i18n — 移至字典系統",
+    "epic":  "內容與靜態頁面",
+    "userStory":  "條款與隱私頁 i18n",
+    "stage":  "done",
+    "risk":  "low",
+    "dependsOn":  [
+                      "PS-011"
+                  ],
+    "order":  51,
+    "acceptance":  [
+                       "Extract all hardcoded text from privacy page into dictionary JSON files",
+                       "Add \u0027privacyPage\u0027 key to dictionary types",
+                       "Privacy page imports getDictionary and uses dict prop for all text",
+                       "Section structure preserved: 1. Data Collection, 2. Use of Personal Data, 3. Data Storage \u0026 Security, 4. Cookies, 5. Third-Party Disclosure, 6. Your Rights, 7. Contact DPO",
+                       "All 3 locales render correct language content",
+                       "Link to terms page uses locale-aware href"
+                   ],
+    "files":  [
+                  "src/app/[locale]/privacy/page.tsx (rewrite — dict-driven)",
+                  "src/dictionaries/en.json (add privacyPage section)",
+                  "src/dictionaries/zh-hk.json (add privacyPage section)",
+                  "src/dictionaries/zh-cn.json (add privacyPage section)",
+                  "src/dictionaries/types.ts (add PrivacyPageDict type)"
+              ],
+    "verification":  "Visit /en/privacy → English content. Visit /zh-hk/privacy → Traditional Chinese. All sections present. Internal links locale-aware."
 }
