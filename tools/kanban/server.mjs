@@ -275,6 +275,21 @@ function handlePutOne(res, id, body) {
   cardMap.set(c.id, c);
   const depErr = checkDependsOn(c, cardMap);
   if (depErr) return sendJson(res, 400, { error: depErr });
+
+  // Preserve existing order to avoid unintended reordering on field edits.
+  // If stage unchanged: keep the on-disk order (ignore client's order value).
+  // If stage changed: place at end of the new column without affecting other cards.
+  const existingFile = path.join(CARDS_DIR, id + '.json');
+  let existing = {};
+  try { existing = JSON.parse(fs.readFileSync(existingFile, 'utf8')); } catch { /* new card */ }
+  if (existing.stage === c.stage) {
+    c.order = existing.order || c.order;
+  } else {
+    const allCards = readAllCards();
+    const inColumn = allCards.filter((x) => x.id !== id && x.stage === c.stage);
+    c.order = inColumn.length + 1;
+  }
+
   writeCard(c);
   sendJson(res, 200, c);
 }
