@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { Building2, Lock, User, ArrowRight, AlertCircle } from "lucide-react";
 import { LoginPageDict } from "@/dictionaries/types";
 
@@ -41,8 +41,14 @@ export function LoginForm({ locale, dict }: LoginFormProps) {
         return;
       }
 
+      // Fetch the session to determine role-based redirect
+      const session = await getSession();
+      const isAdmin = session?.user?.role === "ADMIN";
+
       if (redirectPath) {
         router.push(redirectPath);
+      } else if (isAdmin) {
+        router.push(`/${locale}/admin`);
       } else {
         router.push(`/${locale}/dashboard`);
       }

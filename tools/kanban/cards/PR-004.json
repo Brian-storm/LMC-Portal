@@ -1,0 +1,69 @@
+{
+  "id": "PR-004",
+  "title": "金流端到端整合驗收 (AWS 全線串接)",
+  "content": "After all Phase 1 infrastructure (RDS, S3, SES) and all 金流與收據 cards are deployed, run full end-to-end verification covering the complete payment-to-receipt flow with real AWS services.",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "",
+  "epic": "金流與收據",
+  "userStory": "金流端到端驗收",
+  "track": "n/a",
+  "dependsOn": [
+    "PR-001",
+    "PR-002",
+    "PR-003",
+    "EN-004"
+  ],
+  "order": 8,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": false,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "1. S3 upload: upload payment proof via /en/courses/{slug}/enroll → file stored in S3, paymentProofUrl saved in DB",
+    "2. Admin review list: visit /en/admin/enrolments → table loads all enrolments with real user/course data from RDS",
+    "3. Payment proof preview: click an enrolment row → modal loads image via S3 presigned GET URL",
+    "4. Approve flow: click Approve → paymentStatus=VERIFIED, receiptNumber=RCPT-{YYYY}-{NNNNN} generated, PDF stored in S3",
+    "5. Email delivery: after approval, SES delivers email with PDF attachment to registrant's email",
+    "6. PDF password: downloaded receipt opens with registrant's idDocNumber as password",
+    "7. Reject flow: click Reject with reason → paymentStatus=REJECTED, reason stored, no PDF/email generated",
+    "8. Receipt re-download: registrant visits dashboard → can re-download receipt PDF from S3 presigned URL",
+    "9. Non-admin 403: logout → visit /en/admin/enrolments → redirected to login",
+    "10. All flows pass in zh-hk and zh-cn locales"
+  ],
+  "files": [
+    "No new files — verification only against deployed infra"
+  ],
+  "verification": "Run all 10 acceptance criteria against staging environment with real RDS, S3, SES. Collect screenshots for each step. Log any failures as follow-up cards. Do not mark PR-004 done until all 10 pass."
+}

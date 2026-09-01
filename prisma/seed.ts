@@ -281,7 +281,7 @@ async function main() {
 
   const adminUser = await prisma.user.upsert({
     where: { email: "admin@lmcconsulting.hk" },
-    update: {},
+    update: { passwordHash: adminPasswordHash },
     create: {
       email: "admin@lmcconsulting.hk",
       nameZh: "系統管理員",

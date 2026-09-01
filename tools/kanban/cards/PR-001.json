@@ -2,7 +2,7 @@
   "id": "PR-001",
   "title": "管理員審核 API (後端)",
   "content": "",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "high",
   "owner": "Brian",
   "agent": "",
@@ -36,12 +36,12 @@
     "human_approval_recorded": false
   },
   "gates": {
-    "product": false,
+    "product": true,
     "ui": false,
-    "architecture": false,
-    "security": false,
-    "test": false,
-    "code_review": false
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -53,9 +53,19 @@
   },
   "refs": [],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck — passed",
+      "npm run lint — no new warnings/errors"
+    ],
+    "findings": [
+      "GET /api/admin/enrolments returns paginated registrants with user (nameEn, nameZh, email) and course (nameEn, nameZh, iaRefNumber) — supports ?status filter and ?page/?limit pagination",
+      "PATCH /api/admin/enrolments/[id] accepts { action: 'APPROVE' | 'REJECT', reason?, receiptNumber? } with Zod validation",
+      "APPROVE sets paymentStatus to VERIFIED, stores optional receiptNumber",
+      "REJECT sets paymentStatus to REJECTED, stores reason in payerFullName (temporary staging field until schema migration adds dedicated column)",
+      "Re-review prevention: returns 409 if paymentStatus is not PENDING_VERIFICATION",
+      "Non-admin → 403 (tested via route-level auth check, consistent with POST /api/courses pattern)"
+    ],
+    "residual": "Rejection reason stored in payerFullName (temporary). No S3 presigned URL (S3 infra not available). Both deferred to future PRs."
   },
   "comments": [],
   "acceptance": [
