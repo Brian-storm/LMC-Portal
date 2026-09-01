@@ -11,6 +11,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 
 interface PageProps {
@@ -23,7 +24,13 @@ export default async function PrivacyPage({ params }: PageProps) {
   const t = dict.privacyPage;
 
   return (
-    <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans selection:bg-[#1b4332] selection:text-white">
+    <>
+      <Breadcrumbs
+        currentLocale={locale}
+        items={[{ label: dict.breadcrumbs.privacy, href: "/privacy" }]}
+        dict={dict.breadcrumbs}
+      />
+      <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans selection:bg-[#1b4332] selection:text-white">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
           <Link
@@ -174,7 +181,8 @@ export default async function PrivacyPage({ params }: PageProps) {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

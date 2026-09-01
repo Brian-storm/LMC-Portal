@@ -11,6 +11,7 @@
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { getDictionary } from "@/dictionaries/get-dictionary";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { CourseDetailView } from "@/components/courses/CourseDetailView";
 import { mapApiCourseDetail, ApiCourseDetail } from "@/lib/map-course-detail";
 
@@ -49,10 +50,20 @@ export default async function CourseDetailPage({ params }: PageProps) {
   }
 
   return (
-    <CourseDetailView
-      currentLocale={locale}
-      dict={dict.courseView}
-      course={course}
-    />
+    <>
+      <Breadcrumbs
+        currentLocale={locale}
+        items={[
+          { label: dict.breadcrumbs.courses, href: "/courses" },
+          { label: course.title },
+        ]}
+        dict={dict.breadcrumbs}
+      />
+      <CourseDetailView
+        currentLocale={locale}
+        dict={dict.courseView}
+        course={course}
+      />
+    </>
   );
 }

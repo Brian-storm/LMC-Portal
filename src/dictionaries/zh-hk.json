@@ -16,7 +16,11 @@
     "home": "首頁",
     "overview": "概覽",
     "courses": "課程",
-    "courseDetail": "課程詳情"
+    "courseDetail": "課程詳情",
+    "about": "關於我們",
+    "contact": "聯絡我們",
+    "privacy": "私隱政策",
+    "terms": "服務條款"
   },
   "heroCarousel": {
     "badge": "LMC 管理顧問",
@@ -315,7 +319,7 @@
     "addressLine2": "新文華中心B座",
     "addressLine3": "10樓1011-1015室",
     "phone": "+852 1234 5678",
-    "email": "info@LMCconsulting.hk",
+    "email": "lmcconsulting2025@gmail.com",
     "whatsapp": "+852 1234 5678",
     "officeHours": "辦公時間",
     "officeHoursMonFri": "星期一至五：上午9:00 – 下午6:00",

@@ -8,7 +8,7 @@
 - 上層 User Story：作為訪客，我希望聯絡頁面易於閱讀，字體大小舒適，地圖顯示完整
 - 分軌：前端
 - 前置任務（dependsOn）：T-UI-005（Breadcrumbs，Contact 頁需加入 Breadcrumbs）
-- 狀態：就緒
+- 狀態：完成
 - 風險等級：低
 - Agent owner：待指定
 - 人工核准者：待指定

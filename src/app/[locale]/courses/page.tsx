@@ -11,6 +11,7 @@
 
 import { headers } from "next/headers";
 import { CoursesView } from "@/components/courses/CoursesView";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { mapApiCourse, ApiCourse } from "@/lib/map-course";
 
@@ -62,7 +63,13 @@ export default async function CoursesPage({ params }: PageProps) {
   ]);
 
   return (
-    <main className="min-h-screen bg-slate-100/80 border-t border-slate-300 py-6 sm:py-8">
+    <>
+      <Breadcrumbs
+        currentLocale={locale}
+        items={[{ label: dict.breadcrumbs.courses, href: "/courses" }]}
+        dict={dict.breadcrumbs}
+      />
+      <main className="min-h-screen bg-slate-100/80 border-t border-slate-300 py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-slate-300 rounded-xs p-4 sm:p-6 shadow-2xs">
           <CoursesView
@@ -72,6 +79,7 @@ export default async function CoursesPage({ params }: PageProps) {
           />
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }

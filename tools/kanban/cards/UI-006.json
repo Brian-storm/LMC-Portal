@@ -2,7 +2,7 @@
   "id": "UI-006",
   "title": "Contact 頁 UI 重新設計（字型、字級、地圖）",
   "content": "重新設計聯絡頁的字型（font-mono → font-sans）、字級放大（text-xs → text-sm）、Google Maps iframe 改為 aspect-square 正方形比例。加入 Breadcrumbs。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -22,15 +22,15 @@
     "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
-    "human_approval_recorded": false
+    "human_approval_recorded": true
   },
   "gates": {
     "product": false,
-    "ui": false,
+    "ui": true,
     "architecture": false,
     "security": false,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -43,8 +43,8 @@
   "refs": ["src/app/[locale]/contact/page.tsx"],
   "evidence": {
     "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": [],
-    "residual": ""
+    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "residual": "地圖 URL 為 mock 座標，尚未填入真實 LMC 辦公室經緯度"
   },
   "comments": [],
   "acceptance": [

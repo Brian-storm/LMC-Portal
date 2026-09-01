@@ -16,7 +16,11 @@
     "home": "Home",
     "overview": "Overview",
     "courses": "Courses",
-    "courseDetail": "Course Detail"
+    "courseDetail": "Course Detail",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "heroCarousel": {
     "badge": "LMC Management Consultancy",
@@ -318,7 +322,7 @@
     "addressLine2": "New Mandarin Plaza",
     "addressLine3": "Tsim Sha Tsui East, Kowloon, Hong Kong",
     "phone": "+852 1234 5678",
-    "email": "info@LMCconsulting.hk",
+    "email": "lmcconsulting2025@gmail.com",
     "whatsapp": "+852 1234 5678",
     "officeHours": "Office Hours",
     "officeHoursMonFri": "Monday – Friday: 9:00 AM – 6:00 PM",

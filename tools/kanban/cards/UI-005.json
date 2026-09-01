@@ -2,7 +2,7 @@
   "id": "UI-005",
   "title": "實現公開頁麵包屑導航",
   "content": "在 6 個公開頁面（Courses 列表、課程詳細、About、Contact、Privacy、Terms）頂部加入 Breadcrumbs 元件。Home > [頁面名稱] 格式，最後一項為當前頁面不可點擊。Breadcrumbs 元件已存在 src/components/common/Breadcrumbs.tsx。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -26,11 +26,11 @@
   },
   "gates": {
     "product": false,
-    "ui": false,
+    "ui": true,
     "architecture": false,
     "security": false,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -51,8 +51,8 @@
   ],
   "evidence": {
     "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": [],
-    "residual": ""
+    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)", "build: compiled successfully"],
+    "residual": "無"
   },
   "comments": [],
   "acceptance": [

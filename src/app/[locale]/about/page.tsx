@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 
 interface PageProps {
@@ -26,7 +27,13 @@ export default async function AboutPage({ params }: PageProps) {
   const t = dict.aboutPage;
 
   return (
-    <div className="bg-slate-50 min-h-screen py-12">
+    <>
+      <Breadcrumbs
+        currentLocale={locale}
+        items={[{ label: dict.breadcrumbs.about, href: "/about" }]}
+        dict={dict.breadcrumbs}
+      />
+      <div className="bg-slate-50 min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-6xl space-y-12">
         <div className="bg-white border border-slate-200 p-8 md:p-12 space-y-6">
           <Badge
@@ -152,5 +159,6 @@ export default async function AboutPage({ params }: PageProps) {
         </Card>
       </div>
     </div>
+    </>
   );
 }
