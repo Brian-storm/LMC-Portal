@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -10,24 +11,52 @@ import {
   Building2,
   CreditCard,
   User,
-  Award,
   Lock,
   ChevronRight,
   AlertCircle,
   FileCheck,
   Building,
+  Loader2,
 } from "lucide-react";
+
+interface CourseData {
+  id: string;
+  nameEn: string;
+  price: string;
+  registrationStatus: string;
+  capacity: number;
+  schedules: {
+    id: string;
+    dateAndTime: string;
+    venue: string;
+    quotaRemaining: number;
+  }[];
+}
+
+// Map form payment method labels to API PaymentMethod enum values
+const paymentMethodMap: Record<string, string> = {
+  credit_card: "E_BANKING",
+  fps_alipay: "FPS",
+  corporate_invoice: "CORPORATE_INVOICE",
+};
 
 export default function CourseEnrollmentPage() {
   const params = useParams();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const locale = (params.locale as string) || "en";
   const slug = (params.slug as string) || "";
 
+  // Course state
+  const [course, setCourse] = useState<CourseData | null>(null);
+  const [courseLoading, setCourseLoading] = useState(true);
+  const [courseError, setCourseError] = useState("");
+
   // Form State
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   // Form Data
   const [formData, setFormData] = useState({
@@ -41,6 +70,40 @@ export default function CourseEnrollmentPage() {
     paymentMethod: "credit_card",
   });
 
+  // 1: Fetch course data from the API once on mount
+  useEffect(() => {
+    async function loadCourse() {
+      try {
+        const res = await fetch(`/api/courses/${slug}`);
+        if (!res.ok) {
+          setCourseError("Course not found or unavailable.");
+          return;
+        }
+        const data = await res.json();
+        setCourse(data.course);
+      } catch {
+        setCourseError("Failed to load course details.");
+      } finally {
+        setCourseLoading(false);
+      }
+    }
+    loadCourse();
+  }, [slug]);
+
+  // 2: Pre-fill attendee name and email from the authenticated session
+  // Session data may load after the initial render, so we update formData
+  // once when useSession() resolves.
+  useEffect(() => {
+    if (session?.user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData((prev) => ({
+        ...prev,
+        fullName: session.user.name || prev.fullName,
+        email: session.user.email || prev.email,
+      }));
+    }
+  }, [session]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -52,18 +115,73 @@ export default function CourseEnrollmentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
-      // Simulate API call to process enrolment & payment session
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const payload = {
+        courseId: course!.id,
+        scheduleId: course!.schedules[0]?.id,
+        enrollmentType: "INDIVIDUAL",
+        paymentMethod: paymentMethodMap[formData.paymentMethod] || "E_BANKING",
+      };
 
-      // Redirect to confirmation page upon success
-      router.push(`/${locale}/dashboard/enrolments/demo-123/confirmation`);
+      const res = await fetch("/api/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Enrollment failed. Please try again.");
+      }
+
+      const result = await res.json();
+
+      // 3: Redirect to confirmation page with the real registrantId from the API
+      router.push(
+        `/${locale}/checkout/confirmation?orderId=${result.registrantId}`,
+      );
     } catch (error) {
-      console.error("Enrolment submission failed:", error);
+      setSubmitError(
+        error instanceof Error ? error.message : "Network error encountered.",
+      );
       setIsSubmitting(false);
     }
   };
+
+  // Loading state while course data is being fetched
+  if (courseLoading) {
+    return (
+      <div className="bg-[#f6f8f6] text-slate-800 min-h-screen flex items-center justify-center font-sans">
+        <div className="flex items-center space-x-2 text-slate-500">
+          <Loader2 className="w-5 h-5 animate-spin" />
+          <span className="text-xs font-semibold">Loading course details...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state if the course could not be loaded
+  if (courseError || !course) {
+    return (
+      <div className="bg-[#f6f8f6] text-slate-800 min-h-screen flex items-center justify-center font-sans">
+        <div className="max-w-md bg-white border border-slate-300 p-6 shadow-2xs text-center space-y-3">
+          <AlertCircle className="w-8 h-8 text-rose-600 mx-auto" />
+          <p className="text-sm font-bold text-slate-800">{courseError || "Course unavailable."}</p>
+          <Link
+            href={`/${locale}/courses`}
+            className="inline-block bg-[#1b4332] text-white text-xs font-bold px-4 py-2 rounded-xs uppercase tracking-wider"
+          >
+            Browse Courses
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const schedule = course.schedules?.[0];
+  const fee = course.price;
 
   return (
     <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans">
@@ -306,7 +424,7 @@ export default function CourseEnrollmentPage() {
                           href={`/${locale}/terms`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()} // Prevents the checkbox from toggling twice when clicking the link
+                          onClick={(e) => e.stopPropagation()}
                           className="text-[#1b4332] underline hover:text-emerald-900 font-semibold"
                         >
                           Institutional Terms of Registration
@@ -405,6 +523,17 @@ export default function CourseEnrollmentPage() {
                     </label>
                   </div>
 
+                  {/* Inline error display when the API returns 4xx/5xx */}
+                  {submitError && (
+                    <div
+                      className="flex items-start space-x-2 bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xs text-xs"
+                      role="alert"
+                    >
+                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
                   <div className="pt-4 flex justify-between">
                     <button
                       type="button"
@@ -419,7 +548,10 @@ export default function CourseEnrollmentPage() {
                       className="inline-flex items-center space-x-2 bg-[#1b4332] hover:bg-[#112a1f] disabled:opacity-50 text-white font-bold px-6 py-2.5 text-xs uppercase tracking-wider rounded-xs transition-all shadow-md"
                     >
                       {isSubmitting ? (
-                        <span>Processing Enrolment...</span>
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Processing Enrolment...</span>
+                        </>
                       ) : (
                         <>
                           <CheckCircle2 className="w-4 h-4" />
@@ -433,7 +565,7 @@ export default function CourseEnrollmentPage() {
             </form>
           </div>
 
-          {/* Right Summary Sidebar */}
+          {/* Right Summary Sidebar — populated from real API data */}
           <aside className="lg:col-span-1 bg-white border border-slate-300 p-4 shadow-2xs space-y-4">
             <div className="pb-2 border-b border-slate-200">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
@@ -447,21 +579,23 @@ export default function CourseEnrollmentPage() {
                   Course
                 </span>
                 <p className="font-serif font-bold text-slate-900 leading-snug mt-0.5">
-                  Regulatory Compliance & Ethics in Financial Practice
+                  {course.nameEn}
                 </p>
               </div>
 
-              <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
-                <span>Accreditation Code:</span>
-                <span className="font-mono font-bold text-slate-800">
-                  IA-2026-CPD01
-                </span>
-              </div>
+              {schedule && (
+                <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
+                  <span>Schedule:</span>
+                  <span className="font-mono font-bold text-slate-800 text-right">
+                    {schedule.dateAndTime}
+                  </span>
+                </div>
+              )}
 
               <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
-                <span>CPD Value:</span>
-                <span className="font-bold text-[#1b4332] bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">
-                  3.0 Hours
+                <span>Seats Available:</span>
+                <span className="font-mono font-bold text-slate-800">
+                  {schedule?.quotaRemaining ?? course.capacity}
                 </span>
               </div>
 
@@ -470,7 +604,7 @@ export default function CourseEnrollmentPage() {
                   Total Fee:
                 </span>
                 <span className="text-lg font-serif font-bold text-[#1b4332]">
-                  HK$ 1,200
+                  HK$ {fee}
                 </span>
               </div>
             </div>
