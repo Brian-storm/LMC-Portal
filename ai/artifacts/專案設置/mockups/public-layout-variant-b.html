@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Layout — Variant B (Card-First Modular)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.985 0.003 140); --fg: oklch(0.18 0.01 140);
+    --surface: oklch(1 0 0); --surface2: oklch(0.94 0.01 140);
+    --primary: oklch(0.28 0.05 160); --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.48 0.03 160); --accent: oklch(0.72 0.11 85);
+    --accent-fg: oklch(0.20 0.04 160); --border: oklch(0.90 0.01 140);
+    --muted: oklch(0.94 0.01 140); --muted-fg: oklch(0.48 0.03 160);
+    --destructive: oklch(0.577 0.245 27.325);
+    --radius: 2px; --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+    --nav-h: 56px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', Arial, Helvetica, 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--fg); font-size: 12px; line-height: 1.6; }
+
+  .container { max-width: 1024px; margin: 0 auto; padding: 0 20px; }
+  .label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+  .badge { display: inline-flex; padding: 2px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; border-radius: var(--radius); }
+  .badge-warning { background: oklch(0.75 0.12 82 / 0.12); color: oklch(0.45 0.10 80); border-color: oklch(0.75 0.12 82 / 0.4); }
+  .badge-success { background: oklch(0.55 0.10 155 / 0.1); color: oklch(0.35 0.07 160); border-color: oklch(0.55 0.10 155 / 0.3); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg); border-radius: var(--radius); }
+  .btn-outline { background: var(--surface); color: var(--primary); }
+
+  .nav { height: var(--nav-h); background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-xs); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .nav-brand { background: linear-gradient(90deg, oklch(0.22 0.04 160), oklch(0.33 0.05 160)); color: var(--primary-fg); padding: 14px 24px; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); }
+  .nav-links { display: flex; gap: 24px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .nav-links a { color: var(--secondary); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+  .nav-links a:hover { color: var(--primary); border-color: var(--accent); }
+  .nav-cta { background: var(--accent); color: var(--accent-fg); padding: 6px 14px; font-weight: 700; text-transform: uppercase; font-size: 10px; border: none; border-radius: var(--radius); cursor: pointer; letter-spacing: 0.06em; }
+  .vtag { display: inline-block; padding: 2px 8px; background: var(--primary); color: var(--primary-fg); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .breadcrumb { font-size: 10px; color: var(--muted-fg); margin-bottom: 16px; }
+  .muted-text { color: var(--muted-fg); font-size: 10px; }
+
+  /* === VARIANT B DIFFERENTIATORS === */
+  .hero-b { height: 520px; background: oklch(0.12 0.02 150); color: white; display: grid; grid-template-columns: 1fr 1fr; align-items: center; position: relative; overflow: hidden; }
+  .hero-left { padding-left: 40px; }
+  .hero-right { height: 100%; background: linear-gradient(135deg, oklch(0.28 0.05 160) 0%, oklch(0.18 0.04 158) 100%); display: flex; align-items: center; justify-content: center; }
+  .hero-stat { text-align: center; }
+  .hero-stat-num { font-size: 48px; font-weight: 800; color: var(--accent); }
+  .hero-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .section-b { padding: 64px 0; }
+  .split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .split-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow-xs); }
+  .split-card.accent { border-top: 3px solid var(--primary); }
+  .split-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .split-card p { font-size: 12px; color: var(--secondary); margin-bottom: 16px; }
+
+  /* Cat: horizontal cards instead of sidebar+list */
+  .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .cat-search { display: flex; gap: 8px; }
+  .cat-input { padding: 8px 12px; border: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 12px; width: 240px; border-radius: var(--radius); }
+  .cat-tags { display: flex; gap: 6px; }
+  .cat-tag { padding: 4px 12px; border: 1px solid var(--border); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: var(--radius); }
+  .cat-tag.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .c-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-xs); border-left: 3px solid var(--primary); }
+  .c-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .c-card-title { font-size: 14px; font-weight: 700; }
+  .c-card-desc { font-size: 11px; color: var(--secondary); margin-bottom: 10px; }
+  .c-card-meta { display: flex; gap: 16px; font-size: 10px; color: var(--muted-fg); margin-bottom: 10px; }
+  .c-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); }
+
+  /* Detail: tabs instead of scroll */
+  .detail-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .detail-tab { padding: 10px 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border: none; background: none; cursor: pointer; color: var(--secondary); border-bottom: 2px solid transparent; }
+  .detail-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* Login: split layout */
+  .login-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; margin-top: 64px; }
+  .login-info { background: linear-gradient(135deg, oklch(0.18 0.04 158), oklch(0.28 0.05 160)); color: white; display: flex; flex-direction: column; justify-content: center; padding: 64px; }
+  .login-info h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+  .login-info p { font-size: 13px; opacity: 0.8; }
+  .login-form { display: flex; align-items: center; justify-content: center; padding: 64px; }
+  .login-form-inner { width: 100%; max-width: 320px; }
+  .login-form-inner h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+
+  .login-label { display: block; font-size: 10px; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; color: var(--secondary); }
+  .login-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 12px; margin-bottom: 14px; border-radius: var(--radius); }
+  .login-submit { width: 100%; padding: 12px; background: var(--primary); color: var(--primary-fg); border: none; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: var(--radius); }
+
+  /* Enroll: horizontal wizard */
+  .wizard-horizontal { display: grid; grid-template-columns: 1fr 280px; gap: 32px; max-width: 800px; margin: 0 auto; }
+  .wizard-side { background: var(--surface2); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+  .wizard-summary { font-size: 10px; }
+  .wizard-summary-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="container" style="width:100%">
+    <div class="nav-inner">
+      <div class="nav-brand">LMC CPD</div>
+      <div class="nav-links">
+        <a href="#">Home</a><a href="#">Courses</a><a href="#">Portal</a><a href="#">About</a><a href="#">Contact</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="muted-text">EN | 繁 | 簡</span>
+        <a href="#" class="nav-cta">Sign In</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME: Split hero with stats panel -->
+<div style="border-bottom:2px solid var(--primary);"><div class="vtag" style="margin:16px 0 0 16px;">PAGE: HOME</div></div>
+
+<div class="hero-b">
+  <div class="hero-left">
+    <span style="display:inline-block;padding:3px 12px;background:oklch(0.28 0.05 160 / 0.7);border:1px solid oklch(0.48 0.05 160 / 0.5);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;border-radius:var(--radius);">LMC Management Consultancy</span>
+    <h1 style="font-size:38px;font-weight:700;line-height:1.15;margin-bottom:12px;">Executive Training & Professional Advisory</h1>
+    <p style="font-size:14px;color:oklch(0.85 0.01 140);margin-bottom:24px;line-height:1.6;">Empowering organizations and professionals with institutional-grade management consulting and accredited courses.</p>
+    <div style="display:flex;gap:12px;">
+      <a href="#" class="btn" style="border-color:var(--accent);background:var(--accent);color:var(--accent-fg);">Explore Courses →</a>
+      <a href="#" class="btn btn-outline" style="border-color:oklch(0.48 0.05 160);color:white;">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div style="display:flex;flex-direction:column;gap:32px;">
+      <div class="hero-stat"><div class="hero-stat-num">50+</div><div class="hero-stat-label">CPD Courses</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3.2K</div><div class="hero-stat-label">Professionals Trained</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">15+</div><div class="hero-stat-label">Years Experience</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-b">
+  <div class="container">
+    <div class="split-section">
+      <div class="split-card accent">
+        <h3>Professional Courses</h3>
+        <p>Browse our comprehensive registry of executive training, regulatory compliance programs, and management certificates accredited by the Insurance Authority.</p>
+        <a href="#" class="btn">Explore Catalog →</a>
+      </div>
+      <div class="split-card accent">
+        <h3>Student & Client Portal</h3>
+        <p>Access your course dashboards, view transcript history, or manage organizational training records securely with enterprise-grade authentication.</p>
+        <a href="#" class="btn">Sign In →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COURSE CATALOG: Horizontal 2-column grid, inline filters -->
+<div style="border-bottom:2px solid var(--primary);margin-top:32px;"><div class="vtag" style="margin:16px 0 0 16px;">PAGE: COURSE CATALOG</div></div>
+
+<div class="section-b">
+  <div class="container">
+    <div class="breadcrumb">Home / Courses</div>
+    <div class="cat-header">
+      <h2 style="font-size:20px;font-weight:700;">Course Catalog</h2>
+      <div class="cat-search">
+        <input class="cat-input" placeholder="Search courses...">
+        <div class="cat-tags">
+          <span class="cat-tag active">All</span><span class="cat-tag">CPD</span><span class="cat-tag">Compliance</span><span class="cat-tag">Management</span>
+        </div>
+      </div>
+    </div>
+    <div class="cat-grid">
+      <div class="c-card">
+        <div class="c-card-top">
+          <div><span class="badge badge-warning">MANDATORY CORE</span></div>
+          <span class="muted-text" style="font-family:'Courier New',monospace;">IA REF: HK-2024-001</span>
+        </div>
+        <div class="c-card-title">Regulatory Compliance for Insurance Intermediaries</div>
+        <div class="c-card-desc">Comprehensive overview of updated IA guidelines covering conduct and reporting.</div>
+        <div class="c-card-meta"><span>Online · Self-paced</span><span>English / Cantonese</span></div>
+        <div class="c-card-footer">
+          <div><span class="badge badge-success">3 CPD Hours</span> <strong>HK$ 1,200</strong></div>
+          <button class="btn" style="font-size:10px;padding:6px 14px;">View →</button>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-top">
+          <div></div>
+          <span class="muted-text" style="font-family:'Courier New',monospace;">IA REF: HK-2024-002</span>
+        </div>
+        <div class="c-card-title">Anti-Money Laundering Standards</div>
+        <div class="c-card-desc">Practical AML framework application for financial institutions and insurance.</div>
+        <div class="c-card-meta"><span>In-Person · Central</span><span>Cantonese</span></div>
+        <div class="c-card-footer">
+          <div><span class="badge badge-success">4 CPD Hours</span> <strong>HK$ 1,500</strong></div>
+          <button class="btn" style="font-size:10px;padding:6px 14px;">View →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COURSE DETAIL: Tabbed content -->
+<div style="border-bottom:2px solid var(--primary);margin-top:32px;"><div class="vtag" style="margin:16px 0 0 16px;">PAGE: COURSE DETAIL</div></div>
+
+<div class="section-b">
+  <div class="container">
+    <div class="breadcrumb">Home / Courses / Regulatory Compliance</div>
+    <div class="split-section">
+      <div>
+        <span class="badge badge-warning" style="margin-bottom:8px;">MANDATORY CORE</span>
+        <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">Regulatory Compliance for Insurance Intermediaries</h2>
+        <p style="font-size:12px;color:var(--secondary);margin-bottom:20px;">Comprehensive overview of updated IA guidelines covering conduct requirements, CPD obligations, and regulatory frameworks.</p>
+        <div class="detail-tabs">
+          <button class="detail-tab active">Syllabus</button>
+          <button class="detail-tab">Requirements</button>
+          <button class="detail-tab">Accreditation</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:10px 14px;background:var(--surface2);border:1px solid var(--border);font-size:11px;"><strong>Module 1</strong> — IA Regulatory Framework Overview</div>
+          <div style="padding:10px 14px;background:var(--surface2);border:1px solid var(--border);font-size:11px;"><strong>Module 2</strong> — Conduct Requirements & Ethics</div>
+          <div style="padding:10px 14px;background:var(--surface2);border:1px solid var(--border);font-size:11px;"><strong>Module 3</strong> — CPD Obligations & Reporting</div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow-xs);margin-bottom:16px;">
+          <h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--primary);margin-bottom:12px;">Enrolment</h3>
+          <div style="font-size:24px;font-weight:700;color:var(--primary);margin-bottom:12px;">HK$ 1,200</div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;"><span class="muted-text">CPD Hours</span><strong>3.0</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;"><span class="muted-text">Delivery</span><strong>Online</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;"><span class="muted-text">Language</span><strong>EN / 廣東話</strong></div>
+          <button class="btn" style="width:100%;justify-content:center;margin-top:16px;">Enroll Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENROLLMENT: Horizontal with summary sidebar -->
+<div style="border-bottom:2px solid var(--primary);margin-top:32px;"><div class="vtag" style="margin:16px 0 0 16px;">PAGE: ENROLLMENT</div></div>
+
+<div class="section-b">
+  <div class="container">
+    <div class="breadcrumb">Home / Courses / Regulatory Compliance / Enroll</div>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:20px;">Course Enrolment</h2>
+    <div class="wizard-horizontal">
+      <div style="background:var(--surface);border:1px solid var(--border);padding:24px;border-radius:var(--radius);box-shadow:var(--shadow-xs);">
+        <div style="display:flex;gap:0;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--primary);"><span style="width:22px;height:22px;background:var(--primary);color:var(--primary-fg);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:9px;">1</span> Info</div>
+          <div style="width:40px;height:1px;background:var(--border);align-self:center;margin:0 8px;"></div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--muted-fg);"><span style="width:22px;height:22px;background:var(--surface2);color:var(--secondary);border:2px solid var(--border);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:9px;">2</span> Review</div>
+          <div style="width:40px;height:1px;background:var(--border);align-self:center;margin:0 8px;"></div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--muted-fg);"><span style="width:22px;height:22px;background:var(--surface2);color:var(--secondary);border:2px solid var(--border);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:9px;">3</span> Confirm</div>
+        </div>
+        <div style="margin-bottom:12px;"><label class="login-label">Full Name</label><input class="login-input" value="CHAN Tai Man"></div>
+        <div style="margin-bottom:12px;"><label class="login-label">License Number</label><input class="login-input" value="IA12345678"></div>
+        <div style="margin-bottom:12px;"><label class="login-label">Email</label><input class="login-input" value="chan.taiman@email.com"></div>
+        <div style="margin-bottom:16px;"><label class="login-label">Organization</label><input class="login-input" value="Prudential Hong Kong"></div>
+        <div style="display:flex;gap:12px;justify-content:flex-end;">
+          <button class="btn btn-outline">Cancel</button><button class="btn">Next: Review →</button>
+        </div>
+      </div>
+      <div class="wizard-side">
+        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--primary);margin-bottom:12px;">Order Summary</h3>
+        <div class="wizard-summary">
+          <div class="wizard-summary-item"><span>Course</span><strong>Regulatory Compliance</strong></div>
+          <div class="wizard-summary-item"><span>CPD Hours</span><strong>3.0</strong></div>
+          <div class="wizard-summary-item"><span>Delivery</span><strong>Online</strong></div>
+          <div class="wizard-summary-item" style="font-size:14px;font-weight:700;border-bottom:none;margin-top:8px;"><span>Total</span><strong>HK$ 1,200</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN: Split layout -->
+<div style="border-bottom:2px solid var(--primary);margin-top:32px;"><div class="vtag" style="margin:16px 0 0 16px;">PAGE: LOGIN</div></div>
+
+<div class="login-split">
+  <div class="login-info">
+    <h2>Welcome Back</h2>
+    <p>Access your CPD dashboard, track certifications, and manage your professional development records securely.</p>
+    <div style="margin-top:32px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;">✓ Accredited by Insurance Authority</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;">✓ Instant CPD certificate download</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;">✓ Enterprise-grade security</div>
+    </div>
+  </div>
+  <div class="login-form">
+    <div class="login-form-inner">
+      <h3>Sign In</h3>
+      <div class="login-tabs" style="display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;">
+        <button style="flex:1;padding:10px;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;background:none;border:none;border-bottom:2px solid var(--primary);color:var(--primary);cursor:pointer;">Student</button>
+        <button style="flex:1;padding:10px;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--secondary);cursor:pointer;">Admin</button>
+      </div>
+      <label class="login-label">Email</label><input class="login-input" type="email" placeholder="your@email.com">
+      <label class="login-label">Password</label><input class="login-input" type="password" placeholder="••••••••">
+      <button class="login-submit">Sign In</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

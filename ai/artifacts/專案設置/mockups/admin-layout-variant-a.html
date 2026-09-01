@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Layout — Variant A (Top KPIs + Audit Table + Side Nav)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc; --fg: oklch(0.18 0.01 140);
+    --surface: oklch(1 0 0); --surface2: oklch(0.94 0.01 140);
+    --primary: oklch(0.28 0.05 160); --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.48 0.03 160); --accent: oklch(0.72 0.11 85);
+    --accent-fg: oklch(0.20 0.04 160); --border: oklch(0.90 0.01 140);
+    --destructive: oklch(0.577 0.245 27.325);
+    --nav-h: 56px; --radius: 2px;
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', Arial, Helvetica, 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--fg); font-size: 12px; line-height: 1.6; }
+  .badge { display: inline-flex; padding: 2px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; border-radius: var(--radius); }
+  .badge-success { background: oklch(0.55 0.10 155 / 0.1); color: oklch(0.35 0.07 160); border-color: oklch(0.55 0.10 155 / 0.3); }
+  .badge-warning { background: oklch(0.75 0.12 82 / 0.12); color: oklch(0.45 0.10 80); border-color: oklch(0.75 0.12 82 / 0.4); }
+  .badge-danger { background: oklch(0.577 0.245 27.325 / 0.08); color: var(--destructive); border-color: oklch(0.577 0.245 27.325 / 0.3); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg); border-radius: var(--radius); }
+  .btn-sm { padding: 5px 10px; font-size: 10px; }
+  .btn-outline { background: var(--surface); color: var(--primary); border: 1px solid var(--border); }
+  .vtag { display: inline-block; padding: 2px 8px; background: var(--primary); color: var(--primary-fg); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; }
+  .muted { font-size: 10px; color: var(--secondary); }
+
+  .nav { height: var(--nav-h); background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-xs); display: flex; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding: 0 16px; }
+  .nav-brand { background: linear-gradient(90deg, oklch(0.22 0.04 160), oklch(0.33 0.05 160)); color: white; padding: 14px 20px; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); margin-left: -16px; }
+  .nav-tabs { display: flex; gap: 0; padding-left: 24px; flex: 1; }
+  .nav-tab { padding: 18px 14px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--secondary); cursor: pointer; border-bottom: 2px solid transparent; }
+  .nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .main { padding: 80px 24px 24px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-xs); display: flex; justify-content: space-between; align-items: center; }
+  .kpi-content {}
+  .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--secondary); margin-bottom: 4px; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .kpi-badge { width: 44px; height: 44px; background: oklch(0.28 0.05 160 / 0.08); display: flex; align-items: center; justify-content: center; font-size: 20px; border-radius: var(--radius); }
+  .kpi-badge.warn { background: oklch(0.75 0.12 82 / 0.12); }
+  .kpi-badge.info { background: oklch(0.28 0.05 160 / 0.08); }
+
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-xs); margin-bottom: 24px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { text-align: left; padding: 10px 12px; background: var(--surface2); font-weight: 600; color: var(--secondary); text-transform: uppercase; font-size: 10px; letter-spacing: 0.04em; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: oklch(0.97 0.006 150); }
+  .mono { font-family: 'Courier New', monospace; font-size: 10px; }
+
+  .action-row { display: flex; gap: 6px; }
+  .input { padding: 8px 12px; border: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 11px; border-radius: var(--radius); }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">LMC Admin</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active">Dashboard</div>
+    <div class="nav-tab">Courses</div>
+    <div class="nav-tab">Enrolments</div>
+    <div class="nav-tab">Reports</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;font-size:10px;">
+    <span class="muted">admin@lmc.hk</span>
+    <span style="width:28px;height:28px;background:var(--primary);color:var(--primary-fg);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">AD</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="vtag" style="margin-bottom:8px;">INTERFACE: ADMIN — Variant A</div>
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:20px;">Administration Dashboard</h2>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-content"><div class="kpi-label">Enrolments This Month</div><div class="kpi-value">142</div></div>
+      <div class="kpi-badge info">∑</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-content"><div class="kpi-label">Pending Verifications</div><div class="kpi-value" style="color:var(--destructive);">8</div></div>
+      <div class="kpi-badge warn">⚠</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-content"><div class="kpi-label">CPD Hours Issued</div><div class="kpi-value">426</div></div>
+      <div class="kpi-badge info">⏱</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-content"><div class="kpi-label">Active Courses</div><div class="kpi-value">12</div></div>
+      <div class="kpi-badge info">☰</div>
+    </div>
+  </div>
+
+  <!-- Audit Table -->
+  <div class="card">
+    <div class="section-header">
+      <span class="section-title">Recent Enrolment Submissions</span>
+      <div style="display:flex;gap:8px;">
+        <input class="input" placeholder="Search..." style="width:180px;">
+        <button class="btn btn-sm btn-outline">Filter</button>
+        <button class="btn btn-sm">Export</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Attendee</th><th>License</th><th>Company</th><th>Course</th><th>CPD</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">DEMO-88392</td><td>CHAN Tai Man</td><td class="mono">IA12345678</td><td>Prudential HK</td><td>Regulatory Compliance & Ethics</td><td>3.0h</td>
+          <td><span class="badge badge-warning">Pending</span></td><td>2026-08-25</td>
+          <td><div class="action-row"><button class="btn btn-sm">Verify</button><button class="btn btn-sm btn-outline">View</button></div></td>
+        </tr>
+        <tr>
+          <td class="mono">DEMO-88393</td><td>WONG Ka Ho</td><td class="mono">IA87654321</td><td>HSBC Life</td><td>Anti-Money Laundering</td><td>4.0h</td>
+          <td><span class="badge badge-success">Verified</span></td><td>2026-08-24</td>
+          <td><button class="btn btn-sm btn-outline">View</button></td>
+        </tr>
+        <tr>
+          <td class="mono">DEMO-88394</td><td>LEE Mei Ling</td><td class="mono">IA24681012</td><td>AIA Hong Kong</td><td>Corporate Governance</td><td>3.0h</td>
+          <td><span class="badge badge-warning">Pending</span></td><td>2026-08-24</td>
+          <td><div class="action-row"><button class="btn btn-sm">Verify</button><button class="btn btn-sm btn-outline">View</button></div></td>
+        </tr>
+        <tr>
+          <td class="mono">DEMO-88395</td><td>NG Siu Ming</td><td class="mono">IA35791113</td><td>Manulife HK</td><td>Insurance Fraud Prevention</td><td>2.5h</td>
+          <td><span class="badge badge-danger">Rejected</span></td><td>2026-08-23</td>
+          <td><button class="btn btn-sm btn-outline">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Course Management Table -->
+  <div class="card">
+    <div class="section-header">
+      <span class="section-title">Course Management</span>
+      <div style="display:flex;gap:8px;">
+        <input class="input" placeholder="Search courses..." style="width:200px;">
+        <button class="btn btn-sm">+ Add Course</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>IA Ref</th><th>Title</th><th>Category</th><th>CPD Hours</th><th>Fee (HKD)</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">IA-2026-CPD01</td><td>Regulatory Compliance & Ethics</td><td>CPD</td><td>3.0</td><td>1,200</td><td><span class="badge badge-success">Active</span></td><td><div class="action-row"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline">View</button></div></td></tr>
+        <tr><td class="mono">IA-2026-AML04</td><td>Anti-Money Laundering Standards</td><td>Compliance</td><td>4.0</td><td>1,500</td><td><span class="badge badge-success">Active</span></td><td><div class="action-row"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline">View</button></div></td></tr>
+        <tr><td class="mono">IA-2026-CG07</td><td>Corporate Governance Framework</td><td>Management</td><td>3.0</td><td>1,200</td><td><span class="badge badge-warning">Draft</span></td><td><div class="action-row"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline">Preview</button></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

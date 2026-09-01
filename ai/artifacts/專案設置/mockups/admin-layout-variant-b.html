@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Layout — Variant B (Split View: Data Cards + Filters + Detail Panel)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc; --fg: oklch(0.18 0.01 140);
+    --surface: oklch(1 0 0); --surface2: oklch(0.94 0.01 140);
+    --primary: oklch(0.28 0.05 160); --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.48 0.03 160); --accent: oklch(0.72 0.11 85);
+    --accent-fg: oklch(0.20 0.04 160); --border: oklch(0.90 0.01 140);
+    --destructive: oklch(0.577 0.245 27.325);
+    --sidebar-w: 200px; --nav-h: 56px; --radius: 2px;
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', Arial, Helvetica, 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--fg); font-size: 12px; line-height: 1.6; }
+  .badge { display: inline-flex; padding: 2px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; border-radius: var(--radius); }
+  .badge-success { background: oklch(0.55 0.10 155 / 0.1); color: oklch(0.35 0.07 160); border-color: oklch(0.55 0.10 155 / 0.3); }
+  .badge-warning { background: oklch(0.75 0.12 82 / 0.12); color: oklch(0.45 0.10 80); border-color: oklch(0.75 0.12 82 / 0.4); }
+  .badge-danger { background: oklch(0.577 0.245 27.325 / 0.08); color: var(--destructive); border-color: oklch(0.577 0.245 27.325 / 0.3); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg); border-radius: var(--radius); }
+  .btn-sm { padding: 5px 10px; font-size: 10px; }
+  .btn-outline { background: var(--surface); color: var(--primary); border: 1px solid var(--border); }
+  .vtag { display: inline-block; padding: 2px 8px; background: var(--primary); color: var(--primary-fg); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .muted { font-size: 10px; color: var(--secondary); }
+
+  .nav { height: var(--nav-h); background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-xs); display: flex; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding: 0 16px; }
+  .nav-brand { background: linear-gradient(90deg, oklch(0.22 0.04 160), oklch(0.33 0.05 160)); color: white; padding: 14px 20px; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); margin-left: -16px; }
+
+  .main { padding: 80px 24px 24px; }
+
+  /* VARIANT B: split layout with sidebar nav */
+  .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; gap: 0; min-height: calc(100vh - var(--nav-h) - 48px); }
+  .sn-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 16px 0; }
+  .sn-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 11px; font-weight: 600; color: var(--secondary); cursor: pointer; border-left: 3px solid transparent; }
+  .sn-link:hover { background: var(--surface2); }
+  .sn-link.active { background: oklch(0.28 0.05 160 / 0.06); color: var(--primary); border-left-color: var(--primary); font-weight: 700; }
+  .sn-section { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--secondary); padding: 12px 16px 6px; }
+
+  .sn-content { padding: 0 24px; }
+
+  /* KPIs as horizontal banner cards */
+  .kpi-banner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi-b { background: var(--surface); padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-xs); text-align: center; border-top: 3px solid var(--primary); }
+  .kpi-b.warn { border-top-color: var(--destructive); }
+  .kpi-b-val { font-size: 32px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+  .kpi-b-val.warn { color: var(--destructive); }
+  .kpi-b-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--secondary); margin-top: 4px; }
+
+  /* Split: table + detail panel */
+  .split-view { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-xs); margin-bottom: 16px; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary); }
+  .card-body { padding: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { text-align: left; padding: 10px 12px; font-weight: 600; color: var(--secondary); text-transform: uppercase; font-size: 9px; letter-spacing: 0.06em; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: oklch(0.97 0.006 150); }
+  tr.selected td { background: oklch(0.28 0.05 160 / 0.06); }
+  .mono { font-family: 'Courier New', monospace; font-size: 10px; }
+
+  .input { padding: 7px 10px; border: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 11px; border-radius: var(--radius); }
+
+  /* Detail panel */
+  .detail-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-xs); }
+  .dp-header { padding: 16px; border-bottom: 1px solid var(--border); background: oklch(0.28 0.05 160 / 0.04); }
+  .dp-body { padding: 16px; }
+  .dp-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+  .dp-label { color: var(--secondary); font-weight: 500; }
+  .dp-value { font-weight: 600; }
+  .dp-actions { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-top: 1px solid var(--border); }
+
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .chip { padding: 3px 10px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 10px; font-weight: 600; cursor: pointer; background: var(--surface); }
+  .chip.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">LMC Admin</div>
+  <div style="flex:1;"></div>
+  <div style="display:flex;align-items:center;gap:8px;font-size:10px;">
+    <span class="muted">admin@lmc.hk</span>
+    <span style="width:28px;height:28px;background:var(--primary);color:var(--primary-fg);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">AD</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="layout">
+    <!-- Left Nav -->
+    <div class="sn-sidebar">
+      <div class="sn-section">Overview</div>
+      <div class="sn-link active">Dashboard</div>
+      <div class="sn-section">Management</div>
+      <div class="sn-link">Courses</div>
+      <div class="sn-link">Enrolments</div>
+      <div class="sn-link">Users</div>
+      <div class="sn-section">Reporting</div>
+      <div class="sn-link">CPD Reports</div>
+      <div class="sn-link">Audit Log</div>
+    </div>
+
+    <!-- Right Content -->
+    <div class="sn-content">
+
+      <div class="vtag" style="margin-bottom:4px;">INTERFACE: ADMIN — Variant B</div>
+      <h2 style="font-size:18px;font-weight:700;margin-bottom:20px;">Administration Dashboard</h2>
+
+      <!-- KPI Banner -->
+      <div class="kpi-banner">
+        <div class="kpi-b"><div class="kpi-b-val">142</div><div class="kpi-b-label">Enrolments</div></div>
+        <div class="kpi-b warn"><div class="kpi-b-val warn">8</div><div class="kpi-b-label">Pending</div></div>
+        <div class="kpi-b"><div class="kpi-b-val">426</div><div class="kpi-b-label">CPD Hours</div></div>
+        <div class="kpi-b"><div class="kpi-b-val">12</div><div class="kpi-b-label">Active Courses</div></div>
+      </div>
+
+      <!-- Enrolments: Split Table + Detail -->
+      <div class="split-view" style="margin-bottom:24px;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Enrolment Submissions</span>
+            <div style="display:flex;gap:6px;">
+              <input class="input" placeholder="Search..." style="width:160px;">
+              <button class="btn btn-sm">Export</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chip-row" style="padding:10px 16px;">
+              <span class="chip active">All</span><span class="chip">Pending (8)</span><span class="chip">Verified</span><span class="chip">Rejected</span>
+            </div>
+            <table>
+              <thead><tr><th>ID</th><th>Attendee</th><th>Course</th><th>CPD</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr class="selected" style="cursor:pointer;"><td class="mono">DEMO-88392</td><td>CHAN Tai Man</td><td>Regulatory Compliance</td><td>3.0h</td><td><span class="badge badge-warning">Pending</span></td></tr>
+                <tr><td class="mono">DEMO-88393</td><td>WONG Ka Ho</td><td>Anti-Money Laundering</td><td>4.0h</td><td><span class="badge badge-success">Verified</span></td></tr>
+                <tr><td class="mono">DEMO-88394</td><td>LEE Mei Ling</td><td>Corporate Governance</td><td>3.0h</td><td><span class="badge badge-warning">Pending</span></td></tr>
+                <tr><td class="mono">DEMO-88395</td><td>NG Siu Ming</td><td>Insurance Fraud</td><td>2.5h</td><td><span class="badge badge-danger">Rejected</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Detail Panel -->
+        <div class="detail-panel">
+          <div class="dp-header">
+            <div class="mono" style="font-weight:700;margin-bottom:4px;">DEMO-88392</div>
+            <span class="badge badge-warning">Pending Verification</span>
+          </div>
+          <div class="dp-body">
+            <div class="dp-row"><span class="dp-label">Attendee</span><span class="dp-value">CHAN Tai Man</span></div>
+            <div class="dp-row"><span class="dp-label">License</span><span class="dp-value mono">IA12345678</span></div>
+            <div class="dp-row"><span class="dp-label">Company</span><span class="dp-value">Prudential HK</span></div>
+            <div class="dp-row"><span class="dp-label">Course</span><span class="dp-value">Regulatory Compliance</span></div>
+            <div class="dp-row"><span class="dp-label">CPD Hours</span><span class="dp-value">3.0h (Ethics)</span></div>
+            <div class="dp-row"><span class="dp-label">Submitted</span><span class="dp-value">2026-08-25</span></div>
+          </div>
+          <div class="dp-actions">
+            <button class="btn" style="width:100%;justify-content:center;">Verify & Approve</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center;">View Full Details</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center;color:var(--destructive);border-color:var(--destructive);">Reject</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Management -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Course Management</span>
+          <div style="display:flex;gap:8px;">
+            <input class="input" placeholder="Search courses..." style="width:180px;">
+            <button class="btn btn-sm">+ Add Course</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chip-row" style="padding:10px 16px;">
+            <span class="chip active">All (12)</span><span class="chip">Active (10)</span><span class="chip">Draft (2)</span><span class="chip">Archived</span>
+          </div>
+          <table>
+            <thead><tr><th>IA Ref</th><th>Title</th><th>Category</th><th>CPD</th><th>Fee (HKD)</th><th>Enrolled</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">IA-2026-CPD01</td><td>Regulatory Compliance & Ethics</td><td>CPD</td><td>3.0</td><td>1,200</td><td>87</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-sm btn-outline">Edit</button></td></tr>
+              <tr><td class="mono">IA-2026-AML04</td><td>Anti-Money Laundering Standards</td><td>Compliance</td><td>4.0</td><td>1,500</td><td>64</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-sm btn-outline">Edit</button></td></tr>
+              <tr><td class="mono">IA-2026-CG07</td><td>Corporate Governance Framework</td><td>Management</td><td>3.0</td><td>1,200</td><td>0</td><td><span class="badge badge-warning">Draft</span></td><td><button class="btn btn-sm btn-outline">Publish</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

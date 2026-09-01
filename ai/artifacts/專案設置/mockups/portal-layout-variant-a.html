@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal/Dashboard Layout — Variant A (Sidebar Left + Content)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc; --fg: oklch(0.18 0.01 140);
+    --surface: oklch(1 0 0); --surface2: oklch(0.94 0.01 140);
+    --primary: oklch(0.28 0.05 160); --primary-fg: oklch(0.98 0.01 140);
+    --secondary: oklch(0.48 0.03 160); --accent: oklch(0.72 0.11 85);
+    --accent-fg: oklch(0.20 0.04 160); --border: oklch(0.90 0.01 140);
+    --sidebar-bg: oklch(0.24 0.05 160); --sidebar-fg: oklch(0.98 0.01 140);
+    --sidebar-w: 220px; --nav-h: 56px; --sub-h: 48px;
+    --radius: 2px; --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', Arial, Helvetica, 'PingFang HK', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--fg); font-size: 12px; line-height: 1.6; }
+  .badge { display: inline-flex; padding: 2px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; border-radius: var(--radius); }
+  .badge-success { background: oklch(0.55 0.10 155 / 0.1); color: oklch(0.35 0.07 160); border-color: oklch(0.55 0.10 155 / 0.3); }
+  .badge-warning { background: oklch(0.75 0.12 82 / 0.12); color: oklch(0.45 0.10 80); border-color: oklch(0.75 0.12 82 / 0.4); }
+  .badge-danger { background: oklch(0.577 0.245 27.325 / 0.08); color: var(--destructive); border-color: oklch(0.577 0.245 27.325 / 0.3); }
+  :root { --destructive: oklch(0.577 0.245 27.325); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg); border-radius: var(--radius); }
+  .btn-sm { padding: 5px 10px; font-size: 10px; }
+  .btn-outline { background: var(--surface); color: var(--primary); border: 1px solid var(--border); }
+  .label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); }
+  .vtag { display: inline-block; padding: 2px 8px; background: var(--primary); color: var(--primary-fg); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .nav { height: var(--nav-h); background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-xs); display: flex; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
+  .nav-brand { background: linear-gradient(90deg, oklch(0.22 0.04 160), oklch(0.33 0.05 160)); color: white; padding: 14px 20px; font-weight: 800; font-size: 14px; letter-spacing: 0.06em; clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); }
+
+  .subbar { height: var(--sub-h); background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: fixed; top: var(--nav-h); left: var(--sidebar-w); right: 0; z-index: 30; box-shadow: var(--shadow-xs); }
+  .subbar-user { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
+
+  .sidebar { width: var(--sidebar-w); background: var(--sidebar-bg); color: var(--sidebar-fg); position: fixed; top: var(--nav-h); left: 0; bottom: 0; z-index: 30; display: flex; flex-direction: column; }
+  .sidebar-header { padding: 16px; border-bottom: 1px solid oklch(1 0 0 / 10%); font-size: 10px; }
+  .sidebar-user-name { font-size: 12px; font-weight: 700; }
+  .sidebar-nav { flex: 1; padding: 8px 0; }
+  .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 11px; font-weight: 500; color: oklch(0.85 0.01 140); text-decoration: none; transition: all .15s; border-left: 3px solid transparent; }
+  .sidebar-link:hover { background: oklch(0.32 0.05 160); }
+  .sidebar-link.active { background: oklch(0.32 0.05 160); border-left-color: var(--accent); color: white; font-weight: 600; }
+  .sidebar-link-icon { width: 16px; height: 16px; opacity: 0.7; }
+  .sidebar-footer { padding: 12px 16px; border-top: 1px solid oklch(1 0 0 / 10%); }
+  .sidebar-signout { color: oklch(0.75 0.02 140); font-size: 10px; cursor: pointer; text-transform: uppercase; font-weight: 600; letter-spacing: 0.06em; }
+
+  .main { margin-left: var(--sidebar-w); margin-top: calc(var(--nav-h) + var(--sub-h)); padding: 24px; min-height: calc(100vh - var(--nav-h) - var(--sub-h)); }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-xs); }
+  .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--secondary); margin-bottom: 4px; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .kpi-sub { font-size: 10px; color: var(--secondary); margin-top: 2px; }
+
+  .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-xs); margin-bottom: 16px; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { text-align: left; padding: 8px; background: var(--surface2); font-weight: 600; color: var(--secondary); text-transform: uppercase; font-size: 10px; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); }
+  td { padding: 8px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: oklch(0.97 0.006 150); }
+
+  .progress-bar { height: 6px; background: var(--surface2); border-radius: 9999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--primary); border-radius: 9999px; }
+</style>
+</head>
+<body style="background:var(--bg);padding-top:0;">
+
+<!-- NAV -->
+<div class="nav"><div class="nav-brand">LMC CPD</div><div style="flex:1;"></div></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-user-name">CHAN Tai Man</div>
+    <div style="opacity:0.6;font-size:9px;">IA12345678 · Prudential HK</div>
+  </div>
+  <div class="sidebar-nav">
+    <a href="#" class="sidebar-link active"><span class="sidebar-link-icon">◉</span> Dashboard</a>
+    <a href="#" class="sidebar-link"><span class="sidebar-link-icon">◉</span> My Enrolments</a>
+    <a href="#" class="sidebar-link"><span class="sidebar-link-icon">◉</span> CPD Log</a>
+    <a href="#" class="sidebar-link"><span class="sidebar-link-icon">◉</span> License Profile</a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-signout">Sign Out</div>
+  </div>
+</div>
+
+<!-- SUBBAR -->
+<div class="subbar">
+  <div style="font-size:10px;color:var(--secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Licensed Insurance Practitioner</div>
+  <div class="subbar-user">
+    <span style="width:28px;height:28px;background:var(--primary);color:var(--primary-fg);border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">TM</span>
+    <span>CHAN Tai Man</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div style="border-bottom:2px solid var(--primary);margin-bottom:20px;padding-bottom:4px;">
+    <div class="vtag" style="margin-bottom:4px;">INTERFACE: PORTAL DASHBOARD — Variant A</div>
+  </div>
+
+  <!-- Dashboard KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Enrolled Courses</div><div class="kpi-value">5</div><div class="kpi-sub">2 in progress</div></div>
+    <div class="kpi-card"><div class="kpi-label">CPD Hours Earned</div><div class="kpi-value">12.5</div><div class="kpi-sub">of 15 required</div></div>
+    <div class="kpi-card"><div class="kpi-label">Certificates</div><div class="kpi-value">3</div><div class="kpi-sub">Ready to download</div></div>
+    <div class="kpi-card"><div class="kpi-label">Pending Payments</div><div class="kpi-value">1</div><div class="kpi-sub">Awaiting confirmation</div></div>
+  </div>
+
+  <!-- CPD Progress -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header"><span class="card-title">CPD Cycle Progress (2026)</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:11px;font-weight:600;">12.5 / 15 Hours</span>
+      <span class="badge badge-warning">2.5 Remaining</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:83%;"></div></div>
+  </div>
+
+  <!-- Content: Recent Enrolments + Quick Actions -->
+  <div class="content-grid">
+    <div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recent Enrolments</span></div>
+        <table>
+          <thead><tr><th>Course</th><th>CPD</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>Regulatory Compliance & Ethics</td><td>3.0h</td><td><span class="badge badge-success">Completed</span></td><td>2026-08-15</td></tr>
+            <tr><td>Anti-Money Laundering Standards</td><td>4.0h</td><td><span class="badge badge-warning">In Progress</span></td><td>2026-08-28</td></tr>
+            <tr><td>Corporate Governance Framework</td><td>3.0h</td><td><span class="badge badge-success">Completed</span></td><td>2026-07-22</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Upcoming Deadlines</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="font-weight:600;font-size:11px;">CPD Cycle Deadline</div>
+            <div style="font-size:10px;color:var(--secondary);">31 December 2026</div>
+          </div>
+          <div style="padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="font-weight:600;font-size:11px;">License Renewal</div>
+            <div style="font-size:10px;color:var(--secondary);">15 January 2027</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Quick Actions</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-sm" style="width:100%;justify-content:center;">Browse Courses</button>
+          <button class="btn btn-sm btn-outline" style="width:100%;justify-content:center;">Download Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

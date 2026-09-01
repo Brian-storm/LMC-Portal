@@ -1,6 +1,6 @@
 # Design System â€” LMC Portal
 
-> Last updated: 2026-09-01 | Built by: PS-007, PS-008, PS-009, PS-010
+> Last updated: 2026-09-01 | Built by: PS-007, PS-008, PS-009, PS-010, PS-011
 
 ## åº•å±¤æ¡†æž¶ (Foundation Framework)
 
@@ -669,3 +669,46 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 - **Tokens**: `--navbar-bg`, `--navbar-brand-start/mid/end`, `--navbar-accent-hover`, `--primary`, `--accent`, `--accent-foreground`, `--foreground`, `--secondary`
 - **States**: Sticky, mobile open/closed, nav link hover (border-bottom accent)
 - **Z-index**: 50
+
+---
+
+## ????? (Interface Layouts)
+
+> Selected: 2026-09-01 | Built by: PS-011 | Decisions in i/artifacts/????/mockup-decision-*.md`n
+### ???? (Public-Facing)
+
+**Decision: Keep current implementation** — Existing demo already matches Variant A stacked-sections layout:
+
+| Page | Layout Pattern |
+|---|---|
+| Home | Navbar ? Hero Carousel ? Credentials Bar ? Feature Cards (3-col) ? Newsletter |
+| Course Catalog | Sidebar filter (keyword/category/CPD hours) + vertical course list |
+| Course Detail | Two-column: main content (badge + title + syllabus) + sidebar (enrolment card + brochure download) |
+| Enrollment Wizard | 3-step wizard (Personal Info ? Review ? Confirm) with progress indicator |
+| Login | Centered card with role tabs (Student/Admin), email + password fields |
+
+### ???? (Portal/Dashboard)
+
+**Selected: Variant A — Sidebar Left + Content**
+
+| Element | Spec |
+|---|---|
+| Sidebar | Dark (sidebar-bg), 220px fixed left, user info header, nav links with 3px left border accent on active |
+| Subbar | 48px sticky below navbar, license role text + user avatar |
+| KPI Row | 4 cards: Enrolled Courses, CPD Hours Earned, Certificates, Pending Payments |
+| CPD Progress | Horizontal progress bar (h-6), percentage + remaining label |
+| Content Grid | 2-column: 2/3 recent enrolments table + 1/3 upcoming deadlines + quick actions |
+| Navigation Items | Dashboard, My Enrolments, CPD Log, License Profile |
+
+### ???? (Admin)
+
+**Selected: Variant B — Split View (Side Nav + Table + Detail Panel)**
+
+| Element | Spec |
+|---|---|
+| Sidebar Nav | Left sidebar (200px), sections: Overview (Dashboard) / Management (Courses, Enrolments, Users) / Reporting (CPD Reports, Audit Log) |
+| KPI Banner | 4 horizontal cards with top-border accent, centered large numbers |
+| Enrolment Table | Left side of split view, chip filters (All/Pending/Verified/Rejected), selectable rows |
+| Detail Panel | Right side (300px), shows selected enrolment details with Verify/Reject/View actions |
+| Course Management | Full-width table below split view, with chip filters (All/Active/Draft/Archived), enrolled count column, inline Edit/Publish actions |
+
