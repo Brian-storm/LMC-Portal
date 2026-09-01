@@ -1,18 +1,18 @@
 # Agent 指令
 
 本專案使用 Monstrare。請遵循
-`ai/process/workflow.md` 中的共用流程。
+`.github/skills/monstrare/ai/process/workflow.md` 中的共用流程。
 
 ## 操作規則
 
 - 不得根據模糊的需求實作非小型（non-trivial）變更。
 - 從情境探索（context discovery）與任務專屬的情境包（context pack）開始。
-- 實作前使用 `ai/process/definition-of-ready.md`。
-- 宣告完成前使用 `ai/process/definition-of-done.md`。
-- UI 變更需要畫面規格與 mockup 決策紀錄（以 `ai/templates/screen-spec.md`、`ai/templates/mockup-decision.md` 為範本，產出到 `ai/artifacts/<Epic>/`），並先對照 `ai/context/design-system.md`：重用既有 design token 與元件，缺的元件照既有風格補做並登記回元件庫 inventory。
-- 範本（`ai/templates/`）唯讀；所有填寫完成的產出物依 `ai/artifacts/README.md` 的慣例存放。
-- 任何 mockup 或前端視覺實作，套用 `ai/skills/design-craft.md` 的設計工藝紀律，交付前對照 `ai/checklists/design-review-checklist.md`。
-- Epic 0 的 UI 設計系統須依五階段（框架 → 風格 → design token → 元件庫 → 版面）分關卡展開，不得一步到位直接畫版面（見 `ai/skills/project-kickoff.md` 步驟 2a）。
+- 實作前使用 `.github/skills/monstrare/ai/process/definition-of-ready.md`。
+- 宣告完成前使用 `.github/skills/monstrare/ai/process/definition-of-done.md`。
+- UI 變更需要畫面規格與 mockup 決策紀錄（以 `.github/skills/monstrare/ai/templates/screen-spec.md`、`.github/skills/monstrare/ai/templates/mockup-decision.md` 為範本，產出到 `ai/artifacts/<Epic>/`），並先對照 `ai/context/design-system.md`：重用既有 design token 與元件，缺的元件照既有風格補做並登記回元件庫 inventory。
+- 範本（`.github/skills/monstrare/ai/templates/`）唯讀；所有填寫完成的產出物依 `.github/skills/monstrare/ai/artifacts/README.md` 的慣例存放。
+- 任何 mockup 或前端視覺實作，套用 `.opencode/skills/design-craft/SKILL.md` 的設計工藝紀律，交付前對照 `.github/skills/monstrare/ai/checklists/design-review-checklist.md`。
+- Epic 0 的 UI 設計系統須依五階段（框架 → 風格 → design token → 元件庫 → 版面）分關卡展開，不得一步到位直接畫版面（見 `.opencode/skills/project-kickoff/SKILL.md` 步驟 2a）。
 - 高風險變更需要架構、安全性與測試審查關卡（review gate）。
 - 優先採用既有專案模式，而非新增抽象層。
 - 將變更範圍限制在已核准的任務卡（task card）內。

@@ -2,7 +2,7 @@
 
 # Claude Code 指令
 
-本檔案為 Claude Code 專屬的路由層，補充上方 `AGENTS.md` 所定義的共用作業規則與流程（該檔案也供 Codex 等其他 AI 工具讀取，為單一事實來源）。詳細規則位於 `ai/process/`。
+本檔案為 Claude Code 專屬的路由層，補充上方 `AGENTS.md` 所定義的共用作業規則與流程（該檔案也供 Codex 等其他 AI 工具讀取，為單一事實來源）。詳細規則位於 `.github/skills/monstrare/ai/process/`。
 
 - 保持 `CLAUDE.md` 簡短。可重複使用的工作流程放在 `.claude/skills/`。
 
@@ -26,4 +26,4 @@
 - 測試策略與回歸風險：`test-engineer`
 
 不得將代理（agent）輸出視為核准。人工核准仍是
-`ai/process/review-gates.md` 中所定義各關卡（gate）的必要條件。
+`.github/skills/monstrare/ai/process/review-gates.md` 中所定義各關卡（gate）的必要條件。

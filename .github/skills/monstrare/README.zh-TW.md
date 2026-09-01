@@ -24,7 +24,7 @@
 
 ## 架構：流程怎麼運作
 
-每個非小型（non-trivial）變更都會依序走過以下階段，完整定義見 `ai/process/workflow.md`：
+每個非小型（non-trivial）變更都會依序走過以下階段，完整定義見 `.github/skills/monstrare/ai/process/workflow.md`：
 
 | 階段 | 輸出 | 關卡 |
 | --- | --- | --- |
@@ -46,7 +46,7 @@
 UI 工作由兩個互補的層次把關——只有流程會做出「合規但醜」的畫面，所以套件兩層都內建：
 
 1. **設計系統（用什麼）**——Epic 0 以五個人工關卡階段建立設計系統（框架 → 風格方向 → design token → 元件庫 → 版面），持久化在 `ai/context/design-system.md`。之後所有 UI 任務都必須重用這些 token／元件；缺的元件照既有風格補做並登記回元件庫 inventory。
-2. **設計工藝（怎麼做得好看）**——`ai/skills/design-craft.md` 承載視覺品質紀律（Refactoring UI 原則、type scale、4 的倍數間距、分階色彩系統、depth 規則、互動五態），並附一份高品質開源參考清單，設計前先比對、不憑記憶瞎猜。交付前逐項對照 `ai/checklists/design-review-checklist.md`。
+2. **設計工藝（怎麼做得好看）**——`.opencode/skills/design-craft/SKILL.md` 承載視覺品質紀律（Refactoring UI 原則、type scale、4 的倍數間距、分階色彩系統、depth 規則、互動五態），並附一份高品質開源參考清單，設計前先比對、不憑記憶瞎猜。交付前逐項對照 `.github/skills/monstrare/ai/checklists/design-review-checklist.md`。
 
 兩層都住在 repo 裡，所以任何電腦、任何 agent（Claude Code、Codex⋯）clone 下來就拿到同一套設計水準——不依賴某台電腦 home 目錄裡裝的隱形 skill。
 
@@ -63,7 +63,7 @@ UI 工作由兩個互補的層次把關——只有流程會做出「合規但�
 - 變更範圍限制在已核准任務卡內；動了不相關檔案要說清楚。
 - 沒有證據不能宣稱完成：指令、輸出、截圖、殘留風險。
 
-Agent 的輸出從來都不等於核准——每個關卡仍需人工簽核（見 `ai/process/review-gates.md`）。
+Agent 的輸出從來都不等於核准——每個關卡仍需人工簽核（見 `.github/skills/monstrare/ai/process/review-gates.md`）。
 
 ## 這套件取代了什麼
 
@@ -97,7 +97,7 @@ ai/checklists/                # 安全性、測試與設計審查檢查清單
 ai/skills/                    # .claude/skills 與 .codex/skills 共用的 skill 內容來源
 ai/artifacts/                 # 填寫完成的規格、mockup、任務卡、驗證報告（一個 Epic 一個資料夾）
 ai/examples/                  # 任務與功能產物範例
-tools/kanban/                 # 實作 ai/process/kanban.md 的本地看板
+tools/kanban/                 # 實作 `.github/skills/monstrare/ai/process/kanban.md` 的本地看板
 ```
 
 ## 快速開始
@@ -141,7 +141,7 @@ scripts/install-into-project.sh /path/to/your/project
 
 會把流程檔案、範本、檢查清單、Claude/Codex skills 與 agents、治理自我檢查腳本、GitHub PR/issue 模板，以及看板工具（剔除 Monstrare 自己的看板選型史料）複製到目標專案。
 
-不會覆蓋：已存在的 `AGENTS.md`、`CLAUDE.md`、`ai/context/` 內的檔案、`ai/artifacts/`、`.codex/config.toml`，與既有的 `tools/kanban/`。一律更新為套件最新版：`ai/process/`、`ai/templates/`、`ai/checklists/`、`ai/skills/` 與 skill stubs——若你在專案裡改過這些套件檔案，重跑安裝前請先 commit。
+不會覆蓋：已存在的 `AGENTS.md`、`CLAUDE.md`、`ai/context/` 內的檔案、`ai/artifacts/`、`.codex/config.toml`，與既有的 `tools/kanban/`。一律更新為套件最新版：`.github/skills/monstrare/ai/process/`、`.github/skills/monstrare/ai/templates/`、`.github/skills/monstrare/ai/checklists/`、`.github/skills/monstrare/ai/skills/` 與 skill stubs——若你在專案裡改過這些套件檔案，重跑安裝前請先 commit。
 
 ```bash
 scripts/check-governance.sh   # 在本專案根目錄執行，做套件自我檢查
@@ -149,7 +149,7 @@ scripts/check-governance.sh   # 在本專案根目錄執行，做套件自我檢
 
 ## AI 看板
 
-`ai/process/kanban.md` 是看板政策——追蹤的是任務是否已就緒、可以安全交給 agent 執行，而不只是狀態。`tools/kanban/` 是這個政策的其中一種實作：零依賴的本地看板，把政策的 12 個階段簡化成 6 條車道（Backlog → Blocked → Ready → Implementing → Verify → Done）。這個工具是選用的，政策本身不要求一定要用它。
+`.github/skills/monstrare/ai/process/kanban.md` 是看板政策——追蹤的是任務是否已就緒、可以安全交給 agent 執行，而不只是狀態。`tools/kanban/` 是這個政策的其中一種實作：零依賴的本地看板，把政策的 12 個階段簡化成 6 條車道（Backlog → Blocked → Ready → Implementing → Verify → Done）。這個工具是選用的，政策本身不要求一定要用它。
 
 ```bash
 npm run kanban   # 開 http://127.0.0.1:4420

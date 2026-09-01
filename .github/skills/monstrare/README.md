@@ -28,7 +28,7 @@ that visualizes every task's progress through the gates below.
 ## How It Works
 
 Every non-trivial change moves through these phases, defined in full in
-`ai/process/workflow.md`:
+`.github/skills/monstrare/ai/process/workflow.md`:
 
 | Phase | Output | Gate |
 | --- | --- | --- |
@@ -58,12 +58,12 @@ compliant-but-ugly screens, so the kit ships both:
    `ai/context/design-system.md`. Every later UI task must reuse those
    tokens/components; missing components are built in the same style and
    registered back into the inventory.
-2. **Design craft (how to make it good)** — `ai/skills/design-craft.md`
+2. **Design craft (how to make it good)** — `.opencode/skills/design-craft/SKILL.md`
    carries the visual-quality discipline (Refactoring UI principles, type
    scale, 4px spacing grid, layered color systems, depth rules, five
    interactive states) plus a curated list of high-quality open-source
    references to compare against before designing. Deliverables are checked
-   against `ai/checklists/design-review-checklist.md`.
+   against `.github/skills/monstrare/ai/checklists/design-review-checklist.md`.
 
 Both live in the repository, so every machine and every agent (Claude Code,
 Codex, ...) that clones the repo gets the same design standard — no hidden
@@ -75,7 +75,7 @@ From `AGENTS.md`, read before any agent touches this repository:
 
 - No non-trivial change from a vague request.
 - Start from context discovery, not assumptions.
-- `definition-of-ready.md` before implementation, `definition-of-done.md` before calling anything done.
+- `.github/skills/monstrare/ai/process/definition-of-ready.md` before implementation, `.github/skills/monstrare/ai/process/definition-of-done.md` before calling anything done.
 - UI changes need `screen-spec.md` + `mockup-decision.md`, reuse the design system in `ai/context/design-system.md`, and follow the `design-craft` visual discipline.
 - High-risk changes need architecture + security + test review.
 - Reuse existing patterns over new abstractions.
@@ -83,7 +83,7 @@ From `AGENTS.md`, read before any agent touches this repository:
 - No completion claim without evidence: commands, output, screenshots, residual risk.
 
 Agent output is never itself an approval — humans sign off at every gate in
-`ai/process/review-gates.md`.
+`.github/skills/monstrare/ai/process/review-gates.md`.
 
 ## What This Replaces
 
@@ -118,7 +118,7 @@ ai/checklists/                # Security, testing, and design review gates
 ai/skills/                    # Canonical skill content shared by .claude/skills and .codex/skills
 ai/artifacts/                 # Completed specs, mockups, task cards, verification reports (one folder per Epic)
 ai/examples/                  # Example task and feature artifacts
-tools/kanban/                 # Local Kanban board implementing ai/process/kanban.md
+tools/kanban/                 # Local Kanban board implementing `.github/skills/monstrare/ai/process/kanban.md`
 ```
 
 ## Quick Start
@@ -181,8 +181,8 @@ the governance self-check, GitHub PR/issue templates, and the kanban tool
 
 Never overwritten: existing `AGENTS.md`, `CLAUDE.md`, `ai/context/` files,
 `ai/artifacts/`, `.codex/config.toml`, and an existing `tools/kanban/`.
-Always updated to the kit's latest version: `ai/process/`, `ai/templates/`,
-`ai/checklists/`, `ai/skills/`, and the skill stubs — if you've locally
+Always updated to the kit's latest version: `.github/skills/monstrare/ai/process/`, `.github/skills/monstrare/ai/templates/`,
+`.github/skills/monstrare/ai/checklists/`, `.github/skills/monstrare/ai/skills/`, and the skill stubs — if you've locally
 modified those kit files, commit before re-running the installer.
 
 ```bash
@@ -191,7 +191,7 @@ scripts/check-governance.sh   # self-check from the repo root
 
 ## AI Kanban
 
-`ai/process/kanban.md` is the board policy — it tracks whether a task is
+`.github/skills/monstrare/ai/process/kanban.md` is the board policy — it tracks whether a task is
 ready for safe agent execution, not just its status. `tools/kanban/` is one
 implementation of it: a zero-dependency local board that simplifies the
 policy's 12 stages down to 6 lanes (Backlog -> Blocked -> Ready ->
