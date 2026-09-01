@@ -26,13 +26,13 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
           className="shrink-0 flex items-center group focus:outline-none"
         >
           <div
-            className="bg-gradient-to-r from-navbar-brand-start via-navbar-brand-mid to-navbar-brand-end pl-6 pr-24 pt-3.5 pb-3.5 shadow-md border-t border-r border-white/10 transition-all duration-300 group-hover:from-navbar-brand-mid group-hover:to-primary"
+            className="flex items-center px-8 py-2"
             style={{
               clipPath: "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)",
             }}
           >
             <NextImage
-              src="/company/logo-text-white.svg"
+              src="/company/logo-text-black.svg"
               alt="LMC Management Consultancy Logo"
               width={60}
               height={60}

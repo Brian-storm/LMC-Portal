@@ -183,12 +183,10 @@
     "portal1": "Student Verification Portal",
     "portal2": "Institutional Staff Access",
     "portal3": "About LMC Consultancy",
-    "portal4": "Frequently Asked Questions",
     "location": "Unit 1011-15, 10/F., Tower B, New Mandarin Plaza, Tsim Sha Tsui East, Kowloon, Hong Kong",
     "copyright": "All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "disclaimer": "CPD Accreditation Disclaimer"
+    "terms": "Terms of Service"
   },
   "termsPage": {
     "backToPortal": "Return to Institutional Portal",

@@ -49,6 +49,16 @@
       ]
     },
     {
+      "name": "UI-Consistency-Fixes",
+      "definition": "Frontend UI consistency pass: fix footer nav links, refresh color palette (Variant C), replace hero images, redesign newsletter banner to consultation CTA, add breadcrumbs to public pages, redesign contact page typography/map",
+      "stories": [
+        { "name": "導航與頁面修復", "definition": "Footer redirect path fixes, breadcrumbs on 6 public pages" },
+        { "name": "視覺與色票更新", "definition": "CSS :root token refresh to Variant C (Rich Jewel), Hero overlay & Newsletter background to brand emerald" },
+        { "name": "首頁區域重新設計", "definition": "Newsletter→consultation CTA banner, hero carousel image replacement" },
+        { "name": "聯絡頁 UI 改版", "definition": "Font family/size refresh, map aspect-square, add breadcrumbs" }
+      ]
+    },
+    {
       "name": "第二階段：學員與講師功能",
       "definition": "Phase 2: student dashboard, instructor dashboard, certificates, online payment, recorded video, chatbot. DEPENDS ON: all Phase 1 Epics complete",
       "stories": [

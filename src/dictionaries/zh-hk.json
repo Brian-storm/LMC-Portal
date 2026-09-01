@@ -180,12 +180,10 @@
     "portal1": "學員證書核實系統",
     "portal2": "機構教職員登入",
     "portal3": "關於 LMC 顧問服務",
-    "portal4": "常見問題",
     "location": "香港尖沙咀新文華中心 10樓1011-1015",
     "copyright": "版權所有，不得轉載。",
     "privacy": "私隱政策",
-    "terms": "服務條款",
-    "disclaimer": "CPD 課程認可聲明"
+    "terms": "服務條款"
   },
   "termsPage": {
     "backToPortal": "返回機構主頁",

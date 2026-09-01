@@ -2,7 +2,7 @@
   "id": "UI-001",
   "title": "修正 Footer 導航連結路徑",
   "content": "修正 Footer 中所有錯誤的連結路徑：Student Portal → /dashboard, Admin Portal → /admin, 移除 FAQ 與 Disclaimer 失效連結。確認三語系字典同步。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

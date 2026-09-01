@@ -93,7 +93,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
             <ul className="space-y-2 text-slate-600">
               <li>
                 <Link
-                  href={`/${currentLocale}/portal`}
+                  href={`/${currentLocale}/dashboard`}
                   className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal1}
@@ -101,7 +101,7 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href={`/${currentLocale}/portal/admin`}
+                  href={`/${currentLocale}/admin`}
                   className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal2}
@@ -113,14 +113,6 @@ export function Footer({ dict, currentLocale }: FooterProps) {
                   className="hover:text-emerald-800 transition-colors"
                 >
                   {dict.portal3}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`/${currentLocale}/faq`}
-                  className="hover:text-emerald-800 transition-colors"
-                >
-                  {dict.portal4}
                 </Link>
               </li>
             </ul>
@@ -139,10 +131,10 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li className="flex items-center">
                 <Mail className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
                 <a
-                  href="mailto:info@lmcconsulting.hk"
+                  href="mailto:lmcconsultancy2025@gmail.com"
                   className="hover:text-emerald-800 transition-colors"
                 >
-                  info@LMCconsulting.hk
+                  lmcconsultancy2025@gmail.com
                 </a>
               </li>
               <li className="flex items-center">
@@ -174,13 +166,6 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               className="hover:text-emerald-800 transition-colors"
             >
               {dict.terms}
-            </Link>
-            <span>•</span>
-            <Link
-              href={`/${currentLocale}/disclaimer`}
-              className="hover:text-emerald-800 transition-colors"
-            >
-              {dict.disclaimer}
             </Link>
           </div>
         </div>
