@@ -155,15 +155,15 @@
     }
   },
   "newsletterForm": {
-    "tag": "保持资讯同步",
-    "title": "订阅顾问服务简讯",
-    "description": "直接在您的收件箱中接收每季度监管更新、最新课程安排及高管行业洞察。",
+    "tag": "开始咨询",
+    "title": "预约免费课程咨询",
+    "description": "我们的团队将协助您找到最适合您职业发展的 CPD 课程。留下您的资料，我们将在 1-2 个工作日内与您联系。",
     "namePlaceholder": "姓名",
     "emailPlaceholder": "电邮地址",
-    "submitButton": "订阅",
-    "submittingButton": "提交中...",
-    "successMessage": "感谢您的订阅！您已成功加入我们的邮件列表。",
-    "privacyPrefix": "我们尊重您的隐私，您可以随时取消订阅。查看我们的 ",
+    "submitButton": "发送查询",
+    "submittingButton": "发送中...",
+    "successMessage": "感谢您的查询。我们将在 1-2 个工作日内与您联系。",
+    "privacyPrefix": "我们尊重您的隐私。查看我们的 ",
     "privacyLinkText": "隐私政策"
   },
   "footer": {

@@ -2,7 +2,7 @@
   "id": "UI-004",
   "title": "重新設計 Newsletter 為課程諮詢 CTA 區塊",
   "content": "將首頁現有「Subscribe to Consultancy Bulletins」改為「免費課程諮詢 / Book a Free Consultation」主題。二方案待選擇：A) 保留 name+email 表單；B) 改為大型 CTA 按鈕跳轉聯絡頁。背景從 slate-900 改為品牌深翠綠。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -22,15 +22,15 @@
     "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
-    "human_approval_recorded": false
+    "human_approval_recorded": true
   },
   "gates": {
     "product": false,
-    "ui": false,
+    "ui": true,
     "architecture": false,
     "security": false,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -43,8 +43,8 @@
   "refs": ["src/components/home/NewsletterForm.tsx", "src/dictionaries/en.json", "src/dictionaries/zh-hk.json", "src/dictionaries/zh-cn.json", "src/dictionaries/types.ts"],
   "evidence": {
     "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": [],
-    "residual": ""
+    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "residual": "表單提交仍為模擬（setTimeout），後續需實作 API 串接"
   },
   "comments": [],
   "acceptance": [

@@ -10,26 +10,26 @@ interface NewsletterFormProps {
   dict?: NewsletterFormDict;
 }
 
-export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {
+export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
   const [formData, setFormData] = useState({ fullName: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const tag = dict?.tag || "Stay Informed";
-  const title = dict?.title || "Subscribe to Consultancy Bulletins";
+  const tag = dict?.tag || "Get Started";
+  const title = dict?.title || "Book a Free Consultation";
   const description =
     dict?.description ||
-    "Receive quarterly regulatory updates, upcoming course schedules, and executive industry insights directly in your inbox.";
-  const namePlaceholder = dict?.namePlaceholder || "Full Name";
+    "Our team will help you find the right CPD courses for your career development. Leave your details and we'll get back to you within 1-2 business days.";
+  const namePlaceholder = dict?.namePlaceholder || "Your Name";
   const emailPlaceholder = dict?.emailPlaceholder || "Email Address";
-  const submitButton = dict?.submitButton || "Subscribe";
-  const submittingButton = dict?.submittingButton || "Submitting...";
+  const submitButton = dict?.submitButton || "Send Enquiry";
+  const submittingButton = dict?.submittingButton || "Sending...";
   const successMessage =
     dict?.successMessage ||
-    "Thank you for subscribing. You have been added to our mailing list.";
+    "Thank you for your enquiry. We will contact you within 1-2 business days.";
   const privacyPrefix =
     dict?.privacyPrefix ||
-    "We respect your privacy. Unsubscribe at any time. View our ";
+    "We respect your privacy. View our ";
   const privacyLinkText = dict?.privacyLinkText || "Privacy Policy";
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -45,7 +45,7 @@ export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {
   };
 
   return (
-    <section className="bg-slate-900 text-white py-14 border-t border-slate-800">
+    <section className="bg-[#1b4332] text-white py-14 border-t border-emerald-900/50">
       <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
         <div className="space-y-2">
           <span className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600">
@@ -79,7 +79,7 @@ export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {
                 onChange={(e) =>
                   setFormData({ ...formData, fullName: e.target.value })
                 }
-                className="w-full bg-slate-950 border border-slate-700 rounded-xs pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors"
+                className="w-full bg-emerald-950 border border-emerald-800 rounded-xs pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors"
               />
             </div>
 
@@ -93,14 +93,14 @@ export function NewsletterForm({ currentLocale, dict }: NewsletterFormProps) {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="w-full bg-slate-950 border border-slate-700 rounded-xs pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors"
+                className="w-full bg-emerald-950 border border-emerald-800 rounded-xs pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-medium px-5 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shrink-0 disabled:opacity-50 border border-emerald-700/50"
+              className="w-full sm:w-auto bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-5 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shrink-0 disabled:opacity-50 shadow-md"
             >
               {isSubmitting ? submittingButton : submitButton}
             </button>

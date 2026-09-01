@@ -158,15 +158,15 @@
     }
   },
   "newsletterForm": {
-    "tag": "Stay Informed",
-    "title": "Subscribe to Consultancy Bulletins",
-    "description": "Receive quarterly regulatory updates, upcoming course schedules, and executive industry insights directly in your inbox.",
-    "namePlaceholder": "Full Name",
+    "tag": "Get Started",
+    "title": "Book a Free Consultation",
+    "description": "Our team will help you find the right CPD courses for your career development. Leave your details and we'll get back to you within 1-2 business days.",
+    "namePlaceholder": "Your Name",
     "emailPlaceholder": "Email Address",
-    "submitButton": "Subscribe",
-    "submittingButton": "Submitting...",
-    "successMessage": "Thank you for subscribing. You have been added to our mailing list.",
-    "privacyPrefix": "We respect your privacy. Unsubscribe at any time. View our ",
+    "submitButton": "Send Enquiry",
+    "submittingButton": "Sending...",
+    "successMessage": "Thank you for your enquiry. We will contact you within 1-2 business days.",
+    "privacyPrefix": "We respect your privacy. View our ",
     "privacyLinkText": "Privacy Policy"
   },
   "footer": {

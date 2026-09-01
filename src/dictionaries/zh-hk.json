@@ -155,15 +155,15 @@
     }
   },
   "newsletterForm": {
-    "tag": "保持資訊同步",
-    "title": "訂閱顧問服務簡訊",
-    "description": "直接在您的收件箱中接收每季度監管更新、最新課程安排及高管行業洞察。",
-    "namePlaceholder": "全名",
+    "tag": "開始諮詢",
+    "title": "預約免費課程諮詢",
+    "description": "我們的團隊將協助您找到最適合您職業發展的 CPD 課程。留下您的資料，我們將在 1-2 個工作日內與您聯繫。",
+    "namePlaceholder": "姓名",
     "emailPlaceholder": "電郵地址",
-    "submitButton": "訂閱",
-    "submittingButton": "提交中...",
-    "successMessage": "感謝您的訂閱！您已成功加入我們的郵件清單。",
-    "privacyPrefix": "我們尊重您的私隱，您可以隨時取消訂閱。檢視我們的 ",
+    "submitButton": "發送查詢",
+    "submittingButton": "發送中...",
+    "successMessage": "感謝您的查詢。我們將在 1-2 個工作日內與您聯繫。",
+    "privacyPrefix": "我們尊重您的私隱。檢視我們的 ",
     "privacyLinkText": "私隱政策"
   },
   "footer": {
