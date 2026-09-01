@@ -1,12 +1,52 @@
 {
   "id": "CM-002",
   "title": "課程目錄頁 → 真實 API 串接 (前端)",
-  "epic": "課程管理",
-  "userStory": "課程目錄頁",
+  "content": "",
   "stage": "backlog",
   "risk": "medium",
-  "dependsOn": ["CM-001"],
-  "order": 21,
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "課程管理",
+  "userStory": "課程目錄頁",
+  "track": "n/a",
+  "dependsOn": [
+    "CM-001"
+  ],
+  "order": 1,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "acceptance": [
     "Replace inline mock getCourses() with fetch('/api/courses?locale=' + locale + '&category=' + filter) in page server component",
     "Search input filters courses by title/description client-side on keyup",
@@ -20,8 +60,10 @@
     "Error state: if API fetch fails, show retry button"
   ],
   "files": [
-    "src/app/[locale]/courses/page.tsx (rewrite — fetch from API)",
-    "src/components/courses/CoursesView.tsx (rewrite — accept data prop, add loading/empty/error states)"
+    "src/lib/map-course.ts (new — API-to-Course mapper)",
+    "src/app/[locale]/courses/page.tsx (rewrite — server-side fetch from API)",
+    "src/components/courses/CoursesView.tsx (rewrite — loading/empty/error states, category/CPD re-fetch, Load More)",
+    "src/components/courses/CourseList.tsx (rewrite — skeleton cards, error+retry, Load More button)"
   ],
   "verification": "Visit /en/courses → courses load from real DB. Select 'CPD' filter → only CPD courses shown. Search 'Legacy' → filters to matching courses. Empty search → shows empty state message. API down → shows error with retry button."
 }

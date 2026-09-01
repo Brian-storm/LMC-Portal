@@ -22,6 +22,7 @@
 
 ## Key Conventions
 
+Comment all code: Every function, non-trivial block, and complex expression must have a brief comment explaining intent. Inside functions and large blocks, include step-by-step comments (// 1: ..., // 2: ...) to create a readable walkthrough. This overrides the default "no comments" instruction in the AI model prompt.
 - **Never hardcode UI text** in presentation components — always use the `dict` prop.
 - **Course page dict keys** (from `PROMPT.md`): `dict.iaRef`, `dict.certificateBadge`, `dict.coreRegulatoryRequirement`, `dict.cpdHours`, `dict.deliveryMode`, `dict.language`, `dict.free`, `dict.quotaRemaining`, `dict.seats`, `dict.enrollCta`, `dict.downloadBrochure`.
 - **Status badges**: `FEW_SEATS` → show remaining seats + "Enroll Now"; `FULL` → "Course Fully Booked" disabled; `CLOSED` → "Registration Closed" disabled.
