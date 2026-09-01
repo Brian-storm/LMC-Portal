@@ -1,7 +1,12 @@
 import en from "@/dictionaries/en.json";
 
-export type CourseViewDict = typeof en.courseView;
+export type CourseViewDict = typeof en.courseView & {
+  categoryValues: Record<string, string>;
+  deliveryModeValues: Record<string, string>;
+  languageValues: Record<string, string>;
+};
 export type CourseStatus = "open" | "fewSeats" | "full" | "closed";
+export type CourseCategory = "cpd" | "compliance" | "management";
 
 export interface Instructor {
   id: string;
@@ -40,13 +45,12 @@ export interface CourseFAQ {
   answer: string;
 }
 
-// Base Course interface used in catalog view and CourseCard
 export interface Course {
   id: string;
   slug?: string;
   title: string;
   description: string;
-  category: string;
+  category: CourseCategory;
   cpdHours: number | string;
   deliveryMode: string;
   language: string;
@@ -64,7 +68,6 @@ export interface Course {
   seatsLeft?: number;
 }
 
-// Extended interface for single detailed page
 export interface DetailedCourse extends Course {
   status: CourseStatus;
   accreditationBody?: string;

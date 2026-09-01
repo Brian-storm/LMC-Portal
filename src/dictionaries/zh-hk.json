@@ -134,6 +134,24 @@
       "module": "課程單元",
       "duration": "單元時數",
       "topics": "單元主題"
+    },
+
+    "categoryValues": {
+      "cpd": "CPD 認可課程",
+      "compliance": "監管合規",
+      "management": "行政管理"
+    },
+
+    "deliveryModeValues": {
+      "Online": "線上",
+      "In-person": "面授",
+      "Online / In-person": "線上 / 面授"
+    },
+
+    "languageValues": {
+      "Cantonese": "廣東話",
+      "English": "英文",
+      "Cantonese / English": "廣東話 / 英文"
     }
   },
   "newsletterForm": {

@@ -134,6 +134,24 @@
       "module": "课程单元",
       "duration": "单元学时",
       "topics": "单元主题"
+    },
+
+    "categoryValues": {
+      "cpd": "CPD 认可课程",
+      "compliance": "监管合规",
+      "management": "行政管理"
+    },
+
+    "deliveryModeValues": {
+      "Online": "线上",
+      "In-person": "面授",
+      "Online / In-person": "线上 / 面授"
+    },
+
+    "languageValues": {
+      "Cantonese": "广东话",
+      "English": "英文",
+      "Cantonese / English": "广东话 / 英文"
     }
   },
   "newsletterForm": {

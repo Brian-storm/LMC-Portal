@@ -33,19 +33,19 @@ export function CourseDetailView({
   const getStatusBadge = (status: CourseStatus) => {
     const statusMap = {
       open: {
-        text: dict.status?.open || "OPEN FOR ENROLLMENT",
+        text: dict.status?.open,
         color: "bg-emerald-50 text-emerald-900 border-emerald-300",
       },
       fewSeats: {
-        text: dict.status?.fewSeats || "LIMITED SEATS",
+        text: dict.status?.fewSeats,
         color: "bg-amber-50 text-amber-900 border-amber-300",
       },
       full: {
-        text: dict.status?.full || "QUOTA FULL",
+        text: dict.status?.full,
         color: "bg-rose-50 text-rose-900 border-rose-300",
       },
       closed: {
-        text: dict.status?.closed || "REGISTRATION CLOSED",
+        text: dict.status?.closed,
         color: "bg-slate-100 text-slate-800 border-slate-300",
       },
     };
@@ -75,7 +75,7 @@ export function CourseDetailView({
                 className="bg-slate-100 border border-slate-300 px-2 py-0.5 font-bold uppercase tracking-wider text-slate-800 rounded-xs"
                 style={{ fontSize: "9.5px" }}
               >
-                {dict.certificateBadge || "ACCREDITED CPD COURSE"}
+                {dict.certificateBadge}
               </span>
               {course.iaRefNumber && (
                 <span
@@ -83,7 +83,7 @@ export function CourseDetailView({
                   style={{ fontSize: "9.5px" }}
                 >
                   <span className="text-slate-400 font-bold mr-1">
-                    {dict.iaRef || "IA REF"}:
+                    {dict.iaRef}:
                   </span>
                   {course.iaRefNumber}
                 </span>
@@ -96,7 +96,7 @@ export function CourseDetailView({
             >
               <Award className="w-3 h-3 text-[#1b4332] shrink-0" />
               <span>
-                {course.cpdHours} {dict.hours || "CPD HOURS"}
+                {course.cpdHours} {dict.hours}
               </span>
             </div>
           </div>
@@ -128,7 +128,7 @@ export function CourseDetailView({
                 <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2">
                   <FileText className="w-4 h-4 text-[#1b4332]" />
                   <span>
-                    {dict.sections?.syllabus || "Syllabus & Course Structure"}
+                    {dict.sections?.syllabus}
                   </span>
                 </h2>
                 <span
@@ -147,14 +147,14 @@ export function CourseDetailView({
                   >
                     <div className="flex flex-wrap items-center justify-between border-b border-slate-200 pb-2 gap-2">
                       <span className="font-mono font-bold text-slate-900 text-xs">
-                        {dict.labels?.module || "MODULE"} {mod.moduleNumber}:{" "}
+                        {dict.labels?.module} {mod.moduleNumber}:{" "}
                         {mod.title}
                       </span>
                       <span
                         className="font-mono text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded-xs"
                         style={{ fontSize: "9px" }}
                       >
-                        {dict.labels?.duration || "DURATION"}: {mod.duration}
+                        {dict.labels?.duration}: {mod.duration}
                       </span>
                     </div>
 
@@ -163,7 +163,7 @@ export function CourseDetailView({
                         className="font-mono font-semibold uppercase text-slate-500 mb-1.5"
                         style={{ fontSize: "8.5px" }}
                       >
-                        {dict.labels?.topics || "TOPICS COVERED"}
+                        {dict.labels?.topics}
                       </p>
                       <ul
                         className="space-y-1 text-slate-700"
@@ -216,7 +216,7 @@ export function CourseDetailView({
                       >
                         <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
                         <span>
-                          {dict.labels?.venue || "VENUE"}: {sch.venue}
+                          {dict.labels?.venue}: {sch.venue}
                         </span>
                       </div>
                     </div>
@@ -226,8 +226,8 @@ export function CourseDetailView({
                         className="bg-amber-50 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded-xs uppercase tracking-wider"
                         style={{ fontSize: "8.5px" }}
                       >
-                        {dict.quotaRemaining || "QUOTA:"} {sch.quotaRemaining}{" "}
-                        {dict.seats || "SEATS"}
+                        {dict.quotaRemaining} {sch.quotaRemaining}{" "}
+                        {dict.seats}
                       </span>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ export function CourseDetailView({
                 <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2">
                   <User className="w-4 h-4 text-[#1b4332]" />
                   <span>
-                    {dict.sections?.instructors || "Faculty & Presenters"}
+                    {dict.sections?.instructors}
                   </span>
                 </h2>
               </div>
@@ -295,7 +295,7 @@ export function CourseDetailView({
                   <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2">
                     <Star className="w-4 h-4 text-[#1b4332]" />
                     <span>
-                      {dict.sections?.reviews || "Participant Evaluations"}
+                      {dict.sections?.reviews}
                     </span>
                   </h2>
                 </div>
@@ -347,7 +347,7 @@ export function CourseDetailView({
                   <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2">
                     <HelpCircle className="w-4 h-4 text-[#1b4332]" />
                     <span>
-                      {dict.sections?.faqs || "Regulatory & General FAQs"}
+                      {dict.sections?.faqs}
                     </span>
                   </h2>
                 </div>
@@ -395,7 +395,7 @@ export function CourseDetailView({
                   className="text-slate-700 font-bold"
                   style={{ fontSize: "10px" }}
                 >
-                  {course.cpdHours} {dict.hours || "HOURS"} CPD
+                  {course.cpdHours} {dict.hours} CPD
                 </span>
               </div>
 
@@ -420,14 +420,14 @@ export function CourseDetailView({
                     className="w-full py-2 px-3 uppercase tracking-wider font-bold text-white transition-colors rounded-xs shadow-2xs border bg-[#1b4332] hover:bg-[#112a1f] active:bg-[#091711] border-[#0d2118] text-center block"
                     style={{ fontSize: "10px" }}
                   >
-                    {dict.enrollCta || "ENROLL IN COURSE"}
+                    {dict.enrollCta}
                   </Link>
                 ) : (
                   <span
                     className="w-full py-2 px-3 uppercase tracking-wider font-bold text-slate-500 bg-slate-300 border border-slate-400 rounded-xs shadow-2xs text-center block cursor-not-allowed select-none"
                     style={{ fontSize: "10px" }}
                   >
-                    {dict.enrollCta || "ENROLL IN COURSE"}
+                    {dict.enrollCta}
                   </span>
                 )}
 
@@ -439,7 +439,7 @@ export function CourseDetailView({
                   style={{ fontSize: "9px" }}
                 >
                   <FileText className="w-3 h-3 text-slate-600" />
-                  <span>{dict.downloadBrochure || "DOWNLOAD SYLLABUS"}</span>
+                  <span>{dict.downloadBrochure}</span>
                 </Link>
               </div>
 
@@ -450,18 +450,20 @@ export function CourseDetailView({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 uppercase font-semibold">
-                    {dict.deliveryMode || "MODE"}:
+                    {dict.deliveryMode}:
                   </span>
                   <span className="font-semibold text-slate-900">
-                    {course.deliveryMode}
+                    {(dict.deliveryModeValues as Record<string, string>)?.[course.deliveryMode] ??
+                      course.deliveryMode}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 uppercase font-semibold">
-                    {dict.language || "LANGUAGE"}:
+                    {dict.language}:
                   </span>
                   <span className="font-semibold text-slate-900">
-                    {course.language}
+                    {(dict.languageValues as Record<string, string>)?.[course.language] ??
+                      course.language}
                   </span>
                 </div>
               </div>

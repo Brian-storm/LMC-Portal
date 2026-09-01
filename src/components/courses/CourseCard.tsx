@@ -51,7 +51,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
         {/* IA Reference Code Section */}
         <div className="flex items-center space-x-1.5 text-slate-600">
           <span className="font-bold text-slate-700 tracking-wider uppercase">
-            {dict.iaRef || "IA REF"}:
+            {dict.iaRef}:
           </span>
           <span className="bg-white px-1 py-0.2 border border-slate-300 text-slate-900 font-bold tracking-tight text-[9px]">
             {course.iaCode || `REF-${course.id}`}
@@ -66,7 +66,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           {course.isMandatory && (
             <span className="bg-amber-100 text-amber-900 font-bold px-1 py-0.2 border border-amber-300 uppercase tracking-wider flex items-center gap-0.5 text-[8.5px]">
               <ShieldAlert className="w-2.5 h-2.5 shrink-0" />
-              <span>{dict.coreRegulatoryRequirement || "MANDATORY CORE"}</span>
+              <span>{dict.coreRegulatoryRequirement}</span>
             </span>
           )}
         </div>
@@ -82,7 +82,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           {/* Accredited Category Badge */}
           <div className="flex items-center space-x-2">
             <span className="px-1.5 py-0.2 bg-slate-100 text-slate-800 text-[8.5px] font-mono font-bold uppercase tracking-wider rounded-xs border border-slate-300">
-              {course.category}
+              {(dict.categoryValues as Record<string, string>)?.[course.category] ?? course.category}
             </span>
           </div>
 
@@ -112,10 +112,13 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
               <Clock className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
               <div>
                 <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
-                  {dict.deliveryMode || "DELIVERY MODE"}
+                  {dict.deliveryMode}
                 </span>
                 <span className="font-semibold text-slate-900">
-                  {course.date || course.deliveryMode || "Online"}
+                  {(course.date ??
+                    ((dict.deliveryModeValues as Record<string, string>)?.[
+                      course.deliveryMode
+                    ] ?? course.deliveryMode))}
                 </span>
               </div>
             </div>
@@ -125,10 +128,13 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
               <User className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
               <div className="truncate">
                 <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
-                  {dict.language || "SPEAKER / FACULTY"}
+                  {dict.language}
                 </span>
                 <span className="truncate block font-semibold text-slate-900">
-                  {course.speaker || course.language || "English"}
+                  {(course.speaker ??
+                    ((dict.languageValues as Record<string, string>)?.[
+                      course.language
+                    ] ?? course.language))}
                 </span>
               </div>
             </div>
@@ -161,7 +167,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             <div className="inline-flex items-center space-x-1 text-[#1b4332] font-bold text-[8.5px] bg-emerald-50 px-1.5 py-0.5 border border-emerald-300 rounded-xs">
               <Award className="w-2.5 h-2.5 text-[#1b4332] shrink-0" />
               <span>
-                {course.cpdHours} {dict.cpdHours || "CPD HOURS"}
+                {course.cpdHours} {dict.cpdHours}
               </span>
             </div>
 
@@ -173,8 +179,8 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             {/* Low Quota Warning Threshold Alert */}
             {course.seatsLeft !== undefined && course.seatsLeft <= 5 && (
               <span className="block text-[8px] text-rose-700 font-bold uppercase tracking-wider bg-rose-50 px-1 py-0.2 border border-rose-200">
-                {dict.quotaRemaining || "QUOTA:"} {course.seatsLeft}{" "}
-                {dict.seats || "SEATS"}
+                {dict.quotaRemaining} {course.seatsLeft}{" "}
+                {dict.seats}
               </span>
             )}
           </div>
@@ -189,7 +195,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
                 className="flex-1 md:flex-none inline-flex items-center justify-center space-x-1 bg-[#1b4332] hover:bg-[#112a1f] active:bg-[#091711] text-white font-mono font-bold px-2 py-1 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#0d2118]"
                 style={{ fontSize: "12px", lineHeight: "12px" }}
               >
-                <span>{dict.viewCourse || "VIEW COURSE"}</span>
+                <span>{dict.viewCourse}</span>
                 <ArrowRight className="w-2.5 h-2.5 shrink-0" />
               </Link>
             </div>
@@ -198,7 +204,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             <button
               type="button"
               className="p-1 border border-slate-300 hover:bg-slate-100 text-slate-700 transition-colors rounded-xs bg-slate-50"
-              title={dict.downloadBrochure || "Download Official Syllabus"}
+              title={dict.downloadBrochure}
             >
               <FileText className="w-3 h-3 shrink-0" />
             </button>

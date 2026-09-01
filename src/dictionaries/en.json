@@ -137,6 +137,24 @@
       "module": "Module",
       "duration": "Duration",
       "topics": "Key Topics Covered"
+    },
+
+    "categoryValues": {
+      "cpd": "CPD Accredited",
+      "compliance": "Regulatory Compliance",
+      "management": "Executive Management"
+    },
+
+    "deliveryModeValues": {
+      "Online": "Online",
+      "In-person": "In-person",
+      "Online / In-person": "Online / In-person"
+    },
+
+    "languageValues": {
+      "Cantonese": "Cantonese",
+      "English": "English",
+      "Cantonese / English": "Cantonese / English"
     }
   },
   "newsletterForm": {
