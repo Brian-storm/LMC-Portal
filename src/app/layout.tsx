@@ -1,6 +1,4 @@
 import { Montserrat } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 
@@ -21,10 +19,6 @@ export default function RootLayout({
       <body className="bg-background text-foreground min-h-screen min-w-[320px] flex flex-col font-sans antialiased selection:bg-accent selection:text-accent-foreground">
         {/* Global Client Providers (Font size / High contrast state) */}
         <Providers>{children}</Providers>
-
-        {/* Vercel Observability */}
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
