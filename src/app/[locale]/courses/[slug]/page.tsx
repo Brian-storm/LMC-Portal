@@ -23,10 +23,19 @@ interface PageProps {
 }
 
 async function fetchCourse(slug: string, locale: string) {
-  const headersList = await headers();
-  const host = headersList.get("host") ?? "localhost:3000";
+  // Use the configured site URL in production (Amplify env var),
+  // fall back to the request host header for local dev.
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const baseUrl = `${protocol}://${host}`;
+  let baseUrl: string;
+
+  if (configuredUrl) {
+    baseUrl = configuredUrl.replace(/\/$/, "");
+  } else {
+    const headersList = await headers();
+    const host = headersList.get("host") ?? "localhost:3000";
+    baseUrl = `${protocol}://${host}`;
+  }
 
   const res = await fetch(`${baseUrl}/api/courses/${slug}?locale=${locale}`, {
     cache: "no-store",
