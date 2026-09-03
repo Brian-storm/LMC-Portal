@@ -131,10 +131,10 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li className="flex items-center">
                 <Mail className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
                 <a
-                  href="mailto:lmcconsultancy2025@gmail.com"
+                  href="mailto:info@LMCconsulting.hk"
                   className="hover:text-emerald-800 transition-colors"
                 >
-                  lmcconsultancy2025@gmail.com
+                  info@LMCconsulting.hk
                 </a>
               </li>
               <li className="flex items-center">
