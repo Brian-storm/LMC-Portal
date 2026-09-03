@@ -1,0 +1,64 @@
+{
+  "id": "IN-001",
+  "title": "RDS Proxy 連線設定 — 取代 0.0.0.0/0 資料庫暴露",
+  "content": "Amplify SSR Lambda 無法直接連線至 RDS PostgreSQL。已嘗試 VPC + Security Group ID 方式但 Amplify Console 無 VPC 設定選項且不支援 Security Group 作為來源規則。本卡片實作 RDS Proxy 作為正式解決方案，讓 Lambda 透過 AWS 私有網路連線至 RDS，消除 0.0.0.0/0 的安全風險。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-04",
+  "epic": "基礎設施",
+  "userStory": "RDS Proxy 資料庫安全連線",
+  "track": "integration",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "ai/artifacts/基礎設施/rds-proxy-plan.md",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    ".env.example",
+    "src/lib/prisma.ts",
+    "src/app/api/health/route.ts",
+    "amplify.yml"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "Amplify SSR Lambda from ap-east-1 has no published dedicated IP CIDR ranges (verified via ip-ranges.amazonaws.com)",
+      "Amplify Console (Gen 1 Hosting SSR) does not expose VPC configuration UI; cannot attach Lambda to VPC subnets/SG",
+      "AWS rejects Security Group ID as source when editing an existing IPv4 CIDR inbound rule",
+      "Current workaround: 0.0.0.0/0 with sslmode=require + strong password (qiHmc2SskwvSQGN)"
+    ],
+    "residual": "RDS Proxy incurs ~$10.8/month additional cost. VPC peering remains unavailable unless Amplify Gen 1 adds VPC support."
+  },
+  "comments": [
+    {
+      "name": "System",
+      "time": "2026-09-04T01:00:00Z",
+      "text": "VPC connection attempt failed: Amplify Console lacks VPC configuration for Gen 1 SSR Hosting. Security Group ID rule rejected by AWS. See ai/artifacts/基礎設施/rds-proxy-plan.md for full recording."
+    }
+  ]
+}

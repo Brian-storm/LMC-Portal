@@ -16,7 +16,8 @@
       "stories": [
         { "name": "課程 API", "definition": "GET courses (filtered), GET course/[slug] (with relations), POST/PATCH/DELETE (admin)" },
         { "name": "課程目錄頁", "definition": "Fetch courses from API instead of inline mock data, search/filter wired to real data" },
-        { "name": "課程詳情頁", "definition": "Fetch single course from API with syllabus, instructors, schedules, reviews, FAQs" }
+        { "name": "課程詳情頁", "definition": "Fetch single course from API with syllabus, instructors, schedules, reviews, FAQs" },
+        { "name": "課程 syllabus 下載手冊", "definition": "GET /api/courses/[slug]/brochure endpoint that generates downloadable HTML brochure from DB course + syllabus items; wire existing buttons in CourseCard and CourseDetailView" }
       ]
     },
     {
@@ -67,6 +68,14 @@
         { "name": "自動化證書", "definition": "Auto-generate PDF certificate on course completion, unique anti-forgery ID, S3 storage" },
         { "name": "線上支付", "definition": "Stripe/PayPal integration for credit card, Alipay online payment" },
         { "name": "聊天機器人", "definition": "Deterministic FAQ QnA first, Microsoft Foundry AI integration later" }
+      ]
+    },
+    {
+      "name": "基礎設施",
+      "definition": "Production infrastructure: RDS Proxy, VPC networking, secure database connectivity without public exposure, CI/CD deployment pipeline for Amplify",
+      "stories": [
+        { "name": "RDS Proxy 資料庫安全連線", "definition": "Replace 0.0.0.0/0 with RDS Proxy; Lambda connects via IAM auth through private AWS network. Record failed VPC + SG attempt." },
+        { "name": "Amplify 正式環境佈署", "definition": "CI/CD with amplify.yml, env var injection, health check API, database migration strategy on deploy" }
       ]
     }
   ]
