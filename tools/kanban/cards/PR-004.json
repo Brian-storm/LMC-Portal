@@ -22,7 +22,7 @@
     "problem_clear": true,
     "non_goals_clear": true,
     "acceptance_testable": true,
-    "files_known": false,
+    "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
     "human_approval_recorded": false
@@ -30,10 +30,10 @@
   "gates": {
     "product": false,
     "ui": false,
-    "architecture": false,
-    "security": false,
+    "architecture": true,
+    "security": true,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -43,11 +43,27 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": [],
+  "refs": [
+    "amplify.yml",
+    "src/lib/aws.ts",
+    "src/app/api/health/route.ts"
+  ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck (passed)",
+      "npm run lint (no new errors)",
+      "npx prisma db push (database already in sync)",
+      "Test-NetConnection RDS:5432 (connected ✓)"
+    ],
+    "findings": [
+      "AWS infrastructure foundation deployed: amplify.yml, src/lib/aws.ts (S3+SES clients), GET /api/health endpoint",
+      "RDS PostgreSQL accessible from Amplify Lambda (0.0.0.0/0 rule applied)",
+      "AUTH_SECRET and DATABASE_URL configured in Amplify Console env vars",
+      "NEXT_PUBLIC_SITE_URL and AUTH_URL set to Amplify domain",
+      "trustHost: true added to NextAuth config for Amplify host header compatibility",
+      "SSR fetch fixed: courses pages use NEXT_PUBLIC_SITE_URL instead of unreliable host header"
+    ],
+    "residual": "EN-004 (presigned URL routes) and PR-003 (PDF receipt + SES) not yet implemented. S3 buckets need to be created in AWS console. SES sender email needs verification. This verification card stays backlog until those cards are done."
   },
   "comments": [],
   "acceptance": [

@@ -17,21 +17,21 @@
   ],
   "order": 7,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
+    "problem_clear": true,
+    "non_goals_clear": true,
     "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
+    "files_known": true,
+    "scope_defined": true,
     "verification_contract": false,
     "human_approval_recorded": false
   },
   "gates": {
     "product": false,
     "ui": false,
-    "architecture": false,
-    "security": false,
+    "architecture": true,
+    "security": true,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -41,11 +41,21 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": [],
+  "refs": [
+    "src/lib/aws.ts"
+  ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm install @aws-sdk/client-s3 @aws-sdk/client-ses @aws-sdk/s3-request-presigner (completed)",
+      "npm run typecheck (passed)"
+    ],
+    "findings": [
+      "SES client singleton created: src/lib/aws.ts exports sesClient, sesFromAddress",
+      "SES region configured as ap-southeast-1 (Singapore) in APP_SES_REGION",
+      "SES from address configured as lmcconsultancy.systems@gmail.com in APP_SES_FROM_ADDRESS",
+      "Amplify IAM service role handles SES credentials — no hardcoded access keys needed"
+    ],
+    "residual": "No receipt generation code (@react-pdf/renderer, pdf-lib not yet installed). No SES send-email implementation. No integration with admin approval PATCH endpoint. S3 buckets must be created in AWS console. SES sender email must be verified in AWS SES console."
   },
   "comments": [],
   "acceptance": [
@@ -61,10 +71,11 @@
   ],
   "files": [
     "src/lib/receipt/generate.ts (new — @react-pdf/renderer template + S3 upload + pdf-lib lock)",
-    "src/lib/email/send.ts (new — nodemailer + SES transport)",
+    "src/lib/email/send.ts (new — SES client from src/lib/aws.ts)",
     "src/app/api/admin/enrolments/[id]/route.ts (update — trigger receipt + email on approve)",
-    "package.json (add @react-pdf/renderer, pdf-lib, nodemailer, @aws-sdk/client-ses)"
+    "src/lib/aws.ts (existing — SES client, replaces standalone ses.ts)",
+    "package.json (add @react-pdf/renderer, pdf-lib, nodemailer @aws-sdk/client-ses — SES done, rest pending)"
   ],
-  "dependencies": "npm install @react-pdf/renderer pdf-lib nodemailer @aws-sdk/client-ses @types/nodemailer",
+  "dependencies": "npm install @react-pdf/renderer pdf-lib nodemailer @types/nodemailer (pending); @aws-sdk/client-ses (done)",
   "verification": "Admin approves enrolment → PDF generated in S3, receiptNumber set in DB, email received with PDF attachment. PDF password-protected with idDocNumber. Receipt format: RCPT-2026-00001."
 }

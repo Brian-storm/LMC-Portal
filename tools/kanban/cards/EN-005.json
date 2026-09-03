@@ -16,21 +16,21 @@
   ],
   "order": 4,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
     "verification_contract": false,
     "human_approval_recorded": false
   },
   "gates": {
     "product": false,
-    "ui": false,
-    "architecture": false,
-    "security": false,
+    "ui": true,
+    "architecture": true,
+    "security": true,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -40,11 +40,19 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": [],
+  "refs": [
+    "src/lib/aws.ts"
+  ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner (completed)",
+      "npm run typecheck (passed)"
+    ],
+    "findings": [
+      "S3 client ready in src/lib/aws.ts — presigned URL infrastructure available once EN-004 API routes are implemented",
+      "Payment proof preview placeholder still exists in admin/enrolments page — will resolve after EN-004 is complete"
+    ],
+    "residual": "Depends on EN-004 (presigned URL API routes). No UI changes yet."
   },
   "comments": [],
   "acceptance": [

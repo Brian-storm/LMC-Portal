@@ -8,5 +8,5 @@
   "dependsOn": [],
   "order": 1,
   "verification": ".env.example exists with all required vars, documented in AGENTS.md and README.md",
-  "notes": "Already completed. .env.example covers DATABASE_URL, AUTH_SECRET, AWS_*, SES_*, NEXT_PUBLIC_SITE_URL."
+  "notes": "Completed. .env.example updated with final AWS variable naming: APP_AWS_REGION, APP_S3_PUBLIC_BUCKET, APP_S3_PRIVATE_BUCKET, APP_SES_REGION, APP_SES_FROM_ADDRESS (dropped APP_AWS_ prefix from S3/SES vars, aligned with Gemini architecture spec). Amplify env vars set in Console (DATABASE_URL, AUTH_SECRET, NEXT_PUBLIC_SITE_URL, AUTH_URL, all APP_* vars)."
 }

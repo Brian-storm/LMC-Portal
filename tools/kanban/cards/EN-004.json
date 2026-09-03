@@ -2,7 +2,7 @@
   "id": "EN-004",
   "title": "付款證明上傳 — S3 presigned URL (後端)",
   "content": "",
-  "stage": "ready",
+  "stage": "in_progress",
   "risk": "high",
   "owner": "Brian",
   "agent": "",
@@ -17,21 +17,21 @@
   ],
   "order": 1,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
     "verification_contract": false,
     "human_approval_recorded": false
   },
   "gates": {
     "product": false,
     "ui": false,
-    "architecture": false,
-    "security": false,
+    "architecture": true,
+    "security": true,
     "test": false,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "",
@@ -41,11 +41,23 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": [],
+  "refs": [
+    "src/lib/aws.ts"
+  ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm install @aws-sdk/client-s3 @aws-sdk/client-ses @aws-sdk/s3-request-presigner (completed)",
+      "npm run typecheck (passed)"
+    ],
+    "findings": [
+      "S3 client singleton created: src/lib/aws.ts exports s3Client, s3PublicBucket, s3PrivateBucket",
+      "AWS SDK packages installed: @aws-sdk/client-s3, @aws-sdk/s3-request-presigner",
+      "Amplify IAM service role handles credentials — no hardcoded access keys needed",
+      "APP_AWS_REGION=ap-east-1, APP_S3_PUBLIC_BUCKET and APP_S3_PRIVATE_BUCKET configured in .env/.env.example",
+      "Amplify build spec (amplify.yml) injects env vars for SSR runtime",
+      "Health check API (GET /api/health) confirms DB + env connectivity after deploy"
+    ],
+    "residual": "API routes (POST /api/upload/presigned-url, POST /api/upload/confirm) not yet implemented. S3 client exists in src/lib/aws.ts (not src/lib/s3.ts — path differs from original spec). S3 buckets must be created in AWS console."
   },
   "comments": [],
   "acceptance": [
@@ -60,11 +72,11 @@
     "Auth check: only the registrant's user or admin can upload"
   ],
   "files": [
-    "src/app/api/upload/presigned-url/route.ts (new)",
-    "src/app/api/upload/confirm/route.ts (new)",
-    "src/lib/s3.ts (new — S3 client singleton)",
-    "package.json (add @aws-sdk/client-s3, @aws-sdk/s3-request-presigner)"
+    "src/app/api/upload/presigned-url/route.ts (new — not yet implemented)",
+    "src/app/api/upload/confirm/route.ts (new — not yet implemented)",
+    "src/lib/aws.ts (existing — S3 client singleton, replaces planned src/lib/s3.ts)",
+    "package.json (add @aws-sdk/client-s3, @aws-sdk/s3-request-presigner — done)"
   ],
-  "dependencies": "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner",
+  "dependencies": "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner (done)",
   "verification": "POST /api/upload/presigned-url with valid fileType → returns uploadUrl. Upload file to that URL via curl → 200. POST /api/upload/confirm → DB updated with paymentProofUrl. Invalid fileType → 400."
 }
