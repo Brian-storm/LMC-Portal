@@ -52,7 +52,7 @@ export async function sendReceiptEmail(params: SendReceiptEmailParams): Promise<
 
     console.log(`Receipt email sent to ${recipient.email} for receipt ${receipt.receiptNumber}`);
   } catch (error) {
-    // Log the failure but do not propagate — the receipt PDF is already in S3
+    // Log the failure but do not propagate — the receipt PDF is already stored in the DB
     console.error(`FAILED to send receipt email for ${receipt.receiptNumber} to ${recipient.email}:`, error);
   }
 }

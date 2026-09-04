@@ -1,13 +1,15 @@
+import "server-only";
+
 import { NextRequest, NextResponse } from "next/server";
-import { s3Client, s3PrivateBucket } from "@/lib/aws";
-import { GetObjectCommand, NoSuchKey } from "@aws-sdk/client-s3";
+import { prisma } from "@/lib/prisma";
+
+import { renderReceiptPdf } from "@/lib/receipt/render";
+import { TEXTS } from "@/lib/receipt/texts";
 
 /**
  * POST /api/download/receipt
  *
- * Proxies the receipt PDF from S3 to the browser as a download.
- * Accepts { receiptNumber: "RCPT-2026-00001" } and streams the file
- * with the correct Content-Disposition header.
+ * Generates a receipt PDF on-the-fly from DB data and returns it as a download.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -15,38 +17,38 @@ export async function POST(request: NextRequest) {
     const { receiptNumber } = body;
 
     if (!receiptNumber || typeof receiptNumber !== "string") {
-      return NextResponse.json(
-        { error: "Invalid receipt number" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Invalid receipt number" }, { status: 400 });
     }
 
-    const key = `receipts/${receiptNumber}.pdf`;
+    const registrant = await prisma.registrant.findFirst({
+      where: { receiptNumber },
+      include: {
+        user: { select: { nameZh: true, nameEn: true } },
+        course: { select: { nameZh: true, nameEn: true, iaRefNumber: true, cpdHours: true, price: true } },
+      },
+    });
 
-    // Fetch the object from S3
-    const s3Response = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: s3PrivateBucket,
-        Key: key,
-      }),
-    );
-
-    // Convert the readable stream to bytes
-    const stream = s3Response.Body as ReadableStream;
-    const chunks: Uint8Array[] = [];
-    const reader = stream.getReader();
-    let done = false;
-
-    while (!done) {
-      const { value, done: chunkDone } = await reader.read();
-      if (value) chunks.push(value);
-      done = chunkDone;
+    if (!registrant) {
+      return NextResponse.json({ error: "Receipt not found" }, { status: 404 });
     }
 
-    const pdfBuffer = Buffer.concat(chunks.map((c) => Buffer.from(c)));
+    const feeStr = Number(registrant.course.price).toFixed(2);
+    const paymentDate = new Date(registrant.submittedAt).toLocaleDateString("en-CA");
 
-    // Return the PDF as a downloadable file
-    return new NextResponse(pdfBuffer, {
+    const pdfBuffer = await renderReceiptPdf({
+      receiptNumber,
+      nameZh: registrant.user.nameZh,
+      nameEn: registrant.user.nameEn,
+      courseZh: registrant.course.nameZh,
+      courseEn: registrant.course.nameEn,
+      iaRef: registrant.course.iaRefNumber,
+      cpdHours: registrant.course.cpdHours,
+      fee: feeStr,
+      paymentMethod: registrant.paymentMethod ?? TEXTS.dash,
+      paymentDate,
+    });
+
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
@@ -56,14 +58,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("POST /api/download/receipt error:", error);
-
-    // Distinguish between file-not-found and other errors
-    const message =
-      error instanceof NoSuchKey
-        ? "Receipt PDF not found. The file may not have been generated yet."
-        : "Failed to download receipt";
-
-    const status = error instanceof NoSuchKey ? 404 : 500;
-    return NextResponse.json({ error: message }, { status });
+    const message = error instanceof Error ? error.message : "Failed to download receipt";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

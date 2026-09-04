@@ -1,21 +1,24 @@
 import { StyleSheet, Font } from "@react-pdf/renderer";
 
-// ── Font registration (matching the web app's primary font) ──────────────────
-
+// Register Noto Sans SC which covers both Latin and CJK characters
 Font.register({
-  family: "Montserrat",
+  family: "Noto Sans SC",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/montserrat/v29/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/montserrat/v29/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2", fontWeight: 700 },
+    {
+      src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYw.ttf",
+      fontWeight: 400,
+    },
+    {
+      src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaGzjCnYw.ttf",
+      fontWeight: 700,
+    },
   ],
 });
-
-// ── PDF styles ──────────────────────────────────────────────────────────────
 
 export const styles = StyleSheet.create({
   page: {
     padding: 40,
-    fontFamily: "Montserrat",
+    fontFamily: "Noto Sans SC",
     fontSize: 10,
     color: "#1b4332",
   },

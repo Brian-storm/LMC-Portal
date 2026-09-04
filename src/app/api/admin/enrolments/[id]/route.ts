@@ -93,8 +93,9 @@ export async function PATCH(
         return NextResponse.json({ error: "Enrolment not found" }, { status: 404 });
       }
 
-      // 6b: Generate receipt PDF, password-protect, upload to S3
+      // 6b: Generate receipt PDF (password-protected) and get the buffer
       let receiptNumber: string | null = null;
+      let pdfBuffer: Buffer | null = null;
 
       try {
         const result = await generateReceipt(
@@ -113,6 +114,7 @@ export async function PATCH(
           },
         );
         receiptNumber = result.receiptNumber;
+        pdfBuffer = result.pdfBuffer;
       } catch (receiptError) {
         // If receipt generation fails, the enrolment can still be approved
         // without a receipt number — log and continue
@@ -134,28 +136,8 @@ export async function PATCH(
       });
 
       // 6d: Fire-and-forget the receipt email (SES failure does not roll back approval).
-      //      We read the PDF from S3 or use the in-memory buffer.
-      if (receiptNumber) {
-        // Fetch the PDF from S3 for email attachment
-        const { GetObjectCommand } = await import("@aws-sdk/client-s3");
-        const { s3Client, s3PrivateBucket } = await import("@/lib/aws");
-
+      if (receiptNumber && pdfBuffer) {
         try {
-          const s3Response = await s3Client.send(
-            new GetObjectCommand({
-              Bucket: s3PrivateBucket,
-              Key: `receipts/${receiptNumber}.pdf`,
-            }),
-          );
-          // Convert the readable stream to buffer
-          const stream = s3Response.Body as import("stream").Readable;
-          const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
-            const chunks: Buffer[] = [];
-            stream.on("data", (chunk: Buffer) => chunks.push(Buffer.from(chunk)));
-            stream.on("end", () => resolve(Buffer.concat(chunks)));
-            stream.on("error", reject);
-          });
-
           await sendReceiptEmail({
             recipient: {
               email: registrantWithDetails.user.email,
@@ -174,7 +156,7 @@ export async function PATCH(
             pdfFilename: `${receiptNumber}.pdf`,
           });
         } catch (emailError) {
-          // Email failure is non-fatal — receipt is already in S3 and DB
+          // Email failure is non-fatal — receipt is already in the DB
           console.error(`Receipt email sending failed for ${receiptNumber}:`, emailError);
         }
       }
