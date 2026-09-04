@@ -406,6 +406,15 @@
       "iaLicense": "IA / 牌照编号",
       "iaLicensePlaceholder": "例如：IA12345678",
       "iaLicenseHint": "用于自动提交 CPD 学时。",
+      "idDocType": "身份证明文件类型",
+      "hkid": "香港身份证",
+      "passport": "护照",
+      "hkidPrefix": "香港身份证号码",
+      "hkidPrefixPlaceholder": "例如：A123456",
+      "hkidCheckDigit": "核对数字",
+      "hkidCheckDigitHint": "括号内的最后数字，例如 (7)",
+      "passportNumber": "护照号码",
+      "passportPlaceholder": "例如：AB123456",
       "groupMembers": "团体成员",
       "addMember": "新增成员",
       "noMembers": "尚未加入其他成员。点击「新增成员」以加入团体参加者。",
@@ -414,6 +423,14 @@
       "nameEnPlaceholder": "英文姓名",
       "emailPlaceholderShort": "电邮",
       "idDocPlaceholder": "身份证 / 牌照编号"
+    },
+    "validation": {
+      "required": "此字段为必填。",
+      "invalidEmail": "请输入有效的电邮地址。",
+      "invalidHkidPrefix": "香港身份证号码必须为 1–2 个大写英文字母加 6 个数字（例如 A123456）。",
+      "invalidHkidCheckDigit": "核对数字必须为一个数字或 'A'。",
+      "duplicateWarning": "此身份证明文件已登记此课程。",
+      "invalidPassport": "请输入有效的护照号码。"
     },
     "step2": {
       "title": "合规及资格声明",

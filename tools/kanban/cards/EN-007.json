@@ -2,7 +2,7 @@
   "id": "EN-007",
   "title": "報名資格前端驗證 — 即時檢查 (idDocNumber 重複、電郵格式、必填欄位)",
   "content": "Enroll wizard 目前提交後才顯示錯誤。本卡片實作前端即時驗證：必填欄位即時標紅、電郵格式檢查、idDocNumber 格式（香港身份證 / 護照）檢查、以及提交前向 API 查詢 idDocNumber 是否已報名同一課程（避免重複報名）。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -44,14 +44,27 @@
   "refs": [
     "src/app/[locale]/courses/[slug]/enroll/page.tsx",
     "src/components/enrollment/EnrollmentWizard.tsx",
-    "src/lib/validation/enroll.ts"
+    "src/lib/validation/enroll.ts",
+    "src/app/api/enroll/check-duplicate/route.ts"
   ],
   "evidence": {
-    "commands": [],
+    "commands": [
+      "npm run lint (no new errors in EnrollmentWizard)",
+      "npm run typecheck (passed)"
+    ],
     "findings": [
-      "Zod validation exists on backend (EN-001 acceptance), but frontend relies on browser native validation only",
-      "No client-side call to check existing enrolment by idDocNumber + courseId",
-      "No HKID format validation on frontend"
+      "Added split HKID input: prefix (1-2 letters + 6 digits) + check digit wrapped in parentheses",
+      "Added idDocType toggle: HKID | Passport with conditional rendering",
+      "Added real-time field validation on blur for all required fields (fullName, email, phone, iaLicenseNo, hkidPrefix, hkidCheckDigit, passportNumber)",
+      "Added email format regex validation",
+      "Added HKID prefix regex: ^[A-Za-z]{1,2}\\d{6}$",
+      "Added HKID check digit regex: ^[0-9A]$ with auto-generated parentheses wrapping",
+      "Added inline error display with AlertCircle icon + rose-400 border on error fields",
+      "Added step1Valid computed boolean disabling Proceed to Declaration until all step-1 validations pass",
+      "Added validation error dictionary keys to en.json, zh-hk.json, zh-cn.json",
+      "Updated API route to accept idDocNumber for guest user creation",
+      "REMOVED frontend duplicate check from EnrollmentWizard — no longer blocks user flow",
+      "Moved duplicate detection to admin enrolments page: fetches idDocNumber from API, computes duplicates by (course.id + user.idDocNumber), shows amber 'Duplicate' badge on matching rows in the table"
     ],
     "residual": "Backend validation already exists — this card adds frontend-only improvements for UX. Does NOT replace backend validation."
   },

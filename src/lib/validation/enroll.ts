@@ -35,6 +35,7 @@ export const enrollSchema = z
     phone: z.string().optional(),
     company: z.string().optional(),
     iaLicenseNo: z.string().optional(),
+    idDocNumber: z.string().optional(),
   })
   .refine(
     (data) => {

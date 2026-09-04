@@ -69,6 +69,7 @@ export async function GET(request: NextRequest) {
               nameEn: true,
               nameZh: true,
               email: true,
+              idDocNumber: true,
               iaLicense: true,
               organization: true,
             },

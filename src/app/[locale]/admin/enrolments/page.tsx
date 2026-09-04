@@ -28,6 +28,7 @@ import {
   Eye,
   User,
   Users,
+  Copy,
 } from "lucide-react";
 
 // ── Types matching the API response ──
@@ -41,6 +42,7 @@ interface EnrolmentUser {
   nameEn: string;
   nameZh: string;
   email: string;
+  idDocNumber: string;
   iaLicense: string | null;
   organization: string | null;
 }
@@ -112,6 +114,9 @@ export default function AdminEnrolmentsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Computed set of enrolment IDs that have a duplicate credential (same course + same idDocNumber)
+  const [duplicateIds, setDuplicateIds] = useState<Set<string>>(new Set());
+
   // ── Filters ──
   const [statusFilter, setStatusFilter] = useState<PaymentStatus | "ALL">("ALL");
   const [page, setPage] = useState(1);
@@ -139,6 +144,29 @@ export default function AdminEnrolmentsPage() {
       const data = await res.json();
       setEnrolments(data.enrolments);
       setPagination(data.pagination);
+      // Compute duplicate credentials: same courseId + same user.idDocNumber OR same user.iaLicense
+      const seen = new Map<string, string[]>();
+      const dupes = new Set<string>();
+      for (const e of data.enrolments as Enrolment[]) {
+        // Check by idDocNumber
+        if (e.user.idDocNumber) {
+          const key = `${e.course.id}:idDoc:${e.user.idDocNumber}`;
+          const list = seen.get(key) || [];
+          list.push(e.id);
+          seen.set(key, list);
+        }
+        // Check by iaLicense
+        if (e.user.iaLicense) {
+          const key = `${e.course.id}:iaLicense:${e.user.iaLicense}`;
+          const list = seen.get(key) || [];
+          list.push(e.id);
+          seen.set(key, list);
+        }
+      }
+      for (const ids of seen.values()) {
+        if (ids.length > 1) ids.forEach((id) => dupes.add(id));
+      }
+      setDuplicateIds(dupes);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
       setEnrolments([]);
@@ -382,6 +410,15 @@ export default function AdminEnrolmentsPage() {
                         <div className="font-bold text-slate-900 flex items-center gap-1.5">
                           <User className="w-3 h-3 text-slate-400 shrink-0" />
                           {getName(enrolment)}
+                          {duplicateIds.has(enrolment.id) && (
+                            <span
+                              className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-xs"
+                              title={`Duplicate credential: ${enrolment.user.idDocNumber}`}
+                            >
+                              <Copy className="w-2.5 h-2.5" />
+                              Duplicate
+                            </span>
+                          )}
                         </div>
                         <div className="text-[10px] text-slate-500">
                           {enrolment.user.organization ?? enrolment.user.email}

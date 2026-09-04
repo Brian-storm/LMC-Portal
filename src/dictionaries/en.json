@@ -409,6 +409,15 @@
       "iaLicense": "IA / License Reg Number",
       "iaLicensePlaceholder": "e.g. IA12345678",
       "iaLicenseHint": "Required for automated CPD hours submission.",
+      "idDocType": "Identity Document Type",
+      "hkid": "HKID",
+      "passport": "Passport",
+      "hkidPrefix": "HKID Number",
+      "hkidPrefixPlaceholder": "e.g. A123456",
+      "hkidCheckDigit": "Check Digit",
+      "hkidCheckDigitHint": "Last digit in parentheses, e.g. (7)",
+      "passportNumber": "Passport Number",
+      "passportPlaceholder": "e.g. AB123456",
       "groupMembers": "Group Members",
       "addMember": "Add Member",
       "noMembers": "No additional members added yet. Click \"Add Member\" to add group attendees.",
@@ -417,6 +426,14 @@
       "nameEnPlaceholder": "Name (English)",
       "emailPlaceholderShort": "Email",
       "idDocPlaceholder": "ID / License No."
+    },
+    "validation": {
+      "required": "This field is required.",
+      "invalidEmail": "Please enter a valid email address.",
+      "invalidHkidPrefix": "HKID must start with 1–2 uppercase letters followed by 6 digits (e.g. A123456).",
+      "invalidHkidCheckDigit": "Check digit must be a single digit or 'A'.",
+      "duplicateWarning": "This identity document has already been registered for this course.",
+      "invalidPassport": "Please enter a valid passport number."
     },
     "step2": {
       "title": "Compliance & Eligibility Declaration",

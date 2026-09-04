@@ -41,13 +41,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { courseId, scheduleId, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo } =
+    const { courseId, scheduleId, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo, idDocNumber } =
       parsed.data;
 
     // 1: Resolve the user — from authenticated session or guest info
     let userId: string;
     if (session?.user?.id) {
       userId = session.user.id;
+      // Update the user's idDocNumber if provided (e.g. first-time HKID entry)
+      if (idDocNumber) {
+        await prisma.user.update({
+          where: { id: userId },
+          data: { idDocNumber },
+        });
+      }
     } else {
       // Guest enrolment: email is required
       if (!email) {
@@ -60,13 +67,20 @@ export async function POST(request: NextRequest) {
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser) {
         userId = existingUser.id;
+        // Update the existing guest user with the submitted idDocNumber if missing
+        if (idDocNumber && (!existingUser.idDocNumber || existingUser.idDocNumber.startsWith("guest-"))) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: { idDocNumber },
+          });
+        }
       } else {
         const guestName = fullName || "Guest";
         const newUser = await prisma.user.create({
           data: {
             nameZh: guestName,
             nameEn: guestName,
-            idDocNumber: `guest-${crypto.randomUUID().slice(0, 8)}`,
+            idDocNumber: idDocNumber || `guest-${crypto.randomUUID().slice(0, 8)}`,
             phone: phone || "",
             email,
             iaLicense: iaLicenseNo || null,
