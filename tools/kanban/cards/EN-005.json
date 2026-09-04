@@ -46,13 +46,23 @@
   "evidence": {
     "commands": [
       "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner (completed)",
-      "npm run typecheck (passed)"
+      "npm run typecheck (passed)",
+      "npm run lint (passed)"
     ],
     "findings": [
-      "S3 client ready in src/lib/aws.ts — presigned URL infrastructure available once EN-004 API routes are implemented",
-      "Payment proof preview placeholder still exists in admin/enrolments page — will resolve after EN-004 is complete"
+      "PaymentSlipUploader rewritten with presigned URL flow — 3 steps: presigned-url → PUT to S3 → confirm",
+      "Client-side file type validation (JPEG/PNG/WebP/PDF) before API call",
+      "Client-side file size validation (10MB limit) before API call",
+      "Upload progress bar using XMLHttpRequest progress events",
+      "Inline error messages using AlertCircle icon (no alert())",
+      "Success state: green check + localized success message",
+      "Cancel button during upload (aborts XHR)",
+      "i18n support: EN, ZH-HK, ZH-CN dictionary keys in paymentUpload section",
+      "Confirmation page updated: locale-aware dict prop, registrantId + email params",
+      "EnrollmentWizard fixed: redirect param from orderId → registrantId, guest email forwarding",
+      "End-to-end test verified: file upload to S3 succeeded, DB paymentProofUrl populated"
     ],
-    "residual": "Depends on EN-004 (presigned URL API routes). No UI changes yet."
+    "residual": "Admin preview panel for uploaded proof (presigned GET URL) not yet implemented. S3 CORS config needed for production."
   },
   "comments": [],
   "acceptance": [

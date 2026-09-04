@@ -174,7 +174,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
                 <MapPin className="w-3 h-3 text-slate-500 shrink-0 mt-0.5" />
                 <div className="truncate">
                   <span className="text-[8px] text-slate-400 uppercase block font-semibold leading-none mb-0.5">
-                    VENUE
+                    {dict.labels?.venue}
                   </span>
                   <span className="truncate block font-medium text-slate-800">
                     {course.venue}

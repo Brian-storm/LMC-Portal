@@ -5,7 +5,8 @@
     "courses": "CPD 课程",
     "portal": "学员专区",
     "about": "关于我们",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "signOut": "登出"
   },
   "accessibility": {
     "textSize": "字体大小",
@@ -469,6 +470,29 @@
       "proceedToDeclaration": "前往声明页",
       "proceedToPayment": "前往付款"
     }
+  },
+  "paymentUpload": {
+    "title": "上传付款证明",
+    "description": "上传 FPS / 银行转账交易记录的截图或 PDF（最大 10 MB）。接受格式：JPEG、PNG、WebP、PDF。",
+    "fileSelected": "已选择：",
+    "submitButton": "提交付款证明",
+    "requestingUrl": "正在请求上传网址...",
+    "uploading": "正在上传至安全存储...",
+    "confirming": "正在确认上传...",
+    "processing": "处理中...",
+    "uploadProgress": "上传中 {progress}%",
+    "cancel": "取消",
+    "uploadCancelled": "上传已取消",
+    "successTitle": "付款证明已成功上传",
+    "successDescription": "管理团队将于 1 个工作日内核实您的付款。核实后您将收到电邮确认。",
+    "errorUnsupportedType": "不支持的档案类型。请上传 JPEG、PNG、WebP 或 PDF 档案。",
+    "errorFileTooLarge": "档案大小超过 10 MB 限制（{size} MB）。",
+    "errorNetwork": "上传时发生网络错误",
+    "errorGetUrl": "无法获取上传网址",
+    "errorS3Upload": "上传至 S3 失败",
+    "errorConfirm": "无法确认上传",
+    "errorGeneric": "上传失败",
+    "noRegistration": "找不到注册记录。请先完成报名。"
   },
   "loadingPage": {
     "brandName": "德智管理顾问有限公司",

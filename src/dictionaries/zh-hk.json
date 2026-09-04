@@ -5,7 +5,8 @@
     "courses": "CPD 課程",
     "portal": "學員專區",
     "about": "關於我們",
-    "contact": "聯絡我們"
+    "contact": "聯絡我們",
+    "signOut": "登出"
   },
   "accessibility": {
     "textSize": "字型大小",
@@ -469,6 +470,29 @@
       "proceedToDeclaration": "前往聲明頁",
       "proceedToPayment": "前往付款"
     }
+  },
+  "paymentUpload": {
+    "title": "上傳付款證明",
+    "description": "上傳 FPS / 銀行轉賬交易記錄的截圖或 PDF（最大 10 MB）。接受格式：JPEG、PNG、WebP、PDF。",
+    "fileSelected": "已選擇：",
+    "submitButton": "提交付款證明",
+    "requestingUrl": "正在請求上傳網址...",
+    "uploading": "正在上傳至安全儲存...",
+    "confirming": "正在確認上傳...",
+    "processing": "處理中...",
+    "uploadProgress": "上傳中 {progress}%",
+    "cancel": "取消",
+    "uploadCancelled": "上傳已取消",
+    "successTitle": "付款證明已成功上傳",
+    "successDescription": "管理團隊將於 1 個工作天內核實您的付款。核實後您將收到電郵確認。",
+    "errorUnsupportedType": "不支援的檔案類型。請上載 JPEG、PNG、WebP 或 PDF 檔案。",
+    "errorFileTooLarge": "檔案大小超過 10 MB 限制（{size} MB）。",
+    "errorNetwork": "上傳時發生網絡錯誤",
+    "errorGetUrl": "無法取得上傳網址",
+    "errorS3Upload": "上傳至 S3 失敗",
+    "errorConfirm": "無法確認上傳",
+    "errorGeneric": "上傳失敗",
+    "noRegistration": "找不到註冊記錄。請先完成報名。"
   },
   "loadingPage": {
     "brandName": "德智管理顧問有限公司",

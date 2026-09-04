@@ -5,7 +5,8 @@
     "courses": "Courses",
     "portal": "Student Portal",
     "about": "About Us",
-    "contact": "Contact"
+    "contact": "Contact",
+    "signOut": "Sign Out"
   },
   "accessibility": {
     "textSize": "Text Size",
@@ -472,6 +473,29 @@
       "proceedToDeclaration": "Proceed to Declaration",
       "proceedToPayment": "Proceed to Payment"
     }
+  },
+  "paymentUpload": {
+    "title": "Upload Payment Proof",
+    "description": "Upload a screenshot or PDF of your FPS / bank transfer transaction record (max 10 MB). Accepted formats: JPEG, PNG, WebP, PDF.",
+    "fileSelected": "Selected:",
+    "submitButton": "Submit Payment Proof",
+    "requestingUrl": "Requesting upload URL...",
+    "uploading": "Uploading to secure storage...",
+    "confirming": "Confirming upload...",
+    "processing": "Processing...",
+    "uploadProgress": "Uploading {progress}%",
+    "cancel": "Cancel",
+    "uploadCancelled": "Upload cancelled",
+    "successTitle": "Payment Proof Uploaded Successfully",
+    "successDescription": "Our administrative team will verify your payment within 1 business day. You will receive an email confirmation once verified.",
+    "errorUnsupportedType": "Unsupported file type. Please upload a JPEG, PNG, WebP, or PDF file.",
+    "errorFileTooLarge": "File size exceeds the 10 MB limit ({size} MB).",
+    "errorNetwork": "Network error during upload",
+    "errorGetUrl": "Failed to get upload URL",
+    "errorS3Upload": "Upload to S3 failed",
+    "errorConfirm": "Failed to confirm upload",
+    "errorGeneric": "Upload failed",
+    "noRegistration": "No registration reference found. Please complete your enrollment first."
   },
   "loadingPage": {
     "brandName": "LMC Management Consultancy",
