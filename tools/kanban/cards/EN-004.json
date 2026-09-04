@@ -55,9 +55,13 @@
       "Amplify IAM service role handles credentials — no hardcoded access keys needed",
       "APP_AWS_REGION=ap-east-1, APP_S3_PUBLIC_BUCKET and APP_S3_PRIVATE_BUCKET configured in .env/.env.example",
       "Amplify build spec (amplify.yml) injects env vars for SSR runtime",
-      "Health check API (GET /api/health) confirms DB + env connectivity after deploy"
+      "Health check API (GET /api/health) confirms DB + env connectivity after deploy",
+      "POST /api/upload/presigned-url implemented — accepts fileName/fileType/registrantId, validates fileType (image/jpeg, image/png, image/webp, application/pdf), enforces 10MB size limit, generates S3 presigned PUT URL with 5-min expiry, key pattern: uploads/{registrantId}/{timestamp}-{sanitized-filename}",
+      "POST /api/upload/confirm implemented — accepts registrantId/key, validates key format, authorizes caller (owner or admin), updates Registrant.paymentProofUrl in DB",
+      "Auth check enforced on both routes: 401 if unauthenticated, 403 if not owner or admin",
+      "Typecheck passed, lint clean (no new errors)"
     ],
-    "residual": "API routes (POST /api/upload/presigned-url, POST /api/upload/confirm) not yet implemented. S3 client exists in src/lib/aws.ts (not src/lib/s3.ts — path differs from original spec). S3 buckets must be created in AWS console."
+    "residual": "S3 buckets must be created in AWS console (lmc-cpd-public-ap-east-1, lmc-cpd-private-ap-east-1). EN-005 (PaymentSlipUploader UI integration) is the next step to wire the frontend to these API routes."
   },
   "comments": [],
   "acceptance": [
