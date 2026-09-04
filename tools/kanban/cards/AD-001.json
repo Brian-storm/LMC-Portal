@@ -1,0 +1,85 @@
+{
+  "id": "AD-001",
+  "title": "Admin 後台全面 redesign — UI 翻新 + 功能補強 + 多語支援",
+  "content": "Admin 後台目前僅有 mock data（admin/page.tsx）與 enrolments 列表（admin/enrolments/page.tsx 已串真實 API）。本卡片進行全面翻新：(1) UI 重新設計，符合 institutional 設計系統；(2) 功能補強：Course CRUD、User 管理、Enrolment 搜尋/篩選/批次操作；(3) 全三語介面 (en/zh-hk/zh-cn)。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "n/a",
+  "dependsOn": [
+    "CM-001",
+    "PR-001",
+    "PR-002"
+  ],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": false,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/page.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/app/api/admin/enrolments/[id]/route.ts",
+    "src/dictionaries/*.json"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "admin/page.tsx uses mock data — needs real API integration",
+      "admin/enrolments/page.tsx has real API but minimal UI",
+      "No course management UI in admin yet (CM-001 has CRUD API, but no frontend)",
+      "No user management in admin yet",
+      "No i18n dictionary for admin pages exists"
+    ],
+    "residual": "Large scope — consider splitting into smaller task cards during implementation planning (AD-002 for UI, AD-003 for functionality, AD-004 for i18n). Requires product approval + UI mockup gate."
+  },
+  "acceptance": [
+    "UI: redesigned admin sidebar navigation (dashboard, enrolments, courses, users), consistent with design system tokens, breadcrumbs, responsive layout",
+    "Dashboard: real stats cards (total enrolments, pending approvals, course count, user count) fetched from API",
+    "Enrolments: advanced filtering (by status, course, date range), search by name/email/idDocNumber, batch approve/reject",
+    "Courses: CRUD table view — list all courses, edit course details, toggle registration status, create new course",
+    "Users: table of registered users — view details, search by name/email",
+    "i18n: all admin pages in en/zh-hk/zh-cn via dictionary system",
+    "Auth: only admin role users can access /admin/* routes (existing middleware)",
+    "Error handling: inline error messages for API failures, loading skeletons during data fetch",
+    "Empty states: meaningful empty state messages per section (e.g. 'No enrolments found')"
+  ],
+  "files": [
+    "src/app/[locale]/admin/page.tsx (rewrite — real API dashboard stats)",
+    "src/app/[locale]/admin/enrolments/page.tsx (rewrite — filters, search, batch actions)",
+    "src/app/[locale]/admin/courses/page.tsx (new — course CRUD)",
+    "src/app/[locale]/admin/users/page.tsx (new — user management)",
+    "src/components/admin/* (new — shared admin components: DataTable, AdminSidebar, StatCard, etc.)",
+    "src/dictionaries/en.json (update — add admin keys)",
+    "src/dictionaries/zh-hk.json (update — add admin keys)",
+    "src/dictionaries/zh-cn.json (update — add admin keys)",
+    "src/dictionaries/types.ts (update — add admin dict type)"
+  ],
+  "verification": "Visit /en/admin → real dashboard stats. Enrolments page shows real data with filters working. Course CRUD: create/edit/delete course. Users page lists all registered users. All pages work in zh-hk and zh-cn locales. Non-admin user redirected to 403/login."
+}

@@ -1,0 +1,61 @@
+{
+  "id": "PH2-001",
+  "title": "聊天機器人 — FAQ QnA + Microsoft Foundry AI (第二階段)",
+  "content": "實作網站聊天機器人：第一階段先用確定性 FAQ QnA（基於常見問題字典），第二階段整合 Microsoft Foundry AI 進行語意問答。屬於第二階段功能，需等所有 Phase 1 Epic 完成後才開始。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "第二階段：學員與講師功能",
+  "userStory": "聊天機器人",
+  "track": "n/a",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": "Phase 2 — depends on all Phase 1 Epics complete. No implementation work until then."
+  },
+  "comments": [],
+  "acceptance": [
+    "Chatbot widget visible on all public pages — floating button opens chat panel",
+    "Phase 1: FAQ mode — keyword matching against a curated FAQ dictionary, returns pre-written answers in correct locale",
+    "Phase 2: Microsoft Foundry AI integration — natural language understanding, context-aware responses",
+    "Multi-locale: chatbot responds in the same locale as the page being viewed",
+    "Admin-configurable FAQ content via dictionary or CMS",
+    "Chat history stored (opt-in) for analytics and improvement",
+    "Responsive design — works on mobile as slide-up panel"
+  ],
+  "files": [
+    "TBD — Phase 2 implementation"
+  ],
+  "verification": "TBD — Phase 2 verification"
+}

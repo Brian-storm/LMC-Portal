@@ -1,7 +1,7 @@
 {
   "id": "CM-004",
-  "title": "課程 syllabus 下載手冊（Brochure）API + 前端串接",
-  "content": "CourseCard 與 CourseDetailView 現有「Download Brochure」按鈕但無實際功能。本卡片實作 GET /api/courses/[slug]/brochure 端點，從資料庫讀取課程資訊（名稱、描述、時數、講師）及 syllabus items（模組單元、主題、時長），產出可下載的 HTML 手冊（後續可升級為 @react-pdf/renderer PDF），並將 CourseCard 與 CourseDetailView 的按鈕接上真實下載。",
+  "title": "課程 syllabus 下載手冊（Brochure） API + 前端串接 (courses/[slug])",
+  "content": "CourseCard 與 CourseDetailView 現有「Download Brochure」按鈕但無實際功能。本卡片實作 GET /api/courses/[slug]/brochure 端點，從資料庫讀取課程資訊（名稱、描述、時數、講師）及 syllabus items（模組單元、主題、時長），產出可下載的 HTML/PDF 手冊，並將 CourseCard 與 CourseDetailView（位於 courses/[slug] 頁面）的按鈕接上真實下載。",
   "stage": "backlog",
   "risk": "low",
   "owner": "",

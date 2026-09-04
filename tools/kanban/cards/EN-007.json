@@ -1,0 +1,76 @@
+{
+  "id": "EN-007",
+  "title": "報名資格前端驗證 — 即時檢查 (idDocNumber 重複、電郵格式、必填欄位)",
+  "content": "Enroll wizard 目前提交後才顯示錯誤。本卡片實作前端即時驗證：必填欄位即時標紅、電郵格式檢查、idDocNumber 格式（香港身份證 / 護照）檢查、以及提交前向 API 查詢 idDocNumber 是否已報名同一課程（避免重複報名）。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "track": "frontend",
+  "dependsOn": [
+    "EN-002",
+    "EN-006"
+  ],
+  "order": 6,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/courses/[slug]/enroll/page.tsx",
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/lib/validation/enroll.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "Zod validation exists on backend (EN-001 acceptance), but frontend relies on browser native validation only",
+      "No client-side call to check existing enrolment by idDocNumber + courseId",
+      "No HKID format validation on frontend"
+    ],
+    "residual": "Backend validation already exists — this card adds frontend-only improvements for UX. Does NOT replace backend validation."
+  },
+  "comments": [],
+  "acceptance": [
+    "Real-time field validation on blur: empty required fields show inline error message",
+    "Email format validation on frontend (regex) before form submit",
+    "HKID format validation (e.g. A123456(7) pattern) with locale-aware error messages",
+    "Passport number format validation as alternative to HKID",
+    "On idDocNumber field blur: async query GET /api/enroll/check-duplicate?idDocNumber=X&courseId=Y → show warning if already enrolled",
+    "Submit button disabled until all validations pass",
+    "Validation errors display in the correct locale (via dict from EN-006)",
+    "Error UI uses AlertCircle icon + red border, consistent with existing patterns"
+  ],
+  "files": [
+    "src/components/enrollment/EnrollmentWizard.tsx (update — add validation logic)",
+    "src/lib/validation/enroll.ts (update — reuse Zod schemas for frontend types)",
+    "src/app/api/enroll/check-duplicate/route.ts (new — idDocNumber + courseId duplicate check)",
+    "src/dictionaries/*.json (update — validation error messages if not covered by EN-006)"
+  ],
+  "verification": "Submit empty form → all required fields show inline errors. Enter invalid email → email field shows format error. Enter HKID already enrolled in same course → warning message appears below field. All errors in correct locale. Submit button stays disabled until all fields valid."
+}

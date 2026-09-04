@@ -77,6 +77,15 @@
         { "name": "RDS Proxy 資料庫安全連線", "definition": "Replace 0.0.0.0/0 with RDS Proxy; Lambda connects via IAM auth through private AWS network. Record failed VPC + SG attempt." },
         { "name": "Amplify 正式環境佈署", "definition": "CI/CD with amplify.yml, env var injection, health check API, database migration strategy on deploy" }
       ]
+    },
+    {
+      "name": "管理員後台 Redesign",
+      "definition": "Phase 1: comprehensive admin dashboard redesign covering UI refresh, functional improvements (enrolment management, course CRUD, user management), and full i18n (en, zh-hk, zh-cn). Replaces mock data with real API on all admin pages.",
+      "stories": [
+        { "name": "Admin UI 重新設計", "definition": "Visual redesign of admin dashboard, enrolment table, course management views, user management — consistent with institutional slate/emerald design system" },
+        { "name": "Admin 功能補強", "definition": "Course CRUD from admin, user management (view/edit users), enrolment filtering/search, batch approve/reject" },
+        { "name": "Admin 多語介面", "definition": "i18n dictionary for all admin pages: en, zh-hk, zh-cn" }
+      ]
     }
   ]
 }

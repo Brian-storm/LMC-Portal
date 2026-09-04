@@ -1,0 +1,75 @@
+{
+  "id": "CT-006",
+  "title": "關於我們頁面全面 redesign (內容 + 版面 + 多語)",
+  "content": "About Us 頁面目前僅完成 i18n 遷移（CT-003），內容與版面仍為初版。本卡片進行全面 redesign：重寫視覺佈局（品牌故事、里程碑時間軸、團隊介紹、服務數據）、更豐富的內容（附真實照片/圖示佔位）、並確保三語內容各自在地化（非單純翻譯）。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "內容與靜態頁面",
+  "userStory": "關於我們頁 i18n",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 6,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/about/page.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "About page exists at src/app/[locale]/about/page.tsx with i18n dictionary (CT-003 done)",
+      "Current content is basic — needs richer storytelling and visual layout",
+      "Design system tokens and component library available (PS-007 through PS-011)"
+    ],
+    "residual": "Requires UI mockup gate before implementation. Photos/illustrations will use placeholder images — final assets provided by client."
+  },
+  "comments": [],
+  "acceptance": [
+    "Redesigned about page with sections: hero/banner, brand story, mission & values, milestone timeline, team introduction, service statistics (courses delivered, learners served, years established)",
+    "Consistent with institutional slate/emerald design system and existing page templates (breadcrumbs, typography, spacing)",
+    "Each locale has culturally appropriate content — not word-for-word translation",
+    "Responsive layout (mobile + tablet + desktop)",
+    "Icon usage from lucide-react, images use next/image with placeholders",
+    "Dictionary extended with all new section keys in types.ts and all 3 locale files",
+    "All interactive states (hover, focus, active) follow design system patterns"
+  ],
+  "files": [
+    "src/app/[locale]/about/page.tsx (rewrite — new layout and sections)",
+    "src/dictionaries/en.json (update — add about page keys)",
+    "src/dictionaries/zh-hk.json (update — add about page keys)",
+    "src/dictionaries/zh-cn.json (update — add about page keys)",
+    "src/dictionaries/types.ts (update — add about page dict type)"
+  ],
+  "verification": "Visit /en/about → full redesigned page with all sections. Switch to /zh-hk/about → Traditional Chinese localized content. Switch to /zh-cn/about → Simplified Chinese localized content. Mobile layout stacks properly. npm run typecheck + npm run lint pass."
+}

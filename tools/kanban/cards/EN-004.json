@@ -2,7 +2,7 @@
   "id": "EN-004",
   "title": "付款證明上傳 — S3 presigned URL (後端)",
   "content": "",
-  "stage": "in_progress",
+  "stage": "implementing",
   "risk": "high",
   "owner": "Brian",
   "agent": "",

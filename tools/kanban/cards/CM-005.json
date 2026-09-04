@@ -1,0 +1,76 @@
+{
+  "id": "CM-005",
+  "title": "課程詳情頁移除 Review 區塊 (courses/[slug])",
+  "content": "CourseDetailView 目前包含 Review / 評價區塊（第 289–339 行），顯示學員評論與評分。本卡片將此區塊完全從前端移除，簡化課程頁面，聚焦 syllabus、講師、時段、報名等核心資訊。後端 API 與 Prisma schema 保留不動，僅移除前端渲染。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "track": "frontend",
+  "dependsOn": [
+    "CM-003"
+  ],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/courses/CourseDetailView.tsx",
+    "src/dictionaries/*.json"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "CourseDetailView.tsx:289–339 has a conditional review section rendering {course.reviews && course.reviews.length > 0 && ...} with Star icon, dict.sections?.reviews header, and review cards (authorName, authorRole, rating, comment)",
+      "Star imported from lucide-react on line 16 — used only by this section",
+      "dict.sections?.reviews key exists in en.json line 127 ('Student Reviews & Testimonials'), zh-hk.json line 126, zh-cn.json line 126",
+      "CourseReview interface in types.ts (lines 33–40) and reviews field in DetailedCourse (line 77) — used by this section",
+      "API and Prisma schema have Review model — NOT removed, kept for potential Phase 2"
+    ],
+    "residual": "Backend (API route Prisma include, map-course-detail.ts mapping, Prisma Review model) left untouched — only frontend UI removed. Backend cleanup is out of scope."
+  },
+  "comments": [],
+  "acceptance": [
+    "Remove review section JSX from CourseDetailView.tsx (lines 289–339)",
+    "Remove Star import from CourseDetailView.tsx (line 16)",
+    "Remove dict.sections?.reviews key from en.json, zh-hk.json, zh-cn.json",
+    "No changes to backend (API route, Prisma schema, mapping) — backend Review model stays",
+    "No changes to CourseReview type or DetailedCourse.reviews — leave for potential future use",
+    "Page layout adjusts naturally after removal — syllabus, instructors, schedules sections remain intact",
+    "npm run typecheck passes with 0 errors",
+    "npm run lint passes with no new warnings"
+  ],
+  "files": [
+    "src/components/courses/CourseDetailView.tsx (update — remove review section JSX + Star import)",
+    "src/dictionaries/en.json (update — remove sections.reviews key)",
+    "src/dictionaries/zh-hk.json (update — remove sections.reviews key)",
+    "src/dictionaries/zh-cn.json (update — remove sections.reviews key)"
+  ],
+  "verification": "Visit /en/courses/{slug} → no Reviews section renders. Page layout is clean with no visual gaps. Remaining sections (Syllabus, Instructor, Schedule, CTA, FAQ) all display correctly. tsc --noEmit → 0 errors."
+}

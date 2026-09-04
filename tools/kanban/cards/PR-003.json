@@ -1,7 +1,7 @@
 {
   "id": "PR-003",
-  "title": "PDF 電子收據生成 + SES 郵件發送 (後端)",
-  "content": "",
+  "title": "PDF 電子收據生成 + SES 郵件發送 + i18n 收據頁面 (前端+後端)",
+  "content": "本卡片擴充原 PR-003 範圍：不僅產收據 PDF 並以 SES 寄出，還要實作收據頁面（取代 demo receipt），支援三語（en/zh-hk/zh-cn），並移除收據頁上的「回到學員儀表板」按鈕。",
   "stage": "backlog",
   "risk": "high",
   "owner": "Brian",
@@ -42,7 +42,10 @@
     "pr": ""
   },
   "refs": [
-    "src/lib/aws.ts"
+    "src/lib/aws.ts",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
   ],
   "evidence": {
     "commands": [
@@ -55,27 +58,32 @@
       "SES from address configured as lmcconsultancy.systems@gmail.com in APP_SES_FROM_ADDRESS",
       "Amplify IAM service role handles SES credentials — no hardcoded access keys needed"
     ],
-    "residual": "No receipt generation code (@react-pdf/renderer, pdf-lib not yet installed). No SES send-email implementation. No integration with admin approval PATCH endpoint. S3 buckets must be created in AWS console. SES sender email must be verified in AWS SES console."
+    "residual": "No receipt generation code (@react-pdf/renderer, pdf-lib not yet installed). No SES send-email implementation. No frontend receipt page. No i18n templates. Demo receipt under (portal)/dashboard still uses mock data."
   },
   "comments": [],
   "acceptance": [
-    "Trigger on admin approval: after PATCH /api/admin/enrolments/[id] APPROVE, auto-generate PDF receipt",
-    "PDF template using @react-pdf/renderer: bilingual ZH+EN, includes receipt number, registrant name, course name, fee, payment date, LMC letterhead",
-    "Generate auto-incrementing receipt number format: RCPT-{YYYY}-{NNNNN}",
-    "Store PDF in S3: receipts/{receiptNumber}.pdf",
-    "Apply pdf-lib password protection: password = registrant's idDocNumber",
-    "Update Registrant.receiptNumber in DB with generated number",
-    "Send email via nodemailer + SES transport: bilingual template (ZH+EN subject/body), PDF as attachment",
-    "Email to: registrant's email (from User model); BCC: admin@lmcconsulting.hk",
-    "Error handling: if email fails, receipt is still stored in S3 and DB — log failure, do not roll back approval"
+    "1. PDF receipt template in 3 locales (en, zh-hk, zh-cn) via @react-pdf/renderer — bilingual ZH+EN content per locale",
+    "2. Receipt number format: RCPT-{YYYY}-{NNNNN}, auto-incrementing, stored in Registrant.receiptNumber",
+    "3. PDF stored in S3: receipts/{receiptNumber}.pdf, password-protected via pdf-lib with registrant's idDocNumber",
+    "4. Triggered on admin PATCH /api/admin/enrolments/[id] APPROVE — auto-generate PDF, store, and send",
+    "5. SES email via nodemailer: bilingual subject/body per locale, PDF attachment, to registrant's email, BCC admin",
+    "6. Frontend receipt page at a Phase 1 route (not under portal) — loads receipt data from DB by receiptNumber or enrolmentId",
+    "7. Receipt page UI: LMC letterhead, receipt number, registrant name, course name, fee, payment date, LMC stamp — all 3 locales",
+    "8. Receipt page is auto-generated from real DB data — not mock/hardcoded",
+    "9. Remove 'Go to Learner Dashboard' button from receipt page",
+    "10. Replace/remove old demo receipt page (under (portal)/dashboard/enrolments/[enrolmentId]/confirmation)",
+    "11. Error handling: if SES fails, receipt still stored in S3 and DB — log failure, do not roll back approval",
+    "12. Receipt re-download: receipt page provides PDF download button via S3 presigned GET URL"
   ],
   "files": [
-    "src/lib/receipt/generate.ts (new — @react-pdf/renderer template + S3 upload + pdf-lib lock)",
-    "src/lib/email/send.ts (new — SES client from src/lib/aws.ts)",
-    "src/app/api/admin/enrolments/[id]/route.ts (update — trigger receipt + email on approve)",
-    "src/lib/aws.ts (existing — SES client, replaces standalone ses.ts)",
-    "package.json (add @react-pdf/renderer, pdf-lib, nodemailer @aws-sdk/client-ses — SES done, rest pending)"
+    "src/lib/receipt/generate.ts (new — @react-pdf/renderer template + S3 upload + pdf-lib lock + i18n variants)",
+    "src/lib/email/send.ts (new — SES transport from src/lib/aws.ts, bilingual template)",
+    "src/app/api/admin/enrolments/[id]/route.ts (update — trigger receipt generation + SES on approve)",
+    "src/app/[locale]/receipt/[enrolmentId]/page.tsx (new — auto-generated receipt page)",
+    "src/lib/aws.ts (existing — SES client)",
+    "src/dictionaries/*.json (update — add receipt page dict keys)",
+    "package.json (add @react-pdf/renderer, pdf-lib, nodemailer @types/nodemailer — pending)"
   ],
   "dependencies": "npm install @react-pdf/renderer pdf-lib nodemailer @types/nodemailer (pending); @aws-sdk/client-ses (done)",
-  "verification": "Admin approves enrolment → PDF generated in S3, receiptNumber set in DB, email received with PDF attachment. PDF password-protected with idDocNumber. Receipt format: RCPT-2026-00001."
+  "verification": "Admin approves enrolment → PDF generated in S3 (password locked with idDocNumber), receiptNumber set in DB, email received with PDF attachment in correct locale. Visit /en/receipt/{enrolmentId} → shows real receipt data from DB, no dashboard link. Same for zh-hk and zh-cn routes."
 }
