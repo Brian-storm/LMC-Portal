@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { s3Client, s3PrivateBucket } from "@/lib/aws";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { Readable } from "stream";
 
 /**
  * GET /api/upload/s3-proxy?key=uploads/...
@@ -32,19 +33,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Only images are supported" }, { status: 400 });
     }
 
-    // Convert the readable stream to bytes
-    const stream = s3Response.Body as ReadableStream;
-    const chunks: Uint8Array[] = [];
-    const reader = stream.getReader();
-    let done = false;
-
-    while (!done) {
-      const { value, done: chunkDone } = await reader.read();
-      if (value) chunks.push(value);
-      done = chunkDone;
+    // Convert the Node.js Readable stream to a Buffer
+    const stream = s3Response.Body as Readable;
+    const chunks: Buffer[] = [];
+    for await (const chunk of stream) {
+      chunks.push(Buffer.from(chunk));
     }
-
-    const buffer = Buffer.concat(chunks.map((c) => Buffer.from(c)));
+    const buffer = Buffer.concat(chunks);
 
     return new NextResponse(buffer, {
       status: 200,
