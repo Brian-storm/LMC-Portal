@@ -66,6 +66,7 @@ export interface Course {
   date?: string;
   venue?: string;
   seatsLeft?: number;
+  imageUrl?: string;
 }
 
 export interface DetailedCourse extends Course {

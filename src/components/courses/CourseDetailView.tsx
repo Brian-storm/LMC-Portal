@@ -13,7 +13,6 @@ import {
   Calendar,
   User,
   HelpCircle,
-  Star,
   ChevronDown,
 } from "lucide-react";
 import { CourseViewDict, DetailedCourse, CourseStatus } from "./types";
@@ -286,59 +285,7 @@ export function CourseDetailView({
               </div>
             </section>
 
-            {/* 2D. VERIFIED REVIEWS */}
-            {course.reviews && course.reviews.length > 0 && (
-              <section
-                id="reviews"
-                className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs"
-              >
-                <div className="border-b border-slate-200 pb-2 mb-4">
-                  <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2">
-                    <Star className="w-4 h-4 text-[#1b4332]" />
-                    <span>
-                      {dict.sections?.reviews}
-                    </span>
-                  </h2>
-                </div>
-
-                <div className="space-y-2.5">
-                  {course.reviews.map((rev) => (
-                    <div
-                      key={rev.id}
-                      className="border border-slate-200 bg-slate-50/60 p-3 rounded-xs"
-                    >
-                      <div className="flex items-center justify-between font-mono">
-                        <div>
-                          <p className="font-bold text-slate-900 text-xs">
-                            {rev.authorName}
-                          </p>
-                          <p
-                            className="text-slate-500"
-                            style={{ fontSize: "8.5px" }}
-                          >
-                            {rev.authorRole}
-                          </p>
-                        </div>
-                        <span
-                          className="text-amber-600 font-bold"
-                          style={{ fontSize: "11px" }}
-                        >
-                          {"★".repeat(rev.rating)}
-                        </span>
-                      </div>
-                      <p
-                        className="mt-2 text-slate-700 italic border-l border-slate-300 pl-2 py-0.5"
-                        style={{ fontSize: "11px" }}
-                      >
-                        "{rev.comment}"
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* 2E. FAQS */}
+            {/* 2D. FAQS */}
             {course.faqs && course.faqs.length > 0 && (
               <section
                 id="faqs"
@@ -432,16 +379,15 @@ export function CourseDetailView({
                   </span>
                 )}
 
-                <Link
-                  href={course.brochureUrl || `#`}
-                  target={course.brochureUrl ? "_blank" : "_self"}
-                  rel="noopener noreferrer"
+                <a
+                  href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+                  download
                   className="w-full py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5"
                   style={{ fontSize: "9px" }}
                 >
                   <FileText className="w-3 h-3 text-slate-600" />
                   <span>{dict.downloadBrochure}</span>
-                </Link>
+                </a>
               </div>
 
               {/* Mandatory Governance Notice */}

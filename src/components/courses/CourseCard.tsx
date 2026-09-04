@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Clock,
   User,
@@ -8,6 +9,7 @@ import {
   FileText,
   ExternalLink,
   ShieldAlert,
+  ImageIcon,
 } from "lucide-react";
 import { CourseViewDict } from "@/dictionaries/types";
 import { Course } from "./types";
@@ -77,6 +79,33 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
       {/* Primary title, accredited domain category, and description text   */}
       {/* ------------------------------------------------------------------ */}
       <div className="p-3 sm:p-3.5 flex flex-col md:flex-row md:items-stretch justify-between gap-3">
+        {/* ------------------------------------------------------------------ */}
+        {/* 3A. POSTER-SIZED COURSE IMAGE                                      */}
+        {/* Leftmost visual column — swap with public S3 URL via imageUrl      */}
+        {/* ------------------------------------------------------------------ */}
+        <div className="w-[120px] shrink-0 self-stretch">
+          {course.imageUrl ? (
+            <div className="relative w-full h-full min-h-[160px] bg-slate-200 overflow-hidden rounded-xs">
+              <Image
+                src={course.imageUrl}
+                alt={course.title}
+                fill
+                className="object-cover"
+                sizes="120px"
+              />
+            </div>
+          ) : (
+            <div className="w-full h-full min-h-[160px] bg-slate-100 border border-slate-200 rounded-xs flex flex-col items-center justify-center text-slate-400 gap-1.5">
+              <ImageIcon className="w-6 h-6" />
+              <span
+                className="font-mono text-[9px] text-slate-400 uppercase tracking-wider text-center px-1"
+              >
+                Poster
+              </span>
+            </div>
+          )}
+        </div>
+
         {/* Course Core Details Column */}
         <div className="space-y-1.5 flex-1">
           {/* Accredited Category Badge */}
@@ -201,13 +230,14 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             </div>
 
             {/* Secondary Syllabus Brochure Download Trigger */}
-            <button
-              type="button"
-              className="p-1 border border-slate-300 hover:bg-slate-100 text-slate-700 transition-colors rounded-xs bg-slate-50"
+            <a
+              href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+              download
+              className="p-1 border border-slate-300 hover:bg-slate-100 text-slate-700 transition-colors rounded-xs bg-slate-50 inline-flex items-center"
               title={dict.downloadBrochure}
             >
               <FileText className="w-3 h-3 shrink-0" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   "id": "CM-005",
   "title": "課程詳情頁移除 Review 區塊 (courses/[slug])",
   "content": "CourseDetailView 目前包含 Review / 評價區塊（第 289–339 行），顯示學員評論與評分。本卡片將此區塊完全從前端移除，簡化課程頁面，聚焦 syllabus、講師、時段、報名等核心資訊。後端 API 與 Prisma schema 保留不動，僅移除前端渲染。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -45,13 +45,18 @@
     "src/dictionaries/*.json"
   ],
   "evidence": {
-    "commands": [],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
     "findings": [
-      "CourseDetailView.tsx:289–339 has a conditional review section rendering {course.reviews && course.reviews.length > 0 && ...} with Star icon, dict.sections?.reviews header, and review cards (authorName, authorRole, rating, comment)",
-      "Star imported from lucide-react on line 16 — used only by this section",
-      "dict.sections?.reviews key exists in en.json line 127 ('Student Reviews & Testimonials'), zh-hk.json line 126, zh-cn.json line 126",
-      "CourseReview interface in types.ts (lines 33–40) and reviews field in DetailedCourse (line 77) — used by this section",
-      "API and Prisma schema have Review model — NOT removed, kept for potential Phase 2"
+      "CourseDetailView.tsx:289–339 review section JSX removed",
+      "Star import removed from CourseDetailView.tsx",
+      "dict.sections?.reviews key removed from en.json, zh-hk.json, zh-cn.json",
+      "CourseReview type and DetailedCourse.reviews field preserved for future use",
+      "Backend API, Prisma schema, mapping unchanged",
+      "npm run typecheck → 0 errors",
+      "npm run lint → no new warnings (only pre-existing warnings remain)"
     ],
     "residual": "Backend (API route Prisma include, map-course-detail.ts mapping, Prisma Review model) left untouched — only frontend UI removed. Backend cleanup is out of scope."
   },
@@ -72,5 +77,5 @@
     "src/dictionaries/zh-hk.json (update — remove sections.reviews key)",
     "src/dictionaries/zh-cn.json (update — remove sections.reviews key)"
   ],
-  "verification": "Visit /en/courses/{slug} → no Reviews section renders. Page layout is clean with no visual gaps. Remaining sections (Syllabus, Instructor, Schedule, CTA, FAQ) all display correctly. tsc --noEmit → 0 errors."
+  "verification": "npm run typecheck → 0 errors. npm run lint → no new warnings. Review section JSX and Star import removed from CourseDetailView.tsx. reviews key removed from all 3 dictionary files. Page layout adjusts naturally — syllabus, instructors, schedules, FAQ sections remain intact."
 }
