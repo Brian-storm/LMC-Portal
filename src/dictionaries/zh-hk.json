@@ -485,6 +485,7 @@
     "uploadCancelled": "上傳已取消",
     "successTitle": "付款證明已成功上傳",
     "successDescription": "管理團隊將於 1 個工作天內核實您的付款。核實後您將收到電郵確認。",
+    "goToHome": "返回首頁",
     "errorUnsupportedType": "不支援的檔案類型。請上載 JPEG、PNG、WebP 或 PDF 檔案。",
     "errorFileTooLarge": "檔案大小超過 10 MB 限制（{size} MB）。",
     "errorNetwork": "上傳時發生網絡錯誤",

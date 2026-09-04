@@ -2,6 +2,8 @@
 
 import { useState, useRef } from "react";
 import { Upload, CheckCircle2, FileText, AlertCircle, X } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -24,6 +26,7 @@ export function PaymentSlipUploader({ dict, registrantId, email = "" }: { dict: 
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const xhrRef = useRef<XMLHttpRequest | null>(null);
+  const { locale } = useParams();
 
   function validateFile(f: File): string | null {
     if (!ALLOWED_TYPES.includes(f.type)) {
@@ -153,6 +156,12 @@ export function PaymentSlipUploader({ dict, registrantId, email = "" }: { dict: 
         <p className="text-xs text-emerald-700 max-w-sm mx-auto">
           {dict.successDescription}
         </p>
+        <Link
+          href={`/${locale}`}
+          className="inline-block mt-2 bg-slate-900 hover:bg-slate-800 text-white rounded-none text-xs font-semibold px-6 py-2.5 no-underline"
+        >
+          {dict.goToHome}
+        </Link>
       </Card>
     );
   }
