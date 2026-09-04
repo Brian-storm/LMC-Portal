@@ -256,7 +256,7 @@ export default function LearnerDashboardPage() {
                   {/* Smaller Receipt Button using Link + buttonVariants */}
                   <div className="flex items-center space-x-2 shrink-0">
                     <Link
-                      href={`/${locale}/dashboard/enrolments/${item.id}/confirmation`}
+                      href={`/${locale}/receipt/${item.id}`}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "sm" }),
                         "rounded-none border-slate-300 text-slate-800 hover:bg-slate-100 text-[10px] font-bold uppercase tracking-wider h-7 px-2.5",

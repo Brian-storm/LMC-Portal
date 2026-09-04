@@ -276,7 +276,42 @@ async function main() {
     },
   });
 
-  // ─── Admin user ───────────────────────────────────────────
+  // ─── Test learner user ────────────────────────────────────
+  const learnerPasswordHash = await bcrypt.hash("learner123", 10);
+
+  const learnerUser = await prisma.user.upsert({
+    where: { email: "taiman.chan@example.com" },
+    update: { passwordHash: learnerPasswordHash },
+    create: {
+      email: "taiman.chan@example.com",
+      nameZh: "陳大文",
+      nameEn: "CHAN Tai Man",
+      idDocNumber: "IA12345678",
+      phone: "+852 6123 4567",
+      role: Role.STUDENT,
+      passwordHash: learnerPasswordHash,
+    },
+  });
+
+  // ─── Test receipt (VERIFIED enrolment with receipt number) ─
+  const receiptCourse = await prisma.course.findUnique({ where: { id: "cpd-101" } });
+  if (receiptCourse) {
+    await prisma.registrant.upsert({
+      where: { id: "reg-verified-001" },
+      update: {},
+      create: {
+        id: "reg-verified-001",
+        courseId: "cpd-101",
+        userId: learnerUser.id,
+        enrollmentType: "INDIVIDUAL",
+        paymentStatus: "VERIFIED",
+        paymentMethod: "FPS",
+        receiptNumber: "RCPT-2026-00001",
+        submittedAt: new Date("2026-08-25T10:30:00Z"),
+      },
+    });
+    console.log("Test receipt created for enrolment reg-verified-001 (RCPT-2026-00001)");
+  }
   const adminPasswordHash = await bcrypt.hash("admin123", 10);
 
   const adminUser = await prisma.user.upsert({
