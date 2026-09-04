@@ -34,7 +34,7 @@
     "featureSpec": "",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-003-hero-images.md",
+    "taskCard": "tools/kanban/cards/UI-003.json",
     "verificationReport": "",
     "pr": ""
   },

@@ -5,11 +5,8 @@ import Link from "next/link";
 import {
   Award,
   Clock,
-  Globe,
   MapPin,
   FileText,
-  ShieldAlert,
-  CheckCircle2,
   Calendar,
   User,
   HelpCircle,

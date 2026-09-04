@@ -22,6 +22,7 @@ export function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
     const newPath = redirectedPathName(targetLocale);
 
     // Set cookie if your middleware relies on a locale cookie
+    // eslint-disable-next-line react-hooks/immutability
     document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000; SameSite=Lax`;
 
     // Navigate and force Next.js to re-fetch Server Components

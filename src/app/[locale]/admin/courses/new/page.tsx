@@ -3,12 +3,9 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
-  AlertTriangle,
   ArrowLeft,
   BookOpen,
   Construction,
-  FileQuestion,
-  HelpCircle,
 } from "lucide-react";
 
 export default function NewCourseModulePlaceholder() {

@@ -14,7 +14,7 @@ Use before planning or implementing any non-trivial work. Builds a context pack 
 2. Determine precise search terms: symbols, routes, component names, API paths, error messages.
 3. Search with precise terms first — use `rg` (ripgrep) / `grep` / symbol-aware tools.
 4. Read only the minimal set of relevant files.
-5. Produce a context pack following `.github/skills/monstrare/ai/process/context-protocol.md`.
+5. Produce a context pack in the standard format below.
 6. Only update `ai/context/code-search-guide.md` when you find something with persistent value.
 
 ## Context Pack Format

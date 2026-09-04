@@ -3,18 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Home,
   BookOpen,
-  User,
-  PhoneCall,
-  Info,
   Menu,
   X,
   ShieldCheck,
-  Scale,
-  ShieldAlert,
-  Award,
-  ArrowLeft,
   Globe,
   CheckCircle2,
 } from "lucide-react";

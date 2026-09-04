@@ -36,7 +36,7 @@
     "featureSpec": "",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-005-breadcrumbs.md",
+    "taskCard": "tools/kanban/cards/UI-005.json",
     "verificationReport": "",
     "pr": ""
   },

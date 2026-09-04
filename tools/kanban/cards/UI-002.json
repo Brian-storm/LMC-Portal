@@ -34,7 +34,7 @@
     "featureSpec": "",
     "screenSpec": "ai/artifacts/UI-Consistency-Fixes/screen-spec-color-refresh.md",
     "mockupDecision": "ai/artifacts/UI-Consistency-Fixes/mockup-decision-color-refresh.md",
-    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-002-color-refresh.md",
+    "taskCard": "tools/kanban/cards/UI-002.json",
     "verificationReport": "",
     "pr": ""
   },

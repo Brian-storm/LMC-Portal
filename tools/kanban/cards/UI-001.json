@@ -34,7 +34,7 @@
     "featureSpec": "",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-001-footer-nav.md",
+    "taskCard": "tools/kanban/cards/UI-001.json",
     "verificationReport": "",
     "pr": ""
   },

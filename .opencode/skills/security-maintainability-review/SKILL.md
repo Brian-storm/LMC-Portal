@@ -49,7 +49,7 @@ Recommendation: APPROVE | REQUEST CHANGES | BLOCK
 
 ## Security Checks
 
-Apply `.github/skills/monstrare/ai/checklists/security-checklist.md` systematically:
+Systematically apply the following checks:
 
 ### Always Check (Every Review)
 - No passwords, keys, or secrets in plaintext (code, config, env)

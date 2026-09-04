@@ -14,8 +14,8 @@ Use after the product and UI gates are both approved. Takes an approved feature 
 2. Identify files likely to change.
 3. Define API, data, and state contracts.
 4. Assign a risk level (low/medium/high).
-5. Decompose work into small task cards using `.github/skills/monstrare/ai/templates/task-card.md`, output to `ai/artifacts/<Epic>/task-cards/<card-id>.md`.
-6. Ensure every card meets `.github/skills/monstrare/ai/process/definition-of-ready.md`.
+5. Decompose work into small task cards using `tools/kanban/cards/<card-id>.json` (see `tools/kanban/README.md` for schema), output to `tools/kanban/cards/`.
+6. Ensure every card is independent, well-scoped, and has explicit verification criteria.
 7. For medium/high risk: stop and wait for human approval before implementation.
 
 ## Full-Stack Decomposition Rule

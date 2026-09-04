@@ -178,8 +178,9 @@ export default function AdminEnrolmentsPage() {
 
   // Fetch on mount only — subsequent fetches are triggered by the tab click or pagination click handlers
   useEffect(() => {
-    fetchEnrolments(statusFilter, page);
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchEnrolments(statusFilter, page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Tab click handler: update both filter and page atomically ──

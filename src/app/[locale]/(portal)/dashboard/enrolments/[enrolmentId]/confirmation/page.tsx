@@ -6,15 +6,11 @@ import {
   CheckCircle2,
   Download,
   Calendar,
-  Clock,
   MapPin,
   Building2,
   Award,
   ArrowRight,
   Printer,
-  FileText,
-  Mail,
-  ShieldCheck,
   UserCheck,
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";

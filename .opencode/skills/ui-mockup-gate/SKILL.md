@@ -19,11 +19,11 @@ Use when a task involves changing screens, components, interaction flows, or vis
 ## Process
 
 1. Read `ai/context/design-system.md`, list tokens/components this screen will use. Identify any missing components.
-2. Create/update `ai/artifacts/<Epic>/screen-spec-<screen>.md` using `.github/skills/monstrare/ai/templates/screen-spec.md` as template.
+2. Create/update `ai/artifacts/<Epic>/screen-spec-<screen>.md` (include: states list, layout wireframe, reused tokens/components).
 3. List all required states: default, loading, empty, error, disabled, unauthorized, mobile.
 4. Produce 2-3 mockup variants (all built from existing tokens/components), save to `ai/artifacts/<Epic>/mockups/`.
 5. Compare variants by clarity, information density, implementation complexity, and risk.
-6. Record decision in `ai/artifacts/<Epic>/mockup-decision-<screen>.md` using `.github/skills/monstrare/ai/templates/mockup-decision.md`.
+6. Record decision in `ai/artifacts/<Epic>/mockup-decision-<screen>.md`.
 7. **Stop before implementation** until the human picks a variant.
 
 ## Style Tile Variants (Epic 0 S2 Only)

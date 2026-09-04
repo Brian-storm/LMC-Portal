@@ -36,7 +36,7 @@
     "featureSpec": "",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "ai/artifacts/UI-Consistency-Fixes/task-cards/T-UI-006-contact-redesign.md",
+    "taskCard": "tools/kanban/cards/UI-006.json",
     "verificationReport": "",
     "pr": ""
   },
