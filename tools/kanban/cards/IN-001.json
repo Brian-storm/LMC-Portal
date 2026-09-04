@@ -12,7 +12,7 @@
   "userStory": "RDS Proxy 資料庫安全連線",
   "track": "integration",
   "dependsOn": [],
-  "order": 1,
+  "order": 2,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,

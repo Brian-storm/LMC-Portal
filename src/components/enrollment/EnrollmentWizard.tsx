@@ -283,6 +283,15 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     setSubmitError("");
 
     try {
+      // Pre-flight duplicate check (authenticated users only)
+      if (session?.user?.id && course?.id) {
+        const dupRes = await fetch(`/api/enroll/check-duplicate?userId=${encodeURIComponent(session.user.id)}&courseId=${encodeURIComponent(course.id)}`);
+        const dupData = await dupRes.json();
+        if (dupData.isDuplicate) {
+          setIsSubmitting(false);
+          throw new Error(dict.errors.alreadyEnrolled);
+        }
+      }
       // Build the combined identity document number from the split HKID fields
       const idDocNumber = getCombinedIdDocNumber();
 
@@ -528,13 +537,17 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         name="fullName"
                         required
                         value={formData.fullName}
+                        disabled={!!session?.user}
                         onChange={handleInputChange}
                         onBlur={(e) => validateField("fullName", e.target.value)}
                         placeholder={dict.formLabels.fullNamePlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
                           fieldErrors.fullName ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
-                        }`}
+                        } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
                       />
+                      {session?.user && (
+                        <p className="text-[10px] text-slate-400">{dict.formLabels.lockedToAccount}</p>
+                      )}
                       {fieldErrors.fullName && (
                         <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
                           <AlertCircle className="w-3 h-3 shrink-0" />
@@ -552,13 +565,17 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         name="email"
                         required
                         value={formData.email}
+                        disabled={!!session?.user}
                         onChange={handleInputChange}
                         onBlur={(e) => validateField("email", e.target.value)}
                         placeholder={dict.formLabels.emailPlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
                           fieldErrors.email ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
-                        }`}
+                        } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
                       />
+                      {session?.user && (
+                        <p className="text-[10px] text-slate-400">{dict.formLabels.lockedToAccount}</p>
+                      )}
                       {fieldErrors.email && (
                         <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
                           <AlertCircle className="w-3 h-3 shrink-0" />

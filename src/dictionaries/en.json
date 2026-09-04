@@ -423,6 +423,7 @@
       "addMember": "Add Member",
       "noMembers": "No additional members added yet. Click \"Add Member\" to add group attendees.",
       "memberLabel": "Member",
+      "lockedToAccount": "Locked to your account profile.",
       "nameZhPlaceholder": "Name (Chinese)",
       "nameEnPlaceholder": "Name (English)",
       "emailPlaceholderShort": "Email",
@@ -467,7 +468,8 @@
     },
     "errors": {
       "enrollmentFailed": "Enrollment failed. Please try again.",
-      "networkError": "Network error encountered."
+      "networkError": "Network error encountered.",
+      "alreadyEnrolled": "You are already enrolled in this course. Duplicate enrollments are not allowed."
     },
     "navigation": {
       "proceedToDeclaration": "Proceed to Declaration",
@@ -552,7 +554,8 @@
     "loading": "Loading...",
     "error": "Failed to load data",
     "retry": "Retry",
-    "noData": "No data available"
+    "noData": "No data available",
+    "signOut": "Sign Out"
   },
   "receipt": {
     "title": "OFFICIAL RECEIPT",

@@ -12,7 +12,7 @@
   "userStory": "核心資料模型",
   "track": "n/a",
   "dependsOn": [],
-  "order": 2,
+  "order": 9,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

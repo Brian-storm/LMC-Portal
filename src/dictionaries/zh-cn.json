@@ -420,6 +420,7 @@
       "addMember": "新增成员",
       "noMembers": "尚未加入其他成员。点击「新增成员」以加入团体参加者。",
       "memberLabel": "成员",
+      "lockedToAccount": "锁定于您的账户资料。",
       "nameZhPlaceholder": "中文姓名",
       "nameEnPlaceholder": "英文姓名",
       "emailPlaceholderShort": "电邮",
@@ -464,7 +465,8 @@
     },
     "errors": {
       "enrollmentFailed": "报名失败，请重试。",
-      "networkError": "发生网络错误。"
+      "networkError": "发生网络错误。",
+      "alreadyEnrolled": "您已报名此课程，无法重复报名。"
     },
     "navigation": {
       "proceedToDeclaration": "前往声明页",
@@ -549,7 +551,8 @@
     "loading": "加载中...",
     "error": "无法加载数据",
     "retry": "重试",
-    "noData": "暂无数据"
+    "noData": "暂无数据",
+    "signOut": "登出"
   },
   "receipt": {
     "title": "正式收据",

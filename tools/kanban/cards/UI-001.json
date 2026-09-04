@@ -12,7 +12,7 @@
   "userStory": "導航與頁面修復",
   "track": "frontend",
   "dependsOn": [],
-  "order": 1,
+  "order": 6,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -38,9 +38,18 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": ["src/components/Footer.tsx", "src/dictionaries/en.json", "src/dictionaries/zh-hk.json", "src/dictionaries/zh-cn.json"],
+  "refs": [
+    "src/components/Footer.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
   "evidence": {
-    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ],
     "findings": [],
     "residual": ""
   },

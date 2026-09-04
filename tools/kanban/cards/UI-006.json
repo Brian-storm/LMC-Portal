@@ -14,7 +14,7 @@
   "dependsOn": [
     "UI-005"
   ],
-  "order": 6,
+  "order": 24,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -40,10 +40,19 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": ["src/app/[locale]/contact/page.tsx"],
+  "refs": [
+    "src/app/[locale]/contact/page.tsx"
+  ],
   "evidence": {
-    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ],
+    "findings": [
+      "typecheck: passed",
+      "lint: no new errors (only pre-existing)"
+    ],
     "residual": "地圖 URL 為 mock 座標，尚未填入真實 LMC 辦公室經緯度"
   },
   "comments": [],

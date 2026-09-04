@@ -46,7 +46,15 @@ export function PortalLayoutClient({ locale, dict, children }: PortalLayoutClien
   ];
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: `/${locale}/login` });
+    try {
+      await signOut({ redirect: false });
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    } finally {
+      // Hard redirect to clear Next.js client cache and prevent stale session on back button
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.href = `/${locale}/login`;
+    }
   };
 
   return (

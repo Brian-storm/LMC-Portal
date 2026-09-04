@@ -14,7 +14,7 @@
   "dependsOn": [
     "UI-001"
   ],
-  "order": 5,
+  "order": 20,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -50,8 +50,16 @@
     "src/app/[locale]/terms/page.tsx"
   ],
   "evidence": {
-    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)", "build: compiled successfully"],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ],
+    "findings": [
+      "typecheck: passed",
+      "lint: no new errors (only pre-existing)",
+      "build: compiled successfully"
+    ],
     "residual": "無"
   },
   "comments": [],

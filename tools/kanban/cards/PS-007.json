@@ -12,7 +12,7 @@
   "userStory": "UI 設計系統",
   "track": "n/a",
   "dependsOn": [],
-  "order": 7,
+  "order": 26,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

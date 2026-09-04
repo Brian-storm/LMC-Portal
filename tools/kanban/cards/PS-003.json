@@ -14,7 +14,7 @@
   "dependsOn": [
     "PS-002"
   ],
-  "order": 3,
+  "order": 12,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

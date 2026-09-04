@@ -14,7 +14,7 @@
   "dependsOn": [
     "UI-002"
   ],
-  "order": 4,
+  "order": 16,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -40,10 +40,23 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": ["src/components/home/NewsletterForm.tsx", "src/dictionaries/en.json", "src/dictionaries/zh-hk.json", "src/dictionaries/zh-cn.json", "src/dictionaries/types.ts"],
+  "refs": [
+    "src/components/home/NewsletterForm.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
   "evidence": {
-    "commands": ["npm run typecheck", "npm run lint", "npm run build"],
-    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ],
+    "findings": [
+      "typecheck: passed",
+      "lint: no new errors (only pre-existing)"
+    ],
     "residual": "表單提交仍為模擬（setTimeout），後續需實作 API 串接"
   },
   "comments": [],

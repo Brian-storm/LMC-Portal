@@ -420,6 +420,7 @@
       "addMember": "新增成員",
       "noMembers": "尚未加入其他成員。按「新增成員」以加入團體參加者。",
       "memberLabel": "成員",
+      "lockedToAccount": "鎖定於您的帳戶資料。",
       "nameZhPlaceholder": "中文姓名",
       "nameEnPlaceholder": "英文姓名",
       "emailPlaceholderShort": "電郵",
@@ -464,7 +465,8 @@
     },
     "errors": {
       "enrollmentFailed": "報名失敗，請重試。",
-      "networkError": "發生網絡錯誤。"
+      "networkError": "發生網絡錯誤。",
+      "alreadyEnrolled": "您已報名此課程，無法重複報名。"
     },
     "navigation": {
       "proceedToDeclaration": "前往聲明頁",
@@ -549,7 +551,8 @@
     "loading": "載入中...",
     "error": "無法載入資料",
     "retry": "重試",
-    "noData": "暫無資料"
+    "noData": "暫無資料",
+    "signOut": "登出"
   },
   "receipt": {
     "title": "正式收據",

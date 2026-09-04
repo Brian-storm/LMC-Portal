@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -26,6 +27,18 @@ const NAV_ITEMS = [
 
 export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientProps) {
   const pathname = usePathname();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    } finally {
+      // Hard redirect to clear Next.js client cache and prevent stale session on back button
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.href = `/${locale}/login`;
+    }
+  };
 
   const isActive = (href: string) => {
     if (href === "") return pathname === `/${locale}/admin`;
@@ -72,13 +85,13 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
 
         {/* Sign out */}
         <div className="px-2 pb-4">
-          <Link
-            href={`/${locale}/login`}
-            className="flex items-center space-x-2 px-3 py-2 text-xs text-emerald-300 hover:text-white hover:bg-emerald-800/50 rounded-xs transition-colors"
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center space-x-2 px-3 py-2 text-xs text-emerald-300 hover:text-white hover:bg-emerald-800/50 rounded-xs transition-colors"
           >
             <LogOut className="w-4 h-4 shrink-0" />
-            <span>Sign Out</span>
-          </Link>
+            <span>{dict.signOut}</span>
+          </button>
         </div>
       </aside>
 

@@ -14,7 +14,7 @@
   "dependsOn": [
     "EN-001"
   ],
-  "order": 2,
+  "order": 8,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

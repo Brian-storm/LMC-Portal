@@ -24,7 +24,7 @@
     "PS-010",
     "PS-011"
   ],
-  "order": 12,
+  "order": 32,
   "readiness": {
     "problem_clear": false,
     "non_goals_clear": false,

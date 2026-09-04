@@ -2,7 +2,7 @@
   "id": "PR-004",
   "title": "金流端到端整合驗收 (AWS 全線串接)",
   "content": "End-to-end verification of the complete payment-to-receipt flow. Receipt PDFs are generated on-the-fly (no S3), password-protected with the registrant's idDocNumber, and delivered via SES. This card is verification-only against staging with real AWS services.",
-  "stage": "backlog",
+  "stage": "ready",
   "risk": "high",
   "owner": "Brian",
   "agent": "",
@@ -18,7 +18,7 @@
     "EN-004",
     "PR-005"
   ],
-  "order": 10,
+  "order": 1,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,

@@ -2,7 +2,7 @@
   "id": "CT-006",
   "title": "關於我們頁面全面 redesign (內容 + 版面 + 多語)",
   "content": "About Us 頁面目前僅完成 i18n 遷移（CT-003），內容與版面仍為初版。本卡片進行全面 redesign：重寫視覺佈局（品牌故事、里程碑時間軸、團隊介紹、服務數據）、更豐富的內容（附真實照片/圖示佔位）、並確保三語內容各自在地化（非單純翻譯）。",
-  "stage": "backlog",
+  "stage": "blocked",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -12,7 +12,7 @@
   "userStory": "關於我們頁 i18n",
   "track": "frontend",
   "dependsOn": [],
-  "order": 6,
+  "order": 1,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,

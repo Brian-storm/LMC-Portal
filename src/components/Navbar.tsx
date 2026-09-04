@@ -3,7 +3,8 @@
 import Link from "next/link";
 import NextImage from "next/image";
 import { useState } from "react";
-import { Home, BookOpen, User, PhoneCall, Info, Menu, X } from "lucide-react";
+import { Home, BookOpen, User, PhoneCall, Info, Menu, X, LogOut } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { AccessibilityMenu } from "./AccessibilityMenu";
 import { NavDict, AccessibilityDict } from "@/dictionaries/types";
@@ -16,6 +17,20 @@ interface NavbarProps {
 
 export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    } finally {
+      // Hard redirect to clear Next.js client cache and prevent stale session on back button
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.href = `/${currentLocale}/login`;
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-navbar-bg/95 backdrop-blur-md text-foreground shadow-xs border-b border-primary/10">
@@ -50,12 +65,22 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
             <span className="h-3 w-px bg-primary/20" />
             <LanguageSwitcher currentLocale={currentLocale} />
             <span className="h-3 w-px bg-primary/20" />
-            <Link
-              href={`/${currentLocale}/login`}
-              className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
-            >
-              Sign in
-            </Link>
+            {isLoggedIn ? (
+              <button
+                onClick={handleSignOut}
+                className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs flex items-center space-x-1"
+              >
+                <LogOut className="w-3 h-3" />
+                <span>{dict.signOut}</span>
+              </button>
+            ) : (
+              <Link
+                href={`/${currentLocale}/login`}
+                className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
+              >
+                Sign in
+              </Link>
+            )}
           </div>
 
           {/* LOWER ROW: Main Navigation Links */}
@@ -155,15 +180,30 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
           >
             {dict.contact}
           </Link>
-          <div className="pt-2">
-            <Link
-              href={`/${currentLocale}/courses`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-center bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
-            >
-              Enroll
-            </Link>
-          </div>
+          {isLoggedIn ? (
+            <div className="pt-2 border-t border-primary/10">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleSignOut();
+                }}
+                className="w-full text-center bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs flex items-center justify-center space-x-1"
+              >
+                <LogOut className="w-3 h-3" />
+                <span>{dict.signOut}</span>
+              </button>
+            </div>
+          ) : (
+            <div className="pt-2">
+              <Link
+                href={`/${currentLocale}/courses`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-center bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
+              >
+                Enroll
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>

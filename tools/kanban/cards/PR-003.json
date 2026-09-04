@@ -15,7 +15,7 @@
     "PR-001",
     "EN-004"
   ],
-  "order": 7,
+  "order": 25,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -44,7 +44,7 @@
   "refs": [
     "src/lib/aws.ts"
   ],
-"evidence": {
+  "evidence": {
     "commands": [
       "npm install @react-pdf/renderer pdf-lib nodemailer @types/nodemailer (completed)",
       "npm install pdf-lib-encrypt (completed)",
@@ -76,7 +76,7 @@
     "Shared renderReceiptPdf() used by both generateReceipt (admin approval) and download endpoint (user re-download)",
     "Shared encrypt.ts module to avoid pdf-lib configure() being called multiple times under Turbopack"
   ],
-"files": [
+  "files": [
     "src/lib/receipt/texts.ts (new — hardcoded bilingual strings for receipt PDF)",
     "src/lib/receipt/styles.ts (new — StyleSheet.create + Font registration for Noto Sans SC)",
     "src/lib/receipt/render.tsx (new — shared renderReceiptPdf() via renderToBuffer)",

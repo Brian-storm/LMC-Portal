@@ -48,6 +48,23 @@ export async function POST(request: NextRequest) {
     let userId: string;
     if (session?.user?.id) {
       userId = session.user.id;
+      // Lock: for authenticated users, always use the profile's name and email.
+      // The submitted fullName/email values are ignored to prevent fraud.
+      const profile = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { nameEn: true, nameZh: true, email: true },
+      });
+      if (!profile) {
+        return NextResponse.json(
+          { error: "User profile not found" },
+          { status: 400 },
+        );
+      }
+      // Override any submitted name/email with the profile's values
+      // so the receipt and email always use the verified identity.
+      parsed.data.fullName = profile.nameEn;
+      parsed.data.email = profile.email;
+
       // Update the user's idDocNumber if provided (e.g. first-time HKID entry)
       if (idDocNumber) {
         await prisma.user.update({
@@ -208,6 +225,13 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           { error: "No remaining seats for this schedule" },
           { status: 400 },
+        );
+      }
+      // Handle unique constraint violation (duplicate courseId + userId)
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        return NextResponse.json(
+          { error: "You are already enrolled in this course. Duplicate enrollments are not allowed." },
+          { status: 409 },
         );
       }
       throw error;

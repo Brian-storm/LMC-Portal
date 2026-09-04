@@ -1,12 +1,50 @@
 {
   "id": "PS-001",
   "title": "環境變數與金鑰設定",
-  "epic": "專案設置",
-  "userStory": "環境變數與金鑰設定",
+  "content": "",
   "stage": "done",
   "risk": "low",
+  "owner": "Brian",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "專案設置",
+  "userStory": "環境變數與金鑰設定",
+  "track": "n/a",
   "dependsOn": [],
-  "order": 1,
+  "order": 5,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
   "verification": ".env.example exists with all required vars, documented in AGENTS.md and README.md",
   "notes": "Completed. .env.example updated with final AWS variable naming: APP_AWS_REGION, APP_S3_PUBLIC_BUCKET, APP_S3_PRIVATE_BUCKET, APP_SES_REGION, APP_SES_FROM_ADDRESS (dropped APP_AWS_ prefix from S3/SES vars, aligned with Gemini architecture spec). Amplify env vars set in Console (DATABASE_URL, AUTH_SECRET, NEXT_PUBLIC_SITE_URL, AUTH_URL, all APP_* vars)."
 }

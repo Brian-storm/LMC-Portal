@@ -12,7 +12,7 @@
   "userStory": "視覺與色票更新",
   "track": "frontend",
   "dependsOn": [],
-  "order": 3,
+  "order": 13,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
@@ -38,10 +38,18 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": ["src/components/home/HeroCarousel.tsx"],
+  "refs": [
+    "src/components/home/HeroCarousel.tsx"
+  ],
   "evidence": {
-    "commands": ["npm run typecheck", "npm run lint"],
-    "findings": ["typecheck: passed", "lint: no new errors (only pre-existing)"],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "typecheck: passed",
+      "lint: no new errors (only pre-existing)"
+    ],
     "residual": "僅更換 Slide 2 圖片，Slide 1 與 Slide 3 保留原圖"
   },
   "comments": [],

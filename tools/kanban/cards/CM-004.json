@@ -11,8 +11,10 @@
   "epic": "課程管理",
   "userStory": "課程 syllabus 下載手冊",
   "track": "backend",
-  "dependsOn": ["CM-001"],
-  "order": 1,
+  "dependsOn": [
+    "CM-001"
+  ],
+  "order": 2,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,

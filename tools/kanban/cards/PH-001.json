@@ -1,5 +1,5 @@
 {
-  "id": "PH2-001",
+  "id": "PH-001",
   "title": "聊天機器人 — FAQ QnA + Microsoft Foundry AI (第二階段)",
   "content": "實作網站聊天機器人：第一階段先用確定性 FAQ QnA（基於常見問題字典），第二階段整合 Microsoft Foundry AI 進行語意問答。屬於第二階段功能，需等所有 Phase 1 Epic 完成後才開始。",
   "stage": "backlog",
@@ -12,7 +12,7 @@
   "userStory": "聊天機器人",
   "track": "n/a",
   "dependsOn": [],
-  "order": 1,
+  "order": 3,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
