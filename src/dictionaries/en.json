@@ -501,5 +501,35 @@
   "loadingPage": {
     "brandName": "LMC Management Consultancy",
     "message": "Preparing your workspace..."
+  },
+  "receipt": {
+    "title": "OFFICIAL RECEIPT",
+    "subtitle": "LMC Management Consultancy Ltd.",
+    "receiptNumber": "Receipt No.",
+    "date": "Date",
+    "registrantName": "Registrant Name",
+    "courseName": "Course Name",
+    "iaRef": "IA Reference",
+    "cpdHours": "CPD Hours",
+    "fee": "Amount Paid",
+    "paymentMethod": "Payment Method",
+    "paymentDate": "Payment Date",
+    "status": "Status",
+    "verified": "Verified",
+    "stamp": "LMC Management Consultancy Ltd.",
+    "footer": "This is a computer-generated receipt. No signature required.",
+    "amountInWords": "Amount in Words"
+  },
+  "email": {
+    "receiptSubject": "Payment Receipt – LMC Management Consultancy",
+    "receiptGreeting": "Dear",
+    "receiptBody": "Thank you for your payment. Please find attached your official receipt for the following course:",
+    "receiptCourseLabel": "Course",
+    "receiptAmountLabel": "Amount Paid",
+    "receiptNumberLabel": "Receipt Number",
+    "receiptClosing": "Should you have any questions, please contact our administrative team.",
+    "receiptRegards": "Best regards",
+    "receiptTeam": "LMC Management Consultancy Ltd.",
+    "bccAdminSubject": "Receipt Generated — {receiptNumber}"
   }
 }

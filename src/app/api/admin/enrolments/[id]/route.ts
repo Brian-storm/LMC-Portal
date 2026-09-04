@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { reviewActionSchema } from "@/lib/validation/admin";
 import { Prisma } from "@prisma/client";
+import { generateReceipt } from "@/lib/receipt/generate";
+import { sendReceiptEmail } from "@/lib/email/send";
 
 /**
  * PATCH /api/admin/enrolments/[id]
@@ -50,7 +52,7 @@ export async function PATCH(
       );
     }
 
-    const { action, reason, receiptNumber } = parsed.data;
+    const { action, reason } = parsed.data;
 
     // 4: Find the registrant record
     const registrant = await prisma.registrant.findUnique({
@@ -72,13 +74,57 @@ export async function PATCH(
       );
     }
 
-    // 6: Apply the action inside a transaction
+    // 6: Apply the action
     if (action === "APPROVE") {
+      // 6a: Fetch the registrant with user + course data for receipt generation
+      const registrantWithDetails = await prisma.registrant.findUnique({
+        where: { id },
+        include: {
+          user: {
+            select: { nameZh: true, nameEn: true, idDocNumber: true, email: true },
+          },
+          course: {
+            select: { nameZh: true, nameEn: true, price: true, iaRefNumber: true, cpdHours: true },
+          },
+        },
+      });
+
+      if (!registrantWithDetails) {
+        return NextResponse.json({ error: "Enrolment not found" }, { status: 404 });
+      }
+
+      // 6b: Generate receipt PDF, password-protect, upload to S3
+      let receiptNumber: string | null = null;
+
+      try {
+        const result = await generateReceipt(
+          {
+            id: registrantWithDetails.id,
+            paymentMethod: registrantWithDetails.paymentMethod,
+            submittedAt: registrantWithDetails.submittedAt,
+          },
+          registrantWithDetails.user,
+          {
+            nameZh: registrantWithDetails.course.nameZh,
+            nameEn: registrantWithDetails.course.nameEn,
+            price: Number(registrantWithDetails.course.price),
+            iaRefNumber: registrantWithDetails.course.iaRefNumber,
+            cpdHours: registrantWithDetails.course.cpdHours,
+          },
+        );
+        receiptNumber = result.receiptNumber;
+      } catch (receiptError) {
+        // If receipt generation fails, the enrolment can still be approved
+        // without a receipt number — log and continue
+        console.error("Receipt generation failed (approval proceeds):", receiptError);
+      }
+
+      // 6c: Update the DB with VERIFIED status and the generated receipt number
       const updated = await prisma.registrant.update({
         where: { id },
         data: {
           paymentStatus: "VERIFIED",
-          receiptNumber: receiptNumber ?? null,
+          receiptNumber: receiptNumber,
         },
         select: {
           id: true,
@@ -86,6 +132,52 @@ export async function PATCH(
           receiptNumber: true,
         },
       });
+
+      // 6d: Fire-and-forget the receipt email (SES failure does not roll back approval).
+      //      We read the PDF from S3 or use the in-memory buffer.
+      if (receiptNumber) {
+        // Fetch the PDF from S3 for email attachment
+        const { GetObjectCommand } = await import("@aws-sdk/client-s3");
+        const { s3Client, s3PrivateBucket } = await import("@/lib/aws");
+
+        try {
+          const s3Response = await s3Client.send(
+            new GetObjectCommand({
+              Bucket: s3PrivateBucket,
+              Key: `receipts/${receiptNumber}.pdf`,
+            }),
+          );
+          // Convert the readable stream to buffer
+          const stream = s3Response.Body as import("stream").Readable;
+          const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
+            const chunks: Buffer[] = [];
+            stream.on("data", (chunk: Buffer) => chunks.push(Buffer.from(chunk)));
+            stream.on("end", () => resolve(Buffer.concat(chunks)));
+            stream.on("error", reject);
+          });
+
+          await sendReceiptEmail({
+            recipient: {
+              email: registrantWithDetails.user.email,
+              nameZh: registrantWithDetails.user.nameZh,
+              nameEn: registrantWithDetails.user.nameEn,
+            },
+            course: {
+              nameZh: registrantWithDetails.course.nameZh,
+              nameEn: registrantWithDetails.course.nameEn,
+            },
+            receipt: {
+              receiptNumber,
+              fee: registrantWithDetails.course.price.toString(),
+            },
+            pdfBuffer,
+            pdfFilename: `${receiptNumber}.pdf`,
+          });
+        } catch (emailError) {
+          // Email failure is non-fatal — receipt is already in S3 and DB
+          console.error(`Receipt email sending failed for ${receiptNumber}:`, emailError);
+        }
+      }
 
       return NextResponse.json({ enrolment: updated });
     }

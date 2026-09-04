@@ -498,5 +498,35 @@
   "loadingPage": {
     "brandName": "德智管理顧問有限公司",
     "message": "正在準備您的專區..."
+  },
+  "receipt": {
+    "title": "正式收據",
+    "subtitle": "德智管理顧問有限公司",
+    "receiptNumber": "收據編號",
+    "date": "日期",
+    "registrantName": "學員姓名",
+    "courseName": "課程名稱",
+    "iaRef": "保監局參考編號",
+    "cpdHours": "CPD 時數",
+    "fee": "繳費金額",
+    "paymentMethod": "付款方式",
+    "paymentDate": "付款日期",
+    "status": "狀態",
+    "verified": "已核實",
+    "stamp": "德智管理顧問有限公司",
+    "footer": "此為電腦生成收據，無須簽署。",
+    "amountInWords": "金額大寫"
+  },
+  "email": {
+    "receiptSubject": "付款收據 – 德智管理顧問有限公司",
+    "receiptGreeting": "尊敬的",
+    "receiptBody": "感謝您的付款。現附上以下課程的正式收據：",
+    "receiptCourseLabel": "課程",
+    "receiptAmountLabel": "繳費金額",
+    "receiptNumberLabel": "收據編號",
+    "receiptClosing": "如有任何疑問，請聯絡我們的行政團隊。",
+    "receiptRegards": "此致",
+    "receiptTeam": "德智管理顧問有限公司",
+    "bccAdminSubject": "收據已生成 — {receiptNumber}"
   }
 }
