@@ -8,7 +8,8 @@ import { Prisma } from "@prisma/client";
  * POST /api/enroll
  *
  * Creates one or more registrant records for a course.
- * Requires an authenticated user session.
+ * Accepts authenticated sessions (preferred) or guest enrollees via
+ * email/fullName/phone fields in the request body.
  *
  * Body:
  *  - courseId          : target course
@@ -18,19 +19,17 @@ import { Prisma } from "@prisma/client";
  *  - registrants[]     : required for ORGANIZATION (nameZh, nameEn, email, idDocNumber)
  *  - isThirdPartyPay   : optional, default false
  *  - payerFullName     : optional
+ *  - email             : optional — required when no session (guest enrolment)
+ *  - fullName          : optional — used when no session
+ *  - phone             : optional — used when no session
+ *  - company           : optional
+ *  - iaLicenseNo       : optional
  *
  * Returns 201 { registrantId, groupId } on success.
  */
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "Authentication required" },
-        { status: 401 },
-      );
-    }
-    const userId = session.user.id;
 
     const body = await request.json();
     const parsed = enrollSchema.safeParse(body);
@@ -42,8 +41,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { courseId, scheduleId, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName } =
+    const { courseId, scheduleId, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo } =
       parsed.data;
+
+    // 1: Resolve the user — from authenticated session or guest info
+    let userId: string;
+    if (session?.user?.id) {
+      userId = session.user.id;
+    } else {
+      // Guest enrolment: email is required
+      if (!email) {
+        return NextResponse.json(
+          { error: "Email is required for guest enrolment" },
+          { status: 400 },
+        );
+      }
+      // Look up existing user by email, or create a bare-minimum user record
+      const existingUser = await prisma.user.findUnique({ where: { email } });
+      if (existingUser) {
+        userId = existingUser.id;
+      } else {
+        const guestName = fullName || "Guest";
+        const newUser = await prisma.user.create({
+          data: {
+            nameZh: guestName,
+            nameEn: guestName,
+            idDocNumber: `guest-${crypto.randomUUID().slice(0, 8)}`,
+            phone: phone || "",
+            email,
+            iaLicense: iaLicenseNo || null,
+            organization: company || null,
+          },
+        });
+        userId = newUser.id;
+      }
+    }
 
     // 1. Validate course exists and is open for registration
     const course = await prisma.course.findUnique({

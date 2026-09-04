@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 const locales = ["en", "zh-hk", "zh-cn"];
-const defaultLocale = "en";
+const defaultLocale = "zh-hk";
 
 const publicSegments = [
   "courses",

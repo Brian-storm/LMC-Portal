@@ -29,6 +29,12 @@ export const enrollSchema = z
     registrants: z.array(registrantSchema).optional(),
     isThirdPartyPay: z.boolean().default(false),
     payerFullName: z.string().optional(),
+    // Guest enrollee fields — used when no authenticated session exists
+    email: z.string().email("Invalid email format").optional(),
+    fullName: z.string().optional(),
+    phone: z.string().optional(),
+    company: z.string().optional(),
+    iaLicenseNo: z.string().optional(),
   })
   .refine(
     (data) => {

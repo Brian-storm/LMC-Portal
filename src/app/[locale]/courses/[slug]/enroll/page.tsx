@@ -172,6 +172,13 @@ export default function CourseEnrollmentPage() {
         enrollmentType,
         paymentMethod: paymentMethodMap[formData.paymentMethod] || "E_BANKING",
         ...(registrants.length > 0 && { registrants }),
+        ...(!session?.user && {
+          email: formData.email,
+          fullName: formData.fullName,
+          phone: formData.phone,
+          company: formData.company || undefined,
+          iaLicenseNo: formData.iaLicenseNo || undefined,
+        }),
       };
 
       const res = await fetch("/api/enroll", {
