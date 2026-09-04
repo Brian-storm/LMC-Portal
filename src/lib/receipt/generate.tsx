@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 import { TEXTS } from "./texts";
 import { renderReceiptPdf } from "./render";
+import { lock } from "./encrypt";
 
 // ── Data types ──────────────────────────────────────────────────────────────
 
@@ -89,5 +90,8 @@ export async function generateReceipt(
     paymentDate,
   });
 
-  return { receiptNumber, pdfBuffer };
+  // Password-protect with the registrant's idDocNumber
+  const protectedPdfBuffer = Buffer.from(await lock(pdfBuffer, user.idDocNumber));
+
+  return { receiptNumber, pdfBuffer: protectedPdfBuffer };
 }

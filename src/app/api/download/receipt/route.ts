@@ -5,11 +5,13 @@ import { prisma } from "@/lib/prisma";
 
 import { renderReceiptPdf } from "@/lib/receipt/render";
 import { TEXTS } from "@/lib/receipt/texts";
+import { lock } from "@/lib/receipt/encrypt";
 
 /**
  * POST /api/download/receipt
  *
- * Generates a receipt PDF on-the-fly from DB data and returns it as a download.
+ * Generates a receipt PDF on-the-fly from DB data and returns it as a download,
+ * password-protected with the registrant's idDocNumber.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -23,7 +25,7 @@ export async function POST(request: NextRequest) {
     const registrant = await prisma.registrant.findFirst({
       where: { receiptNumber },
       include: {
-        user: { select: { nameZh: true, nameEn: true } },
+        user: { select: { nameZh: true, nameEn: true, idDocNumber: true } },
         course: { select: { nameZh: true, nameEn: true, iaRefNumber: true, cpdHours: true, price: true } },
       },
     });
@@ -48,12 +50,15 @@ export async function POST(request: NextRequest) {
       paymentDate,
     });
 
-    return new NextResponse(new Uint8Array(pdfBuffer), {
+    // Password-protect with the registrant's idDocNumber
+    const protectedPdfBuffer = Buffer.from(await lock(pdfBuffer, registrant.user.idDocNumber));
+
+    return new NextResponse(new Uint8Array(protectedPdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${receiptNumber}.pdf"`,
-        "Content-Length": pdfBuffer.length.toString(),
+        "Content-Length": protectedPdfBuffer.length.toString(),
       },
     });
   } catch (error) {

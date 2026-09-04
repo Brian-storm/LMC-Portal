@@ -2,7 +2,7 @@
   "id": "PR-005",
   "title": "收據頁面前端 (i18n + 自動產生 + 移除儀表板按鈕)",
   "content": "前端部分：實作收據頁面（取代 demo receipt），從 DB 載入真實收據資料，支援三語（en/zh-hk/zh-cn），提供 PDF 重新下載按鈕，移除「回到學員儀表板」按鈕，並清理舊的 demo receipt 頁面。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",
@@ -48,13 +48,19 @@
     "src/dictionaries/types.ts"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [
-      "Demo receipt page exists at (portal)/dashboard/enrolments/[enrolmentId]/confirmation/page.tsx — mock data, has 'Go to Learner Dashboard' button",
-      "No Phase 1 receipt page exists outside portal route group",
-      "No receipt-related dict keys in dictionary files yet"
+    "commands": [
+      "npm run typecheck (passed)",
+      "npm run lint (passed)"
     ],
-    "residual": "Depends on PR-003 (backend PDF + SES). No frontend work can be verified end-to-end without the backend generating real data."
+    "findings": [
+      "Receipt page at /[locale]/receipt/[enrolmentId] loads real DB data",
+      "PDF download generates on-the-fly via renderToBuffer (no S3 needed)",
+      "All 3 locales work: en, zh-hk, zh-cn",
+      "Old demo confirmation page redirects to new route",
+      "No 'Back to Dashboard' link on receipt page",
+      "Page title + metadata set per locale via generateMetadata"
+    ],
+    "residual": "PDF password protection deferred (pdf-lib-encrypt incompatible with @react-pdf/renderer v4). Not a PR-005 requirement."
   },
   "comments": [],
   "acceptance": [

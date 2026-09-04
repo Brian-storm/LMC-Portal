@@ -1,12 +1,20 @@
+import type { Metadata } from "next";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { ReceiptView } from "@/components/receipt/ReceiptView";
 
-/**
- * Receipt page at /[locale]/receipt/[enrolmentId].
- *
- * Phase 1 route (outside (portal) route group) that displays receipt data
- * loaded from the API. Provides PDF download via S3 presigned URL and print.
- */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const dict = await getDictionary(locale);
+  return {
+    title: dict.receiptPage.pageTitle,
+    description: dict.receiptPage.pageDescription,
+  };
+}
+
 export default async function ReceiptPage({
   params,
 }: {
