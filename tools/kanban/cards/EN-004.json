@@ -2,7 +2,7 @@
   "id": "EN-004",
   "title": "付款證明上傳 — S3 presigned URL (後端)",
   "content": "",
-  "stage": "implementing",
+  "stage": "done",
   "risk": "high",
   "owner": "Brian",
   "agent": "",
@@ -61,7 +61,7 @@
       "Auth check enforced on both routes: 401 if unauthenticated, 403 if not owner or admin",
       "Typecheck passed, lint clean (no new errors)"
     ],
-    "residual": "S3 buckets must be created in AWS console (lmc-cpd-public-ap-east-1, lmc-cpd-private-ap-east-1). EN-005 (PaymentSlipUploader UI integration) is the next step to wire the frontend to these API routes."
+    "residual": "S3 bucket CORS configuration still needs to be applied in AWS Console for production browser uploads (localhost works without it). Presigned GET URL for admin preview not yet implemented (separate task)."
   },
   "comments": [],
   "acceptance": [

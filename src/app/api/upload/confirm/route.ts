@@ -8,23 +8,18 @@ import { prisma } from "@/lib/prisma";
  * Records the S3 object key of an uploaded payment proof in the database.
  * Called by the frontend after the file has been successfully PUT to S3.
  *
- * Body: { registrantId, key }
+ * Body: { registrantId, key, email? }
  *
  * Returns: { success: true } on completion.
  */
 export async function POST(request: NextRequest) {
   try {
-    // 1: Authenticate the request
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // 2: Parse the request body
+    // 1: Parse the request body
     const body = await request.json();
-    const { registrantId, key } = body as {
+    const { registrantId, key, email } = body as {
       registrantId?: string;
       key?: string;
+      email?: string;
     };
 
     if (!registrantId || !key) {
@@ -34,7 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3: Validate the key format matches the expected pattern
+    // 2: Validate the key format matches the expected pattern
     //    Pattern: uploads/{registrantId}/{timestamp}-{sanitized-filename}
     const keyPattern = /^uploads\/[a-zA-Z0-9]+\/\d+-[a-zA-Z0-9._-]+$/;
     if (!keyPattern.test(key)) {
@@ -44,7 +39,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4: Verify the registrant exists and belongs to the current user or the user is an admin
+    // 3: Resolve userId — from authenticated session or guest email
+    const session = await auth();
+    let userId: string | undefined;
+
+    if (session?.user?.id) {
+      userId = session.user.id;
+    } else {
+      if (!email) {
+        return NextResponse.json(
+          { error: "Email is required for guest upload. Please sign in or provide your enrollment email." },
+          { status: 401 },
+        );
+      }
+      const user = await prisma.user.findUnique({ where: { email } });
+      if (!user) {
+        return NextResponse.json(
+          { error: "No user found with this email. Please sign in first." },
+          { status: 404 },
+        );
+      }
+      userId = user.id;
+    }
+
+    // 4: Verify the registrant exists and belongs to the resolved user
     const registrant = await prisma.registrant.findUnique({
       where: { id: registrantId },
       select: { userId: true },
@@ -54,8 +72,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Registrant not found" }, { status: 404 });
     }
 
-    const isOwner = registrant.userId === session.user.id;
-    const isAdmin = !isOwner && !!(await prisma.admin.findUnique({ where: { userId: session.user.id } }));
+    const isOwner = registrant.userId === userId;
+    const isAdmin = !isOwner && session?.user?.id && !!(await prisma.admin.findUnique({ where: { userId: session.user.id } }));
 
     if (!isOwner && !isAdmin) {
       return NextResponse.json(

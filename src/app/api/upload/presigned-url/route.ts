@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { s3Client, s3PrivateBucket } from "@/lib/aws";
+import { presignS3Client, s3PrivateBucket } from "@/lib/aws";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -17,25 +17,20 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024;
  * Generates a time-limited S3 presigned PUT URL so the frontend can upload
  * a payment proof file directly to S3 without exposing AWS credentials.
  *
- * Body: { fileName, fileType, fileSize, registrantId }
+ * Body: { fileName, fileType, fileSize, registrantId, email? }
  *
  * Returns: { uploadUrl (presigned PUT URL), key (S3 object key) }
  */
 export async function POST(request: NextRequest) {
   try {
-    // 1: Authenticate the request — only signed-in users may upload
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // 2: Parse and validate the request body
+    // 1: Parse and validate the request body
     const body = await request.json();
-    const { fileName, fileType, fileSize, registrantId } = body as {
+    const { fileName, fileType, fileSize, registrantId, email } = body as {
       fileName?: string;
       fileType?: string;
       fileSize?: number;
       registrantId?: string;
+      email?: string;
     };
 
     if (!fileName || !fileType || !registrantId) {
@@ -45,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3: Validate file type against the allowed list
+    // 2: Validate file type against the allowed list
     if (!ALLOWED_FILE_TYPES.includes(fileType)) {
       return NextResponse.json(
         { error: `Unsupported file type '${fileType}'. Allowed: ${ALLOWED_FILE_TYPES.join(", ")}` },
@@ -53,7 +48,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4: Validate file size is under 10 MB
+    // 3: Validate file size is under 10 MB
     if (fileSize && fileSize > MAX_FILE_SIZE) {
       return NextResponse.json(
         { error: `File size exceeds 10 MB limit` },
@@ -61,7 +56,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5: Verify the registrant exists and belongs to the current user or the user is an admin
+    // 4: Resolve userId — from authenticated session or guest email
+    const session = await auth();
+    let userId: string | undefined;
+
+    if (session?.user?.id) {
+      userId = session.user.id;
+    } else {
+      // Guest upload: email is required
+      if (!email) {
+        return NextResponse.json(
+          { error: "Email is required for guest upload. Please sign in or provide your enrollment email." },
+          { status: 401 },
+        );
+      }
+      const user = await prisma.user.findUnique({ where: { email } });
+      if (!user) {
+        return NextResponse.json(
+          { error: "No user found with this email. Please sign in first." },
+          { status: 404 },
+        );
+      }
+      userId = user.id;
+    }
+
+    // 5: Verify the registrant exists and belongs to the resolved user
     const registrant = await prisma.registrant.findUnique({
       where: { id: registrantId },
       select: { userId: true },
@@ -71,9 +90,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Registrant not found" }, { status: 404 });
     }
 
-    // Check if the current user is the registrant or an admin
-    const isOwner = registrant.userId === session.user.id;
-    const isAdmin = !isOwner && !!(await prisma.admin.findUnique({ where: { userId: session.user.id } }));
+    const isOwner = registrant.userId === userId;
+    const isAdmin = !isOwner && session?.user?.id && !!(await prisma.admin.findUnique({ where: { userId: session.user.id } }));
 
     if (!isOwner && !isAdmin) {
       return NextResponse.json(
@@ -93,13 +111,16 @@ export async function POST(request: NextRequest) {
     const s3Key = `uploads/${registrantId}/${timestamp}-${safeName}`;
 
     // 7: Generate the presigned PUT URL (5-minute expiry)
+    //    Uses presignS3Client which disables automatic CRC32 checksum signing.
+    //    Browser XHR uploads don't send matching checksum headers,
+    //    causing S3 to reject with 403 Forbidden.
     const putCommand = new PutObjectCommand({
       Bucket: s3PrivateBucket,
       Key: s3Key,
       ContentType: fileType,
     });
 
-    const uploadUrl = await getSignedUrl(s3Client, putCommand, { expiresIn: 300 });
+    const uploadUrl = await getSignedUrl(presignS3Client, putCommand, { expiresIn: 300 });
 
     // 8: Return the upload URL and the S3 key to the client
     return NextResponse.json({ uploadUrl, key: s3Key }, { status: 200 });

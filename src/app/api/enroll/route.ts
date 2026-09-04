@@ -151,39 +151,52 @@ export async function POST(request: NextRequest) {
         // Build the registrant rows: for ORGANIZATION, create one row per
         // group member (all sharing the same groupId); for INDIVIDUAL, a
         // single row with groupId = null.
-        const rows = registrants && registrants.length > 0
-          ? registrants.map(() => ({
+        const isGroupEnrollment = registrants && registrants.length > 0;
+
+        let registrantId: string | null = null;
+
+        if (isGroupEnrollment) {
+          // ORGANIZATION: use createMany + findFirst by groupId
+          const rows = registrants.map(() => ({
+            courseId,
+            userId,
+            enrollmentType,
+            groupId,
+            paymentStatus: "PENDING_VERIFICATION" as const,
+            paymentMethod,
+            isThirdPartyPay,
+            payerFullName: payerFullName ?? null,
+          }));
+
+          await tx.registrant.createMany({ data: rows });
+
+          const created = await tx.registrant.findFirst({
+            where: { groupId, courseId },
+            orderBy: { submittedAt: "asc" },
+            select: { id: true },
+          });
+
+          registrantId = created?.id ?? null;
+        } else {
+          // INDIVIDUAL: use create to get the ID directly
+          const created = await tx.registrant.create({
+            data: {
               courseId,
               userId,
               enrollmentType,
-              groupId,
-              paymentStatus: "PENDING_VERIFICATION" as const,
+              groupId: null,
+              paymentStatus: "PENDING_VERIFICATION",
               paymentMethod,
               isThirdPartyPay,
               payerFullName: payerFullName ?? null,
-            }))
-          : [
-              {
-                courseId,
-                userId,
-                enrollmentType,
-                groupId: null,
-                paymentStatus: "PENDING_VERIFICATION" as const,
-                paymentMethod,
-                isThirdPartyPay,
-                payerFullName: payerFullName ?? null,
-              },
-            ];
+            },
+            select: { id: true },
+          });
 
-        await tx.registrant.createMany({ data: rows });
+          registrantId = created.id;
+        }
 
-        const created = await tx.registrant.findFirst({
-          where: { groupId, courseId },
-          orderBy: { submittedAt: "asc" },
-          select: { id: true },
-        });
-
-        return { registrantId: created?.id ?? null };
+        return { registrantId };
       });
 
       return NextResponse.json(

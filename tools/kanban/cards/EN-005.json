@@ -2,7 +2,7 @@
   "id": "EN-005",
   "title": "PaymentSlipUploader → 直接上傳至 S3 (整合)",
   "content": "",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "Brian",
   "agent": "",

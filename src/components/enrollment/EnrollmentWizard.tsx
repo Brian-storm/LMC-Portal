@@ -335,8 +335,12 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       const result = await res.json();
 
       // Redirect to confirmation page with the real registrantId from the API
+      // For guest users, also pass the email so the upload route can verify ownership
+      const emailParam = !session?.user && formData.email
+        ? `&email=${encodeURIComponent(formData.email)}`
+        : "";
       router.push(
-        `/${locale}/checkout/confirmation?orderId=${result.registrantId}`,
+        `/${locale}/checkout/confirmation?registrantId=${result.registrantId}${emailParam}`,
       );
     } catch (error) {
       setSubmitError(

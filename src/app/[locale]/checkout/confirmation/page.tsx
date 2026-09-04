@@ -1,21 +1,33 @@
 import { PaymentSlipUploader } from "@/components/PaymentSlipUploader";
+import { getDictionary } from "@/dictionaries/get-dictionary";
+import type { PaymentUploadDict } from "@/dictionaries/types";
 
-// 1. Define searchParams as a Promise
 type ConfirmationPageProps = {
-  searchParams: Promise<{ orderId?: string }>;
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ registrantId?: string; email?: string }>;
 };
 
-// 2. Make the component function `async`
 export default async function ConfirmationPage({
+  params,
   searchParams,
 }: ConfirmationPageProps) {
-  // 3. Await searchParams before accessing properties
+  const { locale } = await params;
   const resolvedParams = await searchParams;
-  const orderId = resolvedParams.orderId || "ORD-001";
+  const registrantId = resolvedParams.registrantId || "";
+  const email = resolvedParams.email || "";
+
+  const dict = await getDictionary(locale);
+  const uploadDict: PaymentUploadDict = dict.paymentUpload;
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-lg">
-      <PaymentSlipUploader orderId={orderId} />
+      {registrantId ? (
+        <PaymentSlipUploader dict={uploadDict} registrantId={registrantId} email={email} />
+      ) : (
+        <p className="text-xs text-slate-500 text-center">
+          {uploadDict.noRegistration}
+        </p>
+      )}
     </div>
   );
 }
