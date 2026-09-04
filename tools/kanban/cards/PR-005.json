@@ -1,0 +1,82 @@
+{
+  "id": "PR-005",
+  "title": "收據頁面前端 (i18n + 自動產生 + 移除儀表板按鈕)",
+  "content": "前端部分：實作收據頁面（取代 demo receipt），從 DB 載入真實收據資料，支援三語（en/zh-hk/zh-cn），提供 PDF 重新下載按鈕，移除「回到學員儀表板」按鈕，並清理舊的 demo receipt 頁面。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "",
+  "epic": "金流與收據",
+  "userStory": "PDF 電子收據生成",
+  "track": "frontend",
+  "dependsOn": [
+    "PR-003",
+    "PR-002"
+  ],
+  "order": 9,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "Demo receipt page exists at (portal)/dashboard/enrolments/[enrolmentId]/confirmation/page.tsx — mock data, has 'Go to Learner Dashboard' button",
+      "No Phase 1 receipt page exists outside portal route group",
+      "No receipt-related dict keys in dictionary files yet"
+    ],
+    "residual": "Depends on PR-003 (backend PDF + SES). No frontend work can be verified end-to-end without the backend generating real data."
+  },
+  "comments": [],
+  "acceptance": [
+    "Frontend receipt page at a Phase 1 route (e.g. /[locale]/receipt/[enrolmentId]) — not under (portal) which is Phase 2",
+    "Page loads receipt data from DB API route (receiptNumber, registrant name, course name, fee, payment date, LMC letterhead)",
+    "Receipt page UI designed for all 3 locales — English, Traditional Chinese, Simplified Chinese",
+    "PDF re-download button: calls S3 presigned GET URL to download the password-protected PDF",
+    "No 'Go to Learner Dashboard' button anywhere on the receipt page",
+    "Replace/remove old demo receipt page under (portal)/dashboard/enrolments/[enrolmentId]/confirmation",
+    "Add receipt dictionary keys to en.json, zh-hk.json, zh-cn.json and types.ts",
+    "Responsive layout (mobile + desktop), consistent with institutional design system",
+    "Page title and metadata set correctly per locale"
+  ],
+  "files": [
+    "src/app/[locale]/receipt/[enrolmentId]/page.tsx (new — auto-generated receipt page, Phase 1 route)",
+    "src/app/api/receipt/[enrolmentId]/route.ts (new — API to fetch receipt data from DB)",
+    "src/components/receipt/ReceiptView.tsx (new — core receipt display component)",
+    "src/dictionaries/en.json (update — add receipt page dict keys)",
+    "src/dictionaries/zh-hk.json (update — add receipt page dict keys)",
+    "src/dictionaries/zh-cn.json (update — add receipt page dict keys)",
+    "src/dictionaries/types.ts (update — add receipt dict type)",
+    "src/app/[locale]/(portal)/dashboard/enrolments/[enrolmentId]/confirmation/page.tsx (remove or redirect)"
+  ],
+  "verification": "Visit /en/receipt/{enrolmentId} → shows real receipt data from DB, no dashboard link. PDF download button fetches file from S3. Same for zh-hk and zh-cn routes. Old demo page redirects or returns 404. npm run typecheck + npm run lint pass."
+}

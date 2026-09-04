@@ -15,9 +15,10 @@
     "PR-001",
     "PR-002",
     "PR-003",
-    "EN-004"
+    "EN-004",
+    "PR-005"
   ],
-  "order": 8,
+  "order": 10,
   "readiness": {
     "problem_clear": true,
     "non_goals_clear": true,
