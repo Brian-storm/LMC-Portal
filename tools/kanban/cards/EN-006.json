@@ -2,7 +2,7 @@
   "id": "EN-006",
   "title": "報名頁多語介面 — i18n 完整支援 (en/zh-hk/zh-cn)",
   "content": "Enroll wizard 目前硬編碼部分中文標籤與錯誤訊息。本卡片將 enroll 流程所有 UI 文字遷移至 dictionary 系統，支援三語，包括表單欄位標籤、驗證錯誤訊息、步驟導航、付款說明、確認頁文案。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -49,11 +49,16 @@
     "src/dictionaries/types.ts"
   ],
   "evidence": {
-    "commands": [],
+    "commands": [
+      "npm run typecheck (passed)",
+      "npm run lint (no new errors)"
+    ],
     "findings": [
-      "Enroll wizard page exists at src/app/[locale]/courses/[slug]/enroll/page.tsx with real API integration (EN-002 done)",
-      "Uses EnrollmentWizard component — likely has hardcoded Chinese labels",
-      "Dictionary types need an EnrollViewDict or similar for enroll-related keys"
+      "Added EnrollPageDict type to types.ts",
+      "Added enrollPage section with full i18n keys to en.json, zh-hk.json, zh-cn.json",
+      "Extracted EnrollmentWizard client component with dict prop replacing all hardcoded strings",
+      "Rewrote enroll page as server component using getDictionary()",
+      "Fixed error display to surface field-level Zod validation details"
     ],
     "residual": "Scope is UI text only — no behavioral or API changes."
   },

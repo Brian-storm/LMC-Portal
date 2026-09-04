@@ -124,7 +124,6 @@
       "syllabus": "Course Outline & Syllabus",
       "scheduleAndLocation": "Schedule & Location",
       "instructors": "Instructor Profile",
-      "reviews": "Student Reviews & Testimonials",
       "faqs": "Frequently Asked Questions (FAQ)"
     },
 
@@ -376,6 +375,86 @@
     "successMessage": "Your account has been created. You can now sign in to access the CPD portal.",
     "successButton": "Proceed to Sign In",
     "footerText": "IA & HKIB Accredited CPD Management System"
+  },
+  "enrollPage": {
+    "loading": "Loading course details...",
+    "courseNotFound": "Course not found or unavailable.",
+    "fetchFailed": "Failed to load course details.",
+    "courseUnavailable": "Course unavailable.",
+    "browseCourses": "Browse Courses",
+    "backToCourseDetails": "Back to Course Details",
+    "officialCpdRegistration": "Official CPD Registration",
+    "sslEncrypted": "256-Bit SSL Encrypted",
+    "pageTitle": "Course Enrolment Application",
+    "step1Title": "Attendee Details",
+    "step2Title": "Regulatory Declaration",
+    "step3Title": "Payment & Submit",
+    "formLabels": {
+      "enrollmentType": "Enrollment Type",
+      "individual": "Individual",
+      "organization": "Organization",
+      "orgDescription": "Register multiple attendees under a single billing. The person completing this form is the primary contact.",
+      "primaryContact": "Primary Contact Details",
+      "attendeeInfo": "Attendee Information",
+      "orgHelperText": "The person submitting this enrollment. Group members are added below.",
+      "individualHelperText": "Enter details as they appear on your professional license.",
+      "fullName": "Full Name (English)",
+      "fullNamePlaceholder": "e.g. CHAN Tai Man",
+      "email": "Email Address",
+      "emailPlaceholder": "name@company.com",
+      "phone": "Contact Number",
+      "phonePlaceholder": "+852 9123 4567",
+      "company": "Company / Organization",
+      "companyPlaceholder": "e.g. HSBC / Prudential",
+      "iaLicense": "IA / License Reg Number",
+      "iaLicensePlaceholder": "e.g. IA12345678",
+      "iaLicenseHint": "Required for automated CPD hours submission.",
+      "groupMembers": "Group Members",
+      "addMember": "Add Member",
+      "noMembers": "No additional members added yet. Click \"Add Member\" to add group attendees.",
+      "memberLabel": "Member",
+      "nameZhPlaceholder": "Name (Chinese)",
+      "nameEnPlaceholder": "Name (English)",
+      "emailPlaceholderShort": "Email",
+      "idDocPlaceholder": "ID / License No."
+    },
+    "step2": {
+      "title": "Compliance & Eligibility Declaration",
+      "cpdNoticeTitle": "CPD Filing Requirement Notice",
+      "cpdNoticeText": "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
+      "declarationLabel": "I declare that the information provided is accurate and matches my professional registration records.",
+      "termsLabel": "I agree to the",
+      "termsLinkText": "Institutional Terms of Registration",
+      "termsSuffix": ", CPD Attendance Monitoring Policy, and Cancellation Rules.",
+      "backButton": "Back",
+      "proceedButton": "Proceed to Payment"
+    },
+    "step3": {
+      "title": "Select Payment Method",
+      "creditCard": "Credit Card (Visa / Mastercard)",
+      "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
+      "corporateBilling": "Corporate Billing / Bank Transfer",
+      "processing": "Processing Enrolment...",
+      "submitButton": "Complete Enrolment",
+      "backButton": "Back"
+    },
+    "summary": {
+      "title": "Order Summary",
+      "course": "Course",
+      "schedule": "Schedule:",
+      "seatsAvailable": "Seats Available:",
+      "registrants": "Registrants:",
+      "totalFee": "Total Fee:",
+      "invoiceNotice": "Official Tax Invoice & Attendance Certificate issued immediately upon course completion."
+    },
+    "errors": {
+      "enrollmentFailed": "Enrollment failed. Please try again.",
+      "networkError": "Network error encountered."
+    },
+    "navigation": {
+      "proceedToDeclaration": "Proceed to Declaration",
+      "proceedToPayment": "Proceed to Payment"
+    }
   },
   "loadingPage": {
     "brandName": "LMC Management Consultancy",

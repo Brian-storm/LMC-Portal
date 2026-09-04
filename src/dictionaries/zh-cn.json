@@ -123,7 +123,6 @@
       "syllabus": "课程大纲",
       "scheduleAndLocation": "上课时间及地点",
       "instructors": "讲师简介及照片",
-      "reviews": "学员评价与课程心得",
       "faqs": "常见问题（FAQ）"
     },
     "status": {
@@ -373,6 +372,86 @@
     "successMessage": "您的账户已创建，您现在可以登录以使用 CPD 系统。",
     "successButton": "前往登录",
     "footerText": "IA 及 HKIB 认可 CPD 管理系统"
+  },
+  "enrollPage": {
+    "loading": "正在加载课程详情...",
+    "courseNotFound": "找不到课程或课程暂时无法提供。",
+    "fetchFailed": "无法加载课程详情。",
+    "courseUnavailable": "课程暂时无法提供。",
+    "browseCourses": "浏览课程",
+    "backToCourseDetails": "返回课程详情",
+    "officialCpdRegistration": "官方 CPD 报名系统",
+    "sslEncrypted": "256 位元 SSL 加密传输",
+    "pageTitle": "课程报名申请",
+    "step1Title": "参加者资料",
+    "step2Title": "合规声明",
+    "step3Title": "付款及递交",
+    "formLabels": {
+      "enrollmentType": "报名类型",
+      "individual": "个人报名",
+      "organization": "团体报名",
+      "orgDescription": "以单一张账单为多位参加者报名。填写此表格者为主要联络人。",
+      "primaryContact": "主要联络人资料",
+      "attendeeInfo": "参加者资料",
+      "orgHelperText": "递交此报名的人士。团体成员将于下方加入。",
+      "individualHelperText": "请输入与您专业牌照上一致的资料。",
+      "fullName": "英文全名",
+      "fullNamePlaceholder": "例如：CHAN Tai Man",
+      "email": "电邮地址",
+      "emailPlaceholder": "name@company.com",
+      "phone": "联络电话",
+      "phonePlaceholder": "+852 9123 4567",
+      "company": "公司 / 机构",
+      "companyPlaceholder": "例如：HSBC / Prudential",
+      "iaLicense": "IA / 牌照编号",
+      "iaLicensePlaceholder": "例如：IA12345678",
+      "iaLicenseHint": "用于自动提交 CPD 学时。",
+      "groupMembers": "团体成员",
+      "addMember": "新增成员",
+      "noMembers": "尚未加入其他成员。点击「新增成员」以加入团体参加者。",
+      "memberLabel": "成员",
+      "nameZhPlaceholder": "中文姓名",
+      "nameEnPlaceholder": "英文姓名",
+      "emailPlaceholderShort": "电邮",
+      "idDocPlaceholder": "身份证 / 牌照编号"
+    },
+    "step2": {
+      "title": "合规及资格声明",
+      "cpdNoticeTitle": "CPD 申报规定通知",
+      "cpdNoticeText": "出席记录将直接提交至相关认证机构。必须全程出席并通过身份验证方可获得认可 CPD 学时。",
+      "declarationLabel": "本人声明所提供资料准确无误，并与本人之专业注册记录一致。",
+      "termsLabel": "本人同意",
+      "termsLinkText": "机构报名条款",
+      "termsSuffix": "、CPD 出席监察政策及取消规则。",
+      "backButton": "返回",
+      "proceedButton": "前往付款"
+    },
+    "step3": {
+      "title": "选择付款方式",
+      "creditCard": "信用卡 (Visa / Mastercard)",
+      "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
+      "corporateBilling": "公司账单 / 银行转账",
+      "processing": "正在处理报名...",
+      "submitButton": "完成报名",
+      "backButton": "返回"
+    },
+    "summary": {
+      "title": "订单摘要",
+      "course": "课程",
+      "schedule": "上课时间：",
+      "seatsAvailable": "剩余名额：",
+      "registrants": "参加人数：",
+      "totalFee": "总费用：",
+      "invoiceNotice": "完成课程后将即时发出正式收据及出席证书。"
+    },
+    "errors": {
+      "enrollmentFailed": "报名失败，请重试。",
+      "networkError": "发生网络错误。"
+    },
+    "navigation": {
+      "proceedToDeclaration": "前往声明页",
+      "proceedToPayment": "前往付款"
+    }
   },
   "loadingPage": {
     "brandName": "德智管理顾问有限公司",

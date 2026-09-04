@@ -123,7 +123,6 @@
       "syllabus": "課程大綱",
       "scheduleAndLocation": "上課時間及地點",
       "instructors": "講師簡介及照片",
-      "reviews": "學員評價與課程心得",
       "faqs": "常見問題（FAQ）"
     },
     "status": {
@@ -373,6 +372,86 @@
     "successMessage": "您的帳戶已建立，您現在可以登入以使用 CPD 系統。",
     "successButton": "前往登入",
     "footerText": "IA 及 HKIB 認可 CPD 管理系統"
+  },
+  "enrollPage": {
+    "loading": "正在載入課程詳情...",
+    "courseNotFound": "找不到課程或課程暫時無法提供。",
+    "fetchFailed": "無法載入課程詳情。",
+    "courseUnavailable": "課程暫時無法提供。",
+    "browseCourses": "瀏覽課程",
+    "backToCourseDetails": "返回課程詳情",
+    "officialCpdRegistration": "官方 CPD 報名系統",
+    "sslEncrypted": "256 位元 SSL 加密傳輸",
+    "pageTitle": "課程報名申請",
+    "step1Title": "參加者資料",
+    "step2Title": "合規聲明",
+    "step3Title": "付款及遞交",
+    "formLabels": {
+      "enrollmentType": "報名類型",
+      "individual": "個人報名",
+      "organization": "團體報名",
+      "orgDescription": "以單一帳單為多位參加者報名。填寫此表格者為主要聯絡人。",
+      "primaryContact": "主要聯絡人資料",
+      "attendeeInfo": "參加者資料",
+      "orgHelperText": "遞交此報名的人士。團體成員將於下方加入。",
+      "individualHelperText": "請輸入與您專業牌照上一致的資料。",
+      "fullName": "英文全名",
+      "fullNamePlaceholder": "例如：CHAN Tai Man",
+      "email": "電郵地址",
+      "emailPlaceholder": "name@company.com",
+      "phone": "聯絡電話",
+      "phonePlaceholder": "+852 9123 4567",
+      "company": "公司 / 機構",
+      "companyPlaceholder": "例如：HSBC / Prudential",
+      "iaLicense": "IA / 牌照編號",
+      "iaLicensePlaceholder": "例如：IA12345678",
+      "iaLicenseHint": "用於自動提交 CPD 時數。",
+      "groupMembers": "團體成員",
+      "addMember": "新增成員",
+      "noMembers": "尚未加入其他成員。按「新增成員」以加入團體參加者。",
+      "memberLabel": "成員",
+      "nameZhPlaceholder": "中文姓名",
+      "nameEnPlaceholder": "英文姓名",
+      "emailPlaceholderShort": "電郵",
+      "idDocPlaceholder": "身份證 / 牌照編號"
+    },
+    "step2": {
+      "title": "合規及資格聲明",
+      "cpdNoticeTitle": "CPD 申報規定通知",
+      "cpdNoticeText": "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
+      "declarationLabel": "本人聲明所提供資料準確無誤，並與本人之專業註冊記錄一致。",
+      "termsLabel": "本人同意",
+      "termsLinkText": "機構報名條款",
+      "termsSuffix": "、CPD 出席監察政策及取消規則。",
+      "backButton": "返回",
+      "proceedButton": "前往付款"
+    },
+    "step3": {
+      "title": "選擇付款方式",
+      "creditCard": "信用卡 (Visa / Mastercard)",
+      "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
+      "corporateBilling": "公司帳單 / 銀行轉帳",
+      "processing": "正在處理報名...",
+      "submitButton": "完成報名",
+      "backButton": "返回"
+    },
+    "summary": {
+      "title": "訂單摘要",
+      "course": "課程",
+      "schedule": "上課時間：",
+      "seatsAvailable": "剩餘名額：",
+      "registrants": "參加人數：",
+      "totalFee": "總費用：",
+      "invoiceNotice": "完成課程後將即時發出正式收據及出席證書。"
+    },
+    "errors": {
+      "enrollmentFailed": "報名失敗，請重試。",
+      "networkError": "發生網絡錯誤。"
+    },
+    "navigation": {
+      "proceedToDeclaration": "前往聲明頁",
+      "proceedToPayment": "前往付款"
+    }
   },
   "loadingPage": {
     "brandName": "德智管理顧問有限公司",
