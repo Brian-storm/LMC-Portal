@@ -520,7 +520,8 @@
     "downloading": "下載中...",
     "print": "列印",
     "backToHome": "返回首頁",
-    "footerDisclaimer": "此為電腦生成收據，無須簽署。"
+    "footerDisclaimer": "此為電腦生成收據，無須簽署。",
+    "pdfPasswordHint": "PDF 已加密保護，請使用身份證明文件號碼的首 6 位數字開啟（例如 A123456(7) 請輸入 123456）。"
   },
   "admin": {
     "dashboard": "儀表板",

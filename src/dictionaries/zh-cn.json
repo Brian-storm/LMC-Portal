@@ -520,7 +520,8 @@
     "downloading": "下载中...",
     "print": "打印",
     "backToHome": "返回首页",
-    "footerDisclaimer": "此为电脑生成收据，无须签署。"
+    "footerDisclaimer": "此为电脑生成收据，无须签署。",
+    "pdfPasswordHint": "PDF 已加密保护，请使用身份证明文件号码的首 6 位数字打开（例如 A123456(7) 请输入 123456）。"
   },
   "admin": {
     "dashboard": "仪表板",

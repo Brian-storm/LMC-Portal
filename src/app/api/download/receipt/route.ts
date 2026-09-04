@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 import { renderReceiptPdf } from "@/lib/receipt/render";
 import { TEXTS } from "@/lib/receipt/texts";
-import { lock } from "@/lib/receipt/encrypt";
+import { lock, receiptPassword } from "@/lib/receipt/encrypt";
 
 /**
  * POST /api/download/receipt
@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
       paymentDate,
     });
 
-    // Password-protect with the registrant's idDocNumber
-    const protectedPdfBuffer = Buffer.from(await lock(pdfBuffer, registrant.user.idDocNumber));
+    // Password-protect with the first 6 digits of the registrant's idDocNumber
+    const protectedPdfBuffer = Buffer.from(await lock(pdfBuffer, receiptPassword(registrant.user.idDocNumber)));
 
     return new NextResponse(new Uint8Array(protectedPdfBuffer), {
       status: 200,

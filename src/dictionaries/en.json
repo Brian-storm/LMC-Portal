@@ -523,7 +523,8 @@
     "downloading": "Downloading...",
     "print": "Print",
     "backToHome": "Back to Home",
-    "footerDisclaimer": "This is a computer-generated receipt. No signature required."
+    "footerDisclaimer": "This is a computer-generated receipt. No signature required.",
+    "pdfPasswordHint": "The PDF is password-protected. Use the first 6 digits of your ID document number to open it (e.g. for A123456(7), enter 123456)."
   },
   "admin": {
     "dashboard": "Dashboard",

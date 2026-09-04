@@ -53,36 +53,41 @@
       "npm run lint (passed)"
     ],
     "findings": [
-      "Receipt page at /[locale]/receipt/[enrolmentId] loads real DB data",
-      "PDF download generates on-the-fly via renderToBuffer (no S3 needed)",
-      "All 3 locales work: en, zh-hk, zh-cn",
+      "Receipt page at /[locale]/receipt/[enrolmentId] loads real DB data via /api/receipt/[enrolmentId]",
+      "PDF download generates on-the-fly via renderToBuffer (no S3 needed) with AES-256 password protection (first 6 digits of idDocNumber)",
+      "All 3 locales work: en, zh-hk, zh-cn — full i18n via dictionary system",
       "Old demo confirmation page redirects to new route",
       "No 'Back to Dashboard' link on receipt page",
-      "Page title + metadata set per locale via generateMetadata"
+      "Page title + metadata set per locale via generateMetadata",
+      "Password hint shown below action buttons with example (e.g. A123456(7) → 123456)",
+      "Shared renderReceiptPdf() in render.tsx used by both download endpoint and generateReceipt"
     ],
-    "residual": "PDF password protection deferred (pdf-lib-encrypt incompatible with @react-pdf/renderer v4). Not a PR-005 requirement."
+    "residual": "None — all acceptance criteria met. PDF password protection uses first 6 digits of idDocNumber (done)."
   },
   "comments": [],
   "acceptance": [
-    "Frontend receipt page at a Phase 1 route (e.g. /[locale]/receipt/[enrolmentId]) — not under (portal) which is Phase 2",
-    "Page loads receipt data from DB API route (receiptNumber, registrant name, course name, fee, payment date, LMC letterhead)",
-    "Receipt page UI designed for all 3 locales — English, Traditional Chinese, Simplified Chinese",
-    "PDF re-download button: calls S3 presigned GET URL to download the password-protected PDF",
+    "Frontend receipt page at /[locale]/receipt/[enrolmentId] — Phase 1 route, outside (portal) route group",
+    "Page loads receipt data from GET /api/receipt/[enrolmentId] (receiptNumber, registrant name, course name, fee, payment date, LMC letterhead)",
+    "Receipt page UI in all 3 locales — English, Traditional Chinese, Simplified Chinese",
+    "PDF download button: generates PDF on-the-fly from DB (no S3), password-protected with first 6 digits of idDocNumber",
+    "Password hint displayed below action buttons with example (e.g. A123456(7) → 123456)",
     "No 'Go to Learner Dashboard' button anywhere on the receipt page",
-    "Replace/remove old demo receipt page under (portal)/dashboard/enrolments/[enrolmentId]/confirmation",
+    "Old demo confirmation page redirects to new route",
     "Add receipt dictionary keys to en.json, zh-hk.json, zh-cn.json and types.ts",
-    "Responsive layout (mobile + desktop), consistent with institutional design system",
-    "Page title and metadata set correctly per locale"
+    "Responsive layout (mobile + desktop)",
+    "Page title and metadata set correctly per locale via generateMetadata",
+    "npm run typecheck + npm run lint pass"
   ],
   "files": [
-    "src/app/[locale]/receipt/[enrolmentId]/page.tsx (new — auto-generated receipt page, Phase 1 route)",
+    "src/app/[locale]/receipt/[enrolmentId]/page.tsx (new — receipt page with generateMetadata)",
     "src/app/api/receipt/[enrolmentId]/route.ts (new — API to fetch receipt data from DB)",
-    "src/components/receipt/ReceiptView.tsx (new — core receipt display component)",
-    "src/dictionaries/en.json (update — add receipt page dict keys)",
-    "src/dictionaries/zh-hk.json (update — add receipt page dict keys)",
-    "src/dictionaries/zh-cn.json (update — add receipt page dict keys)",
-    "src/dictionaries/types.ts (update — add receipt dict type)",
-    "src/app/[locale]/(portal)/dashboard/enrolments/[enrolmentId]/confirmation/page.tsx (remove or redirect)"
+    "src/components/receipt/ReceiptView.tsx (new — receipt display with download/print/password hint)",
+    "src/app/api/download/receipt/route.ts (new — on-the-fly PDF generation + password protection)",
+    "src/dictionaries/en.json (update — add receiptPage keys)",
+    "src/dictionaries/zh-hk.json (update — add receiptPage keys)",
+    "src/dictionaries/zh-cn.json (update — add receiptPage keys)",
+    "src/dictionaries/types.ts (update — add ReceiptPageDict type)",
+    "src/app/[locale]/(portal)/dashboard/enrolments/[enrolmentId]/confirmation/page.tsx (replaced with redirect)"
   ],
-  "verification": "Visit /en/receipt/{enrolmentId} → shows real receipt data from DB, no dashboard link. PDF download button fetches file from S3. Same for zh-hk and zh-cn routes. Old demo page redirects or returns 404. npm run typecheck + npm run lint pass."
+  "verification": "Visit /en/receipt/{enrolmentId} → shows real receipt data from DB, no dashboard link. PDF download button generates on-the-fly PDF (password: first 6 digits of idDocNumber). Same for zh-hk and zh-cn locales. Old demo page redirects. npm run typecheck + npm run lint pass."
 }

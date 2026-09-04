@@ -198,6 +198,11 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
           </div>
         </div>
 
+        {/* Password hint */}
+        <div className="text-center print:hidden">
+          <p className="text-[10px] text-slate-400">{dict.pdfPasswordHint}</p>
+        </div>
+
         {/* Receipt Card */}
         <div className="bg-white border border-slate-300 p-6 sm:p-8 shadow-xs print:shadow-none print:border-none space-y-6">
           {/* Status Banner */}

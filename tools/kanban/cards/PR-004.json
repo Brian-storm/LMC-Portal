@@ -1,7 +1,7 @@
 {
   "id": "PR-004",
   "title": "金流端到端整合驗收 (AWS 全線串接)",
-  "content": "After all Phase 1 infrastructure (RDS, S3, SES) and all 金流與收據 cards are deployed, run full end-to-end verification covering the complete payment-to-receipt flow with real AWS services.",
+  "content": "End-to-end verification of the complete payment-to-receipt flow. Receipt PDFs are generated on-the-fly (no S3), password-protected with the registrant's idDocNumber, and delivered via SES. This card is verification-only against staging with real AWS services.",
   "stage": "backlog",
   "risk": "high",
   "owner": "Brian",
@@ -64,18 +64,18 @@
       "trustHost: true added to NextAuth config for Amplify host header compatibility",
       "SSR fetch fixed: courses pages use NEXT_PUBLIC_SITE_URL instead of unreliable host header"
     ],
-    "residual": "EN-004 (presigned URL routes) and PR-003 (PDF receipt + SES) not yet implemented. S3 buckets need to be created in AWS console. SES sender email needs verification. This verification card stays backlog until those cards are done."
+    "residual": "Receipt PDFs now generated on-the-fly from DB (no S3 storage). Password protection via pdf-lib-encrypt AES-256. SES sender email still needs AWS verification. PR-004 requires deploy to staging with real AWS services to fully verify."
   },
   "comments": [],
   "acceptance": [
-    "1. S3 upload: upload payment proof via /en/courses/{slug}/enroll → file stored in S3, paymentProofUrl saved in DB",
+    "1. Payment proof upload: submit enrolment via /en/courses/{slug}/enroll → file stored in S3, paymentProofUrl saved in DB (existing flow, unchanged)",
     "2. Admin review list: visit /en/admin/enrolments → table loads all enrolments with real user/course data from RDS",
-    "3. Payment proof preview: click an enrolment row → modal loads image via S3 presigned GET URL",
-    "4. Approve flow: click Approve → paymentStatus=VERIFIED, receiptNumber=RCPT-{YYYY}-{NNNNN} generated, PDF stored in S3",
+    "3. Payment proof preview: click an enrolment row → modal loads image via S3 presigned GET URL (existing flow, unchanged)",
+    "4. Approve flow: click Approve → paymentStatus=VERIFIED, receiptNumber=RCPT-{YYYY}-{NNNNN} generated, PDF generated on-the-fly from DB data (no S3 storage)",
     "5. Email delivery: after approval, SES delivers email with PDF attachment to registrant's email",
-    "6. PDF password: downloaded receipt opens with registrant's idDocNumber as password",
+    "6. PDF password: downloaded receipt opens with registrant's idDocNumber as password (AES-256 via pdf-lib-encrypt)",
     "7. Reject flow: click Reject with reason → paymentStatus=REJECTED, reason stored, no PDF/email generated",
-    "8. Receipt re-download: registrant visits dashboard → can re-download receipt PDF from S3 presigned URL",
+    "8. Receipt re-download: registrant visits /{locale}/receipt/{enrolmentId} → can download receipt PDF (on-the-fly generation, no S3)",
     "9. Non-admin 403: logout → visit /en/admin/enrolments → redirected to login",
     "10. All flows pass in zh-hk and zh-cn locales"
   ],
