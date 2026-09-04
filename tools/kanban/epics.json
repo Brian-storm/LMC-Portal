@@ -86,6 +86,13 @@
         { "name": "Admin 功能補強", "definition": "Course CRUD from admin, user management (view/edit users), enrolment filtering/search, batch approve/reject" },
         { "name": "Admin 多語介面", "definition": "i18n dictionary for all admin pages: en, zh-hk, zh-cn" }
       ]
+    },
+    {
+      "name": "資訊安全",
+      "definition": "Security audit and hardening for the entire platform: dependency vulnerabilities, auth boundary review, data encryption, API security, infrastructure security posture.",
+      "stories": [
+        { "name": "資安基礎檢查", "definition": "Initial security scan: npm audit, dependency review, hardcoded secrets, auth boundary mapping, CSP headers, rate limiting, S3 bucket permissions, SSL/TLS configuration" }
+      ]
     }
   ]
 }

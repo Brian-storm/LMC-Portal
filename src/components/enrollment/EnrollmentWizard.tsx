@@ -329,9 +329,14 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       });
 
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
+        let body: Record<string, unknown>;
+        try {
+          body = await res.json();
+        } catch {
+          body = {};
+        }
         // Surface validation field errors from the API response
-        const apiMessage = body.error || dict.errors.enrollmentFailed;
+        const apiMessage: string = typeof body.error === "string" ? body.error : dict.errors.enrollmentFailed;
         const detailMessages = body.details
           ? Object.entries(body.details as Record<string, string[]>)
               .map(([field, msgs]) => `${field}: ${msgs.join(", ")}`)

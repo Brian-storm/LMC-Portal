@@ -24,7 +24,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Ban,
-  ImageIcon,
   Eye,
   User,
   Users,
@@ -643,10 +642,17 @@ export default function AdminEnrolmentsPage() {
           <div className="flex items-center justify-center min-h-[200px] bg-slate-50 border border-slate-200 rounded-xs">
             {previewTarget?.paymentProofUrl ? (
               <div className="text-center space-y-2 p-4">
-                {/* S3 presigned URL not yet implemented — show placeholder */}
-                <ImageIcon className="w-12 h-12 text-slate-300 mx-auto" />
-                <p className="text-xs text-slate-500">
-                  Payment proof image will be displayed here via S3 presigned URL.
+                <img
+                  src={`/api/upload/s3-proxy?key=${encodeURIComponent(previewTarget.paymentProofUrl)}`}
+                  alt="Payment proof"
+                  className="max-w-full max-h-[60vh] object-contain border border-slate-200"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                  }}
+                />
+                <p className="text-xs text-slate-500 hidden">
+                  Payment proof image could not be loaded.
                 </p>
                 <p className="text-[10px] font-mono text-slate-400 truncate max-w-full">
                   {previewTarget.paymentProofUrl}

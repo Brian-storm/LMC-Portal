@@ -1,0 +1,54 @@
+{
+  "id": "CS-001",
+  "title": "資安基礎檢查 — Security Scan & Audit",
+  "content": "Run initial security scan across the entire platform: npm audit for dependency vulnerabilities, review for hardcoded secrets/keys, map auth boundaries, check CSP headers, rate limiting, S3 bucket permissions, SSL/TLS config. \n\nReminder: watch debug tuboshu for the AI vibe coding cybersecurity video for a overall attack test",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-05",
+  "epic": "資訊安全",
+  "userStory": "資安基礎檢查",
+  "track": "security",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "package.json",
+    "src/auth.ts",
+    "src/middleware.ts",
+    "src/app/api/",
+    ".env.example"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": []
+}
