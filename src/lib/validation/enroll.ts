@@ -4,6 +4,7 @@ import { z } from "zod";
 
 const enrollmentTypeEnum = z.enum(["INDIVIDUAL", "ORGANIZATION"]);
 const paymentMethodEnum = z.enum(["FPS", "ALIPAY", "E_BANKING", "CHEQUE", "CASH", "CORPORATE_INVOICE"]);
+const idDocTypeEnum = z.enum(["HKID", "PASSPORT", "PERMIT", "OTHER"]);
 
 // ── Group member schema (used when enrollmentType === ORGANIZATION) ──
 
@@ -11,6 +12,7 @@ const registrantSchema = z.object({
   nameZh: z.string().min(1, "nameZh is required"),
   nameEn: z.string().min(1, "nameEn is required"),
   email: z.string().email("Invalid email format"),
+  idDocType: idDocTypeEnum.optional(),
   idDocNumber: z.string().min(1, "idDocNumber is required"),
 });
 
@@ -35,6 +37,7 @@ export const enrollSchema = z
     phone: z.string().optional(),
     company: z.string().optional(),
     iaLicenseNo: z.string().optional(),
+    idDocType: idDocTypeEnum.optional(),
     idDocNumber: z.string().optional(),
   })
   .refine(

@@ -353,6 +353,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
             nameZh: m.nameZh,
             nameEn: m.nameEn,
             email: m.email,
+            idDocType: m.idDocType,
             idDocNumber: getMemberIdDocNumber(m),
           }))
         : [];
@@ -370,7 +371,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           company: formData.company || undefined,
           iaLicenseNo: formData.iaLicenseNo || undefined,
         }),
-        // Include idDocNumber for both authenticated and guest users
+        // Include idDocType and idDocNumber for both authenticated and guest users
+        idDocType: idDocType,
         idDocNumber: idDocNumber || undefined,
       };
 
