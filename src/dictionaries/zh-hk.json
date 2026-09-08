@@ -6,7 +6,8 @@
     "portal": "學員專區",
     "about": "關於我們",
     "contact": "聯絡我們",
-    "signOut": "登出"
+    "signOut": "登出",
+    "signIn": "登入"
   },
   "accessibility": {
     "textSize": "字型大小",
@@ -39,7 +40,7 @@
       {
         "title": "行業領導力與戰略前瞻洞察",
         "subtitle": "緊貼監管合規要求、金融科技演進及企業管治標準的最新動態。",
-        "ctaText": "閱讀洞察"
+        "ctaText": "關於我們"
       }
     ]
   },
@@ -168,7 +169,16 @@
     "submittingButton": "發送中...",
     "successMessage": "感謝您的查詢。我們將在 1-2 個工作日內與您聯繫。",
     "privacyPrefix": "我們尊重您的私隱。檢視我們的 ",
-    "privacyLinkText": "私隱政策"
+    "privacyLinkText": "私隱政策",
+    "topicLabel": "查詢主題",
+    "topicPlaceholder": "請選擇主題...",
+    "topicOptions": [
+      "一般查詢",
+      "課程報名",
+      "企業培訓",
+      "CPD 核實",
+      "其他"
+    ]
   },
   "footer": {
     "aboutTitle": "德智管理顧問有限公司",
@@ -347,18 +357,26 @@
   "registerPage": {
     "pageTitle": "建立帳戶",
     "pageSubtitle": "註冊 CPD 管理及合規系統",
-    "nameZhLabel": "中文姓名 *",
+    "nameZhLabel": "中文姓名",
     "nameZhPlaceholder": "陳大文",
-    "nameEnLabel": "英文姓名 *",
+    "nameEnLabel": "英文姓名",
     "nameEnPlaceholder": "Chan Tai Man",
-    "emailLabel": "電郵地址 *",
+    "emailLabel": "電郵地址",
     "emailPlaceholder": "name@organization.com",
-    "passwordLabel": "密碼 *",
+    "passwordLabel": "密碼",
     "passwordPlaceholder": "最少 8 個字元",
-    "phoneLabel": "電話 *",
+    "phoneLabel": "電話",
     "phonePlaceholder": "+852 1234 5678",
-    "idDocLabel": "身份證明文件 *",
+    "idDocLabel": "身份證明文件類型",
     "idDocPlaceholder": "A123456(7)",
+    "idDocHkid": "香港身份證",
+    "idDocPassport": "護照",
+    "hkidPrefixLabel": "香港身份證號碼",
+    "hkidPrefixPlaceholder": "例如：A123456",
+    "hkidCheckDigitLabel": "核對數字",
+    "hkidCheckDigitHint": "括號內的最後數字，例如 (7)",
+    "passportNumberLabel": "護照號碼",
+    "passportPlaceholder": "例如：AB123456",
     "iaLicenseLabel": "IA 牌照編號",
     "iaLicensePlaceholder": "IA-2024-XXXXX",
     "orgLabel": "所屬機構",
@@ -406,7 +424,7 @@
       "companyPlaceholder": "例如：HSBC / Prudential",
       "iaLicense": "IA / 牌照編號",
       "iaLicensePlaceholder": "例如：IA12345678",
-      "iaLicenseHint": "用於自動提交 CPD 時數。",
+      "iaLicenseHint": "您的 IA 牌照編號用作課程報名用途。",
       "idDocType": "身份證明文件類型",
       "hkid": "香港身份證",
       "passport": "護照",
@@ -571,6 +589,19 @@
     "stamp": "德智管理顧問有限公司",
     "footer": "此為電腦生成收據，無須簽署。",
     "amountInWords": "金額大寫"
+  },
+  "errorPage": {
+    "title": "系統發生錯誤",
+    "message": "載入此頁面時發生意外錯誤，請重新嘗試。",
+    "retry": "重新嘗試",
+    "goHome": "返回首頁",
+    "contactSupport": "聯絡技術支援"
+  },
+  "notFoundPage": {
+    "title": "頁面不存在",
+    "message": "您尋找的頁面不存在或已被移動。",
+    "goHome": "返回首頁",
+    "browseCourses": "瀏覽課程"
   },
   "email": {
     "receiptSubject": "付款收據 – 德智管理顧問有限公司",

@@ -6,7 +6,8 @@
     "portal": "Student Portal",
     "about": "About Us",
     "contact": "Contact",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
   },
   "accessibility": {
     "textSize": "Text Size",
@@ -39,7 +40,7 @@
       {
         "title": "Industry Leadership & Strategic Insight",
         "subtitle": "Stay ahead of compliance regulations, financial technologies, and corporate governance standards.",
-        "ctaText": "Read Insights"
+        "ctaText": "About Us"
       }
     ]
   },
@@ -171,7 +172,16 @@
     "submittingButton": "Sending...",
     "successMessage": "Thank you for your enquiry. We will contact you within 1-2 business days.",
     "privacyPrefix": "We respect your privacy. View our ",
-    "privacyLinkText": "Privacy Policy"
+    "privacyLinkText": "Privacy Policy",
+    "topicLabel": "Enquiry Topic",
+    "topicPlaceholder": "Select a topic...",
+    "topicOptions": [
+      "General Enquiry",
+      "Course Registration",
+      "Corporate Training",
+      "CPD Verification",
+      "Other"
+    ]
   },
   "footer": {
     "aboutTitle": "LMC Consultancy",
@@ -350,18 +360,26 @@
   "registerPage": {
     "pageTitle": "Create Your Account",
     "pageSubtitle": "Register for the CPD Management & Compliance Portal",
-    "nameZhLabel": "Chinese Name *",
+    "nameZhLabel": "Chinese Name",
     "nameZhPlaceholder": "陳大文",
-    "nameEnLabel": "English Name *",
+    "nameEnLabel": "English Name",
     "nameEnPlaceholder": "Chan Tai Man",
-    "emailLabel": "Email Address *",
+    "emailLabel": "Email Address",
     "emailPlaceholder": "name@organization.com",
-    "passwordLabel": "Password *",
+    "passwordLabel": "Password",
     "passwordPlaceholder": "Min. 8 characters",
-    "phoneLabel": "Phone *",
+    "phoneLabel": "Phone",
     "phonePlaceholder": "+852 1234 5678",
-    "idDocLabel": "ID Document No. *",
+    "idDocLabel": "ID Document Type",
     "idDocPlaceholder": "A123456(7)",
+    "idDocHkid": "HKID",
+    "idDocPassport": "Passport",
+    "hkidPrefixLabel": "HKID Number",
+    "hkidPrefixPlaceholder": "e.g. A123456",
+    "hkidCheckDigitLabel": "Check Digit",
+    "hkidCheckDigitHint": "Last digit in parentheses, e.g. (7)",
+    "passportNumberLabel": "Passport Number",
+    "passportPlaceholder": "e.g. AB123456",
     "iaLicenseLabel": "IA License No.",
     "iaLicensePlaceholder": "IA-2024-XXXXX",
     "orgLabel": "Organization",
@@ -409,7 +427,7 @@
       "companyPlaceholder": "e.g. HSBC / Prudential",
       "iaLicense": "IA / License Reg Number",
       "iaLicensePlaceholder": "e.g. IA12345678",
-      "iaLicenseHint": "Required for automated CPD hours submission.",
+      "iaLicenseHint": "Your IA license number for course registration.",
       "idDocType": "Identity Document Type",
       "hkid": "HKID",
       "passport": "Passport",
@@ -574,6 +592,19 @@
     "stamp": "LMC Management Consultancy Ltd.",
     "footer": "This is a computer-generated receipt. No signature required.",
     "amountInWords": "Amount in Words"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "message": "We encountered an unexpected error while loading this page. Please try again.",
+    "retry": "Try Again",
+    "goHome": "Go to Homepage",
+    "contactSupport": "Contact Support"
+  },
+  "notFoundPage": {
+    "title": "Page Not Found",
+    "message": "The page you are looking for does not exist or has been moved.",
+    "goHome": "Go to Homepage",
+    "browseCourses": "Browse Courses"
   },
   "email": {
     "receiptSubject": "Payment Receipt – LMC Management Consultancy",

@@ -1,0 +1,77 @@
+{
+  "id": "UI-007",
+  "title": "Error 頁面優化（i18n + 品牌視覺）",
+  "content": "優化錯誤頁面與 404 頁面：新增 [locale]/error.tsx 與 [locale]/not-found.tsx，支援三語系字典驅動的 UI 文字，採用品牌翡翠/石板色設計語言。保留 root error.tsx 作為無 i18n 的基本後備。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-08",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "錯誤頁面優化",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 30,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "tools/kanban/cards/UI-007.json",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/error.tsx",
+    "src/app/[locale]/error.tsx",
+    "src/app/[locale]/not-found.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "error.tsx 與 not-found.tsx 顯示正確的品牌翡翠/石板色設計",
+    "三種語系切換時錯誤頁面文字正確對應",
+    "error.tsx 顯示錯誤訊息 + Try Again 按鈕 + Go to Homepage 連結",
+    "not-found.tsx 顯示 404 提示 + Go to Homepage 連結 + Browse Courses 連結",
+    "root error.tsx 維持無 i18n 的簡潔後備頁面但視覺統一",
+    "頁面在 desktop 與 mobile viewport 下均排版正常"
+  ],
+  "files": [
+    "src/app/error.tsx",
+    "src/app/[locale]/error.tsx",
+    "src/app/[locale]/not-found.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "verification": "手動觸發錯誤（造訪不存在路由、拋出錯誤）確認 error 與 not-found 頁面正確渲染；切換三語系確認文字正確"
+}
