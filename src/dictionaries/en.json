@@ -423,8 +423,9 @@
     "sslEncrypted": "256-Bit SSL Encrypted",
     "pageTitle": "Course Enrolment Application",
     "step1Title": "Attendee Details",
-    "step2Title": "Regulatory Declaration",
-    "step3Title": "Payment & Submit",
+    "step2Title": "Select Schedule",
+    "step3Title": "Regulatory Declaration",
+    "step4Title": "Payment & Submit",
     "formLabels": {
       "enrollmentType": "Enrollment Type",
       "individual": "Individual",
@@ -448,12 +449,19 @@
       "idDocType": "Identity Document Type",
       "hkid": "HKID",
       "passport": "Passport",
+      "permit": "Permit (通行證)",
+      "otherId": "Other ID Document",
       "hkidPrefix": "HKID Number",
       "hkidPrefixPlaceholder": "e.g. A123456",
       "hkidCheckDigit": "Check Digit",
       "hkidCheckDigitHint": "Last digit in parentheses, e.g. (7)",
       "passportNumber": "Passport Number",
       "passportPlaceholder": "e.g. AB123456",
+      "permitNumber": "Permit Number",
+      "permitPlaceholder": "e.g. AB123456",
+      "otherIdNumber": "Other ID Document Number",
+      "otherIdPlaceholder": "e.g. Document type & number",
+      "otherPrefix": "Others: ",
       "groupMembers": "Group Members",
       "addMember": "Add Member",
       "noMembers": "No additional members added yet. Click \"Add Member\" to add group attendees.",
@@ -470,9 +478,20 @@
       "invalidHkidPrefix": "HKID must start with 1–2 uppercase letters followed by 6 digits (e.g. A123456).",
       "invalidHkidCheckDigit": "Check digit must be a single digit or 'A'.",
       "duplicateWarning": "This identity document has already been registered for this course.",
-      "invalidPassport": "Please enter a valid passport number."
+      "invalidPassport": "Please enter a valid passport number.",
+      "invalidPermit": "Please enter a valid permit number."
     },
     "step2": {
+      "title": "Select Schedule",
+      "subtitle": "Choose your preferred class sessions",
+      "selectAtLeastOne": "Please select at least one session to continue.",
+      "allSessionsSelected": "You have selected all sessions! A 10% bulk discount applies.",
+      "sessionsSelected": "sessions selected",
+      "noSessions": "No available sessions at this time.",
+      "backButton": "Back",
+      "proceedButton": "Proceed to Declaration"
+    },
+    "step3": {
       "title": "Compliance & Eligibility Declaration",
       "cpdNoticeTitle": "CPD Filing Requirement Notice",
       "cpdNoticeText": "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
@@ -483,7 +502,7 @@
       "backButton": "Back",
       "proceedButton": "Proceed to Payment"
     },
-    "step3": {
+    "step4": {
       "title": "Select Payment Method",
       "creditCard": "Credit Card (Visa / Mastercard)",
       "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
@@ -499,6 +518,9 @@
       "seatsAvailable": "Seats Available:",
       "registrants": "Registrants:",
       "totalFee": "Total Fee:",
+      "subtotal": "Subtotal:",
+      "discount": "Bulk Discount (10%):",
+      "sessionsLabel": "Sessions:",
       "invoiceNotice": "Official Tax Invoice & Attendance Certificate issued immediately upon course completion."
     },
     "errors": {
@@ -507,6 +529,7 @@
       "alreadyEnrolled": "You are already enrolled in this course. Duplicate enrollments are not allowed."
     },
     "navigation": {
+      "proceedToSchedule": "Proceed to Schedule",
       "proceedToDeclaration": "Proceed to Declaration",
       "proceedToPayment": "Proceed to Payment"
     }

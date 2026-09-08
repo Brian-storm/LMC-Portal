@@ -420,8 +420,9 @@
     "sslEncrypted": "256 位元 SSL 加密传输",
     "pageTitle": "课程报名申请",
     "step1Title": "参加者资料",
-    "step2Title": "合规声明",
-    "step3Title": "付款及递交",
+    "step2Title": "选择上课时间",
+    "step3Title": "合规声明",
+    "step4Title": "付款及递交",
     "formLabels": {
       "enrollmentType": "报名类型",
       "individual": "个人报名",
@@ -445,12 +446,19 @@
       "idDocType": "身份证明文件类型",
       "hkid": "香港身份证",
       "passport": "护照",
+      "permit": "通行证",
+      "otherId": "其他身份证明文件",
       "hkidPrefix": "香港身份证号码",
       "hkidPrefixPlaceholder": "例如：A123456",
       "hkidCheckDigit": "核对数字",
       "hkidCheckDigitHint": "括号内的最后数字，例如 (7)",
       "passportNumber": "护照号码",
       "passportPlaceholder": "例如：AB123456",
+      "permitNumber": "通行证号码",
+      "permitPlaceholder": "例如：AB123456",
+      "otherIdNumber": "其他身份证明文件号码",
+      "otherIdPlaceholder": "例如：文件类型及号码",
+      "otherPrefix": "Others：",
       "groupMembers": "团体成员",
       "addMember": "新增成员",
       "noMembers": "尚未加入其他成员。点击「新增成员」以加入团体参加者。",
@@ -467,9 +475,20 @@
       "invalidHkidPrefix": "香港身份证号码必须为 1–2 个大写英文字母加 6 个数字（例如 A123456）。",
       "invalidHkidCheckDigit": "核对数字必须为一个数字或 'A'。",
       "duplicateWarning": "此身份证明文件已登记此课程。",
-      "invalidPassport": "请输入有效的护照号码。"
+      "invalidPassport": "请输入有效的护照号码。",
+      "invalidPermit": "请输入有效的通行证号码。"
     },
     "step2": {
+      "title": "选择上课时间",
+      "subtitle": "选择您想参加的课堂时段",
+      "selectAtLeastOne": "请选择至少一个时段以继续。",
+      "allSessionsSelected": "您已选择全部时段！可享 10% 批量折扣。",
+      "sessionsSelected": "个时段已选",
+      "noSessions": "目前没有可选的课堂时段。",
+      "backButton": "返回",
+      "proceedButton": "前往声明页"
+    },
+    "step3": {
       "title": "合规及资格声明",
       "cpdNoticeTitle": "CPD 申报规定通知",
       "cpdNoticeText": "出席记录将直接提交至相关认证机构。必须全程出席并通过身份验证方可获得认可 CPD 学时。",
@@ -480,7 +499,7 @@
       "backButton": "返回",
       "proceedButton": "前往付款"
     },
-    "step3": {
+    "step4": {
       "title": "选择付款方式",
       "creditCard": "信用卡 (Visa / Mastercard)",
       "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
@@ -496,6 +515,9 @@
       "seatsAvailable": "剩余名额：",
       "registrants": "参加人数：",
       "totalFee": "总费用：",
+      "subtotal": "小计：",
+      "discount": "批量折扣 (10%)：",
+      "sessionsLabel": "课堂数：",
       "invoiceNotice": "完成课程后将即时发出正式收据及出席证书。"
     },
     "errors": {
@@ -504,6 +526,7 @@
       "alreadyEnrolled": "您已报名此课程，无法重复报名。"
     },
     "navigation": {
+      "proceedToSchedule": "前往选择时间",
       "proceedToDeclaration": "前往声明页",
       "proceedToPayment": "前往付款"
     }

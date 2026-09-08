@@ -15,7 +15,7 @@ const registrantSchema = z.object({
 });
 
 // ── Enrollment request schema ──
-// courseId + scheduleId identify the course and its specific session.
+// courseId + scheduleIds identify the course and its selected sessions.
 // enrollmentType dictates whether this is individual or group registration.
 // For ORGANIZATION enrollment, the registrants array is required (.refine below).
 // isThirdPartyPay + payerFullName allow a third party to pay on behalf of the enrollee.
@@ -23,7 +23,7 @@ const registrantSchema = z.object({
 export const enrollSchema = z
   .object({
     courseId: z.string().min(1, "courseId is required"),
-    scheduleId: z.string().min(1, "scheduleId is required"),
+    scheduleIds: z.array(z.string().min(1)).min(1, "At least one scheduleId is required"),
     enrollmentType: enrollmentTypeEnum,
     paymentMethod: paymentMethodEnum,
     registrants: z.array(registrantSchema).optional(),

@@ -13,7 +13,7 @@ import { Prisma } from "@prisma/client";
  *
  * Body:
  *  - courseId          : target course
- *  - scheduleId        : target schedule whose quota is decremented
+ *  - scheduleIds       : array of schedule IDs to enroll in
  *  - enrollmentType    : INDIVIDUAL | ORGANIZATION
  *  - paymentMethod     : FPS | ALIPAY | E_BANKING | CHEQUE | CASH | CORPORATE_INVOICE
  *  - registrants[]     : required for ORGANIZATION (nameZh, nameEn, email, idDocNumber)
@@ -41,8 +41,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { courseId, scheduleId, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo, idDocNumber } =
+    const { courseId, scheduleIds, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo, idDocNumber } =
       parsed.data;
+    // Note: full multi-schedule enrollment not yet implemented in the API.
+    // Currently only the first schedule is used for quota check and decrement.
+    const scheduleId = scheduleIds?.[0];
 
     // 1: Resolve the user — from authenticated session or guest info
     let userId: string;
