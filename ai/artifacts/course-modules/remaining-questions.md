@@ -1,4 +1,4 @@
-# Course Modules — Remaining Questions (Skipped Cards)
+# Course Modules — Remaining Questions (Blocked Cards)
 
 Cards below need your input before implementation. They are set to `blocked` in the kanban board.
 
@@ -66,10 +66,7 @@ Cards below need your input before implementation. They are set to `blocked` in 
 - Does `Registrant` model also need `idDocType` field?
 - Should guest users have it too?
 
-## EN-009 — Multi-Schedule API
-
-- If one selected schedule has insufficient quota: reject all or accept partial?
-
 ## EN-015 — E2E Integration
 
 - Deploy to staging for manual testing?
+- After CD-012 is resolved, need to verify: idDocType persistence, multi-schedule enrollment flow, discount calculation
