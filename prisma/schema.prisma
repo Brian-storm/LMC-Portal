@@ -161,6 +161,7 @@ model Schedule {
   isActive       Boolean @default(true)
 
   course         Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  registrants    RegistrantSchedule[]
 
   @@map("schedules")
 }
@@ -209,9 +210,21 @@ model Registrant {
 
   course          Course         @relation(fields: [courseId], references: [id])
   user            User           @relation(fields: [userId], references: [id])
+  schedules       RegistrantSchedule[]
 
   @@unique([courseId, userId])
   @@map("registrants")
+}
+
+model RegistrantSchedule {
+  registrantId String
+  scheduleId   String
+  // TODO: add attendanceStatus (ATTENDED/ABSENT/PENDING) if needed
+  registrant   Registrant @relation(fields: [registrantId], references: [id], onDelete: Cascade)
+  schedule     Schedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@id([registrantId, scheduleId])
+  @@map("registrant_schedules")
 }
 
 model Admin {
