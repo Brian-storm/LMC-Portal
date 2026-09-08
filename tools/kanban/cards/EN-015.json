@@ -1,0 +1,57 @@
+{
+  "id": "EN-015",
+  "title": "端到端報名流程整合驗證",
+  "content": "將所有報名流程改動整合驗證：\n1. Wizard Step 1: 四種身份證明類型 + 團體成員同步\n2. Wizard Step 2 (new): 時段選擇（checkbox 卡片列表）\n3. Wizard Step 3: 原 Step 2（法規宣告）\n4. Wizard Step 4: 原 Step 3（付款 + 提交），含批量折扣\n5. API 提交: scheduleIds + idDocType + idDocNumber\n6. 成功後 redirect 到 confirmation page\n\n驗證項目：\n- 新 UI 所有步驟可視化完成\n- 提交 payload 包含正確欄位\n- API 回傳 201 + RegistrantSchedule 建立\n- 折扣計算正確\n\n[待確認] 完成整合後是否需要部署到 staging 做人工測試？",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "dependsOn": ["EN-009", "EN-010", "EN-011", "EN-012", "EN-013", "EN-014"],
+  "order": 8,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/enrollment/EnrollmentWizard.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Full 4-step wizard flow works end to end",
+    "Schedule selection and discount appear correctly",
+    "Identity document 4-type UI functional",
+    "API receives correct payload and returns 201",
+    "Confirmation page loads after successful submit"
+  ],
+  "files": [],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && manual full enrollment flow from course detail → submit → confirmation"
+}

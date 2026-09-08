@@ -1,0 +1,58 @@
+{
+  "id": "EN-014",
+  "title": "更新 enroll Zod schema 支援新身份證明類型",
+  "content": "POST /api/enroll 的 Zod 驗證需配合 idDocType 變更。\n\n變更範圍（src/lib/validation/enroll.ts）：\n1. idDocType 改為 enum: HKID | PASSPORT | PERMIT | OTHER\n2. idDocNumber 驗證邏輯依 idDocType 分支：\n   - HKID: prefix + check digit 格式（現有規則）\n   - PASSPORT: alphanumeric（現有規則）\n   - PERMIT: 自由文字，最少 4 字元\n   - OTHER: 開頭須為 \"Others: \" 後接自由文字\n3. 更新 enrollSchema.refine 中對 registrant members 的 idDocNumber 檢查\n\n[待確認] PERMIT 格式驗證規則（例：8-9 字元，包含字母數字）？OTHER 是否強制 \"Others:\" prefix？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "報名與結帳",
+  "userStory": "報名 API",
+  "dependsOn": ["CD-012"],
+  "order": 7,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/lib/validation/enroll.ts", "src/app/api/enroll/route.ts"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "enrollSchema accepts idDocType: HKID | PASSPORT | PERMIT | OTHER",
+    "idDocNumber validation branches per idDocType",
+    "Empty idDocNumber returns validation error",
+    "npm run typecheck passes"
+  ],
+  "files": [
+    "src/lib/validation/enroll.ts"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && curl POST /api/enroll with each idDocType variant → appropriate 200/400"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "CD-012",
+  "title": "新增身份證明文件類型列舉及資料庫欄位",
+  "content": "目前只支援 HKID 與 Passport。需新增 PERMIT（通行證）與 OTHER（其他身份證明文件）選項。\n\n資料庫變更：\n1. 新增 enum IdDocType { HKID, PASSPORT, PERMIT, OTHER }\n2. User 模型：idDocNumber 保留，新增 idDocType (IdDocType @default(HKID))\n3. 若 Registrant 需要記錄 idDocType，也一併新增（目前只有 guest 流程用到）\n4. 執行 migration\n\n[待確認] Registrant 模型是否也要存 idDocType？Submission payload 中 userId 對應的 guest user 是否需要？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 12,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "IdDocType enum has 4 values: HKID, PASSPORT, PERMIT, OTHER",
+    "User model has idDocType field",
+    "Migration runs successfully",
+    "npm run typecheck passes"
+  ],
+  "files": [
+    "prisma/schema.prisma"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name add_id_doc_type_enum && npm run typecheck"
+}
