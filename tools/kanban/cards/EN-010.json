@@ -2,11 +2,11 @@
   "id": "EN-010",
   "title": "在 EnrollmentWizard 中插入時段選擇步驟（Step 2）",
   "content": "將 EnrollmentWizard 從 3 步驟改為 4 步驟，插入時段選擇作為新的 Step 2。\n\n變更範圍：\n1. step 狀態由 1|2|3 改為 1|2|3|4\n2. 新增 selectedScheduleIds: string[] 狀態\n3. 新的 Step 2 UI：顯示 course.schedules 列表，每個時段為可選取卡片\n4. 每個時段卡片顯示：日期時間、地點、剩餘名額、主題名稱（搭配 ScheduleTopic）\n5. 至少選一個時段才能繼續\n6. 進度列改為 4 欄\n7. 原有的 Step 2（法規宣告）→ Step 3，Step 3（付款）→ Step 4\n8. 導航按鈕文字更新\n\n[待確認] 時段選擇 UI 細節：單選（radio）或多選（checkbox）？摘要側欄是否即時更新已選時段數與試算費用？",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
-  "owner": "",
-  "agent": "",
-  "approvalRequired": true,
+  "owner": "opencode",
+  "agent": "opencode (deepseek-v4-flash)",
+  "approvalRequired": false,
   "createdAt": "2026-09-09",
   "epic": "報名與結帳",
   "userStory": "個人報名流程",
@@ -39,8 +39,19 @@
   },
   "refs": ["src/components/enrollment/EnrollmentWizard.tsx", "src/dictionaries/en.json", "src/dictionaries/types.ts"],
   "evidence": {
-    "commands": [],
-    "findings": [],
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "TypeScript: no errors",
+      "ESLint: no errors, no warnings",
+      "4-step progress bar implemented",
+      "Step 2 displays all available schedules as selectable cards with checkbox",
+      "At least one schedule required to proceed",
+      "Selected schedules appear in order summary sidebar",
+      "Navigation: Step1→Step2→Step3→Step4, back buttons work"
+    ],
     "residual": ""
   },
   "comments": [],
