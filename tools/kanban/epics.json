@@ -17,7 +17,8 @@
         { "name": "課程 API", "definition": "GET courses (filtered), GET course/[slug] (with relations), POST/PATCH/DELETE (admin)" },
         { "name": "課程目錄頁", "definition": "Fetch courses from API instead of inline mock data, search/filter wired to real data" },
         { "name": "課程詳情頁", "definition": "Fetch single course from API with syllabus, instructors, schedules, reviews, FAQs" },
-        { "name": "課程 syllabus 下載手冊", "definition": "GET /api/courses/[slug]/brochure endpoint that generates downloadable HTML brochure from DB course + syllabus items; wire existing buttons in CourseCard and CourseDetailView" }
+        { "name": "課程 syllabus 下載手冊", "definition": "GET /api/courses/[slug]/brochure endpoint that generates downloadable HTML brochure from DB course + syllabus items; wire existing buttons in CourseCard and CourseDetailView" },
+        { "name": "課程資料結構補強", "definition": "Add new fields to Course model: certificate info, CPD rules, refund policy, pricing model, dual CPD accreditation, language granularity, schedule-topic mapping, post-submission confirmation message" }
       ]
     },
     {

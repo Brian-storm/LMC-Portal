@@ -1,0 +1,59 @@
+{
+  "id": "CD-009",
+  "title": "建立 ScheduleTopic 關聯模型（時段-主題對應）",
+  "content": "course_details.md 第 27-43 行：每個日期對應特定主題 — 例如 09/09 14:15-15:45 = 主題2（乳癌），16:00-17:30 = 主題6（肺癌）。\n\n需新增：\n- model ScheduleTopic { scheduleId, syllabusItemId } — 多對多關聯\n\n[待確認] 目前 Schedule 的 dateAndTime 是單一字串，預計如何表示同一日期的兩個時段（14:15-15:45 和 16:00-17:30）？要拆成兩個 Schedule 紀錄，還是新增時段欄位？這個會影響 ScheduleTopic 的設計。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 9,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/app/api/courses/[slug]/route.ts", "src/lib/validation/course.ts"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "ScheduleTopic model created with scheduleId + syllabusItemId",
+    "Migration successful",
+    "GET /api/courses/[slug] includes topics per schedule via include"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts",
+    "src/app/api/courses/[slug]/route.ts"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name create_schedule_topic && npm run typecheck"
+}

@@ -1,0 +1,62 @@
+{
+  "id": "CD-007",
+  "title": "將單一 language 欄位改為結構式授課語言欄位",
+  "content": "course_details.md 第 204 行：授課語言為粵語，課程筆記採用繁體中文，學員可以用中文或英文問答問題。\n\n需將 language (String?) 拆為：\n- instructionLanguage (String) — 授課語言（粵語）\n- noteLanguage (String) — 教材語言（繁體中文）\n- qaLanguage (String?) — 問答語言（中英文）\n\n[待確認] 是否所有課程共用同一組語言設定，還是需要各自指定？字典檔的 languageValues 是否需要對應更新？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 7,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts", "src/components/courses/CourseDetailView.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Course model replaces language with 3 new fields",
+    "Migration runs, existing language data mapped to instructionLanguage",
+    "CourseDetailView renders all 3 language fields"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name split_language_fields && npm run typecheck && npm run lint"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "CD-002",
+  "title": "新增 CPD 規範文字欄位到 Course 模型",
+  "content": "course_details.md 第 51-84 行：注意事項-1 和注意事項-2，包含 CPD 時數計算原則、遲到/離席扣減規則、HKCAAVQ 要求。\n\n需新增欄位：cpdRulesZh, cpdRulesEn (Text type，儲存完整規範文字)。\n\n[待確認] 要存成單一 Text 欄位還是拆成多個小欄位（cpdLateRule, cpdAbsenceRule 等）？是否每個課程都需自訂規範，或大部分共用？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Course model has cpdRulesZh and cpdRulesEn Text fields",
+    "Migration runs successfully",
+    "API returns the new fields"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name add_cpd_rules && npm run typecheck"
+}

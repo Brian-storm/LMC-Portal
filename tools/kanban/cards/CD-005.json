@@ -1,0 +1,57 @@
+{
+  "id": "CD-005",
+  "title": "新增退款政策欄位到 Course 模型",
+  "content": "course_details.md 第 128-130 行：已支付課程費用不可退還（除非未成功申請或課程取消），名額不可轉讓，不受理課程調換。\n\n需新增欄位：refundPolicyZh, refundPolicyEn (Text)。\n\n[待確認] 此政策文字是課程特有還是統一固定文字？目前 enrollment wizard Step 3 無退款政策顯示，要在哪個步驟呈現（Step 2 宣告區 / Step 3 付款前）？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Course model has refundPolicyZh and refundPolicyEn",
+    "Migration successful"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name add_refund_policy && npm run typecheck"
+}

@@ -1,0 +1,61 @@
+{
+  "id": "EN-011",
+  "title": "在 EnrollmentWizard 實裝 10% 批量折扣邏輯",
+  "content": "若學員選擇全部 6 個時段，總費用享 10% 折扣。\n\n變更範圍：\n1. 計算 totalSessions（從 course.schedules.length 取得）\n2. 比較 selectedScheduleIds.length === totalSessions\n3. 若成立則 applyDiscount = true，折扣 10%\n4. 提交 payload 中加入折扣資訊（可選）\n\n前端僅 EnrollmentWizard.tsx 的費用計算邏輯，無 DB 變更。\n\n[待確認] 折扣是總金額折扣還是每堂折扣？折扣金額是否需要傳到後端 API（註記在 registrant 紀錄上）？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "dependsOn": ["EN-010"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/enrollment/EnrollmentWizard.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Selecting all sessions shows discount line in order summary",
+    "Selecting fewer than all sessions shows no discount",
+    "Correct final total: subtotal - 10% = final",
+    "Discount amount displayed clearly"
+  ],
+  "files": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && select all 6 schedules → see discount appearing in summary"
+}

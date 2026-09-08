@@ -1,0 +1,57 @@
+{
+  "id": "CD-004",
+  "title": "新增報名後確認訊息欄位到 Course 模型",
+  "content": "course_details.md 第 106-110 行：Show this After submission — 5 工作天內寄送電子收據、課程簡介連結、客服 email、WhatsApp 聯絡。\n\n需新增欄位：confirmationMessageZh, confirmationMessageEn (Text)。\n\n[待確認] 此訊息是課程特有還是全部課程共用？目前 PaymentSlipUploader 有部分硬編碼連結，是否要統一改從 DB 讀取？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Course model has confirmationMessageZh and confirmationMessageEn",
+    "Migration successful"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name add_confirmation_message && npm run typecheck"
+}

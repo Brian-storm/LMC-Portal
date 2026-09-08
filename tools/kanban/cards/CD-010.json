@@ -1,0 +1,59 @@
+{
+  "id": "CD-010",
+  "title": "更新 Schedule 模型支援同日多時段結構",
+  "content": "course_details.md 顯示每個日期有兩個時段（14:15-15:45 和 16:00-17:30）。當前 dateAndTime 為單一字串。\n\n選項：\nA) 每個時段存為獨立 Schedule 紀錄（簡單，不需改 schema，但同一日期會有多筆）\nB) 將 dateAndTime 拆分為 date + timeStart + timeEnd 三個欄位\n\n[待確認] 請選擇方案 A 或 B。若選 B，需提供 migration 腳本轉換現有資料。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 10,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts", "src/components/courses/CourseDetailView.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Schedule model updated to support multi-slot per date",
+    "Existing data migrated or handled",
+    "CourseDetailView renders correctly with new structure"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts",
+    "src/components/courses/CourseDetailView.tsx"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name update_schedule_structure && npm run typecheck"
+}

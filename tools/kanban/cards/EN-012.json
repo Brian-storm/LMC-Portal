@@ -1,0 +1,58 @@
+{
+  "id": "EN-012",
+  "title": "更新 EnrollmentWizard 摘要側欄支援多時段與折扣",
+  "content": "目前摘要側欄只顯示單一 schedule。改為：\n1. 列出所有已選時段（日期時間 + 地點 + 主題）\n2. 顯示 registrants 數 × 已選時段數\n3. subtotal = unitPrice × selectedSessions × registrants\n4. 若折扣生效，顯示 discount 扣減行\n5. 最終總額顯示\n\n合併到 EN-010 和 EN-011 實作，此卡為獨立驗證卡確保摘要正確。\n\n[待確認] 摘要側欄版面有限，已選時段過多時是否要折疊/展開？費用明細格式偏好？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "dependsOn": ["EN-010", "EN-011"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["src/components/enrollment/EnrollmentWizard.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Summary shows all selected schedules (not just first)",
+    "Subtotal = unitPrice × selectedSessions × registrants",
+    "Discount line visible when applicable",
+    "Final total is correct"
+  ],
+  "files": [
+    "src/components/enrollment/EnrollmentWizard.tsx"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && visual inspection of summary sidebar across all steps"
+}

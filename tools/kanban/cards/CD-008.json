@@ -1,0 +1,58 @@
+{
+  "id": "CD-008",
+  "title": "新增 unitPrice 欄位並更新費用計算邏輯",
+  "content": "course_details.md 第 122-124 行：HK$250/1.5 課時共6個主題課程，總共 HK$1,500。\n\n需新增欄位：\n- unitPrice (Decimal) — 每堂課單價（HK$250）\n- 保留 price 為總價（HK$1,500），或改為由 unitPrice × totalSessions 計算\n\n[待確認] price 是否保留為人工輸入的總價欄位，還是設為 computed 由 unitPrice 推算？totalSessions 從 schedules 數量取得還是另設欄位？",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-09",
+  "epic": "課程管理",
+  "userStory": "課程資料結構補強",
+  "dependsOn": ["CD-001"],
+  "order": 8,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": ["prisma/schema.prisma", "src/lib/validation/course.ts", "src/components/enrollment/EnrollmentWizard.tsx"],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Course model has unitPrice Decimal field",
+    "price calculation logic updated in wizard to unitPrice × selectedSessions × registrants",
+    "API returns unitPrice"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "src/lib/validation/course.ts"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "npx prisma migrate dev --name add_unit_price && npm run typecheck"
+}
