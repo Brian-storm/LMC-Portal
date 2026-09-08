@@ -4,27 +4,71 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Cookie, X, Check, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { CookieConsentDict } from "@/dictionaries/types";
 
 interface CookieConsentProps {
+  dict: CookieConsentDict;
   locale?: string;
 }
 
-export function CookieConsent({ locale = "en" }: CookieConsentProps) {
+// Helper: set a real document.cookie with name, value, and expiry in days.
+const setCookie = (name: string, value: string, days: number) => {
+  let expires = "";
+  if (days > 0) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  // When days === 0, the cookie expires immediately (effective deletion).
+  // For days > 0, set a normal cookie with the given lifespan.
+  // For days < 0, we delete the cookie by setting max-age=0.
+  const maxAge = days < 0 ? 0 : days * 86400;
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; SameSite=Lax${expires}`;
+};
+
+// Apply the consent decision as real cookies so server / analytics vendors
+// can read the user's choice.
+const applyConsentCookies = (data: {
+  necessary: boolean;
+  analytics: boolean;
+  marketing: boolean;
+}) => {
+  const YEAR = 365;
+  // Necessary cookies are always applied (portal auth, locale, etc.).
+  setCookie("lmc_cookie_necessary", "accepted", YEAR);
+  // Analytics – if accepted, set with long expiry; if rejected, delete.
+  if (data.analytics) {
+    setCookie("lmc_cookie_analytics", "accepted", YEAR);
+  } else {
+    setCookie("lmc_cookie_analytics", "rejected", -1);
+  }
+  // Marketing – same approach.
+  if (data.marketing) {
+    setCookie("lmc_cookie_marketing", "accepted", YEAR);
+  } else {
+    setCookie("lmc_cookie_marketing", "rejected", -1);
+  }
+  // Persist the full consent record in localStorage so the banner does not
+  // reappear on subsequent visits.
+  localStorage.setItem("lmc_cookie_consent", JSON.stringify(data));
+};
+
+export function CookieConsent({ dict, locale = "en" }: CookieConsentProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
 
-  // Preference Toggles
+  // Preference toggles (necessary is always true and locked).
   const [preferences, setPreferences] = useState({
-    necessary: true, // Always required
+    necessary: true,
     analytics: true,
     marketing: false,
   });
 
   useEffect(() => {
-    // Check if user has already saved cookie preferences
+    // Check if user has already saved cookie preferences.
     const consent = localStorage.getItem("lmc_cookie_consent");
     if (!consent) {
-      // Delay display slightly for smoother page load experience
+      // Delay display slightly for smoother page load experience.
       const timer = setTimeout(() => setIsVisible(true), 1200);
       return () => clearTimeout(timer);
     }
@@ -32,18 +76,18 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
 
   const handleAcceptAll = () => {
     const data = { necessary: true, analytics: true, marketing: true };
-    localStorage.setItem("lmc_cookie_consent", JSON.stringify(data));
+    applyConsentCookies(data);
     setIsVisible(false);
   };
 
   const handleSavePreferences = () => {
-    localStorage.setItem("lmc_cookie_consent", JSON.stringify(preferences));
+    applyConsentCookies(preferences);
     setIsVisible(false);
   };
 
   const handleDecline = () => {
     const data = { necessary: true, analytics: false, marketing: false };
-    localStorage.setItem("lmc_cookie_consent", JSON.stringify(data));
+    applyConsentCookies(data);
     setIsVisible(false);
   };
 
@@ -63,12 +107,12 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-2 text-emerald-900 font-serif font-bold text-base">
               <Cookie className="w-5 h-5 text-emerald-800 shrink-0" />
-              <span>Cookie Preferences</span>
+              <span>{dict.title}</span>
             </div>
             <button
               onClick={handleDecline}
               className="text-slate-400 hover:text-slate-600 transition-colors p-1"
-              aria-label="Close dialogue"
+              aria-label={dict.closeDialog}
             >
               <X className="w-4 h-4" />
             </button>
@@ -78,16 +122,14 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
           {!showPreferences ? (
             <>
               <p className="text-slate-600 leading-relaxed text-xs mb-4">
-                We use cookies and analytical tools to ensure portal
-                functionality, deliver accredited training records, and enhance
-                your user experience. Read our{" "}
+                {dict.description}{" "}
                 <Link
                   href={`/${locale}/privacy`}
                   className="text-emerald-900 underline font-medium hover:text-emerald-700"
                 >
-                  Privacy Policy
+                  {dict.privacyPolicy}
                 </Link>{" "}
-                for full details.
+                {dict.descriptionSuffix}
               </p>
 
               {/* Action Buttons */}
@@ -98,20 +140,20 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                     className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
                   >
                     <Check className="w-3.5 h-3.5" />
-                    Accept All
+                    {dict.acceptAll}
                   </button>
                   <button
                     onClick={handleDecline}
                     className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-xs text-xs border border-slate-200 transition-colors"
                   >
-                    Essential Only
+                    {dict.essentialOnly}
                   </button>
                 </div>
                 <button
                   onClick={() => setShowPreferences(true)}
                   className="w-full text-center text-slate-500 hover:text-emerald-900 text-[11px] font-medium py-1 transition-colors underline"
                 >
-                  Customize Preferences
+                  {dict.customize}
                 </button>
               </div>
             </>
@@ -124,10 +166,10 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                   <div>
                     <p className="font-semibold text-slate-900 flex items-center gap-1">
                       <Shield className="w-3 h-3 text-slate-500" />
-                      Essential Cookies
+                      {dict.essentialTitle}
                     </p>
                     <p className="text-[11px] text-slate-500">
-                      Required for portal auth and security.
+                      {dict.essentialDescription}
                     </p>
                   </div>
                   <input
@@ -142,10 +184,10 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                 <div className="flex items-center justify-between pt-2">
                   <div>
                     <p className="font-semibold text-slate-900">
-                      Analytics & Usage
+                      {dict.analyticsTitle}
                     </p>
                     <p className="text-[11px] text-slate-500">
-                      Anonymous site usage optimization.
+                      {dict.analyticsDescription}
                     </p>
                   </div>
                   <input
@@ -168,13 +210,13 @@ export function CookieConsent({ locale = "en" }: CookieConsentProps) {
                   onClick={handleSavePreferences}
                   className="w-full bg-emerald-900 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-xs text-xs transition-colors"
                 >
-                  Save Choices
+                  {dict.saveChoices}
                 </button>
                 <button
                   onClick={() => setShowPreferences(false)}
                   className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-xs text-xs border border-slate-200 transition-colors"
                 >
-                  Back
+                  {dict.back}
                 </button>
               </div>
             </div>

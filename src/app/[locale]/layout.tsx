@@ -27,7 +27,7 @@ export default async function LocaleLayout({
       <main className="flex-1">{children}</main>
       
       {/* Cookie Consent Dialogue*/}
-      <CookieConsent locale={locale} />
+      <CookieConsent dict={dict.cookieConsent} locale={locale} />
 
       <Footer dict={dict.footer} currentLocale={locale} />
     </div>

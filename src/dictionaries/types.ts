@@ -5,6 +5,7 @@ export type Dictionary = typeof en;
 
 // Slice types for individual components
 export type NavDict = Dictionary["nav"];
+export type CookieConsentDict = Dictionary["cookieConsent"];
 export type AccessibilityDict = Dictionary["accessibility"];
 export type BreadcrumbsDict = Dictionary["breadcrumbs"];
 export type HeroCarouselDict = Dictionary["heroCarousel"];

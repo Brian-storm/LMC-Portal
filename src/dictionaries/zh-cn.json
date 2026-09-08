@@ -1,4 +1,20 @@
 {
+  "cookieConsent": {
+    "title": "Cookie 偏好设置",
+    "description": "我们使用 Cookie 与分析工具以确保专区功能正常、交付认可培训记录，并提升您的用户体验。详情请参阅",
+    "privacyPolicy": "隐私政策",
+    "descriptionSuffix": "。",
+    "acceptAll": "全部接受",
+    "essentialOnly": "仅必要",
+    "customize": "自定义偏好设置",
+    "essentialTitle": "必要 Cookie",
+    "essentialDescription": "专区验证与安全所需。",
+    "analyticsTitle": "分析与使用",
+    "analyticsDescription": "匿名网站使用优化。",
+    "saveChoices": "保存选择",
+    "back": "返回",
+    "closeDialog": "关闭对话框"
+  },
   "nav": {
     "brandSubtitle": "管理与专业持续进修培训",
     "home": "首页",

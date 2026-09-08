@@ -1,4 +1,20 @@
 {
+  "cookieConsent": {
+    "title": "Cookie Preferences",
+    "description": "We use cookies and analytical tools to ensure portal functionality, deliver accredited training records, and enhance your user experience. Read our",
+    "privacyPolicy": "Privacy Policy",
+    "descriptionSuffix": "for full details.",
+    "acceptAll": "Accept All",
+    "essentialOnly": "Essential Only",
+    "customize": "Customize Preferences",
+    "essentialTitle": "Essential Cookies",
+    "essentialDescription": "Required for portal auth and security.",
+    "analyticsTitle": "Analytics & Usage",
+    "analyticsDescription": "Anonymous site usage optimization.",
+    "saveChoices": "Save Choices",
+    "back": "Back",
+    "closeDialog": "Close dialogue"
+  },
   "nav": {
     "brandSubtitle": "Management & CPD Training",
     "home": "Home",

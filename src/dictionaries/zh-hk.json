@@ -1,4 +1,20 @@
 {
+  "cookieConsent": {
+    "title": "Cookie 偏好設定",
+    "description": "我們使用 Cookie 與分析工具以確保專區功能正常、交付認可培訓記錄，並提升您的用戶體驗。詳情請參閱",
+    "privacyPolicy": "私隱政策",
+    "descriptionSuffix": "。",
+    "acceptAll": "全部接受",
+    "essentialOnly": "僅必要",
+    "customize": "自訂偏好設定",
+    "essentialTitle": "必要 Cookie",
+    "essentialDescription": "專區驗證與安全所需。",
+    "analyticsTitle": "分析與使用",
+    "analyticsDescription": "匿名網站使用優化。",
+    "saveChoices": "儲存選擇",
+    "back": "返回",
+    "closeDialog": "關閉對話框"
+  },
   "nav": {
     "brandSubtitle": "管理與專業持續進修培訓",
     "home": "首頁",
