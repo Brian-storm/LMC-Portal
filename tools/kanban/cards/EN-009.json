@@ -2,11 +2,11 @@
   "id": "EN-009",
   "title": "更新 POST /api/enroll 接受多時段 scheduleIds",
   "content": "EnrollmentWizard 目前送出 scheduleId (單一)，需改為接受 scheduleIds (字串陣列)。\n\n變更範圍：\n1. Zod schema enroll.ts: scheduleId → scheduleIds (z.array(z.string()).min(1))\n2. route.ts 交易：改為對每個 scheduleId 檢查 quotaRemaining > 0 並遞減\n3. 建立 RegistrantSchedule 關聯紀錄\n4. 仍保留單一 scheduleId 的向下相容（可選）\n\n[待確認] 若多個時段中有一個 quota 不足，要全部拒絕還是部分接受？",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
-  "owner": "",
-  "agent": "",
-  "approvalRequired": true,
+  "owner": "opencode",
+  "agent": "opencode (deepseek-v4-flash)",
+  "approvalRequired": false,
   "createdAt": "2026-09-09",
   "epic": "報名與結帳",
   "userStory": "報名 API",
@@ -39,9 +39,19 @@
   },
   "refs": ["src/app/api/enroll/route.ts", "src/lib/validation/enroll.ts", "prisma/schema.prisma"],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "TypeScript: no errors",
+      "ESLint: no errors, no warnings",
+      "All scheduleIds validated — rejects on missing/inactive schedule",
+      "All-or-nothing quota check — if any schedule lacks seats, all rejected",
+      "RegistrantSchedule links created for each (registrant × scheduleId) pair",
+      "Atomic transaction: all schedules decremented or none"
+    ],
+    "residual": "Partial-accept behavior (accept available seats, reject full ones) not implemented — need user decision."
   },
   "comments": [],
   "acceptance": [

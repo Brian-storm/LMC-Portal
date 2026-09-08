@@ -43,9 +43,6 @@ export async function POST(request: NextRequest) {
 
     const { courseId, scheduleIds, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo, idDocNumber } =
       parsed.data;
-    // Note: full multi-schedule enrollment not yet implemented in the API.
-    // Currently only the first schedule is used for quota check and decrement.
-    const scheduleId = scheduleIds?.[0];
 
     // 1: Resolve the user — from authenticated session or guest info
     let userId: string;
@@ -128,55 +125,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. Validate schedule exists for this course
-    const schedule = await prisma.schedule.findFirst({
-      where: { id: scheduleId, courseId, isActive: true },
+    // 2: Validate ALL selected schedules belong to this course and are active
+    const schedules = await prisma.schedule.findMany({
+      where: { id: { in: scheduleIds }, courseId, isActive: true },
     });
 
-    if (!schedule) {
-      return NextResponse.json({ error: "Schedule not found" }, { status: 404 });
+    if (schedules.length !== scheduleIds.length) {
+      return NextResponse.json(
+        { error: "One or more schedules not found or inactive" },
+        { status: 404 },
+      );
     }
 
     const headCount = enrollmentType === "ORGANIZATION" ? (registrants?.length ?? 1) : 1;
 
-    if (schedule.quotaRemaining < headCount) {
+    // Check ALL schedules have sufficient quota (all-or-nothing)
+    const lowQuota = schedules.find((s) => s.quotaRemaining < headCount);
+    if (lowQuota) {
       return NextResponse.json(
-        { error: "No remaining seats for this schedule" },
+        { error: `Schedule ${lowQuota.dateAndTime} has insufficient seats` },
         { status: 400 },
       );
     }
 
-    // ── 3. Atomic quota decrement + registrant creation ──
-    // Use a single Prisma transaction so that the quota check, decrement,
-    // and registrant INSERT are all-or-nothing. This prevents race conditions
-    // when multiple users submit the enrollment simultaneously.
-    // updateMany with { quotaRemaining: { gte: headCount } } acts as an
-    // optimistic lock — if another request consumed the last seat, count is 0.
-    //
-    // groupId: a shared UUID for ORGANIZATION enrollments linking all members
-    // together; for INDIVIDUAL the groupId is null (single registrant).
+    // ── 3. Atomic quota decrement + registrant + schedule links creation ──
     const groupId = `grp_${crypto.randomUUID()}`;
 
     try {
       const result = await prisma.$transaction(async (tx) => {
-        const updated = await tx.schedule.updateMany({
-          where: { id: scheduleId, courseId, quotaRemaining: { gte: headCount } },
+        // Decrement quota for ALL selected schedules atomically
+        const updatedCount = await tx.schedule.updateMany({
+          where: { id: { in: scheduleIds }, courseId, quotaRemaining: { gte: headCount } },
           data: { quotaRemaining: { decrement: headCount } },
         });
 
-        if (updated.count === 0) {
+        if (updatedCount.count !== scheduleIds.length) {
           throw new Error("SCHEDULE_FULL");
         }
 
-        // Build the registrant rows: for ORGANIZATION, create one row per
-        // group member (all sharing the same groupId); for INDIVIDUAL, a
-        // single row with groupId = null.
         const isGroupEnrollment = registrants && registrants.length > 0;
-
         let registrantId: string | null = null;
+        let createdRegistrants: { id: string }[] = [];
 
         if (isGroupEnrollment) {
-          // ORGANIZATION: use createMany + findFirst by groupId
+          // ORGANIZATION: create one registrant per group member
           const rows = registrants.map(() => ({
             courseId,
             userId,
@@ -190,15 +182,15 @@ export async function POST(request: NextRequest) {
 
           await tx.registrant.createMany({ data: rows });
 
-          const created = await tx.registrant.findFirst({
+          createdRegistrants = await tx.registrant.findMany({
             where: { groupId, courseId },
             orderBy: { submittedAt: "asc" },
             select: { id: true },
           });
 
-          registrantId = created?.id ?? null;
+          registrantId = createdRegistrants[0]?.id ?? null;
         } else {
-          // INDIVIDUAL: use create to get the ID directly
+          // INDIVIDUAL: create single registrant
           const created = await tx.registrant.create({
             data: {
               courseId,
@@ -213,8 +205,19 @@ export async function POST(request: NextRequest) {
             select: { id: true },
           });
 
+          createdRegistrants = [created];
           registrantId = created.id;
         }
+
+        // Create RegistrantSchedule links: each registrant × each schedule
+        const linkData = createdRegistrants.flatMap((reg) =>
+          scheduleIds.map((sId) => ({
+            registrantId: reg.id,
+            scheduleId: sId,
+          })),
+        );
+
+        await tx.registrantSchedule.createMany({ data: linkData });
 
         return { registrantId };
       });
@@ -226,7 +229,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       if (error instanceof Error && error.message === "SCHEDULE_FULL") {
         return NextResponse.json(
-          { error: "No remaining seats for this schedule" },
+          { error: "One or more selected schedules have no remaining seats" },
           { status: 400 },
         );
       }
