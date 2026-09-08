@@ -5,13 +5,11 @@ import { prisma } from "@/lib/prisma";
 
 import { renderReceiptPdf } from "@/lib/receipt/render";
 import { TEXTS } from "@/lib/receipt/texts";
-import { lock, receiptPassword } from "@/lib/receipt/encrypt";
 
 /**
  * POST /api/download/receipt
  *
- * Generates a receipt PDF on-the-fly from DB data and returns it as a download,
- * password-protected with the registrant's idDocNumber.
+ * Generates a receipt PDF on-the-fly from DB data and returns it as a download.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -50,15 +48,12 @@ export async function POST(request: NextRequest) {
       paymentDate,
     });
 
-    // Password-protect with the first 6 digits of the registrant's idDocNumber
-    const protectedPdfBuffer = Buffer.from(await lock(pdfBuffer, receiptPassword(registrant.user.idDocNumber)));
-
-    return new NextResponse(new Uint8Array(protectedPdfBuffer), {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${receiptNumber}.pdf"`,
-        "Content-Length": protectedPdfBuffer.length.toString(),
+        "Content-Length": pdfBuffer.length.toString(),
       },
     });
   } catch (error) {
