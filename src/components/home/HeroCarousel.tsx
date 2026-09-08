@@ -85,7 +85,7 @@ export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
             style={{ backgroundImage: `url('${slide.image}')` }}
           >
             {/* Preserved dark blue image overlay */}
-            <div className="absolute inset-0 bg-emerald-950/60 backdrop-brightness-90" />
+            <div className="absolute inset-0 bg-emerald-950/30 backdrop-brightness-100" />
           </div>
 
           <div className="relative z-20 container mx-auto px-4 max-w-7xl h-full flex flex-col justify-center items-start">

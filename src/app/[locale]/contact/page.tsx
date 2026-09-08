@@ -129,6 +129,17 @@ export default async function ContactPage({ params }: PageProps) {
                     {t.whatsapp}
                   </span>
                 </a>
+
+                {/* WeChat */}
+                <span className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-primary transition-colors cursor-default">
+                  <MessageCircle className="w-4 h-4 text-slate-500 shrink-0" />
+                  <span>
+                    <strong className="font-semibold text-slate-900">
+                      {t.wechatLabel}:
+                    </strong>{" "}
+                    {t.wechat}
+                  </span>
+                </span>
               </div>
 
               {/* Office Hours */}
@@ -142,9 +153,6 @@ export default async function ContactPage({ params }: PageProps) {
                 </p>
                 <p className="text-xs font-sans text-slate-600">
                   {t.officeHoursSat}
-                </p>
-                <p className="text-xs font-sans text-slate-500">
-                  {t.officeHoursClosed}
                 </p>
               </div>
             </div>

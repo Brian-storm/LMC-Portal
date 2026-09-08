@@ -348,16 +348,17 @@
     "addressLine2": "New Mandarin Plaza",
     "addressLine3": "Tsim Sha Tsui East, Kowloon, Hong Kong",
     "phone": "+852 2151 8022",
-    "email": "info@LMCconsulting.hk",
-    "whatsapp": "+852 2151 8022",
+    "email": "lmcconsultancy2025@gmail.com",
+    "whatsapp": "+852 8404 5483",
     "officeHours": "Office Hours",
     "officeHoursMonFri": "Monday – Friday: 9:00 AM – 6:00 PM",
-    "officeHoursSat": "Saturday: 9:00 AM – 1:00 PM",
-    "officeHoursClosed": "Sunday & Public Holidays: Closed",
+    "officeHoursSat": "Saturday – Sunday & Public Holidays: Closed",
     "getInTouch": "Get in Touch",
     "phoneLabel": "Phone",
     "emailLabel": "Email",
-    "whatsappLabel": "WhatsApp"
+    "whatsappLabel": "WhatsApp",
+    "wechat": "(86) 19519053480",
+    "wechatLabel": "WeChat"
   },
   "loginPage": {
     "pageTitle": "CPD Portal Access",

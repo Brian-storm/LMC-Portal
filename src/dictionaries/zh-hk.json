@@ -41,7 +41,7 @@
     "terms": "服務條款"
   },
   "heroCarousel": {
-    "badge": "LMC 管理顧問",
+    "badge": "德智管理顧問",
     "slides": [
       {
         "title": "高管培訓與專業諮詢服務",
@@ -345,16 +345,17 @@
     "addressLine2": "新文華中心B座",
     "addressLine3": "10樓1011-1015室",
     "phone": "+852 2151 8022",
-    "email": "info@LMCconsulting.hk",
-    "whatsapp": "+852 2151 8022",
+    "email": "lmcconsultancy2025@gmail.com",
+    "whatsapp": "+852 8404 5483",
     "officeHours": "辦公時間",
     "officeHoursMonFri": "星期一至五：上午9:00 – 下午6:00",
-    "officeHoursSat": "星期六：上午9:00 – 下午1:00",
-    "officeHoursClosed": "星期日及公眾假期：休息",
+    "officeHoursSat": "星期六至日及公眾假期：休息",
     "getInTouch": "聯繫方式",
     "phoneLabel": "電話",
     "emailLabel": "電郵",
-    "whatsappLabel": "WhatsApp"
+    "whatsappLabel": "WhatsApp",
+    "wechat": "(86) 19519053480",
+    "wechatLabel": "WeChat"
   },
   "loginPage": {
     "pageTitle": "CPD 專區登入",

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -602,6 +603,28 @@ export default function AdminEnrolmentsPage() {
               <label className="text-xs font-bold text-slate-700 block">
                 Rejection reason <span className="text-destructive">*</span>
               </label>
+              <div className="flex flex-wrap gap-1.5 pb-2">
+                {["Payment proof is illegible, please re-upload a clear copy.", "Uploaded slip is invalid — please provide the correct payment proof.", "Blurry image — please re-upload a clearer photo/screenshot of the payment slip.", "Incorrect payment amount — please verify the amount and re-upload."].map((reason) => (
+                  <button
+                    key={reason}
+                    type="button"
+                    onClick={() => setRejectReason(reason)}
+                    className={`text-[11px] px-2 py-1 rounded-xs border transition-colors ${
+                      rejectReason === reason
+                        ? "bg-destructive/10 border-destructive text-destructive font-bold"
+                        : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
+                    }`}
+                  >
+                    {reason === "Payment proof is illegible, please re-upload a clear copy."
+                      ? "Illegible"
+                      : reason === "Uploaded slip is invalid — please provide the correct payment proof."
+                        ? "Invalid slip"
+                        : reason === "Blurry image — please re-upload a clearer photo/screenshot of the payment slip."
+                          ? "Blurry image"
+                          : "Incorrect value"}
+                  </button>
+                ))}
+              </div>
               <textarea
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
@@ -642,10 +665,13 @@ export default function AdminEnrolmentsPage() {
           <div className="flex items-center justify-center min-h-[200px] bg-slate-50 border border-slate-200 rounded-xs">
             {previewTarget?.paymentProofUrl ? (
               <div className="text-center space-y-2 p-4">
-                <img
+                <Image
                   src={`/api/upload/s3-proxy?key=${encodeURIComponent(previewTarget.paymentProofUrl)}`}
                   alt="Payment proof"
                   className="max-w-full max-h-[60vh] object-contain border border-slate-200"
+                  width={800}
+                  height={600}
+                  unoptimized
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                     e.currentTarget.nextElementSibling?.classList.remove("hidden");
