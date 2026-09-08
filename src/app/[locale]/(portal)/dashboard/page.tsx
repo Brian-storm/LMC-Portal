@@ -92,7 +92,7 @@ export default function LearnerDashboardPage() {
     <div className="bg-[#f2f6f3] text-slate-900 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Top Governance Utility Banner */}
-        <div className="bg-[#1b4332] text-emerald-100 text-[11px] font-mono px-4 py-2 border-b-2 border-[#2d6a4f] flex flex-col sm:flex-row items-center justify-between gap-2 shadow-xs">
+        <div className="bg-primary-deep text-emerald-100 text-[11px] font-mono px-4 py-2 border-b-2 border-primary-deep/40 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-xs">
           <div className="flex items-center space-x-2">
             <span className="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
             <span className="font-semibold tracking-wider uppercase">
@@ -107,17 +107,17 @@ export default function LearnerDashboardPage() {
         </div>
 
         {/* Header Block */}
-        <header className="bg-white border border-emerald-950/20 p-6 md:p-8 shadow-xs border-t-4 border-t-[#1b4332] flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <header className="bg-white border border-emerald-950/20 p-6 md:p-8 shadow-xs border-t-4 border-t-primary flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-1.5">
-            <div className="flex items-center space-x-2 text-[10px] font-bold tracking-widest text-[#2d6a4f] uppercase">
-              <Building2 className="w-3.5 h-3.5 text-[#1b4332]" />
+            <div className="flex items-center space-x-2 text-[10px] font-bold tracking-widest text-primary/80 uppercase">
+              <Building2 className="w-3.5 h-3.5 text-primary" />
               <span>Learner Portal & License Compliance Log</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1b4332] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary tracking-tight">
               Welcome back, {learner.name}
             </h1>
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 font-mono pt-1">
-              <span className="bg-emerald-50 text-[#1b4332] border border-emerald-200/80 px-2 py-0.5 font-bold">
+              <span className="bg-emerald-50 text-primary border border-emerald-200/80 px-2 py-0.5 font-bold">
                 IA Reg No: {learner.licenseNo}
               </span>
               <span className="text-slate-300">•</span>
@@ -135,7 +135,7 @@ export default function LearnerDashboardPage() {
             href={`/${locale}/courses`}
             className={cn(
               buttonVariants({ variant: "default", size: "default" }),
-              "bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-none text-xs font-bold uppercase tracking-wider px-5 py-2.5 self-start md:self-auto border border-emerald-900 shadow-xs",
+              "bg-primary hover:bg-primary/80 text-primary-foreground rounded-none text-xs font-bold uppercase tracking-wider px-5 py-2.5 self-start md:self-auto border border-emerald-900 shadow-xs",
             )}
           >
             <BookOpen className="w-4 h-4 mr-2" />
@@ -150,12 +150,12 @@ export default function LearnerDashboardPage() {
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-emerald-900/10 pb-3">
                 <div className="flex items-center space-x-2">
-                  <Award className="w-4 h-4 text-[#1b4332]" />
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332]">
+                  <Award className="w-4 h-4 text-primary" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Annual CPD Fulfillment ({learner.cpdCycle})
                   </h2>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#1b4332] bg-emerald-50 border border-emerald-200 px-2.5 py-1">
+                <span className="text-xs font-mono font-bold text-primary bg-emerald-50 border border-emerald-200 px-2.5 py-1">
                   {learner.earnedCpd} / {learner.requiredCpd} Hours
                 </span>
               </div>
@@ -166,13 +166,13 @@ export default function LearnerDashboardPage() {
                   <span className="text-slate-600 font-medium">
                     Progress towards requirement
                   </span>
-                  <span className="font-bold font-mono text-[#1b4332]">
+                  <span className="font-bold font-mono text-primary">
                     {cpdPercentage}%
                   </span>
                 </div>
                 <div className="w-full bg-slate-100 border border-slate-200 h-4 p-0.5 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-[#1b4332] to-[#2d6a4f] h-full transition-all duration-500"
+                    className="bg-gradient-to-r from-primary to-primary/80 h-full transition-all duration-500"
                     style={{ width: `${cpdPercentage}%` }}
                   />
                 </div>
@@ -181,7 +181,7 @@ export default function LearnerDashboardPage() {
 
             <p className="text-xs text-slate-600 leading-relaxed pt-2 border-t border-slate-100">
               Remaining requirement:{" "}
-              <strong className="text-[#1b4332] font-semibold">
+              <strong className="text-primary font-semibold">
                 {(learner.requiredCpd - learner.earnedCpd).toFixed(1)} CPD hours
               </strong>{" "}
               prior to cycle declaration deadline.
@@ -192,8 +192,8 @@ export default function LearnerDashboardPage() {
           <div className="bg-white border border-emerald-950/20 p-5 shadow-xs space-y-3 flex flex-col justify-between">
             <div className="space-y-2">
               <div className="border-b border-emerald-900/10 pb-2 flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-1.5">
-                  <ShieldCheck className="w-4 h-4 text-[#1b4332]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center space-x-1.5">
+                  <ShieldCheck className="w-4 h-4 text-primary" />
                   <span>Mandatory Ethics</span>
                 </span>
                 <span className="text-xs font-mono font-bold text-emerald-900 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
@@ -224,7 +224,7 @@ export default function LearnerDashboardPage() {
         {/* Upcoming Active Enrolments */}
         <section className="bg-white border border-emerald-950/20 p-6 shadow-xs space-y-4">
           <div className="border-b border-emerald-900/10 pb-3 flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
               <Calendar className="w-4 h-4" />
               <span>Upcoming & Active Enrolments</span>
             </h2>
@@ -244,7 +244,7 @@ export default function LearnerDashboardPage() {
                     <div className="flex items-center space-x-2 text-[11px] font-mono text-slate-500 mb-1">
                       <span>Ref: {item.id}</span>
                       <span>•</span>
-                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-2 py-0.5 border border-emerald-200">
+                      <span className="font-bold text-primary bg-emerald-50 px-2 py-0.5 border border-emerald-200">
                         {item.cpdHours}
                       </span>
                     </div>
@@ -270,13 +270,13 @@ export default function LearnerDashboardPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 pt-2 border-t border-slate-200/80">
                   <div className="flex items-center space-x-2">
-                    <Clock className="w-3.5 h-3.5 text-[#2d6a4f] shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-primary/80 shrink-0" />
                     <span>
                       {item.date} ({item.time})
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Building2 className="w-3.5 h-3.5 text-[#2d6a4f] shrink-0" />
+                    <Building2 className="w-3.5 h-3.5 text-primary/80 shrink-0" />
                     <span className="truncate">{item.venue}</span>
                   </div>
                 </div>
@@ -288,11 +288,11 @@ export default function LearnerDashboardPage() {
         {/* Completed CPD Records & Certificates */}
         <section className="bg-white border border-emerald-950/20 p-6 shadow-xs space-y-4">
           <div className="border-b border-emerald-900/10 pb-3 flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
               <FileCheck2 className="w-4 h-4" />
               <span>Completed CPD Log & Verified Certificates</span>
             </h2>
-            <span className="text-[10px] font-mono uppercase bg-emerald-50 text-[#1b4332] border border-emerald-200 px-2 py-0.5">
+            <span className="text-[10px] font-mono uppercase bg-emerald-50 text-primary border border-emerald-200 px-2 py-0.5">
               Audited Records
             </span>
           </div>
@@ -300,7 +300,7 @@ export default function LearnerDashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b-2 border-[#1b4332] bg-emerald-50/50 text-[#1b4332] uppercase font-bold text-[10px] tracking-wider">
+                <tr className="border-b-2 border-primary bg-emerald-50/50 text-primary uppercase font-bold text-[10px] tracking-wider">
                   <th className="py-3 px-3">Module Name & Code</th>
                   <th className="py-3 px-3">Date Completed</th>
                   <th className="py-3 px-3">CPD Hours</th>
@@ -326,7 +326,7 @@ export default function LearnerDashboardPage() {
                       {item.completionDate}
                     </td>
                     <td className="py-3.5 px-3">
-                      <span className="font-bold text-[#1b4332] bg-emerald-50 px-2 py-0.5 border border-emerald-200 whitespace-nowrap">
+                      <span className="font-bold text-primary bg-emerald-50 px-2 py-0.5 border border-emerald-200 whitespace-nowrap">
                         {item.cpdHours}
                       </span>
                     </td>
@@ -340,7 +340,7 @@ export default function LearnerDashboardPage() {
                         onClick={() =>
                           addToast({ title: `Downloading Official Certificate ${item.certificateNo}...`, variant: "info" })
                         }
-                        className="text-[#1b4332] hover:text-[#2d6a4f] hover:bg-emerald-50 text-[10px] font-bold uppercase tracking-wider h-6 px-2"
+                        className="text-primary hover:text-primary/80 hover:bg-emerald-50 text-[10px] font-bold uppercase tracking-wider h-6 px-2"
                       >
                         <Download className="w-3 h-3 mr-1" />
                         PDF

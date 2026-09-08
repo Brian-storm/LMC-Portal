@@ -26,3 +26,6 @@ export const s3PrivateBucket = process.env.APP_S3_PRIVATE_BUCKET ?? "";
 
 export const sesFromAddress =
   process.env.APP_SES_FROM_ADDRESS ?? "";
+
+export const sesConfigurationSet =
+  process.env.APP_SES_CONFIGURATION_SET ?? "";

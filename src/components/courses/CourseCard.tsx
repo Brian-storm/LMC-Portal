@@ -38,12 +38,12 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
     (course.feeHKD ? `HK$ ${course.feeHKD.toLocaleString()}` : dict.free);
 
   return (
-    <article className="group bg-white border border-slate-300 hover:border-[#1b4332] rounded-xs shadow-2xs transition-all duration-150 relative overflow-hidden pl-1">
+    <article className="group bg-white border border-slate-300 hover:border-primary rounded-xs shadow-2xs transition-all duration-150 relative overflow-hidden pl-1">
       {/* ------------------------------------------------------------------ */}
       {/* 1. STATUTORY ACCENT PILLAR                                         */}
       {/* Visual anchor bar signaling an accredited regulatory entry         */}
       {/* ------------------------------------------------------------------ */}
-      <div className="absolute top-0 bottom-0 left-0 w-1 bg-[#1b4332] transition-colors group-hover:bg-[#0d2118]" />
+      <div className="absolute top-0 bottom-0 left-0 w-1 bg-primary transition-colors group-hover:bg-primary" />
 
       {/* ------------------------------------------------------------------ */}
       {/* 2. REGISTRATION & ACCREDITATION HEADER BAR                          */}
@@ -116,7 +116,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           </div>
 
           {/* Official Course Title Link */}
-          <h2 className="text-xs sm:text-sm font-serif font-bold text-slate-900 group-hover:text-[#1b4332] transition-colors leading-snug">
+          <h2 className="text-xs sm:text-sm font-serif font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug">
             <Link
               href={`/${currentLocale}/courses/${targetSlug}`}
               className="hover:underline flex items-start gap-1"
@@ -193,8 +193,8 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           {/* Fee & CPD Accreditation Badges */}
           <div className="text-left md:text-right space-y-0.5 font-mono">
             {/* Accredited CPD Hour Badge */}
-            <div className="inline-flex items-center space-x-1 text-[#1b4332] font-bold text-[8.5px] bg-emerald-50 px-1.5 py-0.5 border border-emerald-300 rounded-xs">
-              <Award className="w-2.5 h-2.5 text-[#1b4332] shrink-0" />
+            <div className="inline-flex items-center space-x-1 text-primary font-bold text-[8.5px] bg-emerald-50 px-1.5 py-0.5 border border-emerald-300 rounded-xs">
+              <Award className="w-2.5 h-2.5 text-primary shrink-0" />
               <span>
                 {course.cpdHours} {dict.cpdHours}
               </span>
@@ -221,7 +221,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
               {/* Direct Official Navigation CTA */}
               <Link
                 href={`/${currentLocale}/courses/${targetSlug}`}
-                className="flex-1 md:flex-none inline-flex items-center justify-center space-x-1 bg-[#1b4332] hover:bg-[#112a1f] active:bg-[#091711] text-white font-mono font-bold px-2 py-1 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#0d2118]"
+                className="flex-1 md:flex-none inline-flex items-center justify-center space-x-1 bg-primary hover:bg-primary/80 active:bg-primary/90 text-primary-foreground font-mono font-bold px-2 py-1 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-primary/40"
                 style={{ fontSize: "12px", lineHeight: "12px" }}
               >
                 <span>{dict.viewCourse}</span>

@@ -385,7 +385,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           <p className="text-sm font-bold text-slate-800">{courseError || dict.courseUnavailable}</p>
           <Link
             href={`/${locale}/courses`}
-            className="inline-block bg-[#1b4332] text-white text-xs font-bold px-4 py-2 rounded-xs uppercase tracking-wider"
+            className="inline-block bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-xs uppercase tracking-wider"
           >
             {dict.browseCourses}
           </Link>
@@ -404,7 +404,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         <div className="flex items-center space-x-2 text-xs font-semibold text-slate-600">
           <Link
             href={`/${locale}/courses/${slug}`}
-            className="flex items-center space-x-1 hover:text-[#1b4332] transition-colors"
+            className="flex items-center space-x-1 hover:text-primary transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{dict.backToCourseDetails}</span>
@@ -412,10 +412,10 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         </div>
 
         {/* Header Header */}
-        <header className="border-b-2 border-slate-900 pb-4 bg-white p-5 border-t-4 border-t-[#1b4332] shadow-2xs">
+        <header className="border-b-2 border-slate-900 pb-4 bg-white p-5 border-t-4 border-t-primary shadow-2xs">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">
-              <Building2 className="w-3.5 h-3.5 text-[#1b4332]" />
+              <Building2 className="w-3.5 h-3.5 text-primary" />
               <span>{dict.officialCpdRegistration}</span>
             </div>
             <div className="flex items-center space-x-1 text-[11px] font-mono text-slate-500">
@@ -423,7 +423,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
               <span>{dict.sslEncrypted}</span>
             </div>
           </div>
-          <h1 className="text-xl sm:text-2xl font-serif font-bold text-[#1b4332] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-serif font-bold text-primary tracking-tight">
             {dict.pageTitle}
           </h1>
         </header>
@@ -434,7 +434,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
             <div
               className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
                 step >= 1
-                  ? "border-[#1b4332] text-[#1b4332]"
+                  ? "border-primary text-primary"
                   : "border-slate-200 text-slate-400"
               }`}
             >
@@ -446,7 +446,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
             <div
               className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
                 step >= 2
-                  ? "border-[#1b4332] text-[#1b4332]"
+                  ? "border-primary text-primary"
                   : "border-slate-200 text-slate-400"
               }`}
             >
@@ -458,7 +458,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
             <div
               className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
                 step >= 3
-                  ? "border-[#1b4332] text-[#1b4332]"
+                  ? "border-primary text-primary"
                   : "border-slate-200 text-slate-400"
               }`}
             >
@@ -490,7 +490,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onClick={() => { setEnrollmentType("INDIVIDUAL"); setRegistrantMembers([]); }}
                         className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           enrollmentType === "INDIVIDUAL"
-                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            ? "bg-primary text-primary-foreground border-primary"
                             : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                         }`}
                       >
@@ -502,7 +502,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onClick={() => setEnrollmentType("ORGANIZATION")}
                         className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           enrollmentType === "ORGANIZATION"
-                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            ? "bg-accent text-accent-foreground border-accent"
                             : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                         }`}
                       >
@@ -519,7 +519,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
 
                   {/* Payer / Primary Attendee Information (shown for both types) */}
                   <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
                       <User className="w-4 h-4" />
                       <span>{enrollmentType === "ORGANIZATION" ? dict.formLabels.primaryContact : dict.formLabels.attendeeInfo}</span>
                     </h2>
@@ -547,7 +547,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onBlur={(e) => validateField("fullName", e.target.value)}
                         placeholder={dict.formLabels.fullNamePlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.fullName ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                          fieldErrors.fullName ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                         } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
                       />
                       {session?.user && (
@@ -575,7 +575,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onBlur={(e) => validateField("email", e.target.value)}
                         placeholder={dict.formLabels.emailPlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.email ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                          fieldErrors.email ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                         } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
                       />
                       {session?.user && (
@@ -602,7 +602,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onBlur={(e) => validateField("phone", e.target.value)}
                         placeholder={dict.formLabels.phonePlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.phone ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                          fieldErrors.phone ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                         }`}
                       />
                       {fieldErrors.phone && (
@@ -623,7 +623,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         value={formData.company}
                         onChange={handleInputChange}
                         placeholder={dict.formLabels.companyPlaceholder}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:border-[#1b4332] focus:bg-white"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:border-primary focus:bg-white"
                       />
                     </div>
 
@@ -641,7 +641,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onBlur={(e) => validateField("iaLicenseNo", e.target.value)}
                         placeholder={dict.formLabels.iaLicensePlaceholder}
                         className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.iaLicenseNo ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                          fieldErrors.iaLicenseNo ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                         }`}
                       />
                       {fieldErrors.iaLicenseNo && (
@@ -664,7 +664,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onClick={() => { setIdDocType("HKID"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; return n; }); }}
                         className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "HKID"
-                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            ? "bg-primary text-primary-foreground border-primary"
                             : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                         }`}
                       >
@@ -676,7 +676,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         onClick={() => { setIdDocType("PASSPORT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; return n; }); }}
                         className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "PASSPORT"
-                            ? "bg-[#1b4332] text-white border-[#1b4332]"
+                            ? "bg-primary text-primary-foreground border-primary"
                             : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                         }`}
                       >
@@ -703,7 +703,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                             placeholder={dict.formLabels.hkidPrefixPlaceholder}
                             maxLength={8}
                             className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono focus:outline-none focus:bg-white ${
-                              fieldErrors.hkidPrefix ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                              fieldErrors.hkidPrefix ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                             }`}
                           />
                           {fieldErrors.hkidPrefix && (
@@ -731,7 +731,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               onBlur={(e) => validateField("hkidCheckDigit", e.target.value)}
                               maxLength={1}
                               className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono text-center focus:outline-none focus:bg-white pl-6 ${
-                                fieldErrors.hkidCheckDigit ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                                fieldErrors.hkidCheckDigit ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                               }`}
                             />
                             <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">)</span>
@@ -762,7 +762,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           onBlur={(e) => validateField("passportNumber", e.target.value)}
                           placeholder={dict.formLabels.passportPlaceholder}
                           className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                            fieldErrors.passportNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
+                            fieldErrors.passportNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
                           }`}
                         />
                         {fieldErrors.passportNumber && (
@@ -787,7 +787,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <button
                           type="button"
                           onClick={addMember}
-                          className="inline-flex items-center space-x-1 text-[#1b4332] hover:text-[#112a1f] disabled:opacity-40 text-xs font-bold"
+                          className="inline-flex items-center space-x-1 text-primary hover:text-primary/80 disabled:opacity-40 text-xs font-bold"
                         >
                           <Plus className="w-3 h-3" />
                           <span>{dict.formLabels.addMember}</span>
@@ -823,7 +823,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               placeholder={dict.formLabels.nameZhPlaceholder}
                               value={member.nameZh}
                               onChange={(e) => handleMemberChange(index, "nameZh", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
                             />
                             <input
                               type="text"
@@ -831,7 +831,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               required
                               value={member.nameEn}
                               onChange={(e) => handleMemberChange(index, "nameEn", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
                             />
                             <input
                               type="email"
@@ -839,7 +839,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               required
                               value={member.email}
                               onChange={(e) => handleMemberChange(index, "email", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
                             />
                           </div>
                           {/* Identity document type toggle + split HKID input for this member */}
@@ -849,7 +849,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               onClick={() => handleMemberChange(index, "idDocType", "HKID")}
                               className={`flex-1 py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                                 member.idDocType === "HKID"
-                                  ? "bg-[#1b4332] text-white border-[#1b4332]"
+                                  ? "bg-primary text-primary-foreground border-primary"
                                   : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                               }`}
                             >
@@ -861,7 +861,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               onClick={() => handleMemberChange(index, "idDocType", "PASSPORT")}
                               className={`flex-1 py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                                 member.idDocType === "PASSPORT"
-                                  ? "bg-[#1b4332] text-white border-[#1b4332]"
+                                  ? "bg-primary text-primary-foreground border-primary"
                                   : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                               }`}
                             >
@@ -878,7 +878,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                   value={member.hkidPrefix}
                                   onChange={(e) => handleMemberChange(index, "hkidPrefix", e.target.value.toUpperCase())}
                                   maxLength={8}
-                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-[#1b4332]"
+                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-primary"
                                 />
                               </div>
                               <div className="relative">
@@ -889,7 +889,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                   onChange={(e) => handleMemberChange(index, "hkidCheckDigit", e.target.value.replace(/[^0-9A-Za-z]/g, "").slice(0, 1))}
                                   maxLength={1}
                                   placeholder=" "
-                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono text-center focus:outline-none focus:border-[#1b4332] pl-6"
+                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono text-center focus:outline-none focus:border-primary pl-6"
                                 />
                                 <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-[10px] pointer-events-none">)</span>
                               </div>
@@ -901,7 +901,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                 placeholder={dict.formLabels.passportPlaceholder}
                                 value={member.passportNumber}
                                 onChange={(e) => handleMemberChange(index, "passportNumber", e.target.value)}
-                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#1b4332]"
+                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
                               />
                             </div>
                           )}
@@ -915,7 +915,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       type="button"
                       disabled={!step1Valid}
                       onClick={() => setStep(2)}
-                      className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] disabled:opacity-50 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
+                      className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
                     >
                       <span>{dict.navigation.proceedToDeclaration}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
@@ -928,7 +928,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
               {step === 2 && (
                 <div className="space-y-4">
                   <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
                       <FileCheck className="w-4 h-4" />
                       <span>{dict.step2.title}</span>
                     </h2>
@@ -951,7 +951,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         name="declaredEligible"
                         checked={formData.declaredEligible}
                         onChange={handleInputChange}
-                        className="mt-0.5 border-slate-400 text-[#1b4332] focus:ring-0 accent-[#1b4332]"
+                        className="mt-0.5 border-slate-400 text-primary focus:ring-0 accent-primary"
                       />
                       <span className="leading-relaxed">
                         {dict.step2.declarationLabel}
@@ -964,7 +964,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         name="agreedToTerms"
                         checked={formData.agreedToTerms}
                         onChange={handleInputChange}
-                        className="mt-0.5 border-slate-400 text-[#1b4332] focus:ring-0 accent-[#1b4332]"
+                        className="mt-0.5 border-slate-400 text-primary focus:ring-0 accent-primary"
                       />
                       <span className="leading-relaxed">
                         {dict.step2.termsLabel}{" "}
@@ -973,7 +973,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="text-[#1b4332] underline hover:text-emerald-900 font-semibold"
+                          className="text-primary underline hover:text-emerald-900 font-semibold"
                         >
                           {dict.step2.termsLinkText}
                         </Link>
@@ -996,7 +996,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         !formData.declaredEligible || !formData.agreedToTerms
                       }
                       onClick={() => setStep(3)}
-                      className="inline-flex items-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] disabled:opacity-50 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
+                      className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
                     >
                       <span>{dict.navigation.proceedToPayment}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
@@ -1009,7 +1009,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
               {step === 3 && (
                 <div className="space-y-4">
                   <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-[#1b4332] flex items-center space-x-2">
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
                       <CreditCard className="w-4 h-4" />
                       <span>{dict.step3.title}</span>
                     </h2>
@@ -1024,7 +1024,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           value="credit_card"
                           checked={formData.paymentMethod === "credit_card"}
                           onChange={handleInputChange}
-                          className="text-[#1b4332] accent-[#1b4332]"
+                          className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
                           {dict.step3.creditCard}
@@ -1041,7 +1041,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           value="fps_alipay"
                           checked={formData.paymentMethod === "fps_alipay"}
                           onChange={handleInputChange}
-                          className="text-[#1b4332] accent-[#1b4332]"
+                          className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
                           {dict.step3.fpsAlipay}
@@ -1060,7 +1060,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                             formData.paymentMethod === "corporate_invoice"
                           }
                           onChange={handleInputChange}
-                          className="text-[#1b4332] accent-[#1b4332]"
+                          className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
                           {dict.step3.corporateBilling}
@@ -1092,7 +1092,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="inline-flex items-center space-x-2 bg-[#1b4332] hover:bg-[#112a1f] disabled:opacity-50 text-white font-bold px-6 py-2.5 text-xs uppercase tracking-wider rounded-xs transition-all shadow-md"
+                      className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-6 py-2.5 text-xs uppercase tracking-wider rounded-xs transition-all shadow-md"
                     >
                       {isSubmitting ? (
                         <>
@@ -1157,7 +1157,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                 <span className="font-bold text-slate-900 uppercase">
                   {dict.summary.totalFee}
                 </span>
-                <span className="text-lg font-serif font-bold text-[#1b4332]">
+                <span className="text-lg font-serif font-bold text-primary">
                   HK$ {enrollmentType === "ORGANIZATION" ? (parseFloat(String(fee)) * totalRegistrants).toLocaleString() : fee}
                 </span>
               </div>
@@ -1165,7 +1165,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
 
             <div className="pt-2 border-t border-slate-200 text-[10px] text-slate-500 space-y-1.5">
               <div className="flex items-start space-x-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#1b4332] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                 <span>
                   {dict.summary.invoiceNotice}
                 </span>

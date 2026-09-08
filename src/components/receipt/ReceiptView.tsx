@@ -145,7 +145,7 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
           <p className="text-sm text-slate-700">{error ?? dict.notFound}</p>
           <Link
             href={`/${locale}`}
-            className="text-xs font-bold text-[#1b4332] hover:underline inline-block"
+            className="text-xs font-bold text-primary hover:underline inline-block"
           >
             {dict.backToHome}
           </Link>
@@ -170,7 +170,7 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
         <div className="flex items-center justify-between print:hidden">
           <Link
             href={`/${locale}`}
-            className="text-xs font-bold text-slate-600 hover:text-[#1b4332] transition-colors flex items-center space-x-1"
+            className="text-xs font-bold text-slate-600 hover:text-primary transition-colors flex items-center space-x-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{dict.backToHome}</span>
@@ -190,7 +190,7 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
               size="sm"
               onClick={handleDownload}
               disabled={downloading}
-              className="rounded-none text-xs font-bold h-8 px-3 bg-[#1b4332] hover:bg-[#112a1f]"
+              className="rounded-none text-xs font-bold h-8 px-3 bg-primary hover:bg-primary/80"
             >
               <Download className="w-3.5 h-3.5 mr-1.5" />
               {downloading ? dict.downloading : dict.downloadPdf}
@@ -222,10 +222,10 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
           <div className="border-b-2 border-slate-900 pb-4 flex justify-between items-start">
             <div>
               <div className="flex items-center space-x-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase mb-1">
-                <Building2 className="w-3.5 h-3.5 text-[#1b4332]" />
+                <Building2 className="w-3.5 h-3.5 text-primary" />
                 <span>{dict.receiptStamp}</span>
               </div>
-              <h2 className="text-xl font-serif font-bold text-[#1b4332]">
+              <h2 className="text-xl font-serif font-bold text-primary">
                 {dict.pageTitle}
               </h2>
             </div>
@@ -256,7 +256,7 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
                       {dict.iaRef}: {data.iaRefNumber}
                     </span>
                   )}
-                  <span className="flex items-center space-x-1 font-bold text-[#1b4332]">
+                  <span className="flex items-center space-x-1 font-bold text-primary">
                     <Award className="w-3.5 h-3.5" />
                     <span>{dict.cpdHours}: {data.cpdHours}</span>
                   </span>
@@ -302,7 +302,7 @@ export function ReceiptView({ enrolmentId, locale, dict }: ReceiptViewProps) {
                 </div>
                 <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-slate-900">
                   <span>{dict.fee}:</span>
-                  <span className="font-serif text-base text-[#1b4332]">
+                  <span className="font-serif text-base text-primary">
                     HKD {data.fee}
                   </span>
                 </div>

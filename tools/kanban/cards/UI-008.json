@@ -1,0 +1,69 @@
+{
+  "id": "UI-008",
+  "title": "品牌主色由深翡翠改為 Logo 淺綠 (#5f923b)",
+  "content": "將全站品牌主色從深翡翠 (dark emerald / #1b4332) 改為 Logo 的淺綠色 #5f923b (oklch(0.604 0.131 134))。變更集中在 src/app/globals.css 的 design token 層（--primary、--primary-foreground、--secondary、navbar-brand-*、sidebar 等），為根本性、單一來源的色票改動，不在個別元件中散落硬編碼修改。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-08",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "視覺與色票更新",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 40,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "tools/kanban/cards/UI-008.json",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/globals.css",
+    "ai/context/design-system.md"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [
+    "User request: 主色由 dark green 改為 logo 的 light green #5f923b，於 global.css 做根本性變更，不做零散的小修改。"
+  ],
+  "acceptance": [
+    "--primary 及相關品牌 token 在 :root 與 .dark 下更新為 #5f923b 方向的新色票",
+    "所有元件透過 token (bg-primary / text-primary 等) 自動繼承新色，無需逐個元件修改",
+    "primary-foreground 對比度符合可用性要求（淺綠底需配深色文字）",
+    "typecheck、lint 通過",
+    "設計系統文件 ai/context/design-system.md 同步更新主色敘述"
+  ],
+  "files": [
+    "src/app/globals.css",
+    "ai/context/design-system.md"
+  ],
+  "verification": "npm run typecheck && npm run lint 通過；於 dev server 目視確認 Navbar、按鈕、Badge、Sidebar、Hero 主色變為淺綠 #5f923b"
+}

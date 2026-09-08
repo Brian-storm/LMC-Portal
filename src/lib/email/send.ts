@@ -1,7 +1,7 @@
 import "server-only";
 
 import nodemailer from "nodemailer";
-import { sesClient, sesFromAddress } from "@/lib/aws";
+import { sesClient, sesFromAddress, sesConfigurationSet } from "@/lib/aws";
 import type { EmailRecipient, EmailCourseInfo, EmailReceiptInfo, SendReceiptEmailParams } from "./types";
 import { buildEmailContent } from "./templates";
 
@@ -35,12 +35,19 @@ export async function sendReceiptEmail(params: SendReceiptEmailParams): Promise<
   try {
     const transporter = createTransport();
 
+    // Build headers object, adding configuration set if configured
+    const headers: Record<string, string> = {};
+    if (sesConfigurationSet) {
+      headers["X-SES-CONFIGURATION-SET"] = sesConfigurationSet;
+    }
+
     await transporter.sendMail({
       from: sesFromAddress,
       to: recipient.email,
       bcc: sesFromAddress, // BCC admin for audit trail
       subject,
       html,
+      headers,
       attachments: [
         {
           filename: pdfFilename,

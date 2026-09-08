@@ -27,9 +27,9 @@ interface RegisterFormProps {
 }
 
 const inputClass =
-  "w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-xs focus:outline-none focus:border-[#1b4332] focus:bg-white font-mono";
+  "w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-xs focus:outline-none focus:border-primary focus:bg-white font-mono";
 const inputClassNoIcon =
-  "w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-xs focus:outline-none focus:border-[#1b4332] focus:bg-white font-mono";
+  "w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-xs focus:outline-none focus:border-primary focus:bg-white font-mono";
 const iconClass = "w-4 h-4 text-slate-400 absolute left-3 top-2.5";
 const labelClass =
   "block text-xs font-bold uppercase tracking-wider text-slate-700";
@@ -122,10 +122,10 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
       <div className="bg-[#f6f8f6] text-slate-800 min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8 font-sans">
         <div className="sm:mx-auto sm:w-full sm:max-w-md space-y-3">
           <div className="text-center space-y-1">
-            <div className="inline-flex items-center justify-center p-2 bg-white border border-slate-300 shadow-2xs text-[#1b4332] rounded-xs">
+            <div className="inline-flex items-center justify-center p-2 bg-white border border-slate-300 shadow-2xs text-primary rounded-xs">
               <Building2 className="w-6 h-6" />
             </div>
-            <h1 className="text-xl font-serif font-bold text-[#1b4332] tracking-tight">
+            <h1 className="text-xl font-serif font-bold text-primary tracking-tight">
               {dict.pageTitle}
             </h1>
           </div>
@@ -140,7 +140,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             </p>
             <button
               onClick={() => router.push(`/${locale}/login`)}
-              className="inline-flex items-center space-x-2 bg-[#1b4332] hover:bg-[#112a1f] text-white text-xs font-bold uppercase tracking-wider py-2 px-6 rounded-xs transition-colors shadow-2xs"
+              className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-wider py-2 px-6 rounded-xs transition-colors shadow-2xs"
             >
               <span>{dict.successButton}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -155,10 +155,10 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
     <div className="bg-[#f6f8f6] text-slate-800 min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-lg space-y-3">
         <div className="text-center space-y-1">
-          <div className="inline-flex items-center justify-center p-2 bg-white border border-slate-300 shadow-2xs text-[#1b4332] rounded-xs">
+          <div className="inline-flex items-center justify-center p-2 bg-white border border-slate-300 shadow-2xs text-primary rounded-xs">
             <Building2 className="w-6 h-6" />
           </div>
-          <h1 className="text-xl font-serif font-bold text-[#1b4332] tracking-tight">
+          <h1 className="text-xl font-serif font-bold text-primary tracking-tight">
             {dict.pageTitle}
           </h1>
           <p className="text-xs text-slate-500 font-mono">
@@ -166,7 +166,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
           </p>
         </div>
 
-        <div className="bg-white border border-slate-300 shadow-2xs border-t-4 border-t-[#1b4332] p-5 sm:p-6 space-y-4">
+        <div className="bg-white border border-slate-300 shadow-2xs border-t-4 border-t-primary p-5 sm:p-6 space-y-4">
           {error && (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-xs p-2 rounded-xs">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -265,7 +265,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
                     onClick={() => setIdDocType("HKID")}
                     className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                       idDocType === "HKID"
-                        ? "bg-[#1b4332] text-white border-[#1b4332]"
+                        ? "bg-primary text-primary-foreground border-primary"
                         : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                     }`}
                   >
@@ -277,7 +277,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
                     onClick={() => setIdDocType("PASSPORT")}
                     className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                       idDocType === "PASSPORT"
-                        ? "bg-[#1b4332] text-white border-[#1b4332]"
+                        ? "bg-primary text-primary-foreground border-primary"
                         : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
                     }`}
                   >
@@ -366,7 +366,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center space-x-2 bg-[#1b4332] hover:bg-[#112a1f] text-white text-xs font-bold uppercase tracking-wider py-2 rounded-xs transition-colors shadow-2xs disabled:opacity-50"
+              className="w-full inline-flex items-center justify-center space-x-2 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-wider py-2 rounded-xs transition-colors shadow-2xs disabled:opacity-50"
             >
               {isLoading ? (
                 <span>{dict.submittingButton}</span>
@@ -383,7 +383,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             {dict.loginPrompt}{" "}
             <Link
               href={`/${locale}/login`}
-              className="text-[#1b4332] hover:underline font-medium"
+              className="text-primary hover:underline font-medium"
             >
               {dict.loginLink}
             </Link>

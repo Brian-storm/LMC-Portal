@@ -1,6 +1,6 @@
 # Design System — LMC Portal
 
-> Last updated: 2026-09-01 | Built by: PS-007, PS-008, PS-009, PS-010, PS-011
+> Last updated: 2026-09-08 | Built by: PS-007, PS-008, PS-009, PS-010, PS-011, UI-008
 
 ## 底層框架 (Foundation Framework)
 
@@ -32,7 +32,9 @@ Key color tokens (light mode):
 |---|---|---|
 | `--background` | `oklch(0.985 0.003 140)` | Near-white with green tint |
 | `--foreground` | `oklch(0.18 0.01 140)` | Dark slate |
-| `--primary` | `oklch(0.28 0.05 160)` | Deep emerald (#1b4332 equivalent) |
+| `--primary` | `oklch(0.604 0.13 134)` | Logo green (#5f923b, refresh in UI-008) |
+| `--primary-hover` | `oklch(0.52 0.12 134)` | Darker logo green for hover states |
+| `--primary-deep` | `oklch(0.28 0.05 134)` | Dark brand green for full-bleed regions (hero, sidebar, dark banners) |
 | `--accent` | `oklch(0.72 0.11 85)` | Amber highlight |
 | `--muted` | `oklch(0.94 0.01 140)` | Soft slate background |
 | `--destructive` | `oklch(0.577 0.245 27.325)` | Rose red |
@@ -86,9 +88,10 @@ All follow shadcn/ui conventions: `cn()` utility for className merging, radix-ui
 
 | Role | Token | Hex Equivalent | Description |
 |---|---|---|---|
-| Primary | `oklch(0.28 0.05 160)` | `#1b4332` | Deep emerald — institutional authority |
-| Primary Dark | `oklch(0.22 0.05 160)` | `#0d2118` | Hover/active states |
-| Secondary | `oklch(0.48 0.03 160)` | — | Medium green for supporting text |
+| Primary | `oklch(0.604 0.13 134)` | `#5f923b` | Logo green — institutional authority |
+| Primary Dark | `oklch(0.52 0.12 134)` | `#4b7728` | Hover/active states (primary-hover) |
+| Secondary | `oklch(0.50 0.09 134)` | — | Medium logo green for supporting text |
+| Primary Deep | `oklch(0.28 0.05 134)` | `#1e2e14` | Dark brand green for full-bleed regions (hero, sidebar, banners) |
 | Accent | `oklch(0.72 0.11 85)` | `#c4920a` | Amber pop for CTAs and highlights |
 | Accent Hover | `oklch(0.66 0.10 85)` | — | Darker amber on hover |
 | Background | `oklch(0.985 0.003 140)` | — | Near-white with green tint |
@@ -146,22 +149,22 @@ All follow shadcn/ui conventions: `cn()` utility for className merging, radix-ui
 
 The grey scale uses neutral hues (h=140) with near-zero chroma. Not individually mapped to CSS variables — Tailwind's built-in `slate` scale approximates this. Mapped semantic tokens (`--muted`, `--border`, `--foreground`, etc.) are the primary usage in `globals.css`.
 
-#### 1.2 翡翠主色 (Emerald/Primary Scale) — 10 階
+#### 1.2 品牌綠主色 (Logo Green Scale) — 10 階
 
 | Shade | Token | Light Mode | Usage |
-|---|---|---|---|
-| 50 | `emerald-50` | `oklch(0.97 0.012 155)` | Tinted backgrounds |
-| 100 | `emerald-100` | `oklch(0.91 0.025 158)` | Light highlight bg |
-| 200 | `emerald-200` | `oklch(0.83 0.035 158)` | Selected state bg |
-| 300 | `emerald-300` | `oklch(0.72 0.05 160)` | Focus rings, decorative |
-| 400 | `emerald-400` | `oklch(0.58 0.06 160)` | Progress bars, indicators |
-| 500 | `emerald-500` | `oklch(0.46 0.06 160)` | Medium emphasis |
-| 600 | `emerald-600` | `oklch(0.36 0.055 160)` | `--secondary` mapped |
-| 700 | `emerald-700` | `oklch(0.28 0.05 160)` | `--primary` mapped |
-| 800 | `emerald-800` | `oklch(0.20 0.045 158)` | `--primary-hover` equivalent |
-| 900 | `emerald-900` | `oklch(0.12 0.03 155)` | Darkest accent |
+|---|---|---|---|---|
+| 50 | `green-50` | `oklch(0.97 0.012 134)` | Tinted backgrounds |
+| 100 | `green-100` | `oklch(0.91 0.025 134)` | Light highlight bg |
+| 200 | `green-200` | `oklch(0.83 0.035 134)` | Selected state bg |
+| 300 | `green-300` | `oklch(0.72 0.05 134)` | Focus rings, decorative |
+| 400 | `green-400` | `oklch(0.65 0.08 134)` | Progress bars, indicators |
+| 500 | `green-500` | `oklch(0.60 0.10 134)` | Medium emphasis |
+| 600 | `green-600` | `oklch(0.50 0.09 134)` | `--secondary` mapped |
+| 700 | `green-700` | `oklch(0.40 0.08 134)` | Hover / active states |
+| 800 | `green-800` | `oklch(0.30 0.06 134)` | Darkest accent |
+| 900 | `green-900` | `oklch(0.20 0.04 134)` | Sidebar background |
 
-Mapped CSS variables: `emerald-700` → `--primary`, `emerald-600` → `--secondary`, `emerald-800` equivalent to current `#0d2118` hover color.
+Mapped CSS variables: `green-500` → `--primary` (logo green #5f923b), `green-600` → `--secondary`, `green-700` → `--primary-hover`, `green-800` → `--primary-deep`, `green-900` → sidebar darkest accent.
 
 #### 1.3 琥珀輔色 (Amber/Accent Scale) — 10 階
 
@@ -495,7 +498,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 | Gap | Status | Plan |
 |---|---|---|
 | Montserrat not wired as `--font-sans` primary | Open | Future task: update `--font-sans` to start with `var(--font-montserrat)` |
-| Hex `#1b4332` scattered in components | Open | Future task: replace with `text-primary` / `bg-primary` |
+| Hex `#1b4332` scattered in components | ✅ Fixed in UI-008/UI-009 | --primary → logo green; all 215 component usages migrated to `text-primary`/`bg-primary`/`border-primary`/`bg-primary-deep` tokens. Polyglot snippets in `lib/receipt/styles.ts` + `lib/email/templates.ts` use hex `#1e2e14` (primary-deep) since PDF/email renderers don't support CSS vars |
 | Border+shadow stacked violates design-craft depth principle | Deferred | Evaluate in future — consider moving to border-only |
 | No semantic `success`/`warning`/`info` in globals.css | ✅ Fixed in PS-009 | Added to `:root` and `.dark` |
 | Missing Checkbox/Radio/Toast/Form components | ✅ Fixed in PS-010 | Added to `src/components/ui/` |
@@ -677,7 +680,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 > Selected: 2026-09-01 | Built by: PS-011 | Decisions in i/artifacts/????/mockup-decision-*.md`n
 ### ???? (Public-Facing)
 
-**Decision: Keep current implementation** � Existing demo already matches Variant A stacked-sections layout:
+**Decision: Keep current implementation** � Existing demo already matches Variant A stacked-sections layout:
 
 | Page | Layout Pattern |
 |---|---|
@@ -689,7 +692,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 
 ### ???? (Portal/Dashboard)
 
-**Selected: Variant A � Sidebar Left + Content**
+**Selected: Variant A � Sidebar Left + Content**
 
 | Element | Spec |
 |---|---|
@@ -702,7 +705,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 
 ### ???? (Admin)
 
-**Selected: Variant B � Split View (Side Nav + Table + Detail Panel)**
+**Selected: Variant B � Split View (Side Nav + Table + Detail Panel)**
 
 | Element | Spec |
 |---|---|

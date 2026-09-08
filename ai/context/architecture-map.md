@@ -139,7 +139,7 @@ globals.css (208 lines)
   ├── @custom-variant dark (&:is(.dark *))
   ├── @theme inline { all shadcn color vars mapped to CSS vars }
   ├── :root { light mode vars (oklch) }
-  │     Primary: oklch(0.28 0.05 160) ≈ #1b4332 deep emerald
+  │     Primary: oklch(0.604 0.13 134) ≈ #5f923b logo green
   │     Accent: oklch(0.72 0.11 85) ≈ amber
   │     Background: oklch(0.985 0.003 140) ≈ near-white
   │     Navbar tokens: bg, brand-start/mid/end, accent-hover

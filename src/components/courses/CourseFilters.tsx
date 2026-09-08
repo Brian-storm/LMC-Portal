@@ -35,7 +35,7 @@ export function CourseFilters({
   return (
     <aside className="lg:col-span-1 bg-white border border-slate-300 rounded-xs p-4 space-y-4 shadow-2xs lg:sticky lg:top-16">
       <div className="flex items-center justify-between pb-2.5 border-b border-slate-200">
-        <div className="flex items-center space-x-1.5 text-[#1b4332] font-bold text-xs uppercase tracking-wider">
+        <div className="flex items-center space-x-1.5 text-primary font-bold text-xs uppercase tracking-wider">
           <Filter className="w-3.5 h-3.5" />
           <span>{dict.searchCriteria}</span>
         </div>
@@ -62,7 +62,7 @@ export function CourseFilters({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={dict.searchPlaceholder}
-            className="w-full bg-slate-50 border border-slate-300 rounded-xs pl-8 pr-2 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1b4332] focus:bg-white transition-colors"
+            className="w-full bg-slate-50 border border-slate-300 rounded-xs pl-8 pr-2 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary focus:bg-white transition-colors"
           />
         </div>
       </div>
@@ -84,7 +84,7 @@ export function CourseFilters({
                 value={cat.id}
                 checked={selectedCategory === cat.id}
                 onChange={() => setSelectedCategory(cat.id)}
-                className="border-slate-400 text-[#1b4332] focus:ring-0 accent-[#1b4332]"
+                className="border-slate-400 text-primary focus:ring-0 accent-primary"
               />
               <span className="text-[11px] font-medium">{cat.label}</span>
             </label>
@@ -98,7 +98,7 @@ export function CourseFilters({
           <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">
             {dict.cpdHoursMin}
           </label>
-          <span className="text-[10px] font-semibold text-[#1b4332] bg-emerald-50 px-1 py-0 border border-emerald-300 rounded-xs">
+          <span className="text-[10px] font-semibold text-primary bg-emerald-50 px-1 py-0 border border-emerald-300 rounded-xs">
             {minCpdHours} {minCpdHours === 1 ? dict.hour : dict.hours}
           </span>
         </div>
@@ -109,7 +109,7 @@ export function CourseFilters({
           step="1"
           value={minCpdHours}
           onChange={(e) => setMinCpdHours(Number(e.target.value))}
-          className="w-full h-1 accent-[#1b4332] bg-slate-200 rounded-xs cursor-pointer appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:bg-[#1b4332] [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:bg-[#1b4332] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full"
+          className="w-full h-1 accent-primary bg-slate-200 rounded-xs cursor-pointer appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:rounded-full"
         />
       </div>
 

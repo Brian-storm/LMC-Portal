@@ -70,7 +70,7 @@ export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
   }, [slides.length]);
 
   return (
-    <section className="relative !h-[460px] sm:!h-[520px] md:!h-[560px] overflow-hidden bg-[#1b4332] text-white">
+    <section className="relative !h-[460px] sm:!h-[520px] md:!h-[560px] overflow-hidden bg-primary-deep text-white">
       {slides.map((slide, index) => (
         <div
           key={slide.id}

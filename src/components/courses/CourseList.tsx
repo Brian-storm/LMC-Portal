@@ -79,7 +79,7 @@ export function CourseList({
           <p className="text-slate-600 text-xs font-medium">{error}</p>
           <button
             onClick={onRetry}
-            className="inline-flex items-center space-x-1 text-xs font-bold text-[#1b4332] hover:underline uppercase tracking-wider"
+            className="inline-flex items-center space-x-1 text-xs font-bold text-primary hover:underline uppercase tracking-wider"
           >
             <span>Retry</span>
           </button>
@@ -100,7 +100,7 @@ export function CourseList({
           </p>
           <button
             onClick={onClearFilters}
-            className="inline-block text-xs font-bold text-[#1b4332] hover:underline uppercase tracking-wider"
+            className="inline-block text-xs font-bold text-primary hover:underline uppercase tracking-wider"
           >
             {dict.resetSearchParameters}
           </button>
@@ -119,7 +119,7 @@ export function CourseList({
             <div className="flex justify-center pt-2">
               <button
                 onClick={onLoadMore}
-                className="inline-flex items-center space-x-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-[#1b4332] text-xs font-bold text-slate-700 hover:text-[#1b4332] uppercase tracking-wider rounded-xs shadow-2xs transition-colors"
+                className="inline-flex items-center space-x-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-primary text-xs font-bold text-slate-700 hover:text-primary uppercase tracking-wider rounded-xs shadow-2xs transition-colors"
               >
                 <span>Load More</span>
                 <ChevronDown className="w-3.5 h-3.5" />

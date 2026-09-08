@@ -35,7 +35,7 @@ export default async function ContactPage({ params }: PageProps) {
           <div className="flex items-center text-sm font-semibold text-slate-600">
             <Link
               href={`/${locale}`}
-              className="flex items-center space-x-1.5 hover:text-[#1b4332] transition-colors group"
+              className="flex items-center space-x-1.5 hover:text-primary transition-colors group"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
               <span>{t.backToPortal}</span>
@@ -43,12 +43,12 @@ export default async function ContactPage({ params }: PageProps) {
           </div>
 
           {/* Header Card */}
-          <header className="bg-white border border-slate-300 border-t-4 border-t-[#1b4332] p-8 shadow-2xs space-y-2">
+          <header className="bg-white border border-slate-300 border-t-4 border-t-primary p-8 shadow-2xs space-y-2">
             <div className="inline-flex items-center space-x-1.5 bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-1 text-xs font-bold tracking-wider uppercase">
               <Building2 className="w-4 h-4 text-emerald-800" />
               <span>{t.officeTitle}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1b4332] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary tracking-tight">
               {t.pageTitle}
             </h1>
             <p className="text-slate-500 text-sm font-sans">{t.pageSubtitle}</p>
@@ -73,7 +73,7 @@ export default async function ContactPage({ params }: PageProps) {
             <div className="md:col-span-2 bg-white border border-slate-300 shadow-2xs p-6 space-y-5">
               {/* Address */}
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[#1b4332] shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div className="text-sm font-sans text-slate-700 leading-relaxed">
                   {t.addressLine1}
                   <br />
@@ -91,7 +91,7 @@ export default async function ContactPage({ params }: PageProps) {
 
                 <a
                   href={`tel:${t.phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-[#1b4332] transition-colors"
+                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-primary transition-colors"
                 >
                   <Phone className="w-4 h-4 text-slate-500 shrink-0" />
                   <span>
@@ -104,7 +104,7 @@ export default async function ContactPage({ params }: PageProps) {
 
                 <a
                   href={`mailto:${t.email}?subject=Enquiry%20via%20LMC%20Portal`}
-                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-[#1b4332] transition-colors"
+                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-primary transition-colors"
                 >
                   <Mail className="w-4 h-4 text-slate-500 shrink-0" />
                   <span>
@@ -119,7 +119,7 @@ export default async function ContactPage({ params }: PageProps) {
                   href={`https://wa.me/${t.whatsapp.replace(/\s/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-[#1b4332] transition-colors"
+                  className="flex items-center gap-3 text-sm font-sans text-slate-700 hover:text-primary transition-colors"
                 >
                   <MessageCircle className="w-4 h-4 text-slate-500 shrink-0" />
                   <span>

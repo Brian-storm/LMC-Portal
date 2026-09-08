@@ -143,7 +143,7 @@ export function CoursesView({
 
   return (
     <div className="bg-[#f8fafc] text-slate-900 min-h-screen pb-12 font-sans">
-      <div className="bg-[#1b4332] text-white border-b-2 border-[#0d2118] px-4 py-2 text-xs">
+      <div className="bg-primary-deep text-white border-b-2 border-primary-deep/80 px-4 py-2 text-xs">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2 font-mono">
             <ShieldCheck className="w-4 h-4 text-[#721185] shrink-0" />

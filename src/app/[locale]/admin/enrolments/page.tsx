@@ -301,13 +301,13 @@ export default function AdminEnrolmentsPage() {
     <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-8 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ── Page header ── */}
-        <header className="bg-white border border-slate-300 p-6 shadow-2xs border-t-4 border-t-[#1b4332] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <header className="bg-white border border-slate-300 p-6 shadow-2xs border-t-4 border-t-primary flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center space-x-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-              <ShieldAlert className="w-3.5 h-3.5 text-[#1b4332]" />
+              <ShieldAlert className="w-3.5 h-3.5 text-primary" />
               <span>CPD Compliance & Administration Portal</span>
             </div>
-            <h1 className="text-2xl font-serif font-bold text-[#1b4332]">
+            <h1 className="text-2xl font-serif font-bold text-primary">
               Enrolment Review Queue
             </h1>
             <p className="text-xs text-slate-500">
@@ -324,7 +324,7 @@ export default function AdminEnrolmentsPage() {
               onClick={() => handleStatusTabClick(tab.value)}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs transition-colors ${
                 statusFilter === tab.value
-                  ? "bg-[#1b4332] text-white"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
               }`}
             >
@@ -607,7 +607,7 @@ export default function AdminEnrolmentsPage() {
                 onChange={(e) => setRejectReason(e.target.value)}
                 placeholder="e.g. Payment proof is illegible, please re-upload a clear copy."
                 rows={3}
-                className="w-full text-xs border border-slate-300 bg-white px-2.5 py-1.5 rounded-xs focus:outline-none focus:border-[#1b4332] resize-none"
+                className="w-full text-xs border border-slate-300 bg-white px-2.5 py-1.5 rounded-xs focus:outline-none focus:border-primary resize-none"
               />
             </div>
           </div>

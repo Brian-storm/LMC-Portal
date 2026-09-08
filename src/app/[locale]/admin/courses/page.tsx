@@ -62,7 +62,7 @@ export default function AdminCoursesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-6 h-6 animate-spin text-[#1b4332]" />
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
     );
   }
@@ -83,12 +83,12 @@ export default function AdminCoursesPage() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-serif font-bold text-[#1b4332]">Course Management</h1>
+          <h1 className="text-xl font-serif font-bold text-primary">Course Management</h1>
           <p className="text-xs text-slate-500 mt-0.5">{courses.length} courses</p>
         </div>
         <Link
           href={`/${locale}/admin/courses/new`}
-          className="inline-flex items-center space-x-1 bg-[#1b4332] hover:bg-[#112a1f] text-white text-xs font-bold px-3 py-2 rounded-xs transition-colors"
+          className="inline-flex items-center space-x-1 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold px-3 py-2 rounded-xs transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>New Course</span>
@@ -126,7 +126,7 @@ export default function AdminCoursesPage() {
                       <div className="font-mono text-[10px] text-slate-400">{course.slug}</div>
                     </td>
                     <td className="py-3 px-3 font-mono text-slate-600">{course.iaRefNumber ?? "—"}</td>
-                    <td className="py-3 px-3 font-bold text-[#1b4332]">{course.cpdHours}h</td>
+                    <td className="py-3 px-3 font-bold text-primary">{course.cpdHours}h</td>
                     <td className="py-3 px-3 font-mono text-slate-700">HK$ {course.price.toFixed(2)}</td>
                     <td className="py-3 px-3">
                       <span className="flex items-center gap-1 text-slate-600">

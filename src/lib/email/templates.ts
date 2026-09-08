@@ -21,13 +21,13 @@ export function buildEmailContent(
   <style>
     body { font-family: Arial, Helvetica, sans-serif; color: #333; line-height: 1.6; }
     .container { max-width: 600px; margin: 0 auto; padding: 24px; }
-    .header { border-bottom: 2px solid #1b4332; padding-bottom: 12px; margin-bottom: 20px; }
-    .header h1 { color: #1b4332; font-size: 18px; margin: 0; }
+    .header { border-bottom: 2px solid #1e2e14; padding-bottom: 12px; margin-bottom: 20px; }
+    .header h1 { color: #1e2e14; font-size: 18px; margin: 0; }
     .header p { color: #666; font-size: 12px; margin: 4px 0 0; }
     .greeting { font-size: 14px; margin-bottom: 16px; }
     .body-text { font-size: 13px; margin-bottom: 16px; }
     table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-    th { background: #1b4332; color: #fff; padding: 8px 12px; text-align: left; font-size: 12px; }
+    th { background: #1e2e14; color: #fff; padding: 8px 12px; text-align: left; font-size: 12px; }
     td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 13px; }
     .total { font-weight: 700; font-size: 14px; text-align: right; margin-top: 8px; }
     .footer { border-top: 1px solid #ccc; padding-top: 12px; margin-top: 24px; font-size: 11px; color: #999; }

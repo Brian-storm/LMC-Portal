@@ -49,7 +49,7 @@ export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
   };
 
   return (
-    <section className="bg-[#1b4332] text-white py-14 border-t border-emerald-900/50">
+    <section className="bg-primary-deep text-white py-14 border-t border-emerald-900/50">
       <div className="container mx-auto px-4 max-w-4xl text-center space-y-6">
         <div className="space-y-2">
           <span className="text-[11px] font-semibold uppercase tracking-widest text-emerald-600">

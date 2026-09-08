@@ -48,7 +48,7 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
   return (
     <div className="min-h-screen bg-[#f2f6f3] flex">
       {/* Sidebar */}
-      <aside className="w-56 bg-[#1b4332] text-emerald-100 flex flex-col shrink-0">
+      <aside className="w-56 bg-primary-deep text-emerald-100 flex flex-col shrink-0">
         {/* Brand */}
         <div className="px-4 py-5 border-b border-emerald-800">
           <Link href={`/${locale}/admin`} className="block">

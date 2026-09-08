@@ -29,12 +29,12 @@ export default async function TermsPage({ params }: PageProps) {
         items={[{ label: dict.breadcrumbs.terms, href: "/terms" }]}
         dict={dict.breadcrumbs}
       />
-      <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans selection:bg-[#1b4332] selection:text-white">
+      <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans selection:bg-primary selection:text-primary-foreground">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
           <Link
             href={`/${locale}`}
-            className="flex items-center space-x-1.5 hover:text-[#1b4332] transition-colors group"
+            className="flex items-center space-x-1.5 hover:text-primary transition-colors group"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
             <span>{t.backToPortal}</span>
@@ -45,10 +45,10 @@ export default async function TermsPage({ params }: PageProps) {
           </div>
         </div>
 
-        <header className="bg-white border border-slate-300 border-t-4 border-t-[#1b4332] p-8 shadow-2xs space-y-4">
+        <header className="bg-white border border-slate-300 border-t-4 border-t-primary p-8 shadow-2xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200">
-            <div className="flex items-center space-x-2 text-[11px] font-bold text-[#1b4332] uppercase tracking-wider">
-              <Building2 className="w-4 h-4 text-[#1b4332]" />
+            <div className="flex items-center space-x-2 text-[11px] font-bold text-primary uppercase tracking-wider">
+              <Building2 className="w-4 h-4 text-primary" />
               <span>{t.companyHeader}</span>
             </div>
             <div className="flex items-center space-x-1 text-[11px] font-mono text-slate-500">
@@ -62,7 +62,7 @@ export default async function TermsPage({ params }: PageProps) {
               <Scale className="w-3.5 h-3.5 text-emerald-800" />
               <span>{t.statutoryBadge}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1b4332] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary tracking-tight">
               {t.pageTitle}
             </h1>
             <p className="text-slate-500 text-xs font-mono pt-1">
@@ -77,8 +77,8 @@ export default async function TermsPage({ params }: PageProps) {
         </header>
 
         <main className="bg-white border border-slate-300 p-8 sm:p-12 shadow-2xs space-y-10 text-xs sm:text-sm leading-relaxed text-slate-700">
-          <div className="border-l-4 border-[#1b4332] bg-slate-50/90 p-5 border-y border-r border-slate-200 space-y-2">
-            <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-[#1b4332]">
+          <div className="border-l-4 border-primary bg-slate-50/90 p-5 border-y border-r border-slate-200 space-y-2">
+            <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-primary">
               <AlertTriangle className="w-4 h-4 text-amber-700" />
               <span>{t.bindingNoticeTitle}</span>
             </div>
@@ -113,15 +113,15 @@ export default async function TermsPage({ params }: PageProps) {
           </Section>
 
           <section className="space-y-4">
-            <h2 className="text-sm sm:text-base font-serif font-bold text-[#1b4332] border-b border-slate-200 pb-2.5 flex items-center gap-2 uppercase tracking-wide">
-              <Building2 className="w-4 h-4 text-[#1b4332]" />
+            <h2 className="text-sm sm:text-base font-serif font-bold text-primary border-b border-slate-200 pb-2.5 flex items-center gap-2 uppercase tracking-wide">
+              <Building2 className="w-4 h-4 text-primary" />
               <span>{t.s5Title}</span>
             </h2>
             <p>{t.s5Para1}</p>
             <p>{t.s5Para2}</p>
 
             <div className="bg-[#f6f8f6] border border-slate-300 p-5 rounded-xs text-xs space-y-2 font-mono text-slate-800">
-              <div className="flex items-center space-x-1.5 text-[#1b4332] font-bold pb-1 border-b border-slate-200">
+              <div className="flex items-center space-x-1.5 text-primary font-bold pb-1 border-b border-slate-200">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
                 <span>{t.contactTitle}</span>
               </div>
@@ -147,7 +147,7 @@ export default async function TermsPage({ params }: PageProps) {
         <div className="pt-2 pb-12 flex flex-col sm:flex-row items-center justify-between text-xs font-semibold">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center space-x-1.5 text-[#1b4332] hover:text-emerald-900 tracking-wider uppercase bg-white px-4 py-2.5 border border-slate-300 shadow-2xs transition-colors"
+            className="inline-flex items-center space-x-1.5 text-primary hover:text-emerald-900 tracking-wider uppercase bg-white px-4 py-2.5 border border-slate-300 shadow-2xs transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{t.returnHome}</span>
@@ -174,8 +174,8 @@ function Section({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm sm:text-base font-serif font-bold text-[#1b4332] border-b border-slate-200 pb-2.5 flex items-center gap-2 uppercase tracking-wide">
-        <Icon className="w-4 h-4 text-[#1b4332]" />
+      <h2 className="text-sm sm:text-base font-serif font-bold text-primary border-b border-slate-200 pb-2.5 flex items-center gap-2 uppercase tracking-wide">
+        <Icon className="w-4 h-4 text-primary" />
         <span>{title}</span>
       </h2>
       {children}

@@ -54,7 +54,7 @@ export default function AdminDashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-6 h-6 animate-spin text-[#1b4332]" />
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
     );
   }
@@ -74,14 +74,14 @@ export default function AdminDashboardPage() {
     { label: "Total Enrolments", value: stats.totalEnrolments, color: "text-slate-900" },
     { label: "Pending", value: stats.pendingCount, color: "text-amber-700" },
     { label: "Verified", value: stats.verifiedCount, color: "text-emerald-700" },
-    { label: "Active Courses", value: stats.courseCount, color: "text-[#1b4332]" },
+    { label: "Active Courses", value: stats.courseCount, color: "text-primary" },
   ];
 
   return (
     <div className="p-6 space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-xl font-serif font-bold text-[#1b4332]">Admin Dashboard</h1>
+        <h1 className="text-xl font-serif font-bold text-primary">Admin Dashboard</h1>
         <p className="text-xs text-slate-500 mt-0.5">CPD Compliance & Administration Portal</p>
       </div>
 
@@ -101,7 +101,7 @@ export default function AdminDashboardPage() {
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">Recent Submissions</h2>
           <Link
             href={`/${locale}/admin/enrolments`}
-            className="text-[10px] font-bold text-[#1b4332] hover:underline flex items-center"
+            className="text-[10px] font-bold text-primary hover:underline flex items-center"
           >
             View All <ArrowRight className="w-3 h-3 ml-0.5" />
           </Link>

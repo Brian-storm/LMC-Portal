@@ -20,11 +20,11 @@ export const styles = StyleSheet.create({
     padding: 40,
     fontFamily: "Noto Sans SC",
     fontSize: 10,
-    color: "#1b4332",
+    color: "#1e2e14",
   },
   header: {
     borderBottomWidth: 2,
-    borderBottomColor: "#1b4332",
+    borderBottomColor: "#1e2e14",
     paddingBottom: 12,
     marginBottom: 20,
     flexDirection: "row",
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   companyName: {
     fontSize: 18,
     fontWeight: 700,
-    color: "#1b4332",
+    color: "#1e2e14",
   },
   companySub: {
     fontSize: 9,
@@ -48,13 +48,13 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 700,
     textAlign: "right",
-    color: "#1b4332",
+    color: "#1e2e14",
   },
   receiptTitleZh: {
     fontSize: 12,
     fontWeight: 700,
     textAlign: "right",
-    color: "#1b4332",
+    color: "#1e2e14",
     marginTop: 2,
   },
   metaRow: {
@@ -80,16 +80,16 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 11,
     fontWeight: 700,
-    color: "#1b4332",
+    color: "#1e2e14",
   },
   tableHeader: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: "#1b4332",
+    borderBottomColor: "#1e2e14",
     paddingVertical: 6,
     fontSize: 9,
     fontWeight: 700,
-    color: "#1b4332",
+    color: "#1e2e14",
   },
   tableRow: {
     flexDirection: "row",
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
   },
   stampBox: {
     borderWidth: 1,
-    borderColor: "#1b4332",
+    borderColor: "#1e2e14",
     padding: 10,
     borderRadius: 4,
     width: 200,
@@ -126,13 +126,13 @@ export const styles = StyleSheet.create({
   },
   stampText: {
     fontSize: 8,
-    color: "#1b4332",
+    color: "#1e2e14",
     textAlign: "center",
   },
   stampTitle: {
     fontSize: 10,
     fontWeight: 700,
-    color: "#1b4332",
+    color: "#1e2e14",
     marginBottom: 4,
   },
   footer: {

@@ -14,7 +14,7 @@ export default function NewCourseModulePlaceholder() {
 
   return (
     <div className="bg-[#f6f8f6] text-slate-800 min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-sans flex items-center justify-center">
-      <div className="max-w-md w-full bg-white border border-slate-300 p-6 shadow-2xs space-y-5 text-center border-t-4 border-t-[#1b4332]">
+      <div className="max-w-md w-full bg-white border border-slate-300 p-6 shadow-2xs space-y-5 text-center border-t-4 border-t-primary">
         {/* Status Badge */}
         <div className="inline-flex items-center space-x-1.5 bg-amber-50 border border-amber-200 text-amber-900 px-2.5 py-1 text-xs font-mono rounded-xs">
           <Construction className="w-3.5 h-3.5 text-amber-700 shrink-0" />
@@ -23,7 +23,7 @@ export default function NewCourseModulePlaceholder() {
 
         {/* Header & Description */}
         <div className="space-y-2">
-          <h1 className="text-xl font-serif font-bold text-[#1b4332]">
+          <h1 className="text-xl font-serif font-bold text-primary">
             New Course Module
           </h1>
           <p className="text-xs text-slate-600 leading-relaxed">
@@ -58,7 +58,7 @@ export default function NewCourseModulePlaceholder() {
           </Link>
           <Link
             href={`/${locale}/admin`}
-            className="flex-1 inline-flex items-center justify-center space-x-1.5 bg-[#1b4332] hover:bg-[#112a1f] text-white font-bold px-3 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors shadow-2xs"
+            className="flex-1 inline-flex items-center justify-center space-x-1.5 bg-primary hover:bg-primary/80 text-primary-foreground font-bold px-3 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors shadow-2xs"
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span>Dashboard</span>

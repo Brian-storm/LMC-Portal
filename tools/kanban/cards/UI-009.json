@@ -1,0 +1,123 @@
+{
+  "id": "UI-009",
+  "title": "硬編碼 #1b4332 遷移至 primary token（含深度盤點前置作業）",
+  "content": "將散落在元件中的硬編碼深翡翠 #1b4332 遷移至 design token (bg-primary / text-primary / border-primary)。此卡分兩階段：第一階段為深度盤點 -- 逐檔審查 215 處 #1b4332、7 處 #2d6a4f 與 emerald-* 的用途分類，確認哪些該換成 primary token、哪些是刻意保留的深色區塊背景（如 Hero、ConsultationForm、Admin 側邊欄、dashboard）並產出對照表；第二階段（等待人工核准後才實作）依對照表逐檔替換。",
+  "stage": "done",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-08",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "視覺與色票更新",
+  "track": "frontend",
+  "dependsOn": ["UI-008"],
+  "order": 50,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "tools/kanban/cards/UI-009.json",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/app/[locale]/(portal)/dashboard/page.tsx",
+    "src/app/[locale]/privacy/page.tsx",
+    "src/app/[locale]/terms/page.tsx",
+    "src/app/[locale]/register/register-form.tsx",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/components/courses/CourseFilters.tsx",
+    "src/components/courses/CourseCard.tsx",
+    "src/components/receipt/ReceiptView.tsx",
+    "src/components/home/HeroCarousel.tsx",
+    "src/components/home/ConsultationForm.tsx",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/app/[locale]/admin/page.tsx",
+    "src/app/[locale]/admin/courses/page.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/app/[locale]/login/login-form.tsx",
+    "src/app/[locale]/contact/page.tsx",
+    "src/components/courses/CourseHeader.tsx",
+    "src/components/courses/CourseList.tsx",
+    "src/components/courses/CoursesView.tsx",
+    "src/app/[locale]/admin/courses/new/page.tsx",
+    "src/lib/email/templates.ts",
+    "src/lib/receipt/styles.ts"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "215 處 #1b4332 + 7 處 #2d6a4f 已全數遷移至 design token",
+      "元件 .tsx: text-[#1b4332]→text-primary, bg-[#1b4332]→bg-primary, border-[#1b4332]→border-primary",
+      "深色區塊 (Hero, ConsultationForm, CoursesView banner, Admin 側邊欄, dashboard banner) → bg-primary-deep",
+      "hover 色 #112a1f→hover:bg-primary/80, active #091711→active:bg-primary/90, border #0d2118→border-primary/40, 漸層 #2d6a4f→primary/80",
+      "新增 --primary-hover (#4b7728) 與 --primary-deep (#1e2e14) token 至 globals.css",
+      "lib 檔案 (receipt/styles.ts, email/templates.ts) 因 PDF/email 不支援 CSS var，改用 primary-deep hex #1e2e14",
+      "typecheck + lint 通過"
+    ],
+    "residual": ""
+  },
+  "comments": [
+    "User: 先深度盤點不要立刻改；等指示再實作。",
+    "後續任務：EnrollmentWizard Organization 分頁 toggle 已改為 bg-accent (amber/orange) 以區分 UX"
+  ],
+  "acceptance": [
+    "產出 #1b4332 逐檔對照表：每處分類為『換 primary token』或『保留深色區塊背景』並附理由",
+    "深色區塊（Hero、ConsultationForm、Admin 側邊欄、含 emerald-950/900/800 的區域）依據語意決定保留或改為新色票",
+    "lib 檔案 (receipt/styles.ts, email/templates.ts) 的 inline style 改用 var(--primary) 或共用色彩常數",
+    "替換後 typecheck、lint 通過",
+    "替換後目視確認對比度與品牌一致性"
+  ],
+  "files": [
+    "src/app/globals.css",
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/app/[locale]/(portal)/dashboard/page.tsx",
+    "src/app/[locale]/privacy/page.tsx",
+    "src/app/[locale]/terms/page.tsx",
+    "src/app/[locale]/register/register-form.tsx",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/components/courses/CourseFilters.tsx",
+    "src/components/courses/CourseCard.tsx",
+    "src/components/receipt/ReceiptView.tsx",
+    "src/app/[locale]/login/login-form.tsx",
+    "src/app/[locale]/contact/page.tsx",
+    "src/app/[locale]/admin/page.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/app/[locale]/admin/courses/page.tsx",
+    "src/app/[locale]/admin/courses/new/page.tsx",
+    "src/app/[locale]/(portal)/dashboard/enrolments/page.tsx",
+    "src/app/[locale]/(portal)/dashboard/enrolments/[enrolmentId]/page.tsx",
+    "src/components/courses/CourseHeader.tsx",
+    "src/components/courses/CourseList.tsx",
+    "src/components/courses/CoursesView.tsx",
+    "src/components/home/HeroCarousel.tsx",
+    "src/components/home/ConsultationForm.tsx",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/lib/receipt/styles.ts",
+    "src/lib/email/templates.ts",
+    "ai/context/design-system.md"
+  ],
+  "verification": "深度盤點階段：輸出對照表 + rg 統計；實作階段（待核准）：typecheck、lint、目視確認"
+}
