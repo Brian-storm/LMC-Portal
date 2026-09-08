@@ -644,9 +644,6 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           fieldErrors.iaLicenseNo ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-[#1b4332]"
                         }`}
                       />
-                      <p className="text-[10px] text-slate-500">
-                        {dict.formLabels.iaLicenseHint}
-                      </p>
                       {fieldErrors.iaLicenseNo && (
                         <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
                           <AlertCircle className="w-3 h-3 shrink-0" />

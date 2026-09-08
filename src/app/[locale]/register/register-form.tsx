@@ -15,6 +15,7 @@ import {
   ArrowRight,
   AlertCircle,
   CheckCircle2,
+  ShieldCheck,
 } from "lucide-react";
 import { RegisterPageDict } from "@/dictionaries/types";
 
@@ -58,7 +59,10 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [idDocNumber, setIdDocNumber] = useState("");
+  const [idDocType, setIdDocType] = useState<"HKID" | "PASSPORT">("HKID");
+  const [hkidPrefix, setHkidPrefix] = useState("");
+  const [hkidCheckDigit, setHkidCheckDigit] = useState("");
+  const [passportNumber, setPassportNumber] = useState("");
   const [iaLicense, setIaLicense] = useState("");
   const [organization, setOrganization] = useState("");
 
@@ -74,6 +78,11 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
     setFieldErrors({});
 
     try {
+      // Compute combined identity document number from split HKID fields
+      const computedIdDocNumber = idDocType === "HKID"
+        ? `${hkidPrefix}(${hkidCheckDigit.toUpperCase()})`
+        : passportNumber.trim();
+
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +92,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
           email,
           password,
           phone,
-          idDocNumber,
+          idDocNumber: computedIdDocNumber,
           iaLicense: iaLicense || undefined,
           organization: organization || undefined,
         }),
@@ -168,7 +177,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
           <form onSubmit={handleSubmit} className="space-y-3">
             <FieldRow>
               <div className="space-y-1">
-                <label className={labelClass}>{dict.nameZhLabel}</label>
+                <label className={labelClass}>{dict.nameZhLabel} <span className="text-red-600">*</span></label>
                 <div className="relative">
                   <User className={iconClass} />
                   <input
@@ -183,7 +192,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
                 <FieldError message={fieldErrors.nameZh?.[0]} />
               </div>
               <div className="space-y-1">
-                <label className={labelClass}>{dict.nameEnLabel}</label>
+                <label className={labelClass}>{dict.nameEnLabel} <span className="text-red-600">*</span></label>
                 <div className="relative">
                   <User className={iconClass} />
                   <input
@@ -200,7 +209,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             </FieldRow>
 
             <div className="space-y-1">
-              <label className={labelClass}>{dict.emailLabel}</label>
+              <label className={labelClass}>{dict.emailLabel} <span className="text-red-600">*</span></label>
               <div className="relative">
                 <Mail className={iconClass} />
                 <input
@@ -216,7 +225,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             </div>
 
             <div className="space-y-1">
-              <label className={labelClass}>{dict.passwordLabel}</label>
+              <label className={labelClass}>{dict.passwordLabel} <span className="text-red-600">*</span></label>
               <div className="relative">
                 <Lock className={iconClass} />
                 <input
@@ -234,7 +243,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
 
             <FieldRow>
               <div className="space-y-1">
-                <label className={labelClass}>{dict.phoneLabel}</label>
+                <label className={labelClass}>{dict.phoneLabel} <span className="text-red-600">*</span></label>
                 <div className="relative">
                   <Phone className={iconClass} />
                   <input
@@ -248,20 +257,76 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
                 </div>
                 <FieldError message={fieldErrors.phone?.[0]} />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 sm:col-span-2">
                 <label className={labelClass}>{dict.idDocLabel}</label>
-                <div className="relative">
-                  <FileText className={iconClass} />
-                  <input
-                    type="text"
-                    required
-                    value={idDocNumber}
-                    onChange={(e) => setIdDocNumber(e.target.value)}
-                    className={inputClass}
-                    placeholder={dict.idDocPlaceholder}
-                  />
+                <div className="flex space-x-2 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setIdDocType("HKID")}
+                    className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
+                      idDocType === "HKID"
+                        ? "bg-[#1b4332] text-white border-[#1b4332]"
+                        : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
+                    }`}
+                  >
+                    <ShieldCheck className="w-3 h-3 inline mr-1" />
+                    {dict.idDocHkid}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIdDocType("PASSPORT")}
+                    className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
+                      idDocType === "PASSPORT"
+                        ? "bg-[#1b4332] text-white border-[#1b4332]"
+                        : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
+                    }`}
+                  >
+                    <FileText className="w-3 h-3 inline mr-1" />
+                    {dict.idDocPassport}
+                  </button>
                 </div>
-                <FieldError message={fieldErrors.idDocNumber?.[0]} />
+                {idDocType === "HKID" && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <input
+                        type="text"
+                        value={hkidPrefix}
+                        onChange={(e) => setHkidPrefix(e.target.value.toUpperCase())}
+                        className={inputClass}
+                        placeholder={dict.hkidPrefixPlaceholder}
+                        maxLength={8}
+                      />
+                      <FieldError message={fieldErrors.hkidPrefix?.[0]} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">(</span>
+                        <input
+                          type="text"
+                          value={hkidCheckDigit}
+                          onChange={(e) => setHkidCheckDigit(e.target.value.replace(/[^0-9A-Za-z]/g, "").slice(0, 1))}
+                          maxLength={1}
+                          className={inputClassNoIcon + " text-center"}
+                          placeholder="7"
+                        />
+                        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">)</span>
+                      </div>
+                      <FieldError message={fieldErrors.hkidCheckDigit?.[0]} />
+                    </div>
+                  </div>
+                )}
+                {idDocType === "PASSPORT" && (
+                  <div className="space-y-1">
+                    <input
+                      type="text"
+                      value={passportNumber}
+                      onChange={(e) => setPassportNumber(e.target.value)}
+                      className={inputClass}
+                      placeholder={dict.passportPlaceholder}
+                    />
+                    <FieldError message={fieldErrors.passportNumber?.[0]} />
+                  </div>
+                )}
               </div>
             </FieldRow>
 

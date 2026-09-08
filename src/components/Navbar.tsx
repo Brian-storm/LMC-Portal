@@ -78,7 +78,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
                 href={`/${currentLocale}/login`}
                 className="no-scale bg-accent hover:bg-navbar-accent-hover text-accent-foreground font-bold px-3 py-1 text-xs uppercase tracking-wider transition-colors rounded-xs shadow-xs"
               >
-                Sign in
+                {dict.signIn}
               </Link>
             )}
           </div>

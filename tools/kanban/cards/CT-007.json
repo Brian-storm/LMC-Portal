@@ -1,0 +1,66 @@
+{
+  "id": "CT-007",
+  "title": "將身份證明文件及 IA 牌照設為必填欄位（註冊 + 報名）",
+  "content": "Make ID document number and IA license number required fields in both registration form and enrollment wizard.",
+  "stage": "blocked",
+  "risk": "medium",
+  "owner": "TBD",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-07",
+  "epic": "報名與結帳",
+  "userStory": "註冊與報名表單必填欄位確認",
+  "track": "n/a",
+  "dependsOn": [],
+  "order": 44,
+  "readiness": {
+    "problem_clear": false,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": false,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": "BLOCKED: Need product confirmation on whether these fields should be mandatory. Currently ID doc is optional in registration (HKID split with no asterisk/required flag) and IA license is optional in registration. In enrollment, IA license is required but ID doc is required via HKID split. Need to confirm desired behavior."
+  },
+  "comments": [
+    "BLOCKED — awaiting product decision on whether ID doc and IA license should be required in registration and enrollment forms"
+  ],
+  "acceptance": [
+    "Registration form: ID document (HKID or Passport) is marked as required with red asterisk",
+    "Registration form: IA license number is marked as required with red asterisk",
+    "Enrollment wizard: IA license number remains required (already required)",
+    "Enrollment wizard: ID document remains required (already required)",
+    "All 3 locales reflect the required-field labels correctly",
+    "Form validation blocks submission if required fields are empty"
+  ],
+  "files": [
+    "src/app/[locale]/register/register-form.tsx",
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "verification": "Submit registration form with empty ID doc → error shown. Submit with empty IA license → error shown. Submit enrollment with empty IA license → error shown. All 3 locales display correct required labels."
+}

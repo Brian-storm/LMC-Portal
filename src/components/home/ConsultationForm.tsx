@@ -12,6 +12,7 @@ interface NewsletterFormProps {
 
 export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
   const [formData, setFormData] = useState({ fullName: "", email: "" });
+  const [topic, setTopic] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -31,16 +32,19 @@ export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
     dict?.privacyPrefix ||
     "We respect your privacy. View our ";
   const privacyLinkText = dict?.privacyLinkText || "Privacy Policy";
+  const topicPlaceholder = dict?.topicPlaceholder || "Select a topic...";
+  const topicOptions: string[] = dict?.topicOptions || ["General Enquiry", "Course Registration", "Corporate Training", "CPD Verification", "Other"];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.email) return;
+    if (!formData.fullName || !formData.email || !topic) return;
 
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setFormData({ fullName: "", email: "" });
+      setTopic("");
     }, 800);
   };
 
@@ -67,8 +71,23 @@ export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
         ) : (
           <form
             onSubmit={handleSubscribe}
-            className="max-w-xl mx-auto space-y-3 sm:space-y-0 sm:flex sm:gap-3"
+            className="max-w-xl mx-auto space-y-3"
           >
+            <div className="relative">
+              <select
+                required
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                className="w-full bg-emerald-950 border border-emerald-800 rounded-xs px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors appearance-none cursor-pointer"
+              >
+                <option value="" disabled className="text-slate-500">{topicPlaceholder}</option>
+                {topicOptions.map((opt) => (
+                  <option key={opt} value={opt} className="text-white">{opt}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:flex sm:gap-3 space-y-3 sm:space-y-0">
             <div className="relative flex-1">
               <User className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
@@ -104,6 +123,7 @@ export function ConsultationForm({ currentLocale, dict }: NewsletterFormProps) {
             >
               {isSubmitting ? submittingButton : submitButton}
             </button>
+            </div>
           </form>
         )}
 
