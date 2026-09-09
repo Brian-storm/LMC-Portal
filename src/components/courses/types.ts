@@ -17,6 +17,7 @@ export interface Instructor {
 }
 
 export interface SyllabusModule {
+  id?: string;
   moduleNumber: number;
   title: string;
   duration: string;
@@ -28,6 +29,7 @@ export interface ScheduleSession {
   dateAndTime: string;
   venue: string;
   quotaRemaining: number;
+  topics: { syllabusItem: SyllabusModule }[];
 }
 
 export interface CourseReview {
@@ -54,6 +56,8 @@ export interface Course {
   cpdHours: number | string;
   cpdHoursIa?: number | string;
   unitPrice?: number | string;
+  cpdRulesZh?: string;
+  cpdRulesEn?: string;
   deliveryMode: string;
   language: string;
   fee: string;

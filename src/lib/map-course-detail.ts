@@ -32,6 +32,18 @@ interface ApiSchedule {
   dateAndTime: string;
   venue: string;
   quotaRemaining: number;
+  topics: {
+    sortOrder: number;
+    syllabusItem: {
+      id: string;
+      moduleNumber: number;
+      titleZh: string;
+      titleEn: string;
+      duration: string;
+      topicsZh: string[];
+      topicsEn: string[];
+    };
+  }[];
 }
 
 /** Raw API review */
@@ -66,7 +78,11 @@ export interface ApiCourseDetail {
   iaRefNumber: string | null;
   accreditationBody: string | null;
   cpdHours: number;
+  cpdHoursIa: number | null;
+  cpdRulesZh: string | null;
+  cpdRulesEn: string | null;
   price: number;
+  unitPrice: number | null;
   capacity: number;
   registrationStatus: string;
   deliveryMode: string | null;
@@ -94,6 +110,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   }));
 
   const syllabus: SyllabusModule[] = c.syllabusItems.map((si) => ({
+    id: si.id,
     moduleNumber: si.moduleNumber,
     title: localized(si.titleZh, si.titleEn),
     duration: si.duration,
@@ -105,6 +122,15 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     dateAndTime: s.dateAndTime,
     venue: s.venue,
     quotaRemaining: s.quotaRemaining,
+    topics: s.topics.map((t) => ({
+      syllabusItem: {
+        id: t.syllabusItem.id,
+        moduleNumber: t.syllabusItem.moduleNumber,
+        title: localized(t.syllabusItem.titleZh, t.syllabusItem.titleEn),
+        duration: t.syllabusItem.duration,
+        topics: isZh ? t.syllabusItem.topicsZh : t.syllabusItem.topicsEn,
+      },
+    })),
   }));
 
   const reviews: CourseReview[] = c.reviews.map((r) => ({
@@ -129,6 +155,10 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     description: localized(c.descriptionZh, c.descriptionEn),
     category: c.category as DetailedCourse["category"],
     cpdHours: c.cpdHours,
+    cpdHoursIa: c.cpdHoursIa ?? undefined,
+    unitPrice: c.unitPrice ?? undefined,
+    cpdRulesZh: c.cpdRulesZh ?? undefined,
+    cpdRulesEn: c.cpdRulesEn ?? undefined,
     deliveryMode: c.deliveryMode ?? "",
     language: c.language ?? "",
     fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,

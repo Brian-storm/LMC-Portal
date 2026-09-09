@@ -118,6 +118,15 @@ export function CourseDetailView({
           >
             {course.description}
           </p>
+
+          {/* CPD Rules */}
+          {(course.cpdRulesZh || course.cpdRulesEn) && (
+            <div className="mt-3 bg-amber-50/80 border border-amber-200 p-3 rounded-xs text-xs text-amber-900 space-y-1">
+              <p className="leading-relaxed">
+                {course.cpdRulesZh || course.cpdRulesEn}
+              </p>
+            </div>
+          )}
         </header>
 
         {/* ------------------------------------------------------------------ */}
@@ -226,6 +235,20 @@ export function CourseDetailView({
                           {dict.labels?.venue}: {sch.venue}
                         </span>
                       </div>
+                      {sch.topics && sch.topics.length > 0 && (
+                        <div className="mt-1.5 space-y-1">
+                          {sch.topics.map((t, i) => (
+                            <div key={t.syllabusItem.id || i} className="flex items-start gap-1.5 text-slate-600" style={{ fontSize: "9.5px" }}>
+                              <span className="text-primary font-bold select-none shrink-0 mt-0.5">-</span>
+                              <div>
+                                <span className="font-semibold text-slate-800">{t.syllabusItem.title}</span>
+                                <span className="text-slate-400 mx-1">·</span>
+                                <span>{t.syllabusItem.duration}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <div className="shrink-0">
@@ -346,12 +369,22 @@ export function CourseDetailView({
                 >
                   {statusBadge.text}
                 </span>
-                <span
-                  className="text-slate-700 font-bold"
-                  style={{ fontSize: "10px" }}
-                >
-                  {course.cpdHours} {dict.hours} CPD
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="text-slate-700 font-bold"
+                    style={{ fontSize: "10px" }}
+                  >
+                    {course.cpdHours} {dict.hours} CPD
+                  </span>
+                  {course.cpdHoursIa && (
+                    <span
+                      className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-xs border border-emerald-200"
+                      style={{ fontSize: "8px" }}
+                    >
+                      IA {course.cpdHoursIa}h/session
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Course Fee Display */}
@@ -365,6 +398,14 @@ export function CourseDetailView({
                 <span className="text-2xl font-sans font-bold text-slate-900">
                   {course.fee}
                 </span>
+                {course.unitPrice && (
+                  <span
+                    className="text-slate-500 font-mono block mt-0.5"
+                    style={{ fontSize: "9px" }}
+                  >
+                    Unit Price: HKD {typeof course.unitPrice === 'number' ? course.unitPrice.toLocaleString() : course.unitPrice}
+                  </span>
+                )}
               </div>
 
               {/* Primary Action Links */}
