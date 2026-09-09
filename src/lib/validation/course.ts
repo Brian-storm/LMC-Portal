@@ -46,6 +46,8 @@ export const courseCreateSchema = z.object({
   category: z.string().min(1, "category is required"),
   iaRefNumber: z.string().optional(),
   accreditationBody: z.string().optional(),
+  cpdRulesZh: z.string().optional(),
+  cpdRulesEn: z.string().optional(),
   cpdHours: z.number().int().min(0, "cpdHours cannot be negative"),
   price: z.number().min(0, "price cannot be negative"),
   capacity: z.number().int().min(0, "capacity cannot be negative"),

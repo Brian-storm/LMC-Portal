@@ -91,6 +91,8 @@ model Course {
   category          String
   iaRefNumber       String?
   accreditationBody String?
+  cpdRulesZh        String?
+  cpdRulesEn        String?
   cpdHours          Int
   price             Decimal            @db.Decimal(10, 2)
   capacity          Int
