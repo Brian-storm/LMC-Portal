@@ -1,8 +1,8 @@
 {
   "id": "CD-011",
-  "title": "更新 CourseDetailView 顯示新欄位",
-  "content": "在 CourseDetailView 和 types.ts 中補上 CD-001~CD-010 新增欄位的 UI 呈現：\n- 證書資訊：顯示 certificateIssuer + certificateTitle\n- 雙重 CPD 標示：IA CPD Hours + MPFA Non-core CPD Hours\n- 授課語言細節：instructionLanguage, noteLanguage, qaLanguage\n- Syllabus 模組對應時段標示：每個 schedule 顯示對應的主題名稱\n- 退款政策區塊\n\n[待確認] 各新欄位在頁面上的具體位置和呈現方式，請確認 layout mockup 或提供指示。",
-  "stage": "blocked",
+  "title": "更新 CourseDetailView 顯示新欄位（我提案，你校閱）",
+  "content": "在 CourseDetailView 和 types.ts 中補上新欄位的 UI 呈現。\n\n✅ 決議：我先提案 layout，你再校閱調整。\n\n我的提案 layout 從上到下：\n\n1. **Header 區（既有的課程名稱、類別、狀態 badge）** → 不變\n2. **證書資訊區塊**（新增）\n   - 位置：放在 course 基本資訊下方，schedule 區塊上方\n   - 內容：icon + 「完成全部 6 堂可獲 [certificateIssuer] 頒發 [certificateTitle]」\n   - 使用 emerald badge 樣式\n\n3. **CPD 時數區塊**（修改）\n   - 位置：證書資訊下方\n   - 顯示：每堂 cpdHoursIa IA CPD Hours\n   - 現有 cpdHours 改為「學員總時數 = cpdHoursIa × 出席堂數」\n\n4. **課程時段（Schedules）區塊**（修改）\n   - 每個 Schedule 卡片下方顯示其 SyllabusItem 主題名稱（透過 ScheduleTopic）\n   - 例如：「14:15-15:45 | 主題2：乳癌診斷...」\n\n5. **退款政策 notice**（新增）\n   - 位置：放在「立即報名」CTA 按鈕上方\n   - 樣式：amber notice box，與 CPD notice 一致\n   - 文字：從字典讀取 dict.courseView.refundNotice\n\n需要你確認後開始實作。",
+  "stage": "backlog",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

@@ -1,8 +1,8 @@
 {
   "id": "CD-005",
-  "title": "新增退款政策欄位到 Course 模型",
-  "content": "course_details.md 第 128-130 行：已支付課程費用不可退還（除非未成功申請或課程取消），名額不可轉讓，不受理課程調換。\n\n需新增欄位：refundPolicyZh, refundPolicyEn (Text)。\n\n[待確認] 此政策文字是課程特有還是統一固定文字？目前 enrollment wizard Step 3 無退款政策顯示，要在哪個步驟呈現（Step 2 宣告區 / Step 3 付款前）？",
-  "stage": "blocked",
+  "title": "新增退款政策文字到字典檔（固定文字）",
+  "content": "course_details.md 第 128-130 行：已支付課程費用不可退還（除非未成功申請或課程取消），名額不可轉讓，不受理課程調換。\n\n✅ 決議：固定文字不存 DB。放入字典檔。文字內容：「如需退款，請聯絡我們的職員。」\n\n顯示位置：放在 enrollment wizard Step 4（付款頁面）的付款方式上方，作為警示 notice。\n\n實作計畫：\n1. 在 dict.enrollPage.step4 新增 refundNotice 鍵\n2. 更新所有語系字典\n3. 在 EnrollmentWizard Step 4 的付款選項上方新增 amber notice 區塊\n4. 樣式比照 Step 2 CPD notice（amber 背景、AlertCircle icon）\n\n注意：與 CD-001 無關。應移除 dependsOn CD-001。",
+  "stage": "backlog",
   "risk": "low",
   "owner": "Brian",
   "agent": "",
@@ -10,7 +10,7 @@
   "createdAt": "2026-09-09",
   "epic": "課程管理",
   "userStory": "課程資料結構補強",
-  "dependsOn": ["CD-001"],
+  "dependsOn": [],
   "order": 5,
   "readiness": {
     "problem_clear": false,

@@ -1,8 +1,8 @@
 {
   "id": "CD-009",
   "title": "建立 ScheduleTopic 關聯模型（時段-主題對應）",
-  "content": "course_details.md 第 27-43 行：每個日期對應特定主題 — 例如 09/09 14:15-15:45 = 主題2（乳癌），16:00-17:30 = 主題6（肺癌）。\n\n需新增：\n- model ScheduleTopic { scheduleId, syllabusItemId } — 多對多關聯\n\n[待確認] 目前 Schedule 的 dateAndTime 是單一字串，預計如何表示同一日期的兩個時段（14:15-15:45 和 16:00-17:30）？要拆成兩個 Schedule 紀錄，還是新增時段欄位？這個會影響 ScheduleTopic 的設計。",
-  "stage": "blocked",
+  "content": "course_details.md 第 27-43 行：每個日期有兩個時段，各對應一個主題。\n\n✅ 決議：同一日期的兩個時段各存為獨立 Schedule 紀錄（例如 09/09 有兩筆 Schedule：14:15-15:45 和 16:00-17:30）。不需要改 Schema。\n\n實作計畫：\n1. prisma/schema.prisma: 新增 ScheduleTopic 模型（scheduleId + syllabusItemId composite PK）\n2. Schedule 模型加入 topics 關聯：topics ScheduleTopic[]\n3. SyllabusItem 模型加入 schedules 關聯：schedules ScheduleTopic[]\n4. migration\n5. src/lib/validation/course.ts: courseCreateSchema / courseUpdateSchema 支援 nesting ScheduleTopic\n6. GET /api/courses/[slug]: include topics per schedule\n7. 前端 CourseDetailView 顯示每個時段對應的主題名稱（待 CD-011）\n\nThis is the same pattern as RegistrantSchedule (EN-008).",
+  "stage": "backlog",
   "risk": "low",
   "owner": "Brian",
   "agent": "",
