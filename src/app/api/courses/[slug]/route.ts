@@ -39,7 +39,28 @@ export async function GET(
           },
         },
         syllabusItems: { orderBy: { sortOrder: "asc" } },
-        schedules: { where: { isActive: true }, orderBy: { dateAndTime: "asc" } },
+        schedules: {
+          where: { isActive: true },
+          orderBy: { dateAndTime: "asc" },
+          include: {
+            topics: {
+              include: {
+                syllabusItem: {
+                  select: {
+                    id: true,
+                    moduleNumber: true,
+                    titleZh: true,
+                    titleEn: true,
+                    duration: true,
+                    topicsZh: true,
+                    topicsEn: true,
+                  },
+                },
+              },
+              orderBy: { sortOrder: "asc" },
+            },
+          },
+        },
         reviews: { orderBy: { date: "desc" } },
         faqs: { orderBy: { sortOrder: "asc" } },
       },

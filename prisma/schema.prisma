@@ -141,7 +141,7 @@ model CourseInstructor {
 }
 
 model SyllabusItem {
-  id           String @id @default(cuid())
+  id           String          @id @default(cuid())
   courseId     String
   moduleNumber Int
   titleZh      String
@@ -149,9 +149,10 @@ model SyllabusItem {
   duration     String
   topicsZh     String[]
   topicsEn     String[]
-  sortOrder    Int    @default(0)
+  sortOrder    Int             @default(0)
 
-  course       Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course        Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  scheduleTopics ScheduleTopic[]
 
   @@map("syllabus_items")
 }
@@ -164,8 +165,9 @@ model Schedule {
   quotaRemaining Int
   isActive       Boolean @default(true)
 
-  course         Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course         Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
   registrants    RegistrantSchedule[]
+  topics         ScheduleTopic[]
 
   @@map("schedules")
 }
@@ -229,6 +231,19 @@ model RegistrantSchedule {
 
   @@id([registrantId, scheduleId])
   @@map("registrant_schedules")
+}
+
+model ScheduleTopic {
+  scheduleId     String
+  syllabusItemId String
+  // Optional sort order within a schedule (if topics need ordering)
+  sortOrder      Int        @default(0)
+
+  schedule       Schedule     @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  syllabusItem   SyllabusItem @relation(fields: [syllabusItemId], references: [id], onDelete: Cascade)
+
+  @@id([scheduleId, syllabusItemId])
+  @@map("schedule_topics")
 }
 
 model Admin {
