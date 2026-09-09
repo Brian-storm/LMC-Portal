@@ -94,13 +94,16 @@ model Course {
   slug              String             @unique
   nameZh            String
   nameEn            String
+  nameCn            String?
   descriptionZh     String?
   descriptionEn     String?
+  descriptionCn     String?
   category          String
   iaRefNumber       String?
   accreditationBody String?
   cpdRulesZh        String?
   cpdRulesEn        String?
+  cpdRulesCn        String?
   cpdHours          Int
   cpdHoursIa        Decimal? @db.Decimal(4, 1)
   price             Decimal            @db.Decimal(10, 2)

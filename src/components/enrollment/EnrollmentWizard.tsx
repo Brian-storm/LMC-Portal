@@ -30,6 +30,7 @@ interface CourseData {
   id: string;
   nameZh: string;
   nameEn: string;
+  nameCn: string | null;
   price: string;
   unitPrice?: string;
   registrationStatus: string;
@@ -1389,7 +1390,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   {dict.summary.course}
                 </span>
                 <p className="font-serif font-bold text-slate-900 leading-snug mt-0.5">
-                  {locale === "en" ? course.nameEn : (course.nameZh || course.nameEn)}
+                  {locale === "en" ? course.nameEn : (locale === "zh-cn" ? (course.nameCn || course.nameZh) : course.nameZh)}
                 </p>
               </div>
 

@@ -53,6 +53,7 @@ interface EnrolmentCourse {
   slug: string;
   nameEn: string;
   nameZh: string;
+  nameCn: string | null;
   iaRefNumber: string | null;
   cpdHours: number;
 }
@@ -290,7 +291,8 @@ export default function AdminEnrolmentsPage() {
 
   // getCourseName: same locale-aware selection for course names
   const getCourseName = (e: Enrolment) => {
-    return locale === "zh-hk" || locale === "zh-cn" ? e.course.nameZh : e.course.nameEn;
+    if (locale === "zh-cn") return e.course.nameCn || e.course.nameZh;
+    return locale === "zh-hk" ? e.course.nameZh : e.course.nameEn;
   };
 
   // getStatusVariant: maps PaymentStatus to the corresponding Badge variant for consistent visual styling
@@ -347,6 +349,7 @@ export default function AdminEnrolmentsPage() {
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-4 animate-pulse">
                   <div className="h-3 w-32 bg-slate-200 rounded-xs" />
+                  <div className="h-3 w-20 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-40 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-20 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-16 bg-slate-200 rounded-xs" />
@@ -397,6 +400,7 @@ export default function AdminEnrolmentsPage() {
                 <thead>
                   <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
                     <th className="py-2.5 px-3">Enrollee</th>
+                    <th className="py-2.5 px-3">ID Doc</th>
                     <th className="py-2.5 px-3">Course</th>
                     <th className="py-2.5 px-3">Type</th>
                     <th className="py-2.5 px-3">Payment</th>
@@ -431,6 +435,15 @@ export default function AdminEnrolmentsPage() {
                           <div className="text-[10px] font-mono text-slate-400">
                             IA: {enrolment.user.iaLicense}
                           </div>
+                        )}
+                      </td>
+
+                      {/* ID Doc */}
+                      <td className="py-3 px-3 whitespace-nowrap">
+                        {enrolment.user.idDocNumber ? (
+                          <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
+                        ) : (
+                          <span className="text-slate-400">—</span>
                         )}
                       </td>
 

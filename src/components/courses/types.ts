@@ -58,6 +58,7 @@ export interface Course {
   unitPrice?: number | string;
   cpdRulesZh?: string;
   cpdRulesEn?: string;
+  cpdRulesCn?: string;
   deliveryMode: string;
   language: string;
   fee: string;

@@ -131,10 +131,12 @@ export function CourseDetailView({
           </p>
 
           {/* CPD Rules */}
-          {(course.cpdRulesZh || course.cpdRulesEn) && (
+          {(course.cpdRulesZh || course.cpdRulesEn || course.cpdRulesCn) && (
             <div className="mt-3 bg-amber-50/80 border border-amber-200 p-3 rounded-xs text-sm text-amber-900 space-y-1">
               <p className="leading-relaxed">
-                {course.cpdRulesZh || course.cpdRulesEn}
+                {currentLocale === "en" ? (course.cpdRulesEn || course.cpdRulesZh || course.cpdRulesCn) :
+                  currentLocale === "zh-cn" ? (course.cpdRulesCn || course.cpdRulesZh || course.cpdRulesEn) :
+                  (course.cpdRulesZh || course.cpdRulesCn || course.cpdRulesEn)}
               </p>
             </div>
           )}

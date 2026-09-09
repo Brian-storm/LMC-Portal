@@ -22,7 +22,7 @@ interface DashboardStats {
     paymentStatus: string;
     submittedAt: string;
     user: { nameEn: string; nameZh: string; email: string };
-    course: { nameEn: string; nameZh: string };
+    course: { nameEn: string; nameZh: string; nameCn: string | null };
   }[];
 }
 
@@ -125,7 +125,7 @@ export default function AdminDashboardPage() {
                     </span>
                   </td>
                   <td className="py-2 px-3 text-slate-700">
-                    {locale === "zh-hk" || locale === "zh-cn" ? e.course.nameZh : e.course.nameEn}
+                    {locale === "zh-cn" ? (e.course.nameCn || e.course.nameZh) : (locale === "en" ? e.course.nameEn : e.course.nameZh)}
                   </td>
                   <td className="py-2 px-3">
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 ${

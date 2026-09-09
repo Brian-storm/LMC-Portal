@@ -44,7 +44,7 @@ export async function GET() {
         take: 5,
         include: {
           user: { select: { nameEn: true, nameZh: true, email: true } },
-          course: { select: { nameEn: true, nameZh: true } },
+          course: { select: { nameEn: true, nameZh: true, nameCn: true } },
         },
       }),
     ]);

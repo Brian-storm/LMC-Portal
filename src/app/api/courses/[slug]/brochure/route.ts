@@ -33,7 +33,7 @@ let pdfBlob: Blob;
     let filename: string;
 
     // 1: For the GBA course, serve the actual syllabus PDF from the public directory
-    if (slug === "gba-healthcare-regulatory-frameworks") {
+    if (slug === "cpd-102") {
       const pdfPath = join(
         process.cwd(),
         "public",

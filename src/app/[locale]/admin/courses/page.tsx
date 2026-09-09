@@ -16,6 +16,7 @@ interface AdminCourse {
   slug: string;
   nameZh: string;
   nameEn: string;
+  nameCn: string | null;
   iaRefNumber: string | null;
   cpdHours: number;
   price: number;
@@ -121,7 +122,7 @@ export default function AdminCoursesPage() {
                   <tr key={course.id} className="hover:bg-slate-50/80">
                     <td className="py-3 px-3">
                       <div className="font-serif font-bold text-slate-900">
-                        {locale === "zh-hk" || locale === "zh-cn" ? course.nameZh : course.nameEn}
+                        {locale === "en" ? course.nameEn : (locale === "zh-cn" ? (course.nameCn || course.nameZh) : course.nameZh)}
                       </div>
                       <div className="font-mono text-[10px] text-slate-400">{course.slug}</div>
                     </td>

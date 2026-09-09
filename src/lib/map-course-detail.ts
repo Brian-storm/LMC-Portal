@@ -72,8 +72,10 @@ export interface ApiCourseDetail {
   slug: string;
   nameZh: string;
   nameEn: string;
+  nameCn: string | null;
   descriptionZh: string | null;
   descriptionEn: string | null;
+  descriptionCn: string | null;
   category: string;
   iaRefNumber: string | null;
   accreditationBody: string | null;
@@ -81,6 +83,7 @@ export interface ApiCourseDetail {
   cpdHoursIa: number | null;
   cpdRulesZh: string | null;
   cpdRulesEn: string | null;
+  cpdRulesCn: string | null;
   price: number;
   unitPrice: number | null;
   capacity: number;
@@ -97,10 +100,24 @@ export interface ApiCourseDetail {
 
 export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): DetailedCourse {
   const isZh = locale === "zh-hk" || locale === "zh-cn";
+  // zh-cn locale prefers the Simplified Chinese variant, falling back to
+  // Traditional (nameZh) and then English. zh-hk still uses Traditional first.
+  const isSimplified = locale === "zh-cn";
 
   /** Pick a locale-aware string from zh/en pair */
   const localized = (zh: string | null | undefined, en: string | null | undefined): string =>
     isZh ? (zh ?? en ?? "") : (en ?? zh ?? "");
+
+  // Three-way localized picker: Simplified → Traditional → English by locale
+  const localizedCn = (
+    cn: string | null | undefined,
+    zh: string | null | undefined,
+    en: string | null | undefined,
+  ): string => {
+    if (isSimplified) return cn ?? zh ?? en ?? "";
+    if (isZh) return zh ?? cn ?? en ?? "";
+    return en ?? zh ?? cn ?? "";
+  };
 
   const instructors: Instructor[] = c.instructors.map((ci) => ({
     id: ci.instructor.id,
@@ -152,14 +169,15 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   return {
     id: c.id,
     slug: c.slug,
-    title: localized(c.nameZh, c.nameEn),
-    description: localized(c.descriptionZh, c.descriptionEn),
+    title: localizedCn(c.nameCn, c.nameZh, c.nameEn),
+    description: localizedCn(c.descriptionCn, c.descriptionZh, c.descriptionEn),
     category: c.category as DetailedCourse["category"],
     cpdHours: c.cpdHours,
     cpdHoursIa: c.cpdHoursIa ?? undefined,
     unitPrice: c.unitPrice ?? undefined,
     cpdRulesZh: c.cpdRulesZh ?? undefined,
     cpdRulesEn: c.cpdRulesEn ?? undefined,
+    cpdRulesCn: c.cpdRulesCn ?? undefined,
     deliveryMode: c.deliveryMode ?? "",
     language: c.language ?? "",
     fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,

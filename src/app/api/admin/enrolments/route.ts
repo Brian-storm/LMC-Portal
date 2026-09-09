@@ -81,6 +81,7 @@ export async function GET(request: NextRequest) {
               slug: true,
               nameEn: true,
               nameZh: true,
+              nameCn: true,
               iaRefNumber: true,
               cpdHours: true,
               price: true,

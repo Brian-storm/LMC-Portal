@@ -84,7 +84,7 @@ export async function PATCH(
             select: { nameZh: true, nameEn: true, idDocNumber: true, email: true },
           },
           course: {
-            select: { nameZh: true, nameEn: true, price: true, iaRefNumber: true, cpdHours: true },
+            select: { nameZh: true, nameEn: true, nameCn: true, price: true, iaRefNumber: true, cpdHours: true },
           },
         },
       });

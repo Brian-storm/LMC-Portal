@@ -160,7 +160,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
             {dict.courses}
           </Link>
           <Link
-            href={`/${currentLocale}/portal`}
+            href={`/${currentLocale}/dashboard`}
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-semibold uppercase tracking-wider text-secondary hover:text-primary hover:bg-primary/5 px-2 py-2 border-b border-primary/5 transition-colors"
           >
