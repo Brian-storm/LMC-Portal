@@ -96,6 +96,7 @@ model Course {
   cpdHours          Int
   cpdHoursIa        Decimal? @db.Decimal(4, 1)
   price             Decimal            @db.Decimal(10, 2)
+  unitPrice         Decimal?           @db.Decimal(10, 2)
   capacity          Int
   isOpen            Boolean            @default(true)
   registrationStatus RegistrationStatus @default(OPEN)
