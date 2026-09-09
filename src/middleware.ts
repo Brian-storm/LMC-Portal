@@ -60,13 +60,10 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
+  // Dashboard routes are not production-ready yet — redirect all visits
+  // (authenticated or not) back to the locale homepage to avoid 404s.
   if (pathname.startsWith(`/${locale}/dashboard`)) {
-    if (!req.auth) {
-      const loginUrl = new URL(`/${locale}/login`, req.url);
-      loginUrl.searchParams.set("from", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-    return NextResponse.next();
+    return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
 
   return NextResponse.next();
