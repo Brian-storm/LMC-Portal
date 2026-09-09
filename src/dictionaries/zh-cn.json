@@ -530,6 +530,17 @@
       "proceedToSchedule": "前往选择时间",
       "proceedToDeclaration": "前往声明页",
       "proceedToPayment": "前往付款"
+    },
+    "confirmation": {
+      "title": "报名已成功提交",
+      "message": "感谢您的报名。您的申请已收到，正在处理中。",
+      "receiptNotice": "电子收据将于 5 个工作日内发送至您的电邮。",
+      "brochureLink": "下载课程简介",
+      "brochureUrl": "https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view",
+      "contactEmail": "cs@lmcconsulting.hk",
+      "contactWhatsApp": "+852 8404 5483",
+      "contactPrompt": "如有查询，请联系我们",
+      "orVia": "或通过 WhatsApp"
     }
   },
   "paymentUpload": {

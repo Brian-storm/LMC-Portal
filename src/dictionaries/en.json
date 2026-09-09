@@ -533,6 +533,17 @@
       "proceedToSchedule": "Proceed to Schedule",
       "proceedToDeclaration": "Proceed to Declaration",
       "proceedToPayment": "Proceed to Payment"
+    },
+    "confirmation": {
+      "title": "Enrollment Submitted Successfully",
+      "message": "Thank you for your enrollment. Your application has been received and is being processed.",
+      "receiptNotice": "An electronic receipt will be sent to your email within 5 working days.",
+      "brochureLink": "Download Course Brochure",
+      "brochureUrl": "https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view",
+      "contactEmail": "cs@lmcconsulting.hk",
+      "contactWhatsApp": "+852 8404 5483",
+      "contactPrompt": "For enquiries, please contact us at",
+      "orVia": "or via WhatsApp at"
     }
   },
   "paymentUpload": {
