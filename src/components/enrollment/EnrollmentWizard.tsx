@@ -1261,6 +1261,13 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     </p>
                   </div>
 
+                  {/* Personal Data Collection Notice */}
+                  <div className="bg-slate-50 border border-slate-200 p-3 text-xs text-slate-700 space-y-1 rounded-xs">
+                    <p className="text-[11px] leading-relaxed">
+                      {dict.step3.personalDataNotice}
+                    </p>
+                  </div>
+
                   <div className="space-y-3 pt-2 text-xs text-slate-700">
                     <label className="flex items-start space-x-2.5 cursor-pointer">
                       <input

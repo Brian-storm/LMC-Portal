@@ -495,6 +495,7 @@
       "title": "Compliance & Eligibility Declaration",
       "cpdNoticeTitle": "CPD Filing Requirement Notice",
       "cpdNoticeText": "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
+      "personalDataNotice": "The personal data collected in this form will be used for course enrollment administration, attendance records, certificate issuance, and as required by relevant regulatory authorities. You have the right to request access to and correction of your personal data held by us. Your data may also be used for direct marketing of future CPD courses and services. For details, please refer to our Privacy Policy.",
       "declarationLabel": "I declare that the information provided is accurate and matches my professional registration records.",
       "termsLabel": "I agree to the",
       "termsLinkText": "Institutional Terms of Registration",
