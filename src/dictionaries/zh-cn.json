@@ -97,6 +97,11 @@
   },
   "courseView": {
     "sectionTag": "认可课程名录",
+    "registryBanner": {
+      "title": "HK CPD 合规注册名册 • 持续专业发展",
+      "officialRegister": "官方注册",
+      "hksarRecognized": "香港特区认可"
+    },
     "catalogTitle": "CPD 课程目录",
     "catalogDescription": "符合法定监管要求的合资格持续专业培训 (CPD) 课程官方名录。完成课程后将获发可核实的出席证书。",
     "regulatoryComplianceBadge": "符合香港特区法律监管标准",

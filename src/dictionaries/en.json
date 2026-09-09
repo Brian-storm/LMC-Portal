@@ -97,6 +97,11 @@
   },
   "courseView": {
     "sectionTag": "Accredited Registry",
+    "registryBanner": {
+      "title": "HK CPD COMPLIANCE REGISTRY • CONTINUING PROFESSIONAL DEVELOPMENT",
+      "officialRegister": "OFFICIAL REGISTER",
+      "hksarRecognized": "HKSAR RECOGNIZED"
+    },
     "catalogTitle": "CPD Course Catalog",
     "catalogDescription": "Official registry of qualified Continuous Professional Development (CPD) programs compliant with statutory regulations. Verifiable certificates of attendance are issued upon completion.",
     "regulatoryComplianceBadge": "HKSAR Regulatory Standards Compliant",

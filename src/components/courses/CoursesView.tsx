@@ -148,14 +148,13 @@ export function CoursesView({
           <div className="flex items-center gap-2 font-mono">
             <ShieldCheck className="w-4 h-4 text-[#721185] shrink-0" />
             <span>
-              HK CPD COMPLIANCE REGISTRY &bull; CONTINUING PROFESSIONAL
-              DEVELOPMENT
+              {dict.registryBanner.title}
             </span>
           </div>
           <div className="flex items-center gap-4 text-slate-200 text-3xs font-mono">
-            <span>OFFICIAL REGISTER</span>
+            <span>{dict.registryBanner.officialRegister}</span>
             <span>|</span>
-            <span>HKSAR RECOGNIZED</span>
+            <span>{dict.registryBanner.hksarRecognized}</span>
           </div>
         </div>
       </div>
