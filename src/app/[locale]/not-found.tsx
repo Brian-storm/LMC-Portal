@@ -1,15 +1,23 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDictionary, Locale } from "@/dictionaries/get-dictionary";
 
-export default async function NotFound({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const resolvedParams = await params;
-  const locale = resolvedParams.locale as Locale;
+function extractLocale(pathname: string): Locale {
+  const locales = ["en", "zh-hk", "zh-cn"] as const;
+  for (const locale of locales) {
+    if (pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)) {
+      return locale as Locale;
+    }
+  }
+  return "zh-hk";
+}
+
+export default async function NotFound() {
+  const headersList = await headers();
+  const pathname = headersList.get("next-url") ?? headersList.get("x-pathname") ?? "/zh-hk";
+  const locale = extractLocale(pathname);
   const dict = await getDictionary(locale);
   const { notFoundPage: t } = dict;
 

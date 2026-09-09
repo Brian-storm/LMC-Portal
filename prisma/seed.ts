@@ -20,7 +20,8 @@ async function main() {
     },
   });
 
-  const wilson = await prisma.instructor.upsert({
+  // Wilson Cheung row is kept for archival/future courses; no seeded course currently links to him.
+  await prisma.instructor.upsert({
     where: { id: "ins-wilson-cheung" },
     update: {},
     create: {
@@ -32,6 +33,23 @@ async function main() {
       bioZh: "擁有全球保險、風險管理、財產意外險、損失理算及仲裁等領域院士資格。",
       bioEn: "With global fellowships in insurance, risk management, property casualty, loss adjusting, and arbitration.",
       avatarUrl: "/members/profile-wilson-cheung.svg",
+    },
+  });
+
+  // Generic CUHK Medical Centre specialist — some courses (e.g. cpd-102) are taught
+  // by a rotating panel of doctors rather than one fixed instructor.
+  const cuhkSpecialist = await prisma.instructor.upsert({
+    where: { id: "ins-cuhk-specialist" },
+    update: {},
+    create: {
+      id: "ins-cuhk-specialist",
+      nameZh: "香港中文大學醫院 專科醫生",
+      nameEn: "CUHK Medical Centre Specialist",
+      titleZh: "香港中文大學醫院專科醫生團隊",
+      titleEn: "Specialist Team of CUHK Medical Centre",
+      bioZh: "由香港中文大學醫院不同專科的醫生輪流主講，涵蓋各專科最新的診斷與治療發展。",
+      bioEn: "Delivered by a rotating panel of specialist doctors from CUHK Medical Centre, covering the latest diagnostic and treatment developments across clinical specialties.",
+      avatarUrl: "/members/profile-cuhk-specialist.svg",
     },
   });
 
@@ -157,9 +175,31 @@ async function main() {
     },
   });
 
+  // cpd-102 is delivered as 6 standalone 90-minute classes: each of the 3 dates
+  // hosts two sequential sessions (14:15 - 15:45 and 16:00 - 17:30) at the same venue.
+  const cpd102Venue = "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳";
+  const cpd102Schedules = [
+    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+  ];
+
   await prisma.course.upsert({
     where: { slug: "cpd-102" },
-    update: {},
+    // Resync schedules & instructors on every run so the seed stays authoritative for cpd-102.
+    update: {
+      schedules: {
+        deleteMany: {},
+        create: cpd102Schedules,
+      },
+      instructors: {
+        deleteMany: {},
+        create: { instructorId: cuhkSpecialist.id },
+      },
+    },
     create: {
       id: "cpd-102",
       slug: "cpd-102",
@@ -174,14 +214,14 @@ async function main() {
       cpdHoursIa: 9,
       cpdRulesZh: "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
       cpdRulesEn: "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
-      price: 0,
-      unitPrice: 0,
+      price: 1500.0,
+      unitPrice: 250.0,
       capacity: 50,
       registrationStatus: RegistrationStatus.OPEN,
       deliveryMode: "In-person",
       language: "Cantonese",
       instructors: {
-        create: { instructorId: wilson.id },
+        create: { instructorId: cuhkSpecialist.id },
       },
       syllabusItems: {
         create: [
@@ -194,11 +234,7 @@ async function main() {
         ],
       },
       schedules: {
-        create: [
-          { dateAndTime: "09/09/2026 (星期三) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
-          { dateAndTime: "22/09/2026 (星期二) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
-          { dateAndTime: "08/10/2026 (星期四) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
-        ],
+        create: cpd102Schedules,
       },
       reviews: {
         create: {
@@ -213,46 +249,38 @@ async function main() {
       faqs: {
         create: [
           {
-            questionZh: "線上課程如何接收CPD證書？",
-            questionEn: "How do I receive my CPD certificate for the online session?",
-            answerZh:
-              "出席及活躍參與透過Zoom時長記錄與課堂內彈出測驗數碼追蹤。數碼CPD證書(IA REF: REF-cpd-102)於3個工作天內電郵發出。",
-            answerEn:
-              "Attendance and active participation are tracked digitally via Zoom duration logs and in-class pop-up quizzes. Digital CPD certificates under IA REF: REF-cpd-102 are emailed within 3 working days.",
+            questionZh: "此課程如何申報CPD時數？",
+            questionEn: "How do I declare CPD hours for this course?",
+            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: REF-cpd-102。",
+            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: REF-cpd-102.",
             sortOrder: 1,
           },
           {
-            questionZh: "網絡研討會前會提供課程材料嗎？",
-            questionEn: "Are course materials provided prior to the webinar?",
-            answerZh: "是的，可下載的簡報投影片及監管參考指南(PDF)將於課程開始前24小時透過電郵發送。",
-            answerEn:
-              "Yes, downloadable presentation slides and regulatory reference guides (PDF) are sent via email 24 hours prior to the session start.",
+            questionZh: "面授課程的出席要求是什麼？",
+            questionEn: "What is the attendance requirement for in-person sessions?",
+            answerZh: "參加者必須達100%出席率。須簽到及簽退，遲到或早退超過15分鐘可能導致CPD學分被取消。",
+            answerEn: "Participants must achieve 100% attendance. Sign-in and sign-out are mandatory. Late arrivals or early departures beyond 15 minutes may result in forfeiture of CPD credit.",
             sortOrder: 2,
           },
           {
-            questionZh: "線上參加需要什麼技術設置？",
-            questionEn: "What technical setup do I need to attend online?",
-            answerZh:
-              "您需要穩定的網絡連接、桌上/筆記型電腦及已更新的Zoom客戶端。不建議使用手機參加以確保順利完成追蹤提示。",
-            answerEn:
-              "You need a stable internet connection, a desktop/laptop computer, and an updated Zoom Client. Mobile attendance is discouraged to ensure seamless completion of tracking prompts.",
+            questionZh: "如何及何時收到CPD證書？",
+            questionEn: "How and when will I receive my CPD certificate?",
+            answerZh: "電子證書(PDF)將於確認全程出席後3至5個工作天內透過電郵發出。",
+            answerEn: "Electronic certificates (PDF) are issued via email within 3 to 5 business days after successfully verifying your full attendance.",
             sortOrder: 3,
           },
           {
-            questionZh: "如錯過部分課堂，會有錄影提供嗎？",
-            questionEn: "Will a recording be available if I miss part of the session?",
-            answerZh: "基於嚴格的CPD認證政策，觀看課程錄影並不符合CPD學分申報資格。必須現場出席。",
-            answerEn:
-              "Due to strict CPD accreditation policies, watching session recordings does NOT qualify for CPD credit declaration. Live presence is required.",
+            questionZh: "場地位置及交通？",
+            questionEn: "Venue location and transportation?",
+            answerZh: "香港新界沙田澤祥街9號香港中文大學醫院9樓演講廳。港鐵大學站步行約8分鐘。",
+            answerEn: "9/F Lecture Hall, CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT. About 8 min walk from University MTR station.",
             sortOrder: 4,
           },
           {
-            questionZh: "可以企業直接付款或開具發票嗎？",
-            questionEn: "Can my employer be billed directly or issued an invoice?",
-            answerZh:
-              "可以。企業付款選項須根據標準服務條款與私隱政策進行驗證。結帳時選擇企業付款以索取稅務發票。",
-            answerEn:
-              "Yes. Corporate billing options are subject to verification under our standard Terms of Service and Privacy Policy. Select corporate billing during checkout to request a tax invoice.",
+            questionZh: "退款或改期政策是什麼？",
+            questionEn: "What is the refund or rescheduling policy?",
+            answerZh: "開課前至少7個曆日提出取消可獲90%退款（10%手續費）。請參閱完整條款及細則與私隱政策。",
+            answerEn: "Cancellations requested at least 7 calendar days prior to the start date are eligible for a 90% refund (10% processing fee). Please review our full Terms and Conditions and Privacy Policy.",
             sortOrder: 5,
           },
         ],
@@ -288,15 +316,25 @@ async function main() {
       where: { courseId: cpd102.id },
       orderBy: { dateAndTime: "asc" },
     });
-    // Map: schedule index → array of module numbers
-    const topicMap = [[2, 6], [5, 1], [3, 4]];
-    for (let i = 0; i < allSchedules.length; i++) {
-      for (const modNum of topicMap[i]) {
+    // Map each class (matched by its exact date & time string) to the single topic it covers.
+    // 09/09 → Topic 2 (14:15) & Topic 6 (16:00); 22/09 → Topic 5 (14:15) & Topic 1 (16:00);
+    // 08/10 → Topic 3 (14:15) & Topic 4 (16:00).
+    const scheduleTopicMap: Record<string, number[]> = {
+      "09/09/2026 (星期三) 14:15 - 15:45": [2],
+      "09/09/2026 (星期三) 16:00 - 17:30": [6],
+      "22/09/2026 (星期二) 14:15 - 15:45": [5],
+      "22/09/2026 (星期二) 16:00 - 17:30": [1],
+      "08/10/2026 (星期四) 14:15 - 15:45": [3],
+      "08/10/2026 (星期四) 16:00 - 17:30": [4],
+    };
+    for (const schedule of allSchedules) {
+      const modNums = scheduleTopicMap[schedule.dateAndTime] ?? [];
+      for (const modNum of modNums) {
         const si = allSyllabusItems.find((s) => s.moduleNumber === modNum);
         if (si) {
           try {
             await prisma.scheduleTopic.create({
-              data: { scheduleId: allSchedules[i].id, syllabusItemId: si.id, sortOrder: 0 },
+              data: { scheduleId: schedule.id, syllabusItemId: si.id, sortOrder: 0 },
             });
           } catch {
             // ignore duplicate

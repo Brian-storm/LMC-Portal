@@ -365,14 +365,15 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         enrollmentType,
         paymentMethod: paymentMethodMap[formData.paymentMethod] || "E_BANKING",
         ...(registrants.length > 0 && { registrants }),
-        ...(!session?.user && {
-          email: formData.email,
-          fullName: formData.fullName,
-          phone: formData.phone,
-          company: formData.company || undefined,
-          iaLicenseNo: formData.iaLicenseNo || undefined,
-        }),
-        // Include idDocType and idDocNumber for both authenticated and guest users
+        // Always include the contact/identity fields. The API overrides name/email
+        // with the profile when a real session exists, and uses them for guest
+        // enrolment when the session isn't recognized — so sending them on both
+        // paths is safe and avoids the "Email is required for guest enrolment" 400.
+        email: session?.user?.email || formData.email || undefined,
+        fullName: session?.user?.name || formData.fullName || undefined,
+        phone: formData.phone || undefined,
+        company: formData.company || undefined,
+        iaLicenseNo: formData.iaLicenseNo || undefined,
         idDocType: idDocType,
         idDocNumber: idDocNumber || undefined,
       };

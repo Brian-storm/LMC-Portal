@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 198" role="img" aria-label="CUHK Medical Centre specialist">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e7eef0"/>
+      <stop offset="1" stop-color="#d4e0e4"/>
+    </linearGradient>
+    <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b6656"/>
+      <stop offset="1" stop-color="#274d40"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="145" height="198" fill="url(#bg)"/>
+
+  <!-- Lab-coat shoulders -->
+  <path d="M25 198 C28 160 45 142 72.5 142 C100 142 117 160 120 198 Z" fill="url(#coat)"/>
+  <!-- Collar / shirt -->
+  <path d="M60 142 L72.5 165 L85 142 Z" fill="#ffffff" opacity="0.92"/>
+
+  <!-- Head silhouette -->
+  <circle cx="72.5" cy="98" r="34" fill="#c9b89a"/>
+  <path d="M40 186 C41 150 52 128 72.5 128 C93 128 104 150 105 186 Z" fill="#b7a584"/>
+
+  <!-- Hair -->
+  <path d="M40 96 C40 66 50 54 72.5 54 C95 54 105 66 105 96 C105 82 100 74 93 70 C104 68 107 76 107 88 L107 94 C107 70 98 60 84 58 C98 54 108 64 108 92 C108 74 104 64 97 59 L97 62 C103 66 106 74 106 92 C104 72 96 62 85 60 C94 60 100 66 100 80 Z" fill="#3c3c42" opacity="0"/>
+  <path d="M38 100 C38 66 48 54 72.5 54 C97 54 107 66 107 100 L98 104 C94 78 86 68 72.5 68 C59 68 51 78 47 104 Z" fill="#3c3c42"/>
+
+  <!-- Face -->
+  <ellipse cx="72.5" cy="98" rx="30" ry="32" fill="#d8c3a3"/>
+  <!-- Ears -->
+  <circle cx="44" cy="100" r="6" fill="#e2cdad"/>
+  <circle cx="101" cy="100" r="6" fill="#e2cdad"/>
+  <!-- Glasses -->
+  <rect x="52" y="90" width="22" height="15" rx="6" fill="none" stroke="#4b5563" stroke-width="2"/>
+  <rect x="75" y="90" width="22" height="15" rx="6" fill="none" stroke="#4b5563" stroke-width="2"/>
+  <line x1="74" y1="97" x2="75" y2="97" stroke="#4b5563" stroke-width="2"/>
+  <!-- Smile -->
+  <path d="M60 116 Q72.5 126 85 116" fill="none" stroke="#9c7b52" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Stethoscope on coat -->
+  <path d="M72.5 152 C66 152 63 156 63 161 C63 166 68 168 72.5 168 C77 168 82 166 82 161 C82 156 79 152 72.5 152" fill="none" stroke="#e9f2f0" stroke-width="3"/>
+  <path d="M72.5 152 L72.5 146" stroke="#e9f2f0" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="72.5" cy="143.5" r="3.2" fill="#e9f2f0"/>
+
+  <!-- Emerald medical cross badge -->
+  <rect x="58" y="176" width="29" height="29" rx="6" fill="#ffffff"/>
+  <path d="M72.5 183 L72.5 198 M64.5 190.5 L80.5 190.5" stroke="#1b4332" stroke-width="5" stroke-linecap="round"/>
+</svg>
