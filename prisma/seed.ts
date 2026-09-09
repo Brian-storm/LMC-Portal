@@ -163,58 +163,42 @@ async function main() {
     create: {
       id: "cpd-102",
       slug: "cpd-102",
-      nameZh: "大灣區醫療保健概覽",
-      nameEn: "Overview of Healthcare in the Greater Bay Area",
-      descriptionZh: "監管框架與醫療跨境機遇。",
-      descriptionEn: "Regulatory frameworks and healthcare cross-border opportunities.",
-      category: "compliance",
+      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障",
+      nameEn: "Hong Kong Healthcare System Development, GBA Overview & Medical Insurance",
+      descriptionZh: "涵蓋香港醫療體制、大灣區醫療概況、危疾系列（乳癌、婦科癌症、前列腺健康、肺癌）及常見運動受傷處理的綜合課程。",
+      descriptionEn: "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
+      category: "cpd",
       iaRefNumber: "REF-cpd-102",
       accreditationBody: "HK Insurance Authority",
-      cpdHours: 6,
-      price: 1500.0,
+      cpdHours: 9,
+      cpdHoursIa: 9,
+      cpdRulesZh: "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
+      cpdRulesEn: "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
+      price: 0,
+      unitPrice: 0,
       capacity: 50,
       registrationStatus: RegistrationStatus.OPEN,
-      deliveryMode: "Online",
+      deliveryMode: "In-person",
       language: "Cantonese",
       instructors: {
         create: { instructorId: wilson.id },
       },
       syllabusItems: {
         create: [
-          {
-            moduleNumber: 1,
-            titleZh: "大灣區醫療監管框架",
-            titleEn: "GBA Healthcare Regulatory Frameworks",
-            duration: "3 Hours",
-            topicsZh: ["醫療器械和藥品直接措施", "跨境醫療保險結算", "醫院認證標準"],
-            topicsEn: [
-              "Medical Device and Medicine Direct Measure",
-              "Cross-border medical insurance settlement",
-              "Hospital accreditation standards",
-            ],
-            sortOrder: 1,
-          },
-          {
-            moduleNumber: 2,
-            titleZh: "跨境市場與政策機遇",
-            titleEn: "Cross-border Market & Policy Opportunities",
-            duration: "3 Hours",
-            topicsZh: ["大灣區養老整合", "私人醫療保險趨勢", "顧問監管合規"],
-            topicsEn: [
-              "Elderly care integration in GBA",
-              "Private medical insurance trends",
-              "Regulatory compliance for advisors",
-            ],
-            sortOrder: 2,
-          },
+          { moduleNumber: 1, titleZh: "主題1 - 香港醫療體制發展、大灣區醫療概況與醫療保障", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
+          { moduleNumber: 2, titleZh: "主題2 - 危疾系列：乳癌診斷、臨床治療與患者支援", titleEn: "Topic 2 - Critical Illness Series: Breast Cancer Diagnosis, Clinical Treatment & Patient Support", duration: "1.5 Hours", topicsZh: ["乳癌診斷", "臨床治療", "患者支援"], topicsEn: ["Breast cancer diagnosis", "Clinical treatment", "Patient support"], sortOrder: 2 },
+          { moduleNumber: 3, titleZh: "主題3 - 常見運動受傷的處理", titleEn: "Topic 3 - Common Sports Injury Management", duration: "1.5 Hours", topicsZh: ["常見運動受傷處理"], topicsEn: ["Common sports injury management"], sortOrder: 3 },
+          { moduleNumber: 4, titleZh: "主題4 - 危疾系列：認識婦科癌症", titleEn: "Topic 4 - Critical Illness Series: Understanding Gynecological Cancers", duration: "1.5 Hours", topicsZh: ["婦科癌症認識"], topicsEn: ["Understanding gynecological cancers"], sortOrder: 4 },
+          { moduleNumber: 5, titleZh: "主題5 - 危疾系列：前列腺健康及微創手術最新發展", titleEn: "Topic 5 - Critical Illness Series: Prostate Health & Latest Advances in Minimally Invasive Surgery", duration: "1.5 Hours", topicsZh: ["前列腺健康", "微創手術最新發展"], topicsEn: ["Prostate health", "Latest advances in minimally invasive surgery"], sortOrder: 5 },
+          { moduleNumber: 6, titleZh: "主題6 - 認識肺癌：從診斷到個人化治療", titleEn: "Topic 6 - Understanding Lung Cancer: From Diagnosis to Personalised Treatment", duration: "1.5 Hours", topicsZh: ["肺癌診斷", "個人化治療"], topicsEn: ["Lung cancer diagnosis", "Personalised treatment"], sortOrder: 6 },
         ],
       },
       schedules: {
-        create: {
-          dateAndTime: "2026-10-03 (Sat) 14:00 - 20:00",
-          venue: "Live Interactive Webinar (Zoom Link provided upon enrollment)",
-          quotaRemaining: 25,
-        },
+        create: [
+          { dateAndTime: "09/09/2026 (星期三) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
+          { dateAndTime: "22/09/2026 (星期二) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
+          { dateAndTime: "08/10/2026 (星期四) 14:15 - 17:30", venue: "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳", quotaRemaining: 50, isActive: true },
+        ],
       },
       reviews: {
         create: {
@@ -292,6 +276,36 @@ async function main() {
       passwordHash: learnerPasswordHash,
     },
   });
+
+  // ─── ScheduleTopic links for cpd-102 ────────────────────
+  const cpd102 = await prisma.course.findUnique({ where: { slug: "cpd-102" } });
+  if (cpd102) {
+    const allSyllabusItems = await prisma.syllabusItem.findMany({
+      where: { courseId: cpd102.id },
+      orderBy: { moduleNumber: "asc" },
+    });
+    const allSchedules = await prisma.schedule.findMany({
+      where: { courseId: cpd102.id },
+      orderBy: { dateAndTime: "asc" },
+    });
+    // Map: schedule index → array of module numbers
+    const topicMap = [[2, 6], [5, 1], [3, 4]];
+    for (let i = 0; i < allSchedules.length; i++) {
+      for (const modNum of topicMap[i]) {
+        const si = allSyllabusItems.find((s) => s.moduleNumber === modNum);
+        if (si) {
+          try {
+            await prisma.scheduleTopic.create({
+              data: { scheduleId: allSchedules[i].id, syllabusItemId: si.id, sortOrder: 0 },
+            });
+          } catch {
+            // ignore duplicate
+          }
+        }
+      }
+    }
+    console.log("ScheduleTopic links created for cpd-102");
+  }
 
   // ─── Test receipt (VERIFIED enrolment with receipt number) ─
   const receiptCourse = await prisma.course.findUnique({ where: { id: "cpd-101" } });
