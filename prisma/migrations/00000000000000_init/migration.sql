@@ -17,6 +17,9 @@ CREATE TYPE "PaymentStatus" AS ENUM ('PENDING_VERIFICATION', 'VERIFIED', 'REJECT
 CREATE TYPE "PaymentMethod" AS ENUM ('FPS', 'ALIPAY', 'E_BANKING', 'CHEQUE', 'CASH', 'CORPORATE_INVOICE');
 
 -- CreateEnum
+CREATE TYPE "IdDocType" AS ENUM ('HKID', 'PASSPORT', 'PERMIT', 'OTHER');
+
+-- CreateEnum
 CREATE TYPE "AdminPermission" AS ENUM ('SUPER_ADMIN', 'AUDITOR');
 
 -- CreateTable
@@ -28,6 +31,7 @@ CREATE TABLE "users" (
     "nameZh" TEXT NOT NULL,
     "nameEn" TEXT NOT NULL,
     "idDocNumber" TEXT NOT NULL,
+    "idDocType" "IdDocType",
     "iaLicense" TEXT,
     "organization" TEXT,
     "phone" TEXT NOT NULL,
@@ -65,7 +69,9 @@ CREATE TABLE "courses" (
     "cpdRulesZh" TEXT,
     "cpdRulesEn" TEXT,
     "cpdHours" INTEGER NOT NULL,
+    "cpdHoursIa" DECIMAL(4,1),
     "price" DECIMAL(10,2) NOT NULL,
+    "unitPrice" DECIMAL(10,2),
     "capacity" INTEGER NOT NULL,
     "isOpen" BOOLEAN NOT NULL DEFAULT true,
     "registrationStatus" "RegistrationStatus" NOT NULL DEFAULT 'OPEN',
@@ -157,6 +163,8 @@ CREATE TABLE "registrants" (
     "id" TEXT NOT NULL,
     "courseId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "idDocType" "IdDocType",
+    "idDocNumber" TEXT,
     "enrollmentType" "EnrollmentType" NOT NULL,
     "groupId" TEXT,
     "paymentStatus" "PaymentStatus" NOT NULL DEFAULT 'PENDING_VERIFICATION',
@@ -176,6 +184,15 @@ CREATE TABLE "registrant_schedules" (
     "scheduleId" TEXT NOT NULL,
 
     CONSTRAINT "registrant_schedules_pkey" PRIMARY KEY ("registrantId","scheduleId")
+);
+
+-- CreateTable
+CREATE TABLE "schedule_topics" (
+    "scheduleId" TEXT NOT NULL,
+    "syllabusItemId" TEXT NOT NULL,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+
+    CONSTRAINT "schedule_topics_pkey" PRIMARY KEY ("scheduleId","syllabusItemId")
 );
 
 -- CreateTable
@@ -238,6 +255,12 @@ ALTER TABLE "registrant_schedules" ADD CONSTRAINT "registrant_schedules_registra
 
 -- AddForeignKey
 ALTER TABLE "registrant_schedules" ADD CONSTRAINT "registrant_schedules_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "schedules"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "schedule_topics" ADD CONSTRAINT "schedule_topics_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "schedules"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "schedule_topics" ADD CONSTRAINT "schedule_topics_syllabusItemId_fkey" FOREIGN KEY ("syllabusItemId") REFERENCES "syllabus_items"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admins" ADD CONSTRAINT "admins_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
