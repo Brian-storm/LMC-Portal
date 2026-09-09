@@ -1339,6 +1339,14 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     </h2>
                   </div>
 
+                  {/* Refund policy notice */}
+                  <div className="bg-amber-50/80 border border-amber-200 p-3 text-xs text-amber-900 space-y-1 rounded-xs">
+                    <div className="flex items-center space-x-1.5 font-bold">
+                      <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+                      <span>{dict.step4.refundNotice}</span>
+                    </div>
+                  </div>
+
                   <div className="space-y-2 text-xs">
                     <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
                       <div className="flex items-center space-x-2">

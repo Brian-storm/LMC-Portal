@@ -502,6 +502,7 @@
     },
     "step4": {
       "title": "選擇付款方式",
+      "refundNotice": "如需退款，請聯絡我們的職員。詳情請參閱服務條款。",
       "creditCard": "信用卡 (Visa / Mastercard)",
       "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
       "corporateBilling": "公司帳單 / 銀行轉帳",

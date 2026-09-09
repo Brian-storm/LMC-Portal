@@ -505,6 +505,7 @@
     },
     "step4": {
       "title": "Select Payment Method",
+      "refundNotice": "If you need a refund, please contact our staff. Refer to our Terms of Service for details.",
       "creditCard": "Credit Card (Visa / Mastercard)",
       "fpsAlipay": "FPS / Alipay HK / WeChat Pay HK",
       "corporateBilling": "Corporate Billing / Bank Transfer",
