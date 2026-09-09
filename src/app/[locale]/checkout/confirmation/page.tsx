@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Mail, MessageCircle, FileText, CheckCircle2 } from "lucide-react";
+import { FileText, CheckCircle2 } from "lucide-react";
 import { PaymentSlipUploader } from "@/components/PaymentSlipUploader";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import type { EnrollPageDict, PaymentUploadDict } from "@/dictionaries/types";

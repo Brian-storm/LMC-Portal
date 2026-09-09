@@ -87,14 +87,24 @@ export function CourseDetailView({
               )}
             </div>
 
-            <div
-              className="inline-flex items-center space-x-1 text-primary font-bold bg-emerald-50 px-2 py-0.5 border border-emerald-300 rounded-xs"
-              style={{ fontSize: "9.5px" }}
-            >
-              <Award className="w-3 h-3 text-primary shrink-0" />
-              <span>
-                {course.cpdHours} {dict.hours}
-              </span>
+            <div className="inline-flex items-center gap-2">
+              <div
+                className="inline-flex items-center space-x-1 text-primary font-bold bg-emerald-50 px-2 py-0.5 border border-emerald-300 rounded-xs"
+                style={{ fontSize: "9.5px" }}
+              >
+                <Award className="w-3 h-3 text-primary shrink-0" />
+                <span>
+                  {course.cpdHours} {dict.hours}
+                </span>
+              </div>
+              {course.cpdHoursIa && (
+                <div
+                  className="inline-flex items-center space-x-1 text-emerald-800 font-bold bg-emerald-50/60 px-2 py-0.5 border border-emerald-200 rounded-xs"
+                  style={{ fontSize: "9.5px" }}
+                >
+                  <span>{course.cpdHoursIa} IA {dict.hours}/session</span>
+                </div>
+              )}
             </div>
           </div>
 

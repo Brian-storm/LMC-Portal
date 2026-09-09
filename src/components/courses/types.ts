@@ -52,6 +52,7 @@ export interface Course {
   description: string;
   category: CourseCategory;
   cpdHours: number | string;
+  cpdHoursIa?: number | string;
   deliveryMode: string;
   language: string;
   fee: string;
