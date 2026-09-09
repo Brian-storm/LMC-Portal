@@ -1,0 +1,80 @@
+{
+  "id": "EN-016",
+  "title": "HKID 單一欄位輸入（合併 prefix + check digit）",
+  "content": "將香港身份證輸入從兩個欄位（hkidPrefix + hkidCheckDigit，組合為 A123456(7)）合併為單一欄位（使用者輸入 A1234567，去除括號）。影響 EnrollmentWizard.tsx 與 register-form.tsx 兩個前端元件，以及 3 個語系的字典檔。API 與 validation schema 不需要改動（idDocNumber 已是單一字串）。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-10",
+  "epic": "報名與結帳",
+  "userStory": "個人報名流程",
+  "track": "n/a",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/app/[locale]/register/register-form.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "TypeScript: no errors",
+      "ESLint: no errors"
+    ],
+    "residual": "待手動瀏覽器驗證"
+  },
+  "comments": [],
+  "acceptance": [
+    "EnrollmentWizard.tsx 中 HKDID 兩個 state（hkidPrefix、hkidCheckDigit）合併為單一 hkidNumber state",
+    "getCombinedIdDocNumber() 不再包括號，直接回傳 hkidNumber 原始值（如 A1234567）",
+    "getMemberIdDocNumber() 同樣去掉括號包裹邏輯",
+    "validation 改為單一 regex /^[A-Za-z]{1,2}\\d{6}[0-9A]$/，8 位（缺 check digit）時報錯",
+    "HKID 輸入欄位 maxLength=9，輸入時自動轉大寫",
+    "團體成員（ORGANIZATION）每列 HKID 同步改為單一欄位",
+    "register-form.tsx 同樣合併狀態、去除括號、套用相同 regex",
+    "3 個語系字典檔（en/zh-hk/zh-cn）以單一鍵取代 hkidPrefix/hkidCheckDigit 相關鍵",
+    "API 提交的 idDocNumber 格式為 A1234567（無括號）"
+  ],
+  "files": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/app/[locale]/register/register-form.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "dependencies": "無（API contract 不變，無需改後端或 schema）",
+  "verification": "npm run typecheck && npm run lint 通過；瀏覽器手動驗證：報名 wizard 輸入 A1234567 通過、輸入 A123456（8位）報錯、提交後 idDocNumber 存為 A1234567（無括號）；register 表單同驗證。"
+}

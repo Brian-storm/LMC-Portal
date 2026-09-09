@@ -29,6 +29,7 @@ import {
   User,
   Users,
   Copy,
+  DollarSign,
 } from "lucide-react";
 
 // ── Types matching the API response ──
@@ -62,6 +63,7 @@ interface Enrolment {
   groupId: string | null;
   paymentStatus: PaymentStatus;
   paymentMethod: PaymentMethod | null;
+  fee: number | null;
   isThirdPartyPay: boolean;
   payerFullName: string | null;
   paymentProofUrl: string | null;
@@ -398,6 +400,7 @@ export default function AdminEnrolmentsPage() {
                     <th className="py-2.5 px-3">Course</th>
                     <th className="py-2.5 px-3">Type</th>
                     <th className="py-2.5 px-3">Payment</th>
+                    <th className="py-2.5 px-3"><DollarSign className="w-3 h-3 inline mr-0.5" />Fee</th>
                     <th className="py-2.5 px-3">Status</th>
                     <th className="py-2.5 px-3">Submitted</th>
                     <th className="py-2.5 px-3 text-right">Actions</th>
@@ -474,6 +477,17 @@ export default function AdminEnrolmentsPage() {
                           <div className="text-[10px] font-mono text-emerald-700">
                             RCPT: {enrolment.receiptNumber}
                           </div>
+                        )}
+                      </td>
+
+                      {/* Fee */}
+                      <td className="py-3 px-3 whitespace-nowrap">
+                        {enrolment.fee != null ? (
+                          <div className="font-mono font-bold text-slate-900">
+                            HK${Number(enrolment.fee).toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </div>
+                        ) : (
+                          <span className="text-slate-400">—</span>
                         )}
                       </td>
 

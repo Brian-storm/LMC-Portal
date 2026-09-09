@@ -106,6 +106,7 @@ model Course {
   price             Decimal            @db.Decimal(10, 2)
   unitPrice         Decimal?           @db.Decimal(10, 2)
   capacity          Int
+  imageUrl          String?
   isOpen            Boolean            @default(true)
   registrationStatus RegistrationStatus @default(OPEN)
   deliveryMode      String?
@@ -218,6 +219,7 @@ model Registrant {
   groupId         String?
   paymentStatus   PaymentStatus  @default(PENDING_VERIFICATION)
   paymentMethod   PaymentMethod?
+  fee             Decimal?       @db.Decimal(10, 2)
   isThirdPartyPay Boolean        @default(false)
   payerFullName   String?
   paymentProofUrl String?

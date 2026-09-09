@@ -17,6 +17,7 @@ export interface ApiCourse {
   cpdHours: number;
   price: number;
   capacity: number;
+  imageUrl: string | null;
   registrationStatus: string;
   deliveryMode: string;
   language: string;
@@ -50,6 +51,7 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     language: c.language,
     fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,
     status: (c.registrationStatus?.toLowerCase() ?? "open") as Course["status"],
+    imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     iaCode: c.iaRefNumber ?? undefined,
     venue: c.schedules?.[0]?.venue,

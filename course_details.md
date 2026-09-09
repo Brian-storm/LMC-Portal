@@ -107,7 +107,7 @@ CPD時數計算原則如下**:**
 
 Confirmation message
 
-💵 德智管理顧問有限公司會在確認收訖課程費用後，於5 個工作天內以電郵發放電子收據給你 📖 課程簡介：請按以下連結查閱 https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view?usp=drive_link 📧 如關於課程報名、付款及CPD 的疑問，請電郵至 cs@lmcconsulting.hk 聯絡德智管理顧問有限公司 📳 如關於課程安排的疑問，請按以下 WhatsApp 聯絡 德智管理顧問有限公司 （852）8404 5483
+💵 德智管理顧問有限公司會在確認收訖課程費用後，於5 個工作天內以電郵發放電子收據給你 📖 課程簡介：請按以下連結查閱 https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view?usp=drive_link 📧 如關於課程報名、付款及CPD 的疑問，請電郵至 lmcconsultancy2025@gmail.com 聯絡德智管理顧問有限公司 📳 如關於課程安排的疑問，請按以下 WhatsApp 聯絡 德智管理顧問有限公司 （852）8404 5483
 
 
 

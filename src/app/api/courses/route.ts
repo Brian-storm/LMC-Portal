@@ -71,6 +71,7 @@ export async function GET(request: NextRequest) {
           cpdHours: true,
           price: true,
           capacity: true,
+          imageUrl: true,
           registrationStatus: true,
           deliveryMode: true,
           language: true,

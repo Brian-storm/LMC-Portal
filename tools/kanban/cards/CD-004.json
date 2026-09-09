@@ -1,7 +1,7 @@
 {
   "id": "CD-004",
   "title": "在字典檔新增報名後確認訊息（所有課程共用）",
-  "content": "course_details.md 第 106-110 行：Show this After submission — 5 工作天內寄送電子收據、課程簡介連結、客服 email、WhatsApp 聯絡。\n\n✅ 決議：所有課程共用，放入字典檔。\n\n關於「目前硬編碼連結」：PaymentSlipUploader.tsx 並沒有硬編碼這些連結，目前這些文字只出現在 course_details.md。需在字典檔新增確認訊息鍵，並在 confirmation page 從字典讀取。\n\n實作計畫：\n1. 在 dict.enrollPage 新增 confirmationMessage 鍵（含電子收據說明、brochure連結、cs@lmcconsulting.hk、WhatsApp 8404 5483）\n2. 更新所有語系字典\n3. confirmation page（src/app/[locale]/checkout/confirmation/）改從字典讀取\n4. 確認訊息中包含：brochure Google Drive 連結（https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view）\n\n注意：與 CD-001 無關。應移除 dependsOn CD-001。",
+  "content": "course_details.md 第 106-110 行：Show this After submission — 5 工作天內寄送電子收據、課程簡介連結、客服 email、WhatsApp 聯絡。\n\n✅ 決議：所有課程共用，放入字典檔。\n\n關於「目前硬編碼連結」：PaymentSlipUploader.tsx 並沒有硬編碼這些連結，目前這些文字只出現在 course_details.md。需在字典檔新增確認訊息鍵，並在 confirmation page 從字典讀取。\n\n實作計畫：\n1. 在 dict.enrollPage 新增 confirmationMessage 鍵（含電子收據說明、brochure連結、lmcconsultancy2025@gmail.com、WhatsApp 8404 5483）\n2. 更新所有語系字典\n3. confirmation page（src/app/[locale]/checkout/confirmation/）改從字典讀取\n4. 確認訊息中包含：brochure Google Drive 連結（https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view）\n\n注意：與 CD-001 無關。應移除 dependsOn CD-001。",
   "stage": "backlog",
   "risk": "low",
   "owner": "Brian",

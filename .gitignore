@@ -42,3 +42,6 @@ next-env.d.ts
 
 # One-time implementation guidance for Coding Agent
 AWS-PROMPT.md
+
+# Sample data
+samples/

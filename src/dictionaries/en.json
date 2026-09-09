@@ -221,7 +221,8 @@
     "location": "Unit 1011-15, 10/F., Tower B, New Mandarin Plaza, Tsim Sha Tsui East, Kowloon, Hong Kong",
     "copyright": "All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "contactEmail": "lmcconsultancy2025@gmail.com"
   },
   "termsPage": {
     "backToPortal": "Return to Institutional Portal",
@@ -424,8 +425,6 @@
     "courseUnavailable": "Course unavailable.",
     "browseCourses": "Browse Courses",
     "backToCourseDetails": "Back to Course Details",
-    "officialCpdRegistration": "Official CPD Registration",
-    "sslEncrypted": "256-Bit SSL Encrypted",
     "pageTitle": "Course Enrolment Application",
     "step1Title": "Attendee Details",
     "step2Title": "Select Schedule",
@@ -546,7 +545,7 @@
       "receiptNotice": "An electronic receipt will be sent to your email within 5 working days.",
       "brochureLink": "Download Course Brochure",
       "brochureUrl": "https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view",
-      "contactEmail": "cs@lmcconsulting.hk",
+      "contactEmail": "lmcconsultancy2025@gmail.com",
       "contactWhatsApp": "+852 8404 5483",
       "contactPrompt": "For enquiries, please contact us at",
       "orVia": "or via WhatsApp at"

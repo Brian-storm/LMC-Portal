@@ -204,14 +204,6 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             <div className="text-sm font-serif font-bold text-slate-900 pt-0.5">
               {formattedFee}
             </div>
-
-            {/* Low Quota Warning Threshold Alert */}
-            {course.seatsLeft !== undefined && course.seatsLeft <= 5 && (
-              <span className="block text-[8px] text-rose-700 font-bold uppercase tracking-wider bg-rose-50 px-1 py-0.2 border border-rose-200">
-                {dict.quotaRemaining} {course.seatsLeft}{" "}
-                {dict.seats}
-              </span>
-            )}
           </div>
 
           {/* Action Control Trigger Buttons */}

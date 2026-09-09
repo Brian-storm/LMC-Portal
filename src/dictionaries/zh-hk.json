@@ -218,7 +218,8 @@
     "location": "香港尖沙咀新文華中心 10樓1011-1015",
     "copyright": "版權所有，不得轉載。",
     "privacy": "私隱政策",
-    "terms": "服務條款"
+    "terms": "服務條款",
+    "contactEmail": "lmcconsultancy2025@gmail.com"
   },
   "termsPage": {
     "backToPortal": "返回機構主頁",
@@ -421,8 +422,6 @@
     "courseUnavailable": "課程暫時無法提供。",
     "browseCourses": "瀏覽課程",
     "backToCourseDetails": "返回課程詳情",
-    "officialCpdRegistration": "官方 CPD 報名系統",
-    "sslEncrypted": "256 位元 SSL 加密傳輸",
     "pageTitle": "課程報名申請",
     "step1Title": "參加者資料",
     "step2Title": "選擇上課時間",
@@ -543,7 +542,7 @@
       "receiptNotice": "電子收據將於 5 個工作天內發送至您的電郵。",
       "brochureLink": "下載課程簡介",
       "brochureUrl": "https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view",
-      "contactEmail": "cs@lmcconsulting.hk",
+      "contactEmail": "lmcconsultancy2025@gmail.com",
       "contactWhatsApp": "+852 8404 5483",
       "contactPrompt": "如有查詢，請聯絡我們",
       "orVia": "或透過 WhatsApp"
@@ -562,7 +561,7 @@
     "cancel": "取消",
     "uploadCancelled": "上傳已取消",
     "successTitle": "付款證明已成功上傳",
-    "successDescription": "管理團隊將於 1 個工作天內核實您的付款。核實後您將收到電郵確認。",
+    "successDescription": "管理團隊將於 5 個工作天內核實您的付款。核實後您將收到電郵確認。",
     "goToHome": "返回首頁",
     "errorUnsupportedType": "不支援的檔案類型。請上載 JPEG、PNG、WebP 或 PDF 檔案。",
     "errorFileTooLarge": "檔案大小超過 10 MB 限制（{size} MB）。",

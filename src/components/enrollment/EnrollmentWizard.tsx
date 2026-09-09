@@ -11,7 +11,6 @@ import {
   Building2,
   CreditCard,
   User,
-  Lock,
   ChevronRight,
   AlertCircle,
   FileCheck,
@@ -469,18 +468,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           </Link>
         </div>
 
-        {/* Header Header */}
+        {/* Header */}
         <header className="border-b-2 border-slate-900 pb-4 bg-white p-5 border-t-4 border-t-primary shadow-2xs">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-[11px] font-semibold tracking-wide text-slate-500 uppercase mb-1">
-              <Building2 className="w-3.5 h-3.5 text-primary" />
-              <span>{dict.officialCpdRegistration}</span>
-            </div>
-            <div className="flex items-center space-x-1 text-[11px] font-mono text-slate-500">
-              <Lock className="w-3 h-3 text-emerald-700" />
-              <span>{dict.sslEncrypted}</span>
-            </div>
-          </div>
           <h1 className="text-xl sm:text-2xl font-serif font-bold text-primary tracking-tight">
             {dict.pageTitle}
           </h1>
@@ -1182,15 +1171,11 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               </div>
                             </div>
                             <div className="shrink-0 text-right">
-                              <span className={`inline-block text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs border ${
-                                isFull
-                                  ? "bg-rose-50 text-rose-800 border-rose-300"
-                                  : isSelected
-                                    ? "bg-emerald-50 text-emerald-900 border-emerald-300"
-                                    : "bg-amber-50 text-amber-900 border-amber-300"
-                              }`}>
-                                {isFull ? "Full" : `${sch.quotaRemaining} Seats`}
-                              </span>
+                              {isFull && (
+                                <span className="inline-block text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs border bg-rose-50 text-rose-800 border-rose-300">
+                                  Full
+                                </span>
+                              )}
                             </div>
                           </div>
                         </button>
@@ -1473,9 +1458,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   {course.schedules
                     .filter((s) => selectedScheduleIds.includes(s.id))
                     .map((s) => (
-                      <div key={s.id} className="flex justify-between text-slate-600 text-[10px]">
-                        <span className="truncate mr-1">{s.dateAndTime}</span>
-                        <span className="font-mono font-bold shrink-0 text-slate-700">{s.quotaRemaining}</span>
+                      <div key={s.id} className="flex text-slate-600 text-[10px]">
+                        <span className="truncate">{s.dateAndTime}</span>
                       </div>
                     ))}
                 </div>

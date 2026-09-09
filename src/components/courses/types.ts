@@ -17,7 +17,7 @@ export interface Instructor {
 }
 
 export interface SyllabusModule {
-  id?: string;
+  id: string;
   moduleNumber: number;
   title: string;
   duration: string;
@@ -77,6 +77,7 @@ export interface Course {
 
 export interface DetailedCourse extends Course {
   status: CourseStatus;
+  capacity: number;
   accreditationBody?: string;
   instructors: Instructor[];
   syllabus: SyllabusModule[];

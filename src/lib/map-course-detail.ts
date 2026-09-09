@@ -84,6 +84,7 @@ export interface ApiCourseDetail {
   price: number;
   unitPrice: number | null;
   capacity: number;
+  imageUrl: string | null;
   registrationStatus: string;
   deliveryMode: string | null;
   language: string | null;
@@ -163,6 +164,8 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     language: c.language ?? "",
     fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,
     status: (c.registrationStatus?.toLowerCase() ?? "open") as DetailedCourse["status"],
+    capacity: c.capacity,
+    imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     accreditationBody: c.accreditationBody ?? undefined,
     instructors,

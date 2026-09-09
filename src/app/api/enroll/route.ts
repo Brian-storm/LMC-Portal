@@ -123,10 +123,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 1. Validate course exists and is open for registration
+    // 1. Validate course exists and is open for registration, and get pricing
     const course = await prisma.course.findUnique({
       where: { id: courseId },
-      select: { id: true, isOpen: true, registrationStatus: true },
+      select: { id: true, isOpen: true, registrationStatus: true, price: true, unitPrice: true },
     });
 
     if (!course || !course.isOpen) {
@@ -153,6 +153,22 @@ export async function POST(request: NextRequest) {
     }
 
     const headCount = enrollmentType === "ORGANIZATION" ? (registrants?.length ?? 1) : 1;
+
+    // ── Fee computation (all server-side) ──
+    // 1: Determine the per-registrant unit price (org uses unitPrice if available)
+    const unitPrice = enrollmentType === "ORGANIZATION"
+      ? (course.unitPrice ?? course.price)
+      : course.price;
+    // 2: Number of sessions booked = number of validated schedule IDs
+    const selectedCount = scheduleIds.length;
+    // 3: Fetch total active sessions for this course to detect "all sessions selected"
+    const totalActiveSchedules = await prisma.schedule.count({
+      where: { courseId, isActive: true },
+    });
+    // 4: 10% bulk discount applies only when every active session is booked
+    const isAllSelected = selectedCount === totalActiveSchedules && totalActiveSchedules > 0;
+    // 5: Final per-registrant fee = unitPrice × session count × (discount factor)
+    const feePerRegistrant = Number(unitPrice) * selectedCount * (isAllSelected ? 0.9 : 1);
 
     // Check ALL schedules have sufficient quota (all-or-nothing)
     const lowQuota = schedules.find((s) => s.quotaRemaining < headCount);
@@ -192,6 +208,7 @@ export async function POST(request: NextRequest) {
             groupId,
             paymentStatus: "PENDING_VERIFICATION" as const,
             paymentMethod,
+            fee: feePerRegistrant,
             isThirdPartyPay,
             payerFullName: payerFullName ?? null,
           }));
@@ -216,6 +233,7 @@ export async function POST(request: NextRequest) {
               groupId: null,
               paymentStatus: "PENDING_VERIFICATION",
               paymentMethod,
+              fee: feePerRegistrant,
               isThirdPartyPay,
               payerFullName: payerFullName ?? null,
             },

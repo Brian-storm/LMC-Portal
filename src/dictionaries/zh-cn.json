@@ -218,7 +218,8 @@
     "location": "香港尖沙咀新文华中心 10楼1011-1015",
     "copyright": "版权所有，不得转载。",
     "privacy": "隐私政策",
-    "terms": "服务条款"
+    "terms": "服务条款",
+    "contactEmail": "lmcconsultancy2025@gmail.com"
   },
   "termsPage": {
     "backToPortal": "返回机构主页",
@@ -421,8 +422,6 @@
     "courseUnavailable": "课程暂时无法提供。",
     "browseCourses": "浏览课程",
     "backToCourseDetails": "返回课程详情",
-    "officialCpdRegistration": "官方 CPD 报名系统",
-    "sslEncrypted": "256 位元 SSL 加密传输",
     "pageTitle": "课程报名申请",
     "step1Title": "参加者资料",
     "step2Title": "选择上课时间",
@@ -543,7 +542,7 @@
       "receiptNotice": "电子收据将于 5 个工作日内发送至您的电邮。",
       "brochureLink": "下载课程简介",
       "brochureUrl": "https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view",
-      "contactEmail": "cs@lmcconsulting.hk",
+      "contactEmail": "lmcconsultancy2025@gmail.com",
       "contactWhatsApp": "+852 8404 5483",
       "contactPrompt": "如有查询，请联系我们",
       "orVia": "或通过 WhatsApp"
