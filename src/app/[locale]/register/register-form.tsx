@@ -60,8 +60,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [idDocType, setIdDocType] = useState<"HKID" | "PASSPORT">("HKID");
-  const [hkidPrefix, setHkidPrefix] = useState("");
-  const [hkidCheckDigit, setHkidCheckDigit] = useState("");
+  const [hkidNumber, setHkidNumber] = useState("");
   const [passportNumber, setPassportNumber] = useState("");
   const [iaLicense, setIaLicense] = useState("");
   const [organization, setOrganization] = useState("");
@@ -78,9 +77,9 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
     setFieldErrors({});
 
     try {
-      // Compute combined identity document number from split HKID fields
+      // Compute combined identity document number from the single HKID field
       const computedIdDocNumber = idDocType === "HKID"
-        ? `${hkidPrefix}(${hkidCheckDigit.toUpperCase()})`
+        ? hkidNumber.toUpperCase()
         : passportNumber.trim();
 
       const res = await fetch("/api/auth/register", {
@@ -286,33 +285,16 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
                   </button>
                 </div>
                 {idDocType === "HKID" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <input
-                        type="text"
-                        value={hkidPrefix}
-                        onChange={(e) => setHkidPrefix(e.target.value.toUpperCase())}
-                        className={inputClass}
-                        placeholder={dict.hkidPrefixPlaceholder}
-                        maxLength={8}
-                      />
-                      <FieldError message={fieldErrors.hkidPrefix?.[0]} />
-                    </div>
-                    <div className="space-y-1">
-                      <div className="relative">
-                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">(</span>
-                        <input
-                          type="text"
-                          value={hkidCheckDigit}
-                          onChange={(e) => setHkidCheckDigit(e.target.value.replace(/[^0-9A-Za-z]/g, "").slice(0, 1))}
-                          maxLength={1}
-                          className={inputClassNoIcon + " text-center"}
-                          placeholder="7"
-                        />
-                        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">)</span>
-                      </div>
-                      <FieldError message={fieldErrors.hkidCheckDigit?.[0]} />
-                    </div>
+                  <div className="space-y-1">
+                    <input
+                      type="text"
+                      value={hkidNumber}
+                      onChange={(e) => setHkidNumber(e.target.value.replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 9))}
+                      className={inputClass}
+                      placeholder={dict.hkidPlaceholder}
+                      maxLength={9}
+                    />
+                    <FieldError message={fieldErrors.hkidNumber?.[0]} />
                   </div>
                 )}
                 {idDocType === "PASSPORT" && (

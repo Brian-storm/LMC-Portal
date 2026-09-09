@@ -28,6 +28,7 @@ import type { EnrollPageDict } from "@/dictionaries/types";
 
 interface CourseData {
   id: string;
+  nameZh: string;
   nameEn: string;
   price: string;
   unitPrice?: string;
@@ -83,9 +84,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   // Identity document type: HKID, Passport, Permit, or Other
   const [idDocType, setIdDocType] = useState<"HKID" | "PASSPORT" | "PERMIT" | "OTHER">("HKID");
 
-  // Split HKID fields — user enters prefix and check digit separately
-  const [hkidPrefix, setHkidPrefix] = useState("");
-  const [hkidCheckDigit, setHkidCheckDigit] = useState("");
+  // HKID single field — user enters full number incl. check digit (e.g. A1234567)
+  const [hkidNumber, setHkidNumber] = useState("");
 
   // Passport number (alternative to HKID)
   const [passportNumber, setPassportNumber] = useState("");
@@ -110,8 +110,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       nameEn: string;
       email: string;
       idDocType: "HKID" | "PASSPORT" | "PERMIT" | "OTHER";
-      hkidPrefix: string;
-      hkidCheckDigit: string;
+      hkidNumber: string;
       passportNumber: string;
       permitNumber: string;
       otherIdDocVal: string;
@@ -119,18 +118,17 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     }[]
   >([]);
 
-  // Compute combined idDocNumber for a member
+  // Compute combined idDocNumber for a member — now just returns the raw number
   const getMemberIdDocNumber = (member: {
     idDocType: "HKID" | "PASSPORT" | "PERMIT" | "OTHER";
-    hkidPrefix: string;
-    hkidCheckDigit: string;
+    hkidNumber: string;
     passportNumber: string;
     permitNumber: string;
     otherIdDocVal: string;
   }) => {
     if (member.idDocType === "HKID") {
-      if (!member.hkidPrefix || !member.hkidCheckDigit) return "";
-      return `${member.hkidPrefix}(${member.hkidCheckDigit.toUpperCase()})`;
+      if (!member.hkidNumber) return "";
+      return member.hkidNumber.toUpperCase();
     } else if (member.idDocType === "PASSPORT") {
       return member.passportNumber.trim();
     } else if (member.idDocType === "PERMIT") {
@@ -143,7 +141,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   // Handler for individual registrant member fields
   const handleMemberChange = (
     index: number,
-    field: "nameZh" | "nameEn" | "email" | "idDocType" | "hkidPrefix" | "hkidCheckDigit" | "passportNumber" | "permitNumber" | "otherIdDocVal" | "idDocNumber",
+    field: "nameZh" | "nameEn" | "email" | "idDocType" | "hkidNumber" | "passportNumber" | "permitNumber" | "otherIdDocVal" | "idDocNumber",
     value: string,
   ) => {
     setRegistrantMembers((prev) => {
@@ -157,7 +155,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   const addMember = () => {
     setRegistrantMembers((prev) => [
       ...prev,
-      { nameZh: "", nameEn: "", email: "", idDocType: "HKID", hkidPrefix: "", hkidCheckDigit: "", passportNumber: "", permitNumber: "", otherIdDocVal: "", idDocNumber: "" },
+      { nameZh: "", nameEn: "", email: "", idDocType: "HKID", hkidNumber: "", passportNumber: "", permitNumber: "", otherIdDocVal: "", idDocNumber: "" },
     ]);
   };
 
@@ -229,20 +227,12 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       error = dict.validation.required;
     } else if (name === "iaLicenseNo" && !value.trim()) {
       error = dict.validation.required;
-    } else if (name === "hkidPrefix") {
+    } else if (name === "hkidNumber") {
       if (idDocType === "HKID") {
         if (!value.trim()) {
           error = dict.validation.required;
-        } else if (!/^[A-Za-z]{1,2}\d{6}$/.test(value)) {
-          error = dict.validation.invalidHkidPrefix;
-        }
-      }
-    } else if (name === "hkidCheckDigit") {
-      if (idDocType === "HKID") {
-        if (!value.trim()) {
-          error = dict.validation.required;
-        } else if (!/^[0-9A]$/.test(value.toUpperCase())) {
-          error = dict.validation.invalidHkidCheckDigit;
+        } else if (!/^[A-Za-z]{1,2}\d{6}[0-9A]$/.test(value.toUpperCase())) {
+          error = dict.validation.invalidHkidFormat;
         }
       }
     } else if (name === "passportNumber") {
@@ -274,11 +264,11 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     return error;
   };
 
-  // Derived: combined identity document number for API submission
+  // Derived: combined identity document number for API submission — raw value, no wrapping
   const getCombinedIdDocNumber = () => {
     if (idDocType === "HKID") {
-      if (!hkidPrefix || !hkidCheckDigit) return "";
-      return `${hkidPrefix}(${hkidCheckDigit.toUpperCase()})`;
+      if (!hkidNumber) return "";
+      return hkidNumber.toUpperCase();
     } else if (idDocType === "PASSPORT") {
       return passportNumber.trim();
     } else if (idDocType === "PERMIT") {
@@ -290,7 +280,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
 
   // Derived: whether the primary identity document is validly filled
   const idDocValid = idDocType === "HKID"
-    ? hkidPrefix.length > 0 && hkidCheckDigit.length > 0 && !fieldErrors.hkidPrefix && !fieldErrors.hkidCheckDigit
+    ? hkidNumber.length > 0 && !fieldErrors.hkidNumber
     : idDocType === "PASSPORT"
       ? passportNumber.trim().length > 0 && !fieldErrors.passportNumber
       : idDocType === "PERMIT"
@@ -313,7 +303,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           !m.nameEn ||
           !m.email ||
           (m.idDocType === "HKID"
-            ? !m.hkidPrefix || !m.hkidCheckDigit
+            ? !m.hkidNumber
             : m.idDocType === "PASSPORT"
               ? !m.passportNumber.trim()
               : m.idDocType === "PERMIT"
@@ -720,7 +710,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                       <button
                         type="button"
-                        onClick={() => { setIdDocType("HKID"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
+                        onClick={() => { setIdDocType("HKID"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
                         className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "HKID"
                             ? "bg-primary text-primary-foreground border-primary"
@@ -732,7 +722,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       </button>
                       <button
                         type="button"
-                        onClick={() => { setIdDocType("PASSPORT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
+                        onClick={() => { setIdDocType("PASSPORT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
                         className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "PASSPORT"
                             ? "bg-primary text-primary-foreground border-primary"
@@ -744,7 +734,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       </button>
                       <button
                         type="button"
-                        onClick={() => { setIdDocType("PERMIT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
+                        onClick={() => { setIdDocType("PERMIT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
                         className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "PERMIT"
                             ? "bg-primary text-primary-foreground border-primary"
@@ -756,7 +746,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       </button>
                       <button
                         type="button"
-                        onClick={() => { setIdDocType("OTHER"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidPrefix; delete n.hkidCheckDigit; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
+                        onClick={() => { setIdDocType("OTHER"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
                         className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
                           idDocType === "OTHER"
                             ? "bg-primary text-primary-foreground border-primary"
@@ -769,64 +759,32 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     </div>
 
                     {idDocType === "HKID" && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <label className="font-bold text-slate-700 block text-xs">
-                            {dict.formLabels.hkidPrefix} <span className="text-red-600">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={hkidPrefix}
-                            onChange={(e) => {
-                              const val = e.target.value.toUpperCase();
-                              setHkidPrefix(val);
-                              validateField("hkidPrefix", val);
-                            }}
-                            onBlur={(e) => validateField("hkidPrefix", e.target.value)}
-                            placeholder={dict.formLabels.hkidPrefixPlaceholder}
-                            maxLength={8}
-                            className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono focus:outline-none focus:bg-white ${
-                              fieldErrors.hkidPrefix ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                            }`}
-                          />
-                          {fieldErrors.hkidPrefix && (
-                            <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                              <AlertCircle className="w-3 h-3 shrink-0" />
-                              <span>{fieldErrors.hkidPrefix}</span>
-                            </p>
-                          )}
-                        </div>
-                        <div className="space-y-1">
-                          <label className="font-bold text-slate-700 block text-xs">
-                            {dict.formLabels.hkidCheckDigit} <span className="text-red-600">*</span>
-                          </label>
-                          <div className="relative">
-                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">(</span>
-                            <input
-                              type="text"
-                              value={hkidCheckDigit}
-                              onChange={(e) => {
-                                // Only allow a single alphanumeric character
-                                const val = e.target.value.replace(/[^0-9A-Za-z]/g, "").slice(0, 1);
-                                setHkidCheckDigit(val);
-                                validateField("hkidCheckDigit", val);
-                              }}
-                              onBlur={(e) => validateField("hkidCheckDigit", e.target.value)}
-                              maxLength={1}
-                              className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono text-center focus:outline-none focus:bg-white pl-6 ${
-                                fieldErrors.hkidCheckDigit ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                              }`}
-                            />
-                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs pointer-events-none">)</span>
-                          </div>
-                          <p className="text-[10px] text-slate-400">{dict.formLabels.hkidCheckDigitHint}</p>
-                          {fieldErrors.hkidCheckDigit && (
-                            <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                              <AlertCircle className="w-3 h-3 shrink-0" />
-                              <span>{fieldErrors.hkidCheckDigit}</span>
-                            </p>
-                          )}
-                        </div>
+                      <div className="space-y-1">
+                        <label className="font-bold text-slate-700 block text-xs">
+                          {dict.formLabels.hkidNumber} <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={hkidNumber}
+                          onChange={(e) => {
+                            // Strip non-alphanumerics and cap length (prefix + check digit)
+                            const val = e.target.value.replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 9);
+                            setHkidNumber(val);
+                            validateField("hkidNumber", val);
+                          }}
+                          onBlur={(e) => validateField("hkidNumber", e.target.value)}
+                          placeholder={dict.formLabels.hkidPlaceholder}
+                          maxLength={9}
+                          className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono focus:outline-none focus:bg-white ${
+                            fieldErrors.hkidNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
+                          }`}
+                        />
+                        {fieldErrors.hkidNumber && (
+                          <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
+                            <AlertCircle className="w-3 h-3 shrink-0" />
+                            <span>{fieldErrors.hkidNumber}</span>
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -1036,29 +994,15 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                             </button>
                           </div>
                           {member.idDocType === "HKID" && (
-                            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              <div className="relative">
-                                <input
-                                  type="text"
-                                  placeholder={dict.formLabels.hkidPrefixPlaceholder}
-                                  value={member.hkidPrefix}
-                                  onChange={(e) => handleMemberChange(index, "hkidPrefix", e.target.value.toUpperCase())}
-                                  maxLength={8}
-                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-primary"
-                                />
-                              </div>
-                              <div className="relative">
-                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-[10px] pointer-events-none">(</span>
-                                <input
-                                  type="text"
-                                  value={member.hkidCheckDigit}
-                                  onChange={(e) => handleMemberChange(index, "hkidCheckDigit", e.target.value.replace(/[^0-9A-Za-z]/g, "").slice(0, 1))}
-                                  maxLength={1}
-                                  placeholder=" "
-                                  className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono text-center focus:outline-none focus:border-primary pl-6"
-                                />
-                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-[10px] pointer-events-none">)</span>
-                              </div>
+                            <div className="sm:col-span-2">
+                              <input
+                                type="text"
+                                placeholder={dict.formLabels.hkidPlaceholder}
+                                value={member.hkidNumber}
+                                onChange={(e) => handleMemberChange(index, "hkidNumber", e.target.value.replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 9))}
+                                maxLength={9}
+                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-primary"
+                              />
                             </div>
                           )}
                           {member.idDocType === "PASSPORT" && (
@@ -1445,7 +1389,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   {dict.summary.course}
                 </span>
                 <p className="font-serif font-bold text-slate-900 leading-snug mt-0.5">
-                  {course.nameEn}
+                  {locale === "en" ? course.nameEn : (course.nameZh || course.nameEn)}
                 </p>
               </div>
 

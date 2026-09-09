@@ -81,14 +81,14 @@ export function CourseDetailView({
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className="bg-slate-100 border border-slate-300 px-2 py-0.5 font-bold uppercase tracking-wider text-slate-800 rounded-xs"
-                style={{ fontSize: "9.5px" }}
+                style={{ fontSize: "11.5px" }}
               >
                 {dict.certificateBadge}
               </span>
               {course.iaRefNumber && (
                 <span
                   className="bg-slate-50 border border-slate-300 text-slate-700 px-2 py-0.5 font-semibold tracking-tight rounded-xs"
-                  style={{ fontSize: "9.5px" }}
+                  style={{ fontSize: "11.5px" }}
                 >
                   <span className="text-slate-400 font-bold mr-1">
                     {dict.iaRef}:
@@ -101,7 +101,7 @@ export function CourseDetailView({
             <div className="inline-flex items-center gap-2">
               <div
                 className="inline-flex items-center space-x-1 text-primary font-bold bg-emerald-50 px-2 py-0.5 border border-emerald-300 rounded-xs"
-                style={{ fontSize: "9.5px" }}
+                style={{ fontSize: "11.5px" }}
               >
                 <Award className="w-3 h-3 text-primary shrink-0" />
                 <span>
@@ -111,9 +111,9 @@ export function CourseDetailView({
               {course.cpdHoursIa && (
                 <div
                   className="inline-flex items-center space-x-1 text-emerald-800 font-bold bg-emerald-50/60 px-2 py-0.5 border border-emerald-200 rounded-xs"
-                  style={{ fontSize: "9.5px" }}
+                  style={{ fontSize: "11.5px" }}
                 >
-                  <span>{course.cpdHoursIa} IA {dict.hours}/session</span>
+                  <span>{course.cpdHoursIa} IA {dict.hours}{dict.perSession}</span>
                 </div>
               )}
             </div>
@@ -125,14 +125,14 @@ export function CourseDetailView({
           </h1>
           <p
             className="mt-2 text-slate-700 border-l-2 border-slate-300 pl-3 py-0.5 leading-relaxed"
-            style={{ fontSize: "12px" }}
+            style={{ fontSize: "14px" }}
           >
             {course.description}
           </p>
 
           {/* CPD Rules */}
           {(course.cpdRulesZh || course.cpdRulesEn) && (
-            <div className="mt-3 bg-amber-50/80 border border-amber-200 p-3 rounded-xs text-xs text-amber-900 space-y-1">
+            <div className="mt-3 bg-amber-50/80 border border-amber-200 p-3 rounded-xs text-sm text-amber-900 space-y-1">
               <p className="leading-relaxed">
                 {course.cpdRulesZh || course.cpdRulesEn}
               </p>
@@ -160,9 +160,9 @@ export function CourseDetailView({
                 </h2>
                 <span
                   className="font-mono text-slate-500 uppercase"
-                  style={{ fontSize: "9px" }}
+                  style={{ fontSize: "13px" }}
                 >
-                  {course.syllabus.length} MODULES
+                  {course.syllabus.length} {dict.modules}
                 </span>
               </div>
 
@@ -175,13 +175,12 @@ export function CourseDetailView({
                       className="border border-slate-300 rounded-xs bg-slate-50/50 p-3 sm:p-4"
                     >
                       <div className="flex flex-wrap items-center justify-between border-b border-slate-200 pb-2 gap-2">
-                        <span className="font-mono font-bold text-slate-900 text-xs">
-                          {dict.labels?.module} {mod.moduleNumber}:{" "}
+                        <span className="font-mono font-bold text-slate-900 text-sm">
                           {mod.title}
                         </span>
                         <span
                           className="font-mono text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded-xs"
-                          style={{ fontSize: "9px" }}
+                          style={{ fontSize: "13px" }}
                         >
                           {dict.labels?.duration}: {mod.duration}
                         </span>
@@ -190,13 +189,13 @@ export function CourseDetailView({
                       <div className="mt-2.5">
                         <p
                           className="font-mono font-semibold uppercase text-slate-500 mb-1.5"
-                          style={{ fontSize: "8.5px" }}
+                          style={{ fontSize: "10.5px" }}
                         >
                           {dict.labels?.topics}
                         </p>
                         <ul
                           className="space-y-1 text-slate-700"
-                          style={{ fontSize: "11px" }}
+                          style={{ fontSize: "13px" }}
                         >
                           {mod.topics.map((topic, i) => (
                             <li key={i} className="flex items-start gap-1.5">
@@ -214,7 +213,7 @@ export function CourseDetailView({
                         <div className="mt-3 pt-3 border-t border-slate-200 space-y-2">
                           <span
                             className="font-mono font-bold uppercase text-slate-400 block"
-                            style={{ fontSize: "8px" }}
+                            style={{ fontSize: "14px" }}
                           >
                             {dict.sections?.scheduleAndLocation || "Schedule & Physical Venue"}
                           </span>
@@ -222,7 +221,7 @@ export function CourseDetailView({
                             <div
                               key={sch.id}
                               className="flex flex-col sm:flex-row sm:items-center gap-1.5 text-slate-700 bg-white border border-slate-200 rounded-xs px-2.5 py-2"
-                              style={{ fontSize: "10px" }}
+                              style={{ fontSize: "14px" }}
                             >
                               <div className="flex items-center gap-1.5 font-semibold text-slate-900 shrink-0">
                                 <Calendar className="w-3 h-3 text-primary shrink-0" />
@@ -242,7 +241,7 @@ export function CourseDetailView({
                 })}
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-200 text-slate-600 text-xs font-mono flex items-center gap-2">
+              <div className="mt-4 pt-3 border-t border-slate-200 text-slate-600 text-sm font-mono flex items-center gap-2">
                 <Award className="w-3.5 h-3.5 text-primary shrink-0" />
                 <span className="font-semibold text-slate-700">{dict.seats}: {course.capacity}</span>
               </div>
@@ -277,18 +276,18 @@ export function CourseDetailView({
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-sans font-bold text-slate-900 text-xs truncate">
+                      <h3 className="font-sans font-bold text-slate-900 text-sm truncate">
                         {ins.name}
                       </h3>
                       <p
                         className="font-mono text-primary font-semibold truncate"
-                        style={{ fontSize: "9px" }}
+                        style={{ fontSize: "13px" }}
                       >
                         {ins.title}
                       </p>
                       <p
                         className="mt-1 text-slate-600 line-clamp-2 leading-tight"
-                        style={{ fontSize: "10px" }}
+                        style={{ fontSize: "14px" }}
                       >
                         {ins.bio}
                       </p>
@@ -319,13 +318,13 @@ export function CourseDetailView({
                       key={faq.id}
                       className="group border border-slate-300 rounded-xs bg-slate-50 p-3"
                     >
-                      <summary className="cursor-pointer font-semibold text-slate-800 list-none flex justify-between items-center text-xs">
+                      <summary className="cursor-pointer font-semibold text-slate-800 list-none flex justify-between items-center text-sm">
                         <span>{faq.question}</span>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-500 transition-transform group-open:rotate-180 shrink-0 ml-2" />
                       </summary>
                       <p
                         className="mt-2 text-slate-600 border-t border-slate-200 pt-2 leading-relaxed"
-                        style={{ fontSize: "11px" }}
+                        style={{ fontSize: "13px" }}
                       >
                         {faq.answer}
                       </p>
@@ -348,23 +347,24 @@ export function CourseDetailView({
               <div className="flex items-center justify-between mb-3 border-b border-slate-200 pb-3 font-mono">
                 <span
                   className={`border px-2 py-0.5 font-bold uppercase rounded-xs ${statusBadge.color}`}
-                  style={{ fontSize: "8.5px" }}
+                  style={{ fontSize: "10.5px" }}
                 >
                   {statusBadge.text}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span
                     className="text-slate-700 font-bold"
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: "14px" }}
                   >
-                    {course.cpdHours} {dict.hours} CPD
+                    {course.cpdHours} {dict.hours} {dict.cpd}
                   </span>
                   {course.cpdHoursIa && (
                     <span
                       className="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-xs border border-emerald-200"
-                      style={{ fontSize: "8px" }}
+                      style={{ fontSize: "14px" }}
                     >
-                      IA {course.cpdHoursIa}h/session
+                      IA {course.cpdHoursIa}
+                      {dict.perSession}
                     </span>
                   )}
                 </div>
@@ -372,21 +372,21 @@ export function CourseDetailView({
 
               {/* Course Fee Display */}
               <div className="mb-4">
-                <span
-                  className="text-slate-400 font-mono block uppercase font-bold mb-0.5"
-                  style={{ fontSize: "8.5px" }}
-                >
-                  OFFICIAL COURSE FEE
-                </span>
+<span
+                    className="text-slate-400 font-mono block uppercase font-bold mb-0.5"
+                    style={{ fontSize: "10.5px" }}
+                  >
+                    {dict.officialCourseFee}
+                  </span>
                 <span className="text-2xl font-sans font-bold text-slate-900">
                   {course.fee}
                 </span>
                 {course.unitPrice && (
                   <span
                     className="text-slate-500 font-mono block mt-0.5"
-                    style={{ fontSize: "9px" }}
+                    style={{ fontSize: "13px" }}
                   >
-                    Unit Price: HKD {typeof course.unitPrice === 'number' ? course.unitPrice.toLocaleString() : course.unitPrice}
+                    {dict.unitPrice} HKD {typeof course.unitPrice === 'number' ? course.unitPrice.toLocaleString() : course.unitPrice}
                   </span>
                 )}
               </div>
@@ -397,14 +397,14 @@ export function CourseDetailView({
                   <Link
                     href={`${enrollUrl}`}
                     className="w-full py-2 px-3 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center block"
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: "14px" }}
                   >
                     {dict.enrollCta}
                   </Link>
                 ) : (
                   <span
                     className="w-full py-2 px-3 uppercase tracking-wider font-bold text-slate-500 bg-slate-300 border border-slate-400 rounded-xs shadow-2xs text-center block cursor-not-allowed select-none"
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: "14px" }}
                   >
                     {dict.enrollCta}
                   </span>
@@ -414,7 +414,7 @@ export function CourseDetailView({
                   href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
                   download
                   className="w-full py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5"
-                  style={{ fontSize: "9px" }}
+                  style={{ fontSize: "13px" }}
                 >
                   <FileText className="w-3 h-3 text-slate-600" />
                   <span>{dict.downloadBrochure}</span>
@@ -424,7 +424,7 @@ export function CourseDetailView({
               {/* Mandatory Governance Notice */}
               <div
                 className="mt-4 pt-3 border-t border-slate-200 text-slate-600 space-y-2 font-mono"
-                style={{ fontSize: "9.5px" }}
+                style={{ fontSize: "11.5px" }}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 uppercase font-semibold">

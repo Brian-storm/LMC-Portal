@@ -155,10 +155,8 @@ export async function POST(request: NextRequest) {
     const headCount = enrollmentType === "ORGANIZATION" ? (registrants?.length ?? 1) : 1;
 
     // ── Fee computation (all server-side) ──
-    // 1: Determine the per-registrant unit price (org uses unitPrice if available)
-    const unitPrice = enrollmentType === "ORGANIZATION"
-      ? (course.unitPrice ?? course.price)
-      : course.price;
+    // 1: Determine the per-session unit price (unitPrice is the per-session rate; price is the full-course total)
+    const unitPrice = course.unitPrice ?? course.price;
     // 2: Number of sessions booked = number of validated schedule IDs
     const selectedCount = scheduleIds.length;
     // 3: Fetch total active sessions for this course to detect "all sessions selected"

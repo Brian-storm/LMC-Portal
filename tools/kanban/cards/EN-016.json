@@ -2,7 +2,7 @@
   "id": "EN-016",
   "title": "HKID 單一欄位輸入（合併 prefix + check digit）",
   "content": "將香港身份證輸入從兩個欄位（hkidPrefix + hkidCheckDigit，組合為 A123456(7)）合併為單一欄位（使用者輸入 A1234567，去除括號）。影響 EnrollmentWizard.tsx 與 register-form.tsx 兩個前端元件，以及 3 個語系的字典檔。API 與 validation schema 不需要改動（idDocNumber 已是單一字串）。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -48,13 +48,15 @@
   "evidence": {
     "commands": [
       "npm run typecheck",
-      "npm run lint"
+      "npm run lint",
+      "grep -r 'hkidPrefix\\|hkidCheckDigit' src/ --include='*.{ts,tsx}'  → no matches"
     ],
     "findings": [
       "TypeScript: no errors",
-      "ESLint: no errors"
+      "ESLint: no errors",
+      "No stale references to old hkidPrefix/hkidCheckDigit remain"
     ],
-    "residual": "待手動瀏覽器驗證"
+    "residual": "待手動瀏覽器驗證：報名 wizard 與 register 表單的 HKID 輸入行為"
   },
   "comments": [],
   "acceptance": [

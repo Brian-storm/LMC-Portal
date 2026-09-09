@@ -203,8 +203,8 @@ async function main() {
     create: {
       id: "cpd-102",
       slug: "cpd-102",
-      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障",
-      nameEn: "Hong Kong Healthcare System Development, GBA Overview & Medical Insurance",
+      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
+      nameEn: "Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course",
       descriptionZh: "涵蓋香港醫療體制、大灣區醫療概況、危疾系列（乳癌、婦科癌症、前列腺健康、肺癌）及常見運動受傷處理的綜合課程。",
       descriptionEn: "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
       category: "cpd",
@@ -226,7 +226,7 @@ async function main() {
       },
       syllabusItems: {
         create: [
-          { moduleNumber: 1, titleZh: "主題1 - 香港醫療體制發展、大灣區醫療概況與醫療保障", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
+          { moduleNumber: 1, titleZh: "主題1 - 香港醫療體制發展、大灣區醫療概況與醫療保障證書課程", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
           { moduleNumber: 2, titleZh: "主題2 - 危疾系列：乳癌診斷、臨床治療與患者支援", titleEn: "Topic 2 - Critical Illness Series: Breast Cancer Diagnosis, Clinical Treatment & Patient Support", duration: "1.5 Hours", topicsZh: ["乳癌診斷", "臨床治療", "患者支援"], topicsEn: ["Breast cancer diagnosis", "Clinical treatment", "Patient support"], sortOrder: 2 },
           { moduleNumber: 3, titleZh: "主題3 - 常見運動受傷的處理", titleEn: "Topic 3 - Common Sports Injury Management", duration: "1.5 Hours", topicsZh: ["常見運動受傷處理"], topicsEn: ["Common sports injury management"], sortOrder: 3 },
           { moduleNumber: 4, titleZh: "主題4 - 危疾系列：認識婦科癌症", titleEn: "Topic 4 - Critical Illness Series: Understanding Gynecological Cancers", duration: "1.5 Hours", topicsZh: ["婦科癌症認識"], topicsEn: ["Understanding gynecological cancers"], sortOrder: 4 },
