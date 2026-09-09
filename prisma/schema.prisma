@@ -41,6 +41,13 @@ enum PaymentMethod {
   CORPORATE_INVOICE
 }
 
+enum IdDocType {
+  HKID
+  PASSPORT
+  PERMIT
+  OTHER
+}
+
 enum AdminPermission {
   SUPER_ADMIN
   AUDITOR
@@ -54,6 +61,7 @@ model User {
   nameZh       String
   nameEn       String
   idDocNumber  String
+  idDocType    IdDocType?
   iaLicense    String?
   organization String?
   phone        String
@@ -204,6 +212,7 @@ model Registrant {
   id              String         @id @default(cuid())
   courseId        String
   userId          String
+  idDocType       IdDocType?
   enrollmentType  EnrollmentType
   groupId         String?
   paymentStatus   PaymentStatus  @default(PENDING_VERIFICATION)

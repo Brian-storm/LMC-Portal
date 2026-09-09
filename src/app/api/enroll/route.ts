@@ -72,6 +72,13 @@ export async function POST(request: NextRequest) {
           data: { idDocNumber },
         });
       }
+      // Update the user's idDocType if provided
+      if (parsed.data.idDocType) {
+        await prisma.user.update({
+          where: { id: userId },
+          data: { idDocType: parsed.data.idDocType },
+        });
+      }
     } else {
       // Guest enrolment: email is required
       if (!email) {
@@ -91,6 +98,13 @@ export async function POST(request: NextRequest) {
             data: { idDocNumber },
           });
         }
+        // Update existing guest user with submitted idDocType if they don't have one
+        if (parsed.data.idDocType && !existingUser.idDocType) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: { idDocType: parsed.data.idDocType },
+          });
+        }
       } else {
         const guestName = fullName || "Guest";
         const newUser = await prisma.user.create({
@@ -98,6 +112,7 @@ export async function POST(request: NextRequest) {
             nameZh: guestName,
             nameEn: guestName,
             idDocNumber: idDocNumber || `guest-${crypto.randomUUID().slice(0, 8)}`,
+            idDocType: parsed.data.idDocType ?? undefined,
             phone: phone || "",
             email,
             iaLicense: iaLicenseNo || null,
@@ -169,9 +184,10 @@ export async function POST(request: NextRequest) {
 
         if (isGroupEnrollment) {
           // ORGANIZATION: create one registrant per group member
-          const rows = registrants.map(() => ({
+          const rows = registrants.map((r) => ({
             courseId,
             userId,
+            idDocType: r.idDocType ?? undefined,
             enrollmentType,
             groupId,
             paymentStatus: "PENDING_VERIFICATION" as const,
@@ -195,6 +211,7 @@ export async function POST(request: NextRequest) {
             data: {
               courseId,
               userId,
+              idDocType: parsed.data.idDocType ?? undefined,
               enrollmentType,
               groupId: null,
               paymentStatus: "PENDING_VERIFICATION",
