@@ -122,7 +122,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     dateAndTime: s.dateAndTime,
     venue: s.venue,
     quotaRemaining: s.quotaRemaining,
-    topics: s.topics.map((t) => ({
+    topics: (s.topics ?? []).map((t) => ({
       syllabusItem: {
         id: t.syllabusItem.id,
         moduleNumber: t.syllabusItem.moduleNumber,

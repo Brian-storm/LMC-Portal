@@ -213,6 +213,7 @@ model Registrant {
   courseId        String
   userId          String
   idDocType       IdDocType?
+  idDocNumber     String?
   enrollmentType  EnrollmentType
   groupId         String?
   paymentStatus   PaymentStatus  @default(PENDING_VERIFICATION)
