@@ -366,6 +366,17 @@ async function main() {
         submittedAt: new Date("2026-08-25T10:30:00Z"),
       },
     });
+    // Link the registrant to the course's schedule so it's not an orphan
+    const cpd101Schedule = await prisma.schedule.findFirst({
+      where: { courseId: "cpd-101" },
+    });
+    if (cpd101Schedule) {
+      await prisma.registrantSchedule.upsert({
+        where: { registrantId_scheduleId: { registrantId: "reg-verified-001", scheduleId: cpd101Schedule.id } },
+        update: {},
+        create: { registrantId: "reg-verified-001", scheduleId: cpd101Schedule.id },
+      });
+    }
     console.log("Test receipt created for enrolment reg-verified-001 (RCPT-2026-00001)");
   }
   const adminPasswordHash = await bcrypt.hash("admin123", 10);

@@ -228,6 +228,7 @@ model Registrant {
   payerFullName   String?
   paymentProofUrl String?
   receiptNumber   String?
+  receiptPdfData  Bytes?
   submittedAt     DateTime       @default(now())
 
   course          Course         @relation(fields: [courseId], references: [id])

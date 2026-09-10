@@ -559,8 +559,17 @@ export default function AdminEnrolmentsPage() {
                               <span className="text-slate-400">—</span>
                             )}
                             {enrolment.receiptNumber && (
-                              <div className="text-[10px] font-mono text-emerald-700">
-                                RCPT: {enrolment.receiptNumber}
+                              <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700">
+                                <span>RCPT: {enrolment.receiptNumber}</span>
+                                <a
+                                  href={`/api/admin/enrolments/${enrolment.id}/receipt`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-medium text-emerald-700 hover:bg-emerald-50 transition-colors"
+                                  title="Download receipt PDF"
+                                >
+                                  <FileText className="w-3 h-3" />
+                                </a>
                               </div>
                             )}
                           </td>

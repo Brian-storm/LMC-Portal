@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 
 import { TEXTS } from "./texts";
 import { renderReceiptPdf } from "./render";
+export type { RenderReceiptData } from "./render";
+export { renderReceiptPdf };
 
 // ── Data types ──────────────────────────────────────────────────────────────
 
@@ -37,7 +39,7 @@ export interface ReceiptResult {
 
 const RECEIPT_PREFIX = "RCPT";
 
-async function generateReceiptNumber(): Promise<string> {
+export async function generateReceiptNumber(): Promise<string> {
   const year = new Date().getFullYear().toString();
 
   const lastReceipt = await prisma.registrant.findFirst({
