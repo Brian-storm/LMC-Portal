@@ -1,0 +1,58 @@
+{
+  "id": "DV-001",
+  "title": "Local Docker PostgreSQL 開發資料庫",
+  "content": "Set up a local PostgreSQL database via Docker for development, separate from the production AWS RDS instance. Currently .env.example has both a commented-out local connection string and an active RDS DATABASE_URL. This card makes local dev work properly: create docker-compose.yml for PostgreSQL, wire Prisma to use local DB when DEVELOPING, add npm scripts for DB lifecycle, and update .env.example so local is the default dev path. Production RDS data stays intact — never touched by dev operations.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-10",
+  "epic": "本地開發環境",
+  "userStory": "Local Docker PostgreSQL 開發資料庫",
+  "track": "backend",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    ".env.example",
+    "prisma/schema.prisma",
+    "package.json",
+    "AGENTS.md"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      ".env.example already has a commented-out local DATABASE_URL (line 5)",
+      "No docker-compose.yml exists yet",
+      "No npm scripts for DB start/stop exist yet",
+      "Prisma schema + migrations already present — just need local DB to run against"
+    ],
+    "residual": ""
+  },
+  "comments": []
+}

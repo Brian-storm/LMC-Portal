@@ -94,6 +94,13 @@
       "stories": [
         { "name": "資安基礎檢查", "definition": "Initial security scan: npm audit, dependency review, hardcoded secrets, auth boundary mapping, CSP headers, rate limiting, S3 bucket permissions, SSL/TLS configuration" }
       ]
+    },
+    {
+      "name": "本地開發環境",
+      "definition": "Local development environment tooling: Docker PostgreSQL for dev database, environment parity with production, developer scripts and tooling. Keeps production data intact by using a separate local database.",
+      "stories": [
+        { "name": "Local Docker PostgreSQL 開發資料庫", "definition": "Create docker-compose.yml with PostgreSQL service, configure Prisma to use local DB for dev, update .env.example with local connection string as default, add npm scripts for DB lifecycle (start, stop, migrate, seed), document setup in AGENTS.md. Production DATABASE_URL (RDS) remains separate and untouched." }
+      ]
     }
   ]
 }
