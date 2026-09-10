@@ -253,6 +253,7 @@ export async function POST(request: NextRequest) {
           const rows = registrants.map((r) => ({
             courseId,
             userId: memberUserIdByEmail.get(r.email)!,
+            enrollerUserId: userId,
             idDocType: r.idDocType ?? undefined,
             enrollmentType,
             groupId,

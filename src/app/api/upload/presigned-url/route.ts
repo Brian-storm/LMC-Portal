@@ -80,20 +80,28 @@ export async function POST(request: NextRequest) {
       userId = user.id;
     }
 
-    // 5: Verify the registrant exists and belongs to the resolved user
+    // Also fetch groupId and enrollerUserId to check group-payer authorization
     const registrant = await prisma.registrant.findUnique({
       where: { id: registrantId },
-      select: { userId: true },
+      select: { userId: true, groupId: true, enrollerUserId: true },
     });
 
     if (!registrant) {
       return NextResponse.json({ error: "Registrant not found" }, { status: 404 });
     }
 
+    // Authorize if: (1) the registrant belongs to this user, (2) the user is an admin,
+    // (3) the user is the enroller who submitted this organization enrollment,
+    // or (4) the user has another registrant in the same group (fellow group member)
     const isOwner = registrant.userId === userId;
     const isAdmin = !isOwner && session?.user?.id && !!(await prisma.admin.findUnique({ where: { userId: session.user.id } }));
+    const isEnroller = !isOwner && !isAdmin && registrant.enrollerUserId === userId;
+    const isGroupPayer = !isOwner && !isAdmin && !isEnroller && registrant.groupId && !!userId
+      && !!(await prisma.registrant.findFirst({
+        where: { groupId: registrant.groupId, userId },
+      }));
 
-    if (!isOwner && !isAdmin) {
+    if (!isOwner && !isAdmin && !isEnroller && !isGroupPayer) {
       return NextResponse.json(
         { error: "You are not authorized to upload for this registrant" },
         { status: 403 },

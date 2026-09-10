@@ -166,8 +166,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   };
 
   const totalRegistrants = enrollmentType === "ORGANIZATION"
-    ? 1 + registrantMembers.length
-    : 1;
+    ? registrantMembers.length
+    : 0;
 
   // Toggle a schedule ID in/out of the selected set
   const toggleSchedule = (scheduleId: string) => {
@@ -1423,14 +1423,14 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
                     <span>{dict.summary.subtotal}</span>
                     <span className="font-mono font-bold text-slate-800">
-                      HK$ {(parseFloat(String(unitPrice)) * selectedCount * totalRegistrants).toLocaleString()}
+                      HK$ {(parseFloat(String(unitPrice)) * selectedCount).toLocaleString()}
                     </span>
                   </div>
                   {isAllSelected && (
                     <div className="flex justify-between py-1.5 text-emerald-700">
                       <span className="font-bold">{dict.summary.discount}</span>
                       <span className="font-mono font-bold">
-                        -HK$ {(parseFloat(String(unitPrice)) * selectedCount * totalRegistrants * 0.1).toLocaleString()}
+                        -HK$ {(parseFloat(String(unitPrice)) * selectedCount * 0.1).toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -1443,7 +1443,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                 </span>
                 <span className="text-lg font-serif font-bold text-primary">
                   HK$ {selectedCount > 0
-                    ? (parseFloat(String(unitPrice)) * selectedCount * totalRegistrants * (isAllSelected ? 0.9 : 1)).toLocaleString()
+                    ? (parseFloat(String(unitPrice)) * selectedCount * (isAllSelected ? 0.9 : 1)).toLocaleString()
                     : unitPrice}
                 </span>
               </div>

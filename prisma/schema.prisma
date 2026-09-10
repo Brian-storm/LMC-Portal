@@ -220,6 +220,7 @@ model Registrant {
   idDocNumber     String?
   enrollmentType  EnrollmentType
   groupId         String?
+  enrollerUserId  String?
   paymentStatus   PaymentStatus  @default(PENDING_VERIFICATION)
   paymentMethod   PaymentMethod?
   fee             Decimal?       @db.Decimal(10, 2)
