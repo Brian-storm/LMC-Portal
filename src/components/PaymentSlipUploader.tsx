@@ -189,8 +189,7 @@ export function PaymentSlipUploader({
             </p>
             <a
               href={confirmationDict.brochureUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              download
               className="inline-flex items-center gap-1 text-primary underline font-semibold"
             >
               <FileText className="w-3 h-3" />

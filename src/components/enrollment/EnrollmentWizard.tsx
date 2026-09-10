@@ -168,6 +168,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   const totalRegistrants = enrollmentType === "ORGANIZATION"
     ? registrantMembers.length
     : 0;
+  // For ORGANIZATION, total fee = per-person fee × number of registrants (enroller pays sum)
+  const registrantMultiplier = enrollmentType === "ORGANIZATION" && totalRegistrants > 0 ? totalRegistrants : 1;
 
   // Toggle a schedule ID in/out of the selected set
   const toggleSchedule = (scheduleId: string) => {
@@ -440,7 +442,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     );
   }
 
-  const unitPrice = course.unitPrice || course.price;
+  // Per-session unit price is the sole source of truth (never fall back to course.price)
+  const unitPrice = course.unitPrice ?? "0";
   const totalSessions = course.schedules?.length || 0;
   const selectedCount = selectedScheduleIds.length;
   const isAllSelected = selectedCount === totalSessions && totalSessions > 0;
@@ -1423,14 +1426,14 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
                     <span>{dict.summary.subtotal}</span>
                     <span className="font-mono font-bold text-slate-800">
-                      HK$ {(parseFloat(String(unitPrice)) * selectedCount).toLocaleString()}
+                      HK$ {(parseFloat(String(unitPrice)) * selectedCount * registrantMultiplier).toLocaleString()}
                     </span>
                   </div>
                   {isAllSelected && (
                     <div className="flex justify-between py-1.5 text-emerald-700">
                       <span className="font-bold">{dict.summary.discount}</span>
                       <span className="font-mono font-bold">
-                        -HK$ {(parseFloat(String(unitPrice)) * selectedCount * 0.1).toLocaleString()}
+                        -HK$ {(parseFloat(String(unitPrice)) * selectedCount * 0.1 * registrantMultiplier).toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -1442,9 +1445,10 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   {dict.summary.totalFee}
                 </span>
                 <span className="text-lg font-serif font-bold text-primary">
-                  HK$ {selectedCount > 0
-                    ? (parseFloat(String(unitPrice)) * selectedCount * (isAllSelected ? 0.9 : 1)).toLocaleString()
-                    : unitPrice}
+                  HK$ {(selectedCount > 0
+                    ? (parseFloat(String(unitPrice)) * selectedCount * (isAllSelected ? 0.9 : 1) * registrantMultiplier)
+                    : 0
+                  ).toLocaleString()}
                 </span>
               </div>
             </div>

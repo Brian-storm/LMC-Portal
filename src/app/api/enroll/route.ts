@@ -202,8 +202,14 @@ export async function POST(request: NextRequest) {
     const headCount = enrollmentType === "ORGANIZATION" ? (registrants?.length ?? 1) : 1;
 
     // ── Fee computation (all server-side) ──
-    // 1: Determine the per-session unit price (unitPrice is the per-session rate; price is the full-course total)
-    const unitPrice = course.unitPrice ?? course.price;
+    // 1: Validate unitPrice exists — it is the sole source of truth (never fall back to course.price)
+    if (!course.unitPrice) {
+      return NextResponse.json(
+        { error: "Course pricing not configured" },
+        { status: 400 },
+      );
+    }
+    const unitPrice = course.unitPrice;
     // 2: Number of sessions booked = number of validated schedule IDs
     const selectedCount = scheduleIds.length;
     // 3: Fetch total active sessions for this course to detect "all sessions selected"
@@ -214,11 +220,8 @@ export async function POST(request: NextRequest) {
     const isAllSelected = selectedCount === totalActiveSchedules && totalActiveSchedules > 0;
     // 5: Final per-registrant fee = unitPrice × session count × (discount factor)
     const feePerRegistrant = Number(unitPrice) * selectedCount * (isAllSelected ? 0.9 : 1);
-    // 6: For a group enrolment the TOTAL fee equals one course fee (not headCount × fee).
-    //    Each member therefore pays an equal share so the sum across the group = feePerRegistrant.
-    const feePerMember = enrollmentType === "ORGANIZATION"
-      ? Math.round((feePerRegistrant / headCount) * 100) / 100
-      : feePerRegistrant;
+    // 6: Each registrant pays the full fee individually (no headcount division)
+    const feePerMember = feePerRegistrant;
 
     // Check ALL schedules have sufficient quota (all-or-nothing)
     const lowQuota = schedules.find((s) => s.quotaRemaining < headCount);
