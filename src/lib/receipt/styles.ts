@@ -1,19 +1,29 @@
 import { StyleSheet, Font } from "@react-pdf/renderer";
 
-// Register Noto Sans SC which covers both Latin and CJK characters
-Font.register({
-  family: "Noto Sans SC",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYw.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaGzjCnYw.ttf",
-      fontWeight: 700,
-    },
-  ],
-});
+// Lazy font registration — defers the CDN fetch to avoid crashing route compilation
+// if the font URL is unreachable. Called once before the first PDF render.
+let fontsRegistered = false;
+export function ensureFontsRegistered() {
+  if (fontsRegistered) return;
+  fontsRegistered = true;
+  try {
+    Font.register({
+      family: "Noto Sans SC",
+      fonts: [
+        {
+          src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYw.ttf",
+          fontWeight: 400,
+        },
+        {
+          src: "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaGzjCnYw.ttf",
+          fontWeight: 700,
+        },
+      ],
+    });
+  } catch (err) {
+    console.error("Failed to register Noto Sans SC font, PDF may have fallback issues:", err);
+  }
+}
 
 export const styles = StyleSheet.create({
   page: {

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Fragment } from "react";
 import { useParams } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
@@ -48,6 +48,12 @@ interface EnrolmentUser {
   organization: string | null;
 }
 
+interface EnrolmentMember {
+  id: string;
+  fee: number | null;
+  user: EnrolmentUser;
+}
+
 interface EnrolmentCourse {
   id: string;
   slug: string;
@@ -73,6 +79,7 @@ interface Enrolment {
   submittedAt: string;
   user: EnrolmentUser;
   course: EnrolmentCourse;
+  members?: EnrolmentMember[];
 }
 
 interface Pagination {
@@ -151,20 +158,28 @@ export default function AdminEnrolmentsPage() {
       // Compute duplicate credentials: same courseId + same user.idDocNumber OR same user.iaLicense
       const seen = new Map<string, string[]>();
       const dupes = new Set<string>();
-      for (const e of data.enrolments as Enrolment[]) {
-        // Check by idDocNumber
-        if (e.user.idDocNumber) {
-          const key = `${e.course.id}:idDoc:${e.user.idDocNumber}`;
+      // Helper to check a user record against duplicates
+      const checkUser = (entryId: string, courseId: string, user: EnrolmentUser) => {
+        if (user.idDocNumber) {
+          const key = `${courseId}:idDoc:${user.idDocNumber}`;
           const list = seen.get(key) || [];
-          list.push(e.id);
+          list.push(entryId);
           seen.set(key, list);
         }
-        // Check by iaLicense
-        if (e.user.iaLicense) {
-          const key = `${e.course.id}:iaLicense:${e.user.iaLicense}`;
+        if (user.iaLicense) {
+          const key = `${courseId}:iaLicense:${user.iaLicense}`;
           const list = seen.get(key) || [];
-          list.push(e.id);
+          list.push(entryId);
           seen.set(key, list);
+        }
+      };
+      for (const e of data.enrolments as Enrolment[]) {
+        checkUser(e.id, e.course.id, e.user);
+        // Also check members of group enrolments
+        if (e.members) {
+          for (const m of e.members) {
+            checkUser(m.id, e.course.id, m.user);
+          }
         }
       }
       for (const ids of seen.values()) {
@@ -202,13 +217,13 @@ export default function AdminEnrolmentsPage() {
   // 4: On failure, show a danger toast with the error message
   // 5: Always clear the loading state in finally
 
-  const handleApprove = async (id: string) => {
+  const handleApprove = async (id: string, groupId?: string | null) => {
     setApprovingId(id);
     try {
       const res = await fetch(`/api/admin/enrolments/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "APPROVE" }),
+        body: JSON.stringify({ action: "APPROVE", groupId }),
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -216,9 +231,12 @@ export default function AdminEnrolmentsPage() {
       }
       // Optimistically update the local state
       setEnrolments((prev) =>
-        prev.map((e) =>
-          e.id === id ? { ...e, paymentStatus: "VERIFIED" as PaymentStatus } : e,
-        ),
+        prev.map((e) => {
+          if (groupId && e.groupId === groupId) {
+            return { ...e, paymentStatus: "VERIFIED" as PaymentStatus };
+          }
+          return e.id === id ? { ...e, paymentStatus: "VERIFIED" as PaymentStatus } : e;
+        }),
       );
       addToast({ title: "Enrolment approved", variant: "success" });
     } catch (err) {
@@ -248,7 +266,7 @@ export default function AdminEnrolmentsPage() {
       const res = await fetch(`/api/admin/enrolments/${rejectTarget.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "REJECT", reason: rejectReason || undefined }),
+        body: JSON.stringify({ action: "REJECT", reason: rejectReason || undefined, groupId: rejectTarget.groupId || undefined }),
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -256,11 +274,14 @@ export default function AdminEnrolmentsPage() {
       }
       // Optimistically update the local state
       setEnrolments((prev) =>
-        prev.map((e) =>
-          e.id === rejectTarget.id
+        prev.map((e) => {
+          if (rejectTarget.groupId && e.groupId === rejectTarget.groupId) {
+            return { ...e, paymentStatus: "REJECTED" as PaymentStatus, payerFullName: rejectReason };
+          }
+          return e.id === rejectTarget.id
             ? { ...e, paymentStatus: "REJECTED" as PaymentStatus, payerFullName: rejectReason }
-            : e,
-        ),
+            : e;
+        }),
       );
       addToast({ title: "Enrolment rejected", variant: "warning" });
       setRejectTarget(null);
@@ -285,9 +306,9 @@ export default function AdminEnrolmentsPage() {
   };
 
   // getName: returns the best available name for the current locale (zh fields for zh-hk/zh-cn, en fallback)
-  const getName = (e: Enrolment) => {
-    const name = locale === "zh-hk" || locale === "zh-cn" ? e.user.nameZh : e.user.nameEn;
-    return name || e.user.nameEn;
+  const getName = (user: { nameZh: string; nameEn: string }) => {
+    const name = locale === "zh-hk" || locale === "zh-cn" ? user.nameZh : user.nameEn;
+    return name || user.nameEn;
   };
 
   // getCourseName: same locale-aware selection for course names
@@ -299,6 +320,21 @@ export default function AdminEnrolmentsPage() {
   // getStatusVariant: maps PaymentStatus to the corresponding Badge variant for consistent visual styling
   const getStatusVariant = (status: PaymentStatus): "default" | "secondary" | "destructive" | "outline" => {
     return STATUS_BADGE[status]?.variant ?? "outline";
+  };
+
+  // getTotalFee: for groups, sum all member fees; for individual, return the single fee
+  const getTotalFee = (enrolment: Enrolment): number | null => {
+    if (enrolment.enrollmentType === "ORGANIZATION" && enrolment.members && enrolment.members.length > 0) {
+      const total = enrolment.members.reduce((sum, m) => sum + (m.fee ?? 0), 0);
+      return total > 0 ? total : enrolment.fee;
+    }
+    return enrolment.fee;
+  };
+
+  // formatFee: format a number as HK$x,xxx.xx
+  const formatFee = (fee: number | null): string => {
+    if (fee == null) return "—";
+    return `HK$${fee.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   // ── Render ──
@@ -414,171 +450,238 @@ export default function AdminEnrolmentsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
-                  {enrolments.map((enrolment) => (
-                    <tr key={enrolment.id} className="hover:bg-slate-50/80">
-                      {/* Enrollee */}
-                      <td className="py-3 px-3">
-                        <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                          <User className="w-3 h-3 text-slate-400 shrink-0" />
-                          {getName(enrolment)}
-                          {duplicateIds.has(enrolment.id) && (
-                            <span
-                              className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-xs"
-                              title={`Duplicate credential: ${enrolment.user.idDocNumber}`}
-                            >
-                              <Copy className="w-2.5 h-2.5" />
-                              Duplicate
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-[10px] text-slate-500">
-                          {enrolment.user.organization ?? enrolment.user.email}
-                        </div>
-                        {enrolment.user.iaLicense && (
-                          <div className="text-[10px] font-mono text-slate-400">
-                            IA: {enrolment.user.iaLicense}
-                          </div>
-                        )}
-                      </td>
+                  {enrolments.map((enrolment) => {
+                    const isGroup = enrolment.enrollmentType === "ORGANIZATION";
+                    const totalFee = getTotalFee(enrolment);
+                    return (
+                      <Fragment key={enrolment.id}>
+                        {/* Parent row: enroller or individual */}
+                        <tr className="hover:bg-slate-50/80">
+                          {/* Enrollee */}
+                          <td className="py-3 px-3">
+                            {isGroup ? (
+                              <>
+                                <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                                  <Users className="w-3 h-3 text-slate-400 shrink-0" />
+                                  {enrolment.user.organization || getName(enrolment.user)}
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                  Enroller: {enrolment.user.email}
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                                  <User className="w-3 h-3 text-slate-400 shrink-0" />
+                                  {getName(enrolment.user)}
+                                  {duplicateIds.has(enrolment.id) && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-xs"
+                                      title={`Duplicate credential: ${enrolment.user.idDocNumber}`}
+                                    >
+                                      <Copy className="w-2.5 h-2.5" />
+                                      Duplicate
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                  {enrolment.user.organization ?? enrolment.user.email}
+                                </div>
+                                {enrolment.user.iaLicense && (
+                                  <div className="text-[10px] font-mono text-slate-400">
+                                    IA: {enrolment.user.iaLicense}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </td>
 
-                      {/* ID Doc */}
-                      <td className="py-3 px-3 whitespace-nowrap">
-                        {enrolment.user.idDocNumber ? (
-                          <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
-                        ) : (
-                          <span className="text-slate-400">—</span>
-                        )}
-                      </td>
+                          {/* ID Doc — empty for organization (enroller is not a registrant) */}
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            {isGroup ? (
+                              <span className="text-slate-400">—</span>
+                            ) : enrolment.user.idDocNumber ? (
+                              <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
 
-                      {/* Course */}
-                      <td className="py-3 px-3">
-                        <div className="font-serif font-bold text-slate-900">
-                          {getCourseName(enrolment)}
-                        </div>
-                        <div className="font-mono text-[10px] text-slate-500">
-                          {enrolment.course.iaRefNumber ?? enrolment.course.slug}
-                          <span className="ml-1.5">{enrolment.course.cpdHours} CPD hrs</span>
-                        </div>
-                      </td>
+                          {/* Course */}
+                          <td className="py-3 px-3">
+                            <div className="font-serif font-bold text-slate-900">
+                              {getCourseName(enrolment)}
+                            </div>
+                            <div className="font-mono text-[10px] text-slate-500">
+                              {enrolment.course.iaRefNumber ?? enrolment.course.slug}
+                              <span className="ml-1.5">{enrolment.course.cpdHours} CPD hrs</span>
+                            </div>
+                          </td>
 
-                      {/* Type */}
-                      <td className="py-3 px-3">
-                        <div className="flex items-center gap-1">
-                          {enrolment.enrollmentType === "ORGANIZATION" ? (
-                            <Users className="w-3 h-3 text-slate-400" />
-                          ) : (
-                            <User className="w-3 h-3 text-slate-400" />
-                          )}
-                          <span className="text-slate-700">
-                            {enrolment.enrollmentType === "ORGANIZATION" ? "Group" : "Individual"}
-                          </span>
-                        </div>
-                        {enrolment.isThirdPartyPay && (
-                          <div className="text-[10px] text-amber-700">
-                            3rd-party: {enrolment.payerFullName}
-                          </div>
-                        )}
-                      </td>
+                          {/* Type */}
+                          <td className="py-3 px-3">
+                            <div className="flex items-center gap-1">
+                              {isGroup ? (
+                                <Users className="w-3 h-3 text-slate-400" />
+                              ) : (
+                                <User className="w-3 h-3 text-slate-400" />
+                              )}
+                              <span className="text-slate-700">
+                                {isGroup ? "Group" : "Individual"}
+                              </span>
+                            </div>
+                            {enrolment.isThirdPartyPay && (
+                              <div className="text-[10px] text-amber-700">
+                                3rd-party: {enrolment.payerFullName}
+                              </div>
+                            )}
+                          </td>
 
-                      {/* Registrants */}
-                      <td className="py-3 px-3 text-center">
-                        {enrolment.enrollmentType === "ORGANIZATION" && enrolment.registrantCount != null ? (
-                          <span className="font-bold text-slate-900">{enrolment.registrantCount}</span>
-                        ) : (
-                          <span className="text-slate-400">—</span>
-                        )}
-                      </td>
+                          {/* Registrants */}
+                          <td className="py-3 px-3 text-center">
+                            {isGroup && enrolment.registrantCount != null ? (
+                              <>
+                                <span className="font-bold text-slate-900">{enrolment.registrantCount}</span>
+                                <div className="text-[10px] text-slate-400">(excl. enroller)</div>
+                              </>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
 
-                      {/* Payment */}
-                      <td className="py-3 px-3">
-                        {enrolment.paymentMethod ? (
-                          <span className="font-mono text-slate-700">
-                            {PAYMENT_METHOD_LABELS[enrolment.paymentMethod] ?? enrolment.paymentMethod}
-                          </span>
-                        ) : (
-                          <span className="text-slate-400">—</span>
-                        )}
-                        {enrolment.receiptNumber && (
-                          <div className="text-[10px] font-mono text-emerald-700">
-                            RCPT: {enrolment.receiptNumber}
-                          </div>
-                        )}
-                      </td>
+                          {/* Payment */}
+                          <td className="py-3 px-3">
+                            {enrolment.paymentMethod ? (
+                              <span className="font-mono text-slate-700">
+                                {PAYMENT_METHOD_LABELS[enrolment.paymentMethod] ?? enrolment.paymentMethod}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                            {enrolment.receiptNumber && (
+                              <div className="text-[10px] font-mono text-emerald-700">
+                                RCPT: {enrolment.receiptNumber}
+                              </div>
+                            )}
+                          </td>
 
-                      {/* Fee */}
-                      <td className="py-3 px-3 whitespace-nowrap">
-                        {enrolment.fee != null ? (
-                          <div className="font-mono font-bold text-slate-900">
-                            HK${Number(enrolment.fee).toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                          </div>
-                        ) : (
-                          <span className="text-slate-400">—</span>
-                        )}
-                      </td>
+                          {/* Fee — total for group, individual for single */}
+                          <td className="py-3 px-3 whitespace-nowrap text-right">
+                            {totalFee != null ? (
+                              <div className={`font-mono font-bold ${isGroup ? "text-primary" : "text-slate-900"}`}>
+                                {formatFee(totalFee)}
+                              </div>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
 
-                      {/* Status */}
-                      <td className="py-3 px-3">
-                        <Badge variant={getStatusVariant(enrolment.paymentStatus)}>
-                          {STATUS_BADGE[enrolment.paymentStatus]?.label ?? enrolment.paymentStatus}
-                        </Badge>
-                        {enrolment.paymentStatus === "REJECTED" && enrolment.payerFullName && (
-                          <div className="text-[10px] text-destructive mt-0.5 max-w-32 truncate" title={enrolment.payerFullName}>
-                            {enrolment.payerFullName}
-                          </div>
-                        )}
-                      </td>
+                          {/* Status */}
+                          <td className="py-3 px-3">
+                            <Badge variant={getStatusVariant(enrolment.paymentStatus)}>
+                              {STATUS_BADGE[enrolment.paymentStatus]?.label ?? enrolment.paymentStatus}
+                            </Badge>
+                            {enrolment.paymentStatus === "REJECTED" && enrolment.payerFullName && (
+                              <div className="text-[10px] text-destructive mt-0.5 max-w-32 truncate" title={enrolment.payerFullName}>
+                                {enrolment.payerFullName}
+                              </div>
+                            )}
+                          </td>
 
-                      {/* Submitted */}
-                      <td className="py-3 px-3 whitespace-nowrap">
-                        <div className="flex items-center gap-1 text-slate-600">
-                          <Clock className="w-3 h-3 shrink-0" />
-                          {formatDate(enrolment.submittedAt)}
-                        </div>
-                      </td>
+                          {/* Submitted */}
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            <div className="flex items-center gap-1 text-slate-600">
+                              <Clock className="w-3 h-3 shrink-0" />
+                              {formatDate(enrolment.submittedAt)}
+                            </div>
+                          </td>
 
-                      {/* Actions */}
-                      <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
-                        {/* Payment proof preview */}
-                        {enrolment.paymentProofUrl && (
-                          <Button
-                            variant="outline"
-                            size="xs"
-                            onClick={() => setPreviewTarget(enrolment)}
-                            title="View payment proof"
-                          >
-                            <Eye className="w-3 h-3" />
-                          </Button>
-                        )}
+                          {/* Actions — on parent row only */}
+                          <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
+                            {enrolment.paymentProofUrl && (
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                onClick={() => setPreviewTarget(enrolment)}
+                                title="View payment proof"
+                              >
+                                <Eye className="w-3 h-3" />
+                              </Button>
+                            )}
 
-                        {/* Approve — only show for pending */}
-                        {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
-                          <Button
-                            variant="default"
-                            size="xs"
-                            loading={approvingId === enrolment.id}
-                            disabled={approvingId === enrolment.id}
-                            onClick={() => handleApprove(enrolment.id)}
-                          >
-                            <CheckCircle2 className="w-3 h-3" />
-                            Approve
-                          </Button>
-                        )}
+                            {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
+                              <Button
+                                variant="default"
+                                size="xs"
+                                loading={approvingId === enrolment.id}
+                                disabled={approvingId === enrolment.id}
+                                onClick={() => handleApprove(enrolment.id, isGroup ? enrolment.groupId : null)}
+                              >
+                                <CheckCircle2 className="w-3 h-3" />
+                                Approve
+                              </Button>
+                            )}
 
-                        {/* Reject — only show for pending */}
-                        {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
-                          <Button
-                            variant="outline"
-                            size="xs"
-                            onClick={() => { setRejectTarget(enrolment); setRejectReason(""); }}
-                            className="border-rose-300 text-rose-700 hover:bg-rose-50"
-                          >
-                            <XCircle className="w-3 h-3" />
-                            Reject
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                            {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                onClick={() => { setRejectTarget(enrolment); setRejectReason(""); }}
+                                className="border-rose-300 text-rose-700 hover:bg-rose-50"
+                              >
+                                <XCircle className="w-3 h-3" />
+                                Reject
+                              </Button>
+                            )}
+                          </td>
+                        </tr>
+
+                        {/* Children rows: group members */}
+                        {isGroup && enrolment.members && enrolment.members.map((member, idx) => (
+                          <tr key={member.id} className="bg-slate-50/40 text-[11px]">
+                            <td className="py-2 px-3 pl-8" colSpan={2}>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-slate-300 select-none">
+                                  {idx === enrolment.members!.length - 1 ? "└─" : "├─"}
+                                </span>
+                                <User className="w-2.5 h-2.5 text-slate-300 shrink-0" />
+                                <span className="font-medium text-slate-800">{getName(member.user)}</span>
+                              </div>
+                              <div className="ml-4 text-[10px] text-slate-500 space-y-0.5 mt-0.5">
+                                {member.user.idDocNumber && (
+                                  <span className="font-mono mr-3">{member.user.idDocNumber}</span>
+                                )}
+                                {member.user.iaLicense && (
+                                  <span className="font-mono mr-3">IA: {member.user.iaLicense}</span>
+                                )}
+                                <span>{member.user.email}</span>
+                              </div>
+                            </td>
+                            {/* Course — empty for member rows (inherit from parent) */}
+                            <td className="py-2 px-3" />
+                            {/* Type — empty */}
+                            <td className="py-2 px-3" />
+                            {/* Registrants — empty */}
+                            <td className="py-2 px-3" />
+                            {/* Payment — empty */}
+                            <td className="py-2 px-3" />
+                            {/* Fee — individual member fee, right-aligned to match parent fee column */}
+                            <td className="py-2 px-3 whitespace-nowrap text-right">
+                              <span className="font-mono text-slate-500 text-[11px]">
+                                {formatFee(member.fee)}
+                              </span>
+                            </td>
+                            {/* Status — empty (inherits from parent) */}
+                            <td className="py-2 px-3" />
+                            {/* Submitted — empty */}
+                            <td className="py-2 px-3" />
+                            {/* Actions — empty (actions on parent only) */}
+                            <td className="py-2 px-3" />
+                          </tr>
+                        ))}
+                      </Fragment>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -629,7 +732,7 @@ export default function AdminEnrolmentsPage() {
               <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
                 <div className="flex justify-between">
                   <span className="text-slate-500">Enrollee:</span>
-                  <span className="font-bold text-slate-800">{getName(rejectTarget)}</span>
+                  <span className="font-bold text-slate-800">{getName(rejectTarget.user)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Course:</span>
@@ -697,7 +800,7 @@ export default function AdminEnrolmentsPage() {
           <DialogHeader>
             <DialogTitle>Payment Proof</DialogTitle>
             <DialogDescription>
-              {previewTarget && `${getName(previewTarget)} — ${getCourseName(previewTarget)}`}
+              {previewTarget && `${getName(previewTarget.user)} — ${getCourseName(previewTarget)}`}
             </DialogDescription>
           </DialogHeader>
 

@@ -4,7 +4,7 @@ import React from "react";
 import { renderToBuffer, Document, Page, View, Text } from "@react-pdf/renderer";
 
 import { TEXTS } from "./texts";
-import { styles } from "./styles";
+import { styles, ensureFontsRegistered } from "./styles";
 
 // ── Props for the render function ──────────────────────────────────────────
 
@@ -121,5 +121,7 @@ const ReceiptDocument: React.FC<RenderReceiptData> = (props) => (
  * Used by generateReceipt and the download endpoint.
  */
 export async function renderReceiptPdf(data: RenderReceiptData): Promise<Buffer> {
+  // Ensure fonts are registered before rendering (defers CDN font fetch to first use)
+  ensureFontsRegistered();
   return await renderToBuffer(<ReceiptDocument {...data} />);
 }
