@@ -62,6 +62,7 @@ interface Enrolment {
   id: string;
   enrollmentType: EnrollmentType;
   groupId: string | null;
+  registrantCount: number | null;
   paymentStatus: PaymentStatus;
   paymentMethod: PaymentMethod | null;
   fee: number | null;
@@ -352,6 +353,7 @@ export default function AdminEnrolmentsPage() {
                   <div className="h-3 w-20 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-40 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-20 bg-slate-200 rounded-xs" />
+                  <div className="h-3 w-14 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-16 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-24 bg-slate-200 rounded-xs" />
                   <div className="h-3 w-24 bg-slate-200 rounded-xs ml-auto" />
@@ -403,6 +405,7 @@ export default function AdminEnrolmentsPage() {
                     <th className="py-2.5 px-3">ID Doc</th>
                     <th className="py-2.5 px-3">Course</th>
                     <th className="py-2.5 px-3">Type</th>
+                    <th className="py-2.5 px-3">Registrants</th>
                     <th className="py-2.5 px-3">Payment</th>
                     <th className="py-2.5 px-3"><DollarSign className="w-3 h-3 inline mr-0.5" />Fee</th>
                     <th className="py-2.5 px-3">Status</th>
@@ -474,6 +477,15 @@ export default function AdminEnrolmentsPage() {
                           <div className="text-[10px] text-amber-700">
                             3rd-party: {enrolment.payerFullName}
                           </div>
+                        )}
+                      </td>
+
+                      {/* Registrants */}
+                      <td className="py-3 px-3 text-center">
+                        {enrolment.enrollmentType === "ORGANIZATION" && enrolment.registrantCount != null ? (
+                          <span className="font-bold text-slate-900">{enrolment.registrantCount}</span>
+                        ) : (
+                          <span className="text-slate-400">—</span>
                         )}
                       </td>
 

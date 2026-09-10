@@ -123,6 +123,53 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 2: For ORGANIZATION enrollment, resolve a unique userId per group member
+    //    based on their email, and pre-check for duplicate enrollment.
+    const memberUserIdByEmail = new Map<string, string>();
+    if (enrollmentType === "ORGANIZATION" && registrants) {
+      for (const r of registrants) {
+        let memberUserId: string;
+
+        if (r.email === parsed.data.email) {
+          // Registrant is the enroller them self → reuse the existing userId
+          memberUserId = userId;
+        } else {
+          const existingUser = await prisma.user.findUnique({ where: { email: r.email } });
+          if (existingUser) {
+            memberUserId = existingUser.id;
+          } else {
+            // Create a bare-minimum user for this group member
+            const newUser = await prisma.user.create({
+              data: {
+                nameZh: r.nameZh,
+                nameEn: r.nameEn,
+                email: r.email,
+                idDocNumber: r.idDocNumber || `guest-${crypto.randomUUID().slice(0, 8)}`,
+                idDocType: r.idDocType ?? undefined,
+                phone: "",
+                iaLicense: null,
+                organization: null,
+              },
+            });
+            memberUserId = newUser.id;
+          }
+        }
+
+        // Pre-check: is this user already enrolled in this course?
+        const existingRegistrant = await prisma.registrant.findUnique({
+          where: { courseId_userId: { courseId, userId: memberUserId } },
+        });
+        if (existingRegistrant) {
+          return NextResponse.json(
+            { error: `${r.email} is already enrolled in this course` },
+            { status: 409 },
+          );
+        }
+
+        memberUserIdByEmail.set(r.email, memberUserId);
+      }
+    }
+
     // 1. Validate course exists and is open for registration, and get pricing
     const course = await prisma.course.findUnique({
       where: { id: courseId },
@@ -167,6 +214,11 @@ export async function POST(request: NextRequest) {
     const isAllSelected = selectedCount === totalActiveSchedules && totalActiveSchedules > 0;
     // 5: Final per-registrant fee = unitPrice × session count × (discount factor)
     const feePerRegistrant = Number(unitPrice) * selectedCount * (isAllSelected ? 0.9 : 1);
+    // 6: For a group enrolment the TOTAL fee equals one course fee (not headCount × fee).
+    //    Each member therefore pays an equal share so the sum across the group = feePerRegistrant.
+    const feePerMember = enrollmentType === "ORGANIZATION"
+      ? Math.round((feePerRegistrant / headCount) * 100) / 100
+      : feePerRegistrant;
 
     // Check ALL schedules have sufficient quota (all-or-nothing)
     const lowQuota = schedules.find((s) => s.quotaRemaining < headCount);
@@ -200,13 +252,13 @@ export async function POST(request: NextRequest) {
           // ORGANIZATION: create one registrant per group member
           const rows = registrants.map((r) => ({
             courseId,
-            userId,
+            userId: memberUserIdByEmail.get(r.email)!,
             idDocType: r.idDocType ?? undefined,
             enrollmentType,
             groupId,
             paymentStatus: "PENDING_VERIFICATION" as const,
             paymentMethod,
-            fee: feePerRegistrant,
+            fee: feePerMember,
             isThirdPartyPay,
             payerFullName: payerFullName ?? null,
           }));
@@ -231,7 +283,7 @@ export async function POST(request: NextRequest) {
               groupId: null,
               paymentStatus: "PENDING_VERIFICATION",
               paymentMethod,
-              fee: feePerRegistrant,
+              fee: feePerMember,
               isThirdPartyPay,
               payerFullName: payerFullName ?? null,
             },

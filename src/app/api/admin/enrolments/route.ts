@@ -93,8 +93,24 @@ export async function GET(request: NextRequest) {
       prisma.registrant.count({ where }),
     ]);
 
+    // 5: For group enrolments, attach the number of registrants in the group
+    const groupIds = [...new Set(registrants.filter((r) => r.groupId).map((r) => r.groupId!))];
+    const groupCounts = groupIds.length > 0
+      ? await prisma.registrant.groupBy({
+          by: ["groupId"],
+          where: { groupId: { in: groupIds } },
+          _count: { id: true },
+        })
+      : [];
+    const groupCountMap = new Map(groupCounts.map((g) => [g.groupId, g._count.id]));
+
+    const enriched = registrants.map((r) => ({
+      ...r,
+      registrantCount: r.groupId ? (groupCountMap.get(r.groupId) ?? 0) : null,
+    }));
+
     return NextResponse.json({
-      enrolments: registrants,
+      enrolments: enriched,
       pagination: {
         page,
         limit,
