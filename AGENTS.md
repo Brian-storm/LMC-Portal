@@ -49,3 +49,15 @@ Comment all code: Every function, non-trivial block, and complex expression must
 - Routes under `app/[locale]/...` auto-resolve for en/zh-hk/zh-cn.
 - The `[locale]` segment is a dynamic segment — verify i18n by checking both the locale folder and any `locale` prop/state passed to components.
 - See `src/app/[locale]/` for existing locale patterns (courses, about, admin, checkout, etc.).
+
+## Bug Fix Workflow
+
+When you report a bug, I will follow this process before writing any code:
+
+1. **Intake** — Clarify the problem statement and what you're observing.
+2. **Context Discovery** — Search the relevant code.
+3. **Root Cause Analysis** — Identify the root cause and present findings to you with evidence.
+
+**To help me fix bugs faster, fill out**: `.github/skills/monstrare/ai/templates/bug-report.md`
+
+The key info I need: page URL, console errors, network errors, expected vs actual behavior, and steps to reproduce.

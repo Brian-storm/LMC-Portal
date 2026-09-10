@@ -35,7 +35,24 @@
 
 使用 `ai/process/context-protocol.md`。
 
-## Phase 2：釐清（Clarification）
+## Phase 2：根因診斷（Root Cause Analysis）
+
+在實作任何變更之前，先診斷問題的根本原因。
+
+必要輸出：
+
+- 重現步驟（若為 bug）。
+- 預期行為與實際行為的差異。
+- 根因推論（附上程式碼或日誌證據）。
+- 證明根因的測試或檢查結果。
+- 若有多個可能根因，列出並說明優先檢查順序。
+- 已排除的假說及原因。
+
+關卡：
+
+- 若無法確定根因，不得進入實作階段，需退回釐清或補充情境。
+
+## Phase 3：釐清（Clarification）
 
 把模糊的意圖轉成產品層級的規格書。
 
@@ -50,7 +67,7 @@
 
 - 進入架構規劃前需要人工核准。
 
-## Phase 3：UI Mockup 關卡
+## Phase 4：UI Mockup 關卡
 
 涉及畫面、視覺狀態或互動流程時需要。
 
@@ -69,7 +86,7 @@
 
 - 實作前需要人工選定。
 
-## Phase 4：架構規劃（Architecture Plan）
+## Phase 5：架構規劃（Architecture Plan）
 
 建立技術做法。
 
@@ -86,7 +103,7 @@
 
 - 高風險工作需要 architect、security 與 test 審查。
 
-## Phase 5：任務卡（Task Cards）
+## Phase 6：任務卡（Task Cards）
 
 把工作拆成 AI-ready 的卡片。
 
@@ -100,7 +117,7 @@
 - 一個 bug 的重現與修復。
 - 一個測試缺口。
 
-## Phase 6：實作（Implementation）
+## Phase 7：實作（Implementation）
 
 一次只實作一張已核准的任務卡。
 
@@ -119,7 +136,7 @@
 - 範圍改變時停下來詢問。
 - 若這個任務有在 `tools/kanban/` 上追蹤，隨著進度把卡片的階段往前推（見 `ai/process/kanban.md`）。
 
-## Phase 7：驗證（Verification）
+## Phase 8：驗證（Verification）
 
 完成需要證據佐證。
 
@@ -134,7 +151,7 @@
 - 安全性掃描工具。
 - UI 的螢幕截圖比對。
 
-## Phase 8：審查（Review）
+## Phase 9：審查（Review）
 
 執行相關的審查關卡：
 
@@ -147,7 +164,7 @@
 
 使用 `ai/process/review-gates.md`。
 
-## Phase 9：人工驗收（Human Acceptance）
+## Phase 10：人工驗收（Human Acceptance）
 
 最終回覆必須包含：
 
