@@ -1,7 +1,7 @@
 {
   "id": "PS-002",
   "title": "Prisma schema + 資料庫遷移 + seed 腳本",
-  "content": "",
+  "content": "資料庫初始化與 Prisma schema 設計。包含 seed 腳本產生開發/測試用的假資料（課程、講師、學員等）。\n\n⚠️ 上線前重要步驟：seed 腳本產生的假資料（registrants, registrant_schedules, users, courses 等）必須在 production 資料庫上清除。方式為連線至 RDS PostgreSQL 後依序 DELETE 從屬表再刪主表：\n  1. DELETE FROM registrant_schedules;\n  2. DELETE FROM registrants;\n  （亦可擴展至 DELETE FROM reviews, faqs, course_instructors, schedule_topics, syllabus_items, schedules 等假種子資料）\n\n保留的真實資料：admin 管理員帳號、已建立的正式課程（若已手動輸入）、正式 enrolments。清資料前務必先備份 production DB。",
   "stage": "done",
   "risk": "medium",
   "owner": "Brian",
@@ -44,7 +44,13 @@
     "findings": [],
     "residual": ""
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "Brian",
+      "time": "2026-09-10T05:10:00Z",
+      "text": "Production cleanup context added to content field: seed data (registrants, registrant_schedules, etc.) must be deleted before go-live. DELETE order: registrant_schedules first, then registrants. Backup DB first."
+    }
+  ],
   "acceptance": [
     "Prisma schema defines all 6 models: User, Organization, Course, Instructor, Registrant, Admin",
     "All enums: Role, RegistrationStatus, EnrollmentType, PaymentStatus, PaymentMethod, AdminPermission",
