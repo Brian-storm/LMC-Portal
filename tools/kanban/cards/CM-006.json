@@ -2,7 +2,7 @@
   "id": "CM-006",
   "title": "課程編號 cpd-102 → CPD26090103 變更",
   "content": "將課程「香港醫療體制發展、大灣區醫療概況與醫療保障」的 course number 從 cpd-102 改為 CPD26090103。涉及 seed.ts、brochure route、及一份文件的變更。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -44,9 +44,13 @@
     "ai/artifacts/enrollment/fee-calculation-spec.md"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": "資料庫 FK 關聯與已上線的舊 URL 為主要風險"
+    "commands": ["grep -r 'cpd-102' prisma/ src/"],
+    "findings": [
+      "seed.ts uses 'CPD26090103' exclusively — zero references to 'cpd-102' remain",
+      "brochure/route.ts slug check uses 'CPD26090103'",
+      "All 3 files per impact analysis have been updated"
+    ],
+    "residual": "Old URL /courses/cpd-102 will 404 — consider a redirect if the site is live. No action needed for local dev."
   },
   "comments": []
 }

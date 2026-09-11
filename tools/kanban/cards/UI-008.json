@@ -2,7 +2,7 @@
   "id": "UI-008",
   "title": "品牌主色由深翡翠改為 Logo 淺綠 (#5f923b)",
   "content": "將全站品牌主色從深翡翠 (dark emerald / #1b4332) 改為 Logo 的淺綠色 #5f923b (oklch(0.604 0.131 134))。變更集中在 src/app/globals.css 的 design token 層（--primary、--primary-foreground、--secondary、navbar-brand-*、sidebar 等），為根本性、單一來源的色票改動，不在個別元件中散落硬編碼修改。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

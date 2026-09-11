@@ -2,7 +2,7 @@
   "id": "CD-012",
   "title": "新增 IdDocType enum 及 User / Registrant 欄位",
   "content": "目前只支援 HKID 與 Passport。需新增 PERMIT（通行證）與 OTHER（其他身份證明文件）選項。\n\n✅ 決議：\n- User 模型和 Registrant 模型都需要 idDocType 欄位\n- 支援 4 種：HKID, PASSPORT, PERMIT, OTHER\n- User.idDocNumber 保留不變\n\n實作計畫：\n1. prisma/schema.prisma: 新增 enum IdDocType { HKID, PASSPORT, PERMIT, OTHER }\n2. User 模型新增 idDocType IdDocType @default(HKID)\n3. Registrant 模型新增 idDocType IdDocType @default(HKID)\n4. migration（注意：現有資料會被設為 HKID default）\n5. Prisma generate\n6. 前端已有 idDocType 送到 API（EN-014 已實作），但後端尚未存到 DB\n7. src/app/api/enroll/route.ts: 在建立 registrant 時從 payload 取 idDocType 存入\n8. src/lib/validation/enroll.ts: 已實作（EN-014）",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

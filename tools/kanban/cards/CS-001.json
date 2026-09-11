@@ -2,7 +2,7 @@
   "id": "CS-001",
   "title": "資安基礎檢查 — Security Scan & Audit",
   "content": "Run initial security scan across the entire platform: npm audit for dependency vulnerabilities, review for hardcoded secrets/keys, map auth boundaries, check CSP headers, rate limiting, S3 bucket permissions, SSL/TLS config. \n\nReminder: watch debug tuboshu for the AI vibe coding cybersecurity video for a overall attack test",
-  "stage": "backlog",
+  "stage": "implementing",
   "risk": "high",
   "owner": "",
   "agent": "",

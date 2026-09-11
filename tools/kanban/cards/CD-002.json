@@ -2,7 +2,7 @@
   "id": "CD-002",
   "title": "新增 CPD 規範文字欄位到 Course 模型",
   "content": "course_details.md 第 51-84 行：注意事項-1 和注意事項-2，包含 CPD 時數計算原則、遲到/離席扣減規則、HKCAAVQ 要求。\n\n✅ 決議：先用單一 Text 欄位 cpdRulesZh / cpdRulesEn，日後可調整。\n\n實作計畫：\n1. prisma/schema.prisma: 在 Course 模型新增 cpdRulesZh String? 和 cpdRulesEn String?\n2. migration\n3. src/lib/validation/course.ts: courseCreateSchema / courseUpdateSchema 加入這兩個選填欄位\n4. GET /api/courses/[slug] 自動回傳新欄位（已 include syllabusItems, schedules 等 — 需確認新增）\n5. 後續 UI 顯示在 CourseDetailView（待 CD-011 決定位置）",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

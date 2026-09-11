@@ -1,0 +1,71 @@
+{
+  "id": "AD-005",
+  "title": "Admin Course CRUD — 編輯/刪除/新增課程表單",
+  "content": "Courses 列表頁已存在（admin/courses/page.tsx），但「New Course」按鈕指向 placeholder。缺少編輯、刪除、新增功能。\n\n功能需求：\n- New Course 表單（完整的 course create form）\n- Edit Course（從列表點擊進入編輯）\n- Delete Course（含確認對話框）\n- Toggle registration status（OPEN/CLOSED）直接從列表操作\n- i18n 支援\n- 表單驗證（Zod schema 對應 Course model）\n\nAPI 已存在：POST /api/admin/courses、PATCH /api/admin/courses/[id]、DELETE /api/admin/courses/[id]（CM-001 已完成）。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-11",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["CM-001"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/courses/page.tsx (refactor — add edit/delete/toggle)",
+    "src/app/[locale]/admin/courses/new/page.tsx (rewrite — full form instead of placeholder)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (new — edit form)",
+    "src/app/api/admin/courses/route.ts (verify POST exists)",
+    "src/app/api/admin/courses/[id]/route.ts (verify PATCH/DELETE exists)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Existing CM-001 API routes need verification that POST/PATCH/DELETE work for full course model with all fields." },
+  "comments": [],
+  "acceptance": [
+    "New Course form creates course via POST /api/admin/courses",
+    "Edit Course form pre-fills data and saves via PATCH /api/admin/courses/[id]",
+    "Delete button shows confirmation dialog, removes via DELETE /api/admin/courses/[id]",
+    "Registration status toggle (OPEN/CLOSED) works from list view inline",
+    "Form validation displays inline errors",
+    "Success/error toast notifications",
+    "All labels use dict (i18n)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/courses/new/page.tsx (rewrite — full create form)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (new — edit form)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — add edit/delete/toggle actions per row)",
+    "src/dictionaries/en.json (update — add course form keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add course form keys to AdminDict)"
+  ],
+  "dependencies": "CM-001 provides POST/PATCH/DELETE API — verify completeness before starting.",
+  "verification": "npm run typecheck && npm run lint && create a course, edit it, delete it, toggle status — all via admin UI."
+}

@@ -1,0 +1,64 @@
+{
+  "id": "AD-007",
+  "title": "Admin 共用元件重構 — 建立 src/components/admin/",
+  "content": "目前所有 admin UI 元件寫在各 page.tsx 內聯（inline），無共用元件庫。重構出可復用元件放在 src/components/admin/ 下。\n\n建議元件（根據現有頁面模式）：\n- `AdminDataTable` — 通用表格 wrapper（sortable columns, loading skeleton, empty state）\n- `AdminStatCard` — Dashboard stat card（icon, label, value, trend）\n- `AdminFilterBar` — 搜尋 + filter tabs + date range 組合\n- `AdminBatchToolbar` — 選取計數 + batch actions\n- `AdminPageHeader` — 頁面標題 + 麵包屑 + 主要 CTA\n\n注意：純重構 — 不改變行為，只抽元件。可與其他 AD cards 並行。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-11",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "refactor",
+  "dependsOn": [],
+  "order": 7,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/page.tsx (inline stat cards)",
+    "src/app/[locale]/admin/enrolments/page.tsx (inline table, filter, toolbar)",
+    "src/app/[locale]/admin/courses/page.tsx (inline table)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Low priority — only if other AD cards touch the same code and benefit from shared components." },
+  "comments": [],
+  "acceptance": [
+    "src/components/admin/ directory exists",
+    "At least AdminDataTable, AdminStatCard, AdminPageHeader extracted",
+    "Existing pages use the new components with identical behavior",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/AdminDataTable.tsx (new)",
+    "src/components/admin/AdminStatCard.tsx (new)",
+    "src/components/admin/AdminPageHeader.tsx (new)",
+    "src/app/[locale]/admin/page.tsx (refactor — use AdminStatCard, AdminPageHeader)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — use AdminDataTable, AdminPageHeader)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — use AdminDataTable, AdminPageHeader)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && all admin pages render identically before and after refactor."
+}

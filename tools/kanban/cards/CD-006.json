@@ -2,7 +2,7 @@
   "id": "CD-006",
   "title": "新增 cpdHoursIa Decimal 欄位，改寫 cpdHours 語意",
   "content": "course_details.md 第 196-200 行：每堂 1.5 IA CPD Hours。\n\n✅ 決議：\n- 不要 MPFA 欄位，只留 cpdHoursIa (Decimal) — 每堂課的 IA CPD 時數\n- 現有 cpdHours (Int) 保留，語意改為「學員總出席時數」，由系統計算 = cpdHoursIa × 學員出席堂數\n- 所以 course 層級的 cpdHours 從「課程提供多少 CPD」改為「單一學員的 CPD 總時數參考值」\n\n實作計畫：\n1. prisma/schema.prisma: 新增 cpdHoursIa Decimal? @db.Decimal(4, 1)（支援 1.5）\n2. migration: 新增可空欄位，不影響現有資料\n3. src/lib/validation/course.ts: courseCreateSchema / courseUpdateSchema 加入 cpdHoursIa\n4. GET /api/courses/[slug] 回傳新欄位\n5. src/components/courses/CourseDetailView.tsx: 顯示 cpdHoursIa（例如「每堂 1.5 IA CPD Hours」）\n6. src/components/courses/types.ts: 更新 Course type\n\n後續：學員總 CPD 時數 = cpdHoursIa × 出席堂數（日後 attendance 功能實作）",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

@@ -1,0 +1,68 @@
+{
+  "id": "AD-006",
+  "title": "Enrolment 搜尋 + 批次工具列",
+  "content": "Admin Enrolments 頁面目前僅有 status filter tabs + pagination。缺少文字搜尋與批次操作。\n\n功能需求：\n1. 搜尋欄：依 enrollee name / email / idDocNumber 過濾（API query param: ?search=）\n2. 日期範圍過濾：startDate / endDate query params\n3. 批次選取：checkbox 欄位 + 全選 header checkbox\n4. 批次工具列：選取後顯示「Batch Approve」「Batch Reject」按鈕（顯示選取數量）\n5. i18n 支援\n\n注意：批次 Approve/Reject 可沿用現有 groupId 機制或新增 batch endpoint。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-11",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": [],
+  "order": 6,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor)",
+    "src/app/api/admin/enrolments/route.ts (refactor — add search/date filters)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "Search bar filters enrolments by name/email/idDocNumber (server-side)",
+    "Date range picker filters by submittedAt range",
+    "Each row has a checkbox; header checkbox selects/deselects all on current page",
+    "Selection count shown (e.g. '3 selected')",
+    "Batch Approve button appears when ≥1 selected, shows confirmation dialog",
+    "Batch Reject button appears when ≥1 selected, shows rejection dialog",
+    "All labels use dict (i18n)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/enrolments/route.ts (refactor — add ?search=&startDate=&endDate= query params)",
+    "src/app/api/admin/enrolments/batch/route.ts (new — POST batch approve/reject)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — add search bar, date picker, checkboxes, batch toolbar)",
+    "src/dictionaries/en.json (update — add search/batch keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add search/batch keys to AdminDict)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && search by name/email/idDocNumber works, date filter works, batch approve/reject works."
+}

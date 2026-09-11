@@ -1,0 +1,71 @@
+{
+  "id": "AD-004",
+  "title": "Admin Users 頁面建立 — 用戶管理列表",
+  "content": "Admin sidebar 已有 Users 導覽連結指向 /admin/users，但頁面不存在（404）。建立 Users 管理頁面，列出所有註冊用戶（role: STUDENT），支援搜尋與基本資訊檢視。\n\n功能需求：\n- 從 API 取得用戶列表（姓名、email、電話、IA 牌照、註冊日期）\n- 搜尋欄：依 name/email 過濾\n- 分頁\n- Loading / error / empty states\n- i18n 支援（使用現有 AdminDict keys，不足時補充）\n\n注意：不需編輯/刪除功能，不需 Admin CRUD API — 唯讀列表即可。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-11",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": [],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/users/page.tsx (new)",
+    "src/app/api/admin/users/route.ts (new — GET all students)",
+    "src/dictionaries/en.json (admin.users section)",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts (AdminDict)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/users returns paginated list of STUDENT-role users",
+    "Page at /admin/users shows table: name, email, phone, IA license, registered date",
+    "Search by name/email filters client-side or server-side",
+    "Pagination controls visible when >1 page",
+    "Loading skeleton, error with retry, empty state handled",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "Sidebar /admin/users link no longer leads to 404",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/users/route.ts (new — GET users with pagination + search)",
+    "src/app/[locale]/admin/users/page.tsx (new — user list page)",
+    "src/dictionaries/types.ts (update — add user-related keys to AdminDict if missing)",
+    "src/dictionaries/en.json (update — add user-related keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/users — table loads, search works, pagination works, no 404."
+}

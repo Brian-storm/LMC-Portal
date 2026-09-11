@@ -2,7 +2,7 @@
   "id": "UI-007",
   "title": "Error 頁面優化（i18n + 品牌視覺）",
   "content": "優化錯誤頁面與 404 頁面：新增 [locale]/error.tsx 與 [locale]/not-found.tsx，支援三語系字典驅動的 UI 文字，採用品牌翡翠/石板色設計語言。保留 root error.tsx 作為無 i18n 的基本後備。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

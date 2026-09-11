@@ -2,7 +2,7 @@
   "id": "CD-003",
   "title": "將個人資料收集聲明放入字典檔並統一 terms 頁來源",
   "content": "course_details.md 第 95-101 行：個人資料收集聲明 — 資料用於報名學員事務、查閱權利、推廣用途。\n\n✅ 決議：不存 DB。放入字典檔（en.json / zh-hk.json / zh-cn.json），所有頁面（含 terms）共用同一份字典鍵。\n\n實作計畫：\n1. 在 dict.enrollPage.step2 或 dict.termsPage 新增 personalDataNotice 鍵\n2. 更新 en.json, zh-hk.json, zh-cn.json\n3. 更新 src/dictionaries/types.ts 若需要新型別\n4. terms page 改從字典讀取（移除硬編碼文字）\n5. enrollment wizard Step 3 宣告區從字典讀取\n\n注意：與 CD-001 無關。dependsOn 應移除 CD-001。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

@@ -2,7 +2,7 @@
   "id": "CD-010",
   "title": "[已解決] Schedule 同日多時段 — 選方案 A",
   "content": "course_details.md 顯示每個日期有兩個時段（14:15-15:45 和 16:00-17:30）。\n\n✅ 決議：方案 A — 每個時段存為獨立 Schedule 紀錄。不需改 schema。\n\n例如同一日期 09/09 會有兩筆：\n- Schedule A: dateAndTime = \"09/09/2026 (星期三) 14:15-15:45\"\n- Schedule B: dateAndTime = \"09/09/2026 (星期三) 16:00-17:30\"\n\n影響：\n- 不需 migration\n- 不需改 validation\n- CourseDetailView 已支援多筆 Schedule 顯示\n- ScheduleTopic（CD-009）會用 scheduleId 關聯到各自的 SyllabusItem\n\n此卡無需實作。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

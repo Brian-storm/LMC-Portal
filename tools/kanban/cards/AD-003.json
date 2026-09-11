@@ -1,0 +1,66 @@
+{
+  "id": "AD-003",
+  "title": "Admin i18n 遷移 — 三頁面引入 AdminDict",
+  "content": "Dashboard（admin/page.tsx）、Enrolments（admin/enrolments/page.tsx）、Courses（admin/courses/page.tsx）目前使用硬編碼英文。AdminDict keys 已定義於所有三語字典檔，Layout 已正確使用 dict，但這三頁面未導入。\n\n任務：\n1. Dashboard 頁面：所有 static label 改為 dict.admin.* 引用\n2. Enrolments 頁面：表格標頭、filter tabs 標籤、status badges、action buttons 改為 dict\n3. Courses 頁面：表格標頭、按鈕文字、status 文字改為 dict\n4. 確認三語（en/zh-hk/zh-cn）顯示正確",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-11",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "i18n",
+  "dependsOn": [],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/page.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/app/[locale]/admin/courses/page.tsx",
+    "src/dictionaries/en.json (admin section)",
+    "src/dictionaries/zh-hk.json (admin section)",
+    "src/dictionaries/zh-cn.json (admin section)",
+    "src/dictionaries/types.ts (AdminDict)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "Dashboard page uses dict.admin.* for all visible labels",
+    "Enrolments page uses dict.admin.* for headers, tabs, statuses, buttons",
+    "Courses page uses dict.admin.* for headers, statuses, buttons",
+    "All three locale files render correctly (en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/page.tsx (refactor — replace hardcoded strings with dict)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — replace hardcoded strings with dict)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — replace hardcoded strings with dict)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && visit /en/admin, /zh-hk/admin, /zh-cn/admin — all labels show correct locale."
+}

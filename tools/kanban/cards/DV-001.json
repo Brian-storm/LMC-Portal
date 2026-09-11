@@ -2,7 +2,7 @@
   "id": "DV-001",
   "title": "Local Docker PostgreSQL 開發資料庫",
   "content": "Set up a local PostgreSQL database via Docker for development, separate from the production AWS RDS instance. Currently .env.example has both a commented-out local connection string and an active RDS DATABASE_URL. This card makes local dev work properly: create docker-compose.yml for PostgreSQL, wire Prisma to use local DB when DEVELOPING, add npm scripts for DB lifecycle, and update .env.example so local is the default dev path. Production RDS data stays intact — never touched by dev operations.",
-  "stage": "backlog",
+  "stage": "implementing",
   "risk": "low",
   "owner": "",
   "agent": "",

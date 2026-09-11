@@ -2,7 +2,7 @@
   "id": "CD-008",
   "title": "新增 unitPrice 欄位（HK$250/堂）更新費用計算",
   "content": "course_details.md 第 122-124 行：HK$250/1.5 課時共6個主題課程。\n\n✅ 決議：\n- 新增 unitPrice Decimal — 每堂單價 HK$250\n- 保留 price 但改為 computed：price = unitPrice × schedules.count\n- 選全部 6 堂享 10% 折扣（已在 EN-011 實作）\n- totalSessions 從 course.schedules.length 取得\n\n實作計畫：\n1. prisma/schema.prisma: 新增 unitPrice Decimal? @db.Decimal(10, 2)\n2. migration: 新增可空欄位\n3. 資料遷移：現有 price（HK$1,500）÷ 6 = HK$250，填入 unitPrice\n4. src/lib/validation/course.ts: unitPrice 加入 schema\n5. GET /api/courses/[slug] 回傳 unitPrice\n6. src/components/enrollment/EnrollmentWizard.tsx: 更新費用計算 logic（已部分實作，需改成從 unitPrice 取值）\n7. src/components/courses/types.ts: 更新 Course type",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",

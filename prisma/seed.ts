@@ -56,16 +56,17 @@ async function main() {
   // ─── Courses ──────────────────────────────────────────────
   await prisma.course.upsert({
     where: { slug: "cpd-101" },
-    update: {},
+    update: { isOpen: false },
     create: {
       id: "cpd-101",
       slug: "cpd-101",
+      isOpen: false,
       nameZh: "傳承規劃證書課程",
       nameEn: "Certificate in Legacy Planning",
       descriptionZh: "全面掌握遺產架構與信託管治的專業課程。",
       descriptionEn: "Comprehensive guide to estate structure and trust governance.",
       category: "cpd",
-      iaRefNumber: "REF-cpd-101",
+      iaRefNumber: "cpd-101",
       accreditationBody: "HK Insurance Authority",
       cpdHours: 10,
       price: 2800.0,
@@ -195,6 +196,7 @@ async function main() {
       nameZh: "保險中介人持續專業培訓計劃",
       nameEn: "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
       nameCn: "保险中介人持续专业培训计划",
+      iaRefNumber: "CPD26090103",
       schedules: {
         deleteMany: {},
         create: cpd26090103Schedules,
@@ -214,7 +216,7 @@ async function main() {
       descriptionEn: "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
       descriptionCn: "涵盖香港医疗体制、大湾区医疗概况、危疾系列（乳癌、妇科癌症、前列腺健康、肺癌）及常见运动受伤处理的综合课程。",
       category: "cpd",
-      iaRefNumber: "REF-CPD26090103",
+      iaRefNumber: "CPD26090103",
       accreditationBody: "HK Insurance Authority",
       cpdHours: 9,
       cpdHoursIa: 9,
@@ -259,8 +261,8 @@ async function main() {
           {
             questionZh: "此課程如何申報CPD時數？",
             questionEn: "How do I declare CPD hours for this course?",
-            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: REF-CPD26090103。",
-            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: REF-CPD26090103.",
+            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: CPD26090103。",
+            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: CPD26090103.",
             sortOrder: 1,
           },
           {

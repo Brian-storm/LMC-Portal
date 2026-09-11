@@ -2,7 +2,7 @@
   "id": "AD-002",
   "title": "Admin Enrolments 群組檢視 — 分組列出 enroller + registrants，顯示總費用",
   "content": "Admin Enrolments 頁面目前每筆 registrant 各自獨立一列，ORGANIZATION 群組報名的 N 人會出現 N 列，管理員無法看出誰是付款者（enroller）、總費用多少。改為群組檢視：enroller 列（含總費用 + Approve/Reject）為主，其下展開 registrant 列（含各自憑證資料與個別費用）。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",
@@ -46,11 +46,22 @@
     "src/app/[locale]/admin/enrolments/page.tsx"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": "暫不處理 i18n（所有 admin 頁面皆為固定英文，待 AD-001 或專屬卡片處理）"
+    "commands": ["npm run typecheck", "npm run lint"],
+    "findings": [
+      "API returns grouped data: parent row (org name from User table) + members[] children",
+      "Parent row shows org name / 'Enroller: <email>' below",
+      "Parent row ID doc displays '—' for organization",
+      "Parent row total fee = sum of member fees, registrantCount = members.length",
+      "Member rows show credentials (name, ID doc, IA license, email) + individual fee",
+      "Member fee column right-aligned (text-right) matching parent",
+      "Member rows have NO Approve/Reject buttons",
+      "Approve/Reject on parent row passes groupId for batch update",
+      "Pagination counts parent rows (enrollers, not individual registrants)"
+    ],
+    "residual": "All acceptance criteria verified implemented. Card can be closed as done."
   },
   "comments": [
+    "V2 rework: enroller has NO registrant row. Parent uses User table for org name. All registrants are children. Fee = sum of all members' fees. Count = members.length.",
     "Per-person full fee model confirmed with user: each registrant pays the full course fee, enroller pays the sum. Server does NOT divide by headcount anymore."
   ],
   "acceptance": [
@@ -72,9 +83,5 @@
     "src/app/[locale]/admin/enrolments/page.tsx (rewrite — org name as parent, empty ID doc, right-aligned fees)"
   ],
   "dependencies": "EN-016 (HKID 單一欄位) 已完成 — no blocker",
-  "verification": "npm run typecheck && npm run lint 通過。",
-  "comments": [
-    "V2 rework: enroller has NO registrant row. Parent uses User table for org name. All registrants are children. Fee = sum of all members' fees. Count = members.length.",
-    "Per-person full fee model confirmed with user: each registrant pays the full course fee, enroller pays the sum. Server does NOT divide by headcount anymore."
-  ]
+  "verification": "npm run typecheck && npm run lint 通過。"
 }

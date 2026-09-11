@@ -56,7 +56,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             {dict.iaRef}:
           </span>
           <span className="bg-white px-1 py-0.2 border border-slate-300 text-slate-900 font-bold tracking-tight text-[9px]">
-            {course.iaCode || `REF-${course.id}`}
+            {course.iaCode || course.id}
           </span>
         </div>
 
