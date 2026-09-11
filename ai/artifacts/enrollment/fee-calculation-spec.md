@@ -52,7 +52,7 @@ All from `dict.summary.*`:
 
 ## Verification
 
-1. Navigate to `/zh-hk/courses/cpd-102/enroll`
+1. Navigate to `/zh-hk/courses/CPD26090103/enroll`
 2. Select sessions — verify subtotal = `unitPrice × count`
 3. Select ALL sessions — verify 10% discount appears
 4. Deselect all — verify total shows `HK$ 0`

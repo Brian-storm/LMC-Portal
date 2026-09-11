@@ -89,6 +89,10 @@ export interface DetailedCourse extends Course {
   certificateDescriptionZh?: string;
   certificateDescriptionEn?: string;
   certificateDescriptionCn?: string;
+  venue: string;
+  datesText: string;
+  hoursText: string;
+  feeStructureLines: string[];
   instructors: Instructor[];
   syllabus: SyllabusModule[];
   schedules: ScheduleSession[];

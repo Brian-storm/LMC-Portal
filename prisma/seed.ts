@@ -36,7 +36,7 @@ async function main() {
     },
   });
 
-  // Generic CUHK Medical Centre specialist — some courses (e.g. cpd-102) are taught
+  // Generic CUHK Medical Centre specialist — some courses (e.g. CPD26090103) are taught
   // by a rotating panel of doctors rather than one fixed instructor.
   const cuhkSpecialist = await prisma.instructor.upsert({
     where: { id: "ins-cuhk-specialist" },
@@ -175,25 +175,29 @@ async function main() {
     },
   });
 
-  // cpd-102 is delivered as 6 standalone 90-minute classes: each of the 3 dates
+  // CPD26090103 is delivered as 6 standalone 90-minute classes: each of the 3 dates
   // hosts two sequential sessions (14:15 - 15:45 and 16:00 - 17:30) at the same venue.
-  const cpd102Venue = "香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳";
-  const cpd102Schedules = [
-    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
-    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
-    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
-    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
-    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
-    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd102Venue, quotaRemaining: 50, isActive: true },
+  const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
+  const cpd26090103VenueZh = "香港新界沙田澤祥街9號 香港中文大學醫院";
+  const cpd26090103Schedules = [
+    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
   ];
 
   await prisma.course.upsert({
-    where: { slug: "cpd-102" },
-    // Resync schedules & instructors on every run so the seed stays authoritative for cpd-102.
+    where: { slug: "CPD26090103" },
+    // Resync schedules & instructors on every run so the seed stays authoritative for CPD26090103.
     update: {
+      nameZh: "保險中介人持續專業培訓計劃",
+      nameEn: "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
+      nameCn: "保险中介人持续专业培训计划",
       schedules: {
         deleteMany: {},
-        create: cpd102Schedules,
+        create: cpd26090103Schedules,
       },
       instructors: {
         deleteMany: {},
@@ -201,16 +205,16 @@ async function main() {
       },
     },
     create: {
-      id: "cpd-102",
-      slug: "cpd-102",
-      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
-      nameEn: "Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course",
-      nameCn: "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
+      id: "CPD26090103",
+      slug: "CPD26090103",
+      nameZh: "保險中介人持續專業培訓計劃",
+      nameEn: "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
+      nameCn: "保险中介人持续专业培训计划",
       descriptionZh: "涵蓋香港醫療體制、大灣區醫療概況、危疾系列（乳癌、婦科癌症、前列腺健康、肺癌）及常見運動受傷處理的綜合課程。",
       descriptionEn: "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
       descriptionCn: "涵盖香港医疗体制、大湾区医疗概况、危疾系列（乳癌、妇科癌症、前列腺健康、肺癌）及常见运动受伤处理的综合课程。",
       category: "cpd",
-      iaRefNumber: "REF-cpd-102",
+      iaRefNumber: "REF-CPD26090103",
       accreditationBody: "HK Insurance Authority",
       cpdHours: 9,
       cpdHoursIa: 9,
@@ -238,7 +242,7 @@ async function main() {
         ],
       },
       schedules: {
-        create: cpd102Schedules,
+        create: cpd26090103Schedules,
       },
       reviews: {
         create: {
@@ -255,8 +259,8 @@ async function main() {
           {
             questionZh: "此課程如何申報CPD時數？",
             questionEn: "How do I declare CPD hours for this course?",
-            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: REF-cpd-102。",
-            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: REF-cpd-102.",
+            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: REF-CPD26090103。",
+            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: REF-CPD26090103.",
             sortOrder: 1,
           },
           {
@@ -276,8 +280,8 @@ async function main() {
           {
             questionZh: "場地位置及交通？",
             questionEn: "Venue location and transportation?",
-            answerZh: "香港新界沙田澤祥街9號香港中文大學醫院9樓演講廳。港鐵大學站步行約8分鐘。",
-            answerEn: "9/F Lecture Hall, CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT. About 8 min walk from University MTR station.",
+            answerZh: "香港新界沙田澤祥街9號 香港中文大學醫院。港鐵大學站步行約8分鐘。",
+            answerEn: "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT. About 8 min walk from University MTR station.",
             sortOrder: 4,
           },
           {
@@ -309,15 +313,15 @@ async function main() {
     },
   });
 
-  // ─── ScheduleTopic links for cpd-102 ────────────────────
-  const cpd102 = await prisma.course.findUnique({ where: { slug: "cpd-102" } });
-  if (cpd102) {
+  // ─── ScheduleTopic links for CPD26090103 ────────────────────
+  const cpd26090103 = await prisma.course.findUnique({ where: { slug: "CPD26090103" } });
+  if (cpd26090103) {
     const allSyllabusItems = await prisma.syllabusItem.findMany({
-      where: { courseId: cpd102.id },
+      where: { courseId: cpd26090103.id },
       orderBy: { moduleNumber: "asc" },
     });
     const allSchedules = await prisma.schedule.findMany({
-      where: { courseId: cpd102.id },
+      where: { courseId: cpd26090103.id },
       orderBy: { dateAndTime: "asc" },
     });
     // Map each class (matched by its exact date & time string) to the single topic it covers.
@@ -346,7 +350,7 @@ async function main() {
         }
       }
     }
-    console.log("ScheduleTopic links created for cpd-102");
+    console.log("ScheduleTopic links created for CPD26090103");
   }
 
   // ─── Test receipt (VERIFIED enrolment with receipt number) ─

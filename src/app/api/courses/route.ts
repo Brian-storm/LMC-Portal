@@ -83,6 +83,8 @@ export async function GET(request: NextRequest) {
               id: true,
               dateAndTime: true,
               venue: true,
+              venueEn: true,
+              venueZh: true,
               quotaRemaining: true,
             },
             orderBy: { dateAndTime: "asc" },

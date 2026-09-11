@@ -23,6 +23,7 @@ import {
   Clock,
   MapPin,
   Tag,
+  BookOpen,
 } from "lucide-react";
 import type { EnrollPageDict } from "@/dictionaries/types";
 
@@ -40,6 +41,17 @@ interface CourseData {
     dateAndTime: string;
     venue: string;
     quotaRemaining: number;
+    topics: {
+      syllabusItem: {
+        id: string;
+        moduleNumber: number;
+        titleZh: string;
+        titleEn: string;
+        duration: string;
+        topicsZh: string[];
+        topicsEn: string[];
+      };
+    }[];
   }[];
 }
 
@@ -1086,6 +1098,16 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     {course.schedules.map((sch) => {
                       const isSelected = selectedScheduleIds.includes(sch.id);
                       const isFull = sch.quotaRemaining <= 0;
+                      // Use the first linked syllabus item as the primary topic
+                      const syllabusItem = sch.topics[0]?.syllabusItem;
+                      const moduleTitle = syllabusItem
+                        ? (locale === "en"
+                            ? syllabusItem.titleEn
+                            : syllabusItem.titleZh)
+                        : "";
+                      const moduleTopics = syllabusItem
+                        ? (locale === "en" ? syllabusItem.topicsEn : syllabusItem.topicsZh)
+                        : [];
                       return (
                         <button
                           key={sch.id}
@@ -1100,27 +1122,55 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                 : "bg-white border-slate-300 hover:bg-slate-50"
                           }`}
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="space-y-1 min-w-0">
-                              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-                                <input
-                                  type="checkbox"
-                                  checked={isSelected}
-                                  disabled={isFull}
-                                  readOnly
-                                  className="accent-primary shrink-0 mt-0.5 pointer-events-none"
-                                />
-                                <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                                <span>{sch.dateAndTime}</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-[10px] text-slate-600 ml-6">
-                                <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                                <span>{sch.venue}</span>
+                          <div className="flex items-start gap-3">
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              disabled={isFull}
+                              readOnly
+                              className="accent-primary shrink-0 mt-1 pointer-events-none"
+                            />
+                            <div className="min-w-0 flex-1 space-y-2">
+                              {/* Topic header */}
+                              {syllabusItem && (
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                                    <BookOpen className="w-3.5 h-3.5 text-primary shrink-0" />
+                                    <span className="leading-tight">{moduleTitle}</span>
+                                  </div>
+                                  {/* Duration + sub-topics */}
+                                  <div className="ml-5 space-y-1">
+                                    <span className="text-[11px] font-mono text-slate-500">
+                                      <Clock className="w-3 h-3 inline align-text-bottom mr-0.5" />
+                                      {syllabusItem.duration}
+                                    </span>
+                                    <ul className="space-y-0.5">
+                                      {moduleTopics.map((topic, i) => (
+                                        <li key={i} className="text-[11px] text-slate-600 flex items-start gap-1">
+                                          <span className="text-primary select-none shrink-0 leading-tight">•</span>
+                                          <span className="leading-tight">{topic}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
+                              )}
+                              {/* Schedule info */}
+                              <div className="ml-5 pt-2 border-t border-slate-200 space-y-0.5">
+                                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                                  <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                                  <span>{sch.dateAndTime}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                                  <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                                  <span className="leading-tight">{sch.venue}</span>
+                                </div>
                               </div>
                             </div>
+                            {/* Full badge */}
                             <div className="shrink-0 text-right">
                               {isFull && (
-                                <span className="inline-block text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs border bg-rose-50 text-rose-800 border-rose-300">
+                                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs border bg-rose-50 text-rose-800 border-rose-300">
                                   Full
                                 </span>
                               )}
@@ -1403,13 +1453,27 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">
                     {dict.summary.sessionsLabel} {selectedCount}/{totalSessions}
                   </span>
-                  {course.schedules
-                    .filter((s) => selectedScheduleIds.includes(s.id))
-                    .map((s) => (
-                      <div key={s.id} className="flex text-slate-600 text-[10px]">
-                        <span className="truncate">{s.dateAndTime}</span>
-                      </div>
-                    ))}
+                {course.schedules
+                .filter((s) => selectedScheduleIds.includes(s.id))
+                .map((s) => {
+                  const si = s.topics[0]?.syllabusItem;
+                  const topicAbbr = si
+                    ? (locale === "en"
+                      ? `Topic ${si.moduleNumber}`
+                      : si.titleZh)
+                    : "";
+                  return (
+                    <div
+                      key={s.id}
+                      className="flex flex-col text-[11px] text-slate-600"
+                    >
+                      <span className="font-semibold text-slate-700">
+                        {topicAbbr}
+                      </span>
+                      <span className="truncate">{s.dateAndTime}</span>
+                    </div>
+                  );
+                })}
                 </div>
               )}
 

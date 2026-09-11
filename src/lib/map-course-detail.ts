@@ -31,6 +31,8 @@ interface ApiSchedule {
   id: string;
   dateAndTime: string;
   venue: string;
+  venueEn: string | null;
+  venueZh: string | null;
   quotaRemaining: number;
   topics: {
     sortOrder: number;
@@ -115,6 +117,9 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   // Traditional (nameZh) and then English. zh-hk still uses Traditional first.
   const isSimplified = locale === "zh-cn";
 
+  // Locale-aware "Free" label for zero-price courses
+  const freeLabel = isSimplified ? "免费" : isZh ? "免費" : "Free";
+
   /** Pick a locale-aware string from zh/en pair */
   const localized = (zh: string | null | undefined, en: string | null | undefined): string =>
     isZh ? (zh ?? en ?? "") : (en ?? zh ?? "");
@@ -129,6 +134,50 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     if (isZh) return zh ?? cn ?? en ?? "";
     return en ?? zh ?? cn ?? "";
   };
+
+  // Locale-aware picker for bilingual venue fields:
+  // prefer the locale-specific field, fall back to the other language, then to venue
+  const localizedVenue = (s: ApiSchedule): string =>
+    isZh ? (s.venueZh ?? s.venueEn ?? s.venue)
+        : (s.venueEn ?? s.venueZh ?? s.venue);
+
+  // Derive venue: deduplicate schedule venues (locale-aware)
+  const uniqueVenues = [...new Set(c.schedules.map(localizedVenue))];
+
+  // Derive datesText: extract date portions from schedule dateAndTime, deduplicated
+  const timeRangePattern = /\s+\d{2}:\d{2}\s*-\s*\d{2}:\d{2}$/;
+  const uniqueDateSet = new Set<string>();
+  for (const s of c.schedules) {
+    const datePart = s.dateAndTime.replace(timeRangePattern, "").trim();
+    if (datePart) uniqueDateSet.add(datePart);
+  }
+  const dates = [...uniqueDateSet].sort((a, b) => {
+    const parseDate = (s: string) => {
+      const m = s.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+      return m ? new Date(+m[3], +m[2] - 1, +m[1]).getTime() : 0;
+    };
+    return parseDate(a) - parseDate(b);
+  });
+
+  // Derive hoursText: per-topic duration from first syllabus item + total cpdHours
+  const perTopicDuration = c.syllabusItems.length > 0
+    ? (isZh ? c.syllabusItems[0].duration.replace(/hours/i, "小時").trim() : c.syllabusItems[0].duration)
+    : `${c.cpdHours}${isZh ? "小時" : " hours"}`;
+
+  // Build feeStructureLines from syllabus count + unitPrice (bundle price not in DB)
+  const feeStructureLines: string[] = [];
+  const topicCount = c.syllabusItems.length;
+  if (topicCount > 0) {
+    feeStructureLines.push(isZh ? `共 ${topicCount} 個主題` : `Total: ${topicCount} topics`);
+    if (c.unitPrice) {
+      const unitPriceStr = Number(c.unitPrice).toLocaleString();
+      if (isZh) {
+        feeStructureLines.push(`• 單個主題：HKD ${unitPriceStr} / ${perTopicDuration}`);
+      } else {
+        feeStructureLines.push(`• Single topic: HKD ${unitPriceStr} / ${perTopicDuration}`);
+      }
+    }
+  }
 
   const instructors: Instructor[] = c.instructors.map((ci) => ({
     id: ci.instructor.id,
@@ -149,7 +198,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     id: s.id,
     dateAndTime: s.dateAndTime,
-    venue: s.venue,
+    venue: localizedVenue(s),
     quotaRemaining: s.quotaRemaining,
     topics: (s.topics ?? []).map((t) => ({
       syllabusItem: {
@@ -191,7 +240,13 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     cpdRulesCn: c.cpdRulesCn ?? undefined,
     deliveryMode: c.deliveryMode ?? "",
     language: c.language ?? "",
-    fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,
+    fee: c.price === 0 ? freeLabel : `HKD ${c.price.toLocaleString()}`,
+    venue: uniqueVenues.join(isZh ? "；" : "; "),
+    datesText: dates.join("、"),
+    hoursText: isZh
+      ? `每堂 ${perTopicDuration}，共 ${c.cpdHours} 小時`
+      : `${perTopicDuration} per session, ${c.cpdHours} hours total`,
+    feeStructureLines,
     status: (c.registrationStatus?.toLowerCase() ?? "open") as DetailedCourse["status"],
     capacity: c.capacity,
     imageUrl: c.imageUrl ?? undefined,

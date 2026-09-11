@@ -1,0 +1,83 @@
+{
+  "id": "CM-007",
+  "title": "課程詳情頁講師卡 — 新增 CPD26090103 第2至第7位講師個人資料",
+  "content": "課程 CPD26090103（保險中介人持續專業培訓計劃）詳情頁的「講師與師資」卡片目前只掛一位通用講師「CUHK Medical Centre Specialist」，需改為依 public/company/intructors.md（第II至第VII項）新增 6 位講師個人資料卡：Dr CHOI Hiu Yeung Jacqueline、Dr CHAN Ho Yan Yolanda、Dr LAW Ying Kan George、Dr YEUNG Suet Ying Carol、Dr NGO Chang Chung、Dr LEUNG Kam Suet Linda。\n\n範圍：\n1. prisma/seed.ts — 刪除 CPD26090103 對 ins-cuhk-specialist 的連結，新增 6 位講師 rows（nameZh/nameEn/titleZh/titleEn/bioZh/bioEn）並以 course_instructors junction 全部掛到該課程。姓名、頭銜、簡歷文字必須逐字對照 intructors.md（含學歷縮寫行）。\n2. 每位講師 avatarUrl 先用 /public/members/ 下的佔位頭像（沿用 profile-*.svg 既有風格），真實照片待人工提供後再替換（另開後續卡）。\n3. src/components/courses/CourseDetailView.tsx 與 src/lib/map-course-detail.ts — 沿用現有扁平 2 欄 grid 佈局（照片+姓名+頭銜+簡歷），若 mapper 的 locale 回退（zh-hk/zh-cn → nameZh）與既有講師一致則不需改動；先忽略講師姓氏/簡歷中的 MBC/EU 等非 ASCII 縮寫造成的 i18n 無特別要求。\n4. 不顯示第 1 位講師 Dr CHUNG Kin Lai（已與人工確認為非目標）。\n\n[待提供] 6 位講師的真實個人相片 → 目前以佔位頭像取代，後續卡再補。\n[待確認] 中文（zh-hk）姓名/頭銜/簡歷翻譯於實作時由人工確認。",
+  "stage": "blocked",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-11",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "track": "frontend",
+  "dependsOn": [
+    "CM-006"
+  ],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "public/company/intructors.md",
+    "prisma/seed.ts",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/lib/map-course-detail.ts",
+    "src/components/courses/types.ts",
+    "public/members/profile-cuhk-specialist.svg"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": "真實講師相片尚未提供；中文翻譯需人工確認；講師資料無 nameCn/titleCn/bioCn 欄位，zh-cn 依 mapper 回退到 nameZh。"
+  },
+  "comments": [
+    {
+      "name": "opencode",
+      "time": "2026-09-11",
+      "text": "訪查記要：目前 CPD26090103 詳情頁講師區由 CourseDetailView.tsx 第 7 區（instructors）單一 griding 呈現；mapper map-course-detail.ts 以 localized(nameZh,nameEn) push 到 DetailedCourse.instructors。6 位講師 2nd-7th 依 intructors.md 列出。"
+    }
+  ],
+  "acceptance": [
+    "GET /api/courses/CPD26090103 的 instructors 回傳 6 位講師（不含 Dr CHUNG Kin Lai）",
+    "詳情頁「講師與師資」卡片以扁平 2 欄 grid 顯示 6 位講師（照片+名字+頭銜+簡歷）",
+    "每筆名字/頭銜/簡歷英文與 intructors.md 逐字一致",
+    "zh-hk 與 zh-cn locale 下顯示中文翻譯（mapper 既有回退邏輯）",
+    "每位講師 avatarUrl 指向 /public/members/ 佔位頭像，不破圖",
+    "其他課程（cpd-101 等）講師不變",
+    "npm run typecheck 與 npm run lint 通過"
+  ],
+  "files": [
+    "prisma/seed.ts",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/lib/map-course-detail.ts",
+    "public/members/"
+  ],
+  "dependencies": "CM-006（課程編號與該課程相關變更）完成",
+  "verification": "npm run typecheck && npm run lint；本機起 DB seed 後瀏覽 /en/courses/CPD26090103 與 /zh-hk/courses/CPD26090103，確認 6 位講師個人卡與佔位頭像正確顯示、Dr CHUNG 不出現"
+}

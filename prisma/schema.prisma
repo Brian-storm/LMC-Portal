@@ -185,6 +185,8 @@ model Schedule {
   courseId       String
   dateAndTime    String
   venue          String
+  venueEn        String?
+  venueZh        String?
   quotaRemaining Int
   isActive       Boolean @default(true)
 

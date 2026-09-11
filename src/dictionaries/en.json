@@ -143,10 +143,15 @@
     "scheduleTab": "Upcoming Classes",
     "enrollCta": "Enroll Now",
     "viewCourse": "View Course",
+    "poster": "Poster",
     "downloadBrochure": "Download Syllabus",
     "prerequisites": "Prerequisites",
     "targetAudience": "Target Audience",
     "certificateBadge": "CPD Certificate Granted Upon Completion",
+    "titleSubtitle": "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
+    "iaShort": "IA",
+    "currency": "HKD",
+    "cpdHoursLabel": "IA / MPFA Non-core CPD Hours",
 
     "sections": {
       "syllabus": "Course Outline & Syllabus",

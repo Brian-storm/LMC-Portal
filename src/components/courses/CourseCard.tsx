@@ -100,7 +100,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
               <span
                 className="font-mono text-[9px] text-slate-400 uppercase tracking-wider text-center px-1"
               >
-                Poster
+                {dict.poster}
               </span>
             </div>
           )}
@@ -144,10 +144,9 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
                   {dict.deliveryMode}
                 </span>
                 <span className="font-semibold text-slate-900">
-                  {(course.date ??
-                    ((dict.deliveryModeValues as Record<string, string>)?.[
-                      course.deliveryMode
-                    ] ?? course.deliveryMode))}
+                  {(dict.deliveryModeValues as Record<string, string>)?.[
+                    course.deliveryMode
+                  ] ?? course.deliveryMode}
                 </span>
               </div>
             </div>

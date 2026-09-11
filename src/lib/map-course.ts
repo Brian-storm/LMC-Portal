@@ -25,6 +25,8 @@ export interface ApiCourse {
     id: string;
     dateAndTime: string;
     venue: string;
+    venueEn: string | null;
+    venueZh: string | null;
     quotaRemaining: number;
   }>;
 }
@@ -54,7 +56,11 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     iaCode: c.iaRefNumber ?? undefined,
-    venue: c.schedules?.[0]?.venue,
+    venue: c.schedules?.[0]
+      ? (isZh
+        ? (c.schedules[0].venueZh ?? c.schedules[0].venueEn ?? c.schedules[0].venue)
+        : (c.schedules[0].venueEn ?? c.schedules[0].venueZh ?? c.schedules[0].venue))
+      : undefined,
     seatsLeft: c.schedules?.[0]?.quotaRemaining,
     date: c.schedules?.[0]?.dateAndTime,
   };

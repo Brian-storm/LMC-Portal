@@ -2,7 +2,7 @@
   "id": "CD-007",
   "title": "[CANCELLED] 語言欄位細分 — 不需要",
   "content": "✅ 決議：不需要拆分 language 欄位。維持現狀。此卡取消。\n\n原始需求：course_details.md 第 204 行授課語言為粵語，但當前的 language 單一欄位已足夠。",
-  "stage": "cancelled",
+  "stage": "done",
   "risk": "low",
   "owner": "Brian",
   "agent": "",
