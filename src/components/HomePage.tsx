@@ -7,17 +7,17 @@ import type { Dictionary } from "@/dictionaries/types";
 
 interface HomePageProps {
   currentLocale: string;
-  dict?: Dictionary;
+  dict: Dictionary;
 }
 
 export function HomePage({ currentLocale, dict }: HomePageProps) {
   return (
     <div className="bg-background text-foreground transition-colors duration-200">
-      <Breadcrumbs currentLocale={currentLocale} dict={dict?.breadcrumbs} />
-      <HeroCarousel currentLocale={currentLocale} dict={dict?.heroCarousel} />
-      <CredentialsBar dict={dict?.credentialsBar} />
-      <FeatureCards currentLocale={currentLocale} dict={dict?.featureCards} />
-      <ConsultationForm currentLocale={currentLocale} dict={dict?.newsletterForm} />
+      <Breadcrumbs currentLocale={currentLocale} dict={dict.breadcrumbs} />
+      <HeroCarousel currentLocale={currentLocale} dict={dict.heroCarousel} />
+      <CredentialsBar dict={dict.credentialsBar} />
+      <FeatureCards currentLocale={currentLocale} dict={dict.featureCards} />
+      <ConsultationForm currentLocale={currentLocale} dict={dict.newsletterForm} />
     </div>
   );
 }

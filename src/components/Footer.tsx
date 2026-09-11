@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 import { FooterDict } from "@/dictionaries/types";
 
@@ -17,22 +16,15 @@ export function Footer({ dict, currentLocale }: FooterProps) {
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1: Brand Overview */}
-          <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center space-x-3">
-              <Link
-                href={`/${currentLocale}`}
-                className="inline-flex items-center"
-              >
-                <Image
-                  src="/company/logo-text-black.svg"
-                  alt="LMC Logo"
-                  width={360}
-                  height={36}
-                  priority
-                  className="h-18 w-auto shrink-0 object-contain"
-                />
-              </Link>
-            </div>
+          <div className="space-y-3 md:col-span-1">
+            <Link
+              href={`/${currentLocale}`}
+              className="inline-block"
+            >
+              <h3 className="text-slate-900 font-semibold uppercase tracking-wider text-[11px]">
+                {dict.aboutTitle}
+              </h3>
+            </Link>
 
             <p className="text-slate-600 text-xs leading-relaxed">
               {dict.aboutDesc}

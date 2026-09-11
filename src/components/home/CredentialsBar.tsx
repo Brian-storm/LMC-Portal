@@ -1,39 +1,11 @@
 import { ShieldCheck, Award, CheckCircle2 } from "lucide-react";
-
-export interface CredentialItem {
-  title: string;
-  description: string;
-}
+import type { CredentialsBarDict } from "@/dictionaries/types";
 
 interface CredentialsBarProps {
-  dict?: {
-    accredited?: CredentialItem;
-    advisory?: CredentialItem;
-    portal?: CredentialItem;
-  };
+  dict: CredentialsBarDict;
 }
 
 export function CredentialsBar({ dict }: CredentialsBarProps) {
-  const accredited = {
-    title: dict?.accredited?.title || "Accredited Curriculums",
-    description:
-      dict?.accredited?.description ||
-      "Recognized by regional governing bodies.",
-  };
-
-  const advisory = {
-    title: dict?.advisory?.title || "Executive Advisory",
-    description:
-      dict?.advisory?.description || "Taught by seasoned industry leaders.",
-  };
-
-  const portal = {
-    title: dict?.portal?.title || "Secure Enterprise Portal",
-    description:
-      dict?.portal?.description ||
-      "24/7 access to student records and resources.",
-  };
-
   return (
     <section className="bg-card border-b border-border/80 py-6 transition-colors duration-200">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -42,10 +14,10 @@ export function CredentialsBar({ dict }: CredentialsBarProps) {
             <ShieldCheck className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                {accredited.title}
+                {dict.accredited.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                {accredited.description}
+                {dict.accredited.description}
               </p>
             </div>
           </div>
@@ -53,10 +25,10 @@ export function CredentialsBar({ dict }: CredentialsBarProps) {
             <Award className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                {advisory.title}
+                {dict.advisory.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                {advisory.description}
+                {dict.advisory.description}
               </p>
             </div>
           </div>
@@ -64,10 +36,10 @@ export function CredentialsBar({ dict }: CredentialsBarProps) {
             <CheckCircle2 className="w-8 h-8 text-primary shrink-0" />
             <div>
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider">
-                {portal.title}
+                {dict.portal.title}
               </h4>
               <p className="text-muted-foreground text-xs">
-                {portal.description}
+                {dict.portal.description}
               </p>
             </div>
           </div>

@@ -41,7 +41,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
           className="shrink-0 flex items-center group focus:outline-none"
         >
           <div
-            className="flex items-center px-8 py-2"
+            className="flex items-center px-8 py-3"
             style={{
               clipPath: "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)",
             }}
@@ -49,9 +49,9 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
             <NextImage
               src="/company/logo-text-black.svg"
               alt="LMC Management Consultancy Logo"
-              width={60}
-              height={60}
-              className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
+              width={80}
+              height={80}
+              className="h-18 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
               priority
             />
           </div>
