@@ -65,7 +65,7 @@ export function HeroCarousel({ currentLocale, dict }: HeroCarouselProps) {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 10000);
     return () => clearInterval(timer);
   }, [slides.length]);
 

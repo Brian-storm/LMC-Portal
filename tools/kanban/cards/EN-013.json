@@ -1,7 +1,7 @@
 {
   "id": "EN-013",
   "title": "更新 EnrollmentWizard 身份證明文件 UI 支援四種選項",
-  "content": "將現有 HKID / Passport 雙按鈕切換改為四選項：HKID、Passport、Permit（通行證）、Others（其他身份證明文件）。\n\n變更範圍（EnrollmentWizard.tsx）：\n1. idDocType 狀態型別改為 \"HKID\" | \"PASSPORT\" | \"PERMIT\" | \"OTHER\"\n2. 按鈕 toggle 改為 radio group 或 dropdown（4 選 1）\n3. HKID → 維持現有 split fields（prefix + check digit）\n4. Passport → 維持現有單一文字欄位\n5. PERMIT → 單一文字欄位\n6. OTHER → 文字欄位，自動 prefix "Others: "（或讓用戶手動輸入）\n7. 對應更新 validateField() 邏輯\n8. ORGANIZATION 團體成員的身份證明也同步更新\n\n[待確認] PERMIT 是否需要專屬格式驗證（例如 8-9 位數字+字母）？OTHER 的 prefix 是自動加上還是由用戶輸入？",
+  "content": "將現有 HKID / Passport 雙按鈕切換改為四選項：HKID、Passport、Permit（通行證）、Others（其他身份證明文件）。\n\n變更範圍（EnrollmentWizard.tsx）：\n1. idDocType 狀態型別改為 \"HKID\" | \"PASSPORT\" | \"PERMIT\" | \"OTHER\"\n2. 按鈕 toggle 改為 radio group 或 dropdown（4 選 1）\n3. HKID → 維持現有 split fields（prefix + check digit）\n4. Passport → 維持現有單一文字欄位\n5. PERMIT → 單一文字欄位\n6. OTHER → 文字欄位，自動 prefix \"Others: \"（或讓用戶手動輸入）\n7. 對應更新 validateField() 邏輯\n8. ORGANIZATION 團體成員的身份證明也同步更新\n\n[待確認] PERMIT 是否需要專屬格式驗證（例如 8-9 位數字+字母）？OTHER 的 prefix 是自動加上還是由用戶輸入？",
   "stage": "done",
   "risk": "medium",
   "owner": "opencode",

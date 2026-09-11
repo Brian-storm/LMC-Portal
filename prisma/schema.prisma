@@ -114,6 +114,17 @@ model Course {
   registrationStatus RegistrationStatus @default(OPEN)
   deliveryMode      String?
   language          String?
+  organizerZh       String?
+  organizerEn       String?
+  coOrganizerZh     String?
+  coOrganizerEn     String?
+  courseCode        String?
+  feeDescriptionZh  String?
+  feeDescriptionEn  String?
+  feeDescriptionCn  String?
+  certificateDescriptionZh String?
+  certificateDescriptionEn String?
+  certificateDescriptionCn String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 

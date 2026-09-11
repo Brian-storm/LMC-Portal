@@ -152,8 +152,27 @@
       "syllabus": "Course Outline & Syllabus",
       "scheduleAndLocation": "Schedule & Location",
       "instructors": "Instructor Profile",
-      "faqs": "Frequently Asked Questions (FAQ)"
+      "faqs": "Frequently Asked Questions (FAQ)",
+      "organizers": "Organizers",
+      "topics": "Course Topics",
+      "details": "Course Details",
+      "certificates": "Certificates & CPD Hours"
     },
+
+    "organizerLabel": "Organizer",
+    "coOrganizerLabel": "Co-organizer",
+    "topicsHint": "Can enroll in one or more topic courses",
+    "topicsEnrollPrompt": "Enroll in selected topics",
+    "singleTopicCpd": "Per single topic course:",
+    "allTopicsCpd": "Upon completing all six topic courses:",
+    "attendanceCert": "Attendance Certificate issued by CUHK Medical Centre",
+    "graduationCert": "Graduation Certificate issued by CUHK Medical Centre",
+    "courseType": "Course Type",
+    "certificateCourse": "Certificate Course",
+    "venue": "Venue",
+    "courseDates": "Course Dates",
+    "courseHours": "Course Hours",
+    "feeStructure": "Fee Structure",
 
     "status": {
       "open": "Registration Open",

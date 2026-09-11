@@ -80,6 +80,15 @@ export interface DetailedCourse extends Course {
   status: CourseStatus;
   capacity: number;
   accreditationBody?: string;
+  organizer?: string;
+  coOrganizer?: string;
+  courseCode?: string;
+  feeDescriptionZh?: string;
+  feeDescriptionEn?: string;
+  feeDescriptionCn?: string;
+  certificateDescriptionZh?: string;
+  certificateDescriptionEn?: string;
+  certificateDescriptionCn?: string;
   instructors: Instructor[];
   syllabus: SyllabusModule[];
   schedules: ScheduleSession[];

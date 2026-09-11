@@ -229,12 +229,12 @@ async function main() {
       },
       syllabusItems: {
         create: [
-          { moduleNumber: 1, titleZh: "主題1 - 香港醫療體制發展、大灣區醫療概況與醫療保障證書課程", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
-          { moduleNumber: 2, titleZh: "主題2 - 危疾系列：乳癌診斷、臨床治療與患者支援", titleEn: "Topic 2 - Critical Illness Series: Breast Cancer Diagnosis, Clinical Treatment & Patient Support", duration: "1.5 Hours", topicsZh: ["乳癌診斷", "臨床治療", "患者支援"], topicsEn: ["Breast cancer diagnosis", "Clinical treatment", "Patient support"], sortOrder: 2 },
-          { moduleNumber: 3, titleZh: "主題3 - 常見運動受傷的處理", titleEn: "Topic 3 - Common Sports Injury Management", duration: "1.5 Hours", topicsZh: ["常見運動受傷處理"], topicsEn: ["Common sports injury management"], sortOrder: 3 },
-          { moduleNumber: 4, titleZh: "主題4 - 危疾系列：認識婦科癌症", titleEn: "Topic 4 - Critical Illness Series: Understanding Gynecological Cancers", duration: "1.5 Hours", topicsZh: ["婦科癌症認識"], topicsEn: ["Understanding gynecological cancers"], sortOrder: 4 },
-          { moduleNumber: 5, titleZh: "主題5 - 危疾系列：前列腺健康及微創手術最新發展", titleEn: "Topic 5 - Critical Illness Series: Prostate Health & Latest Advances in Minimally Invasive Surgery", duration: "1.5 Hours", topicsZh: ["前列腺健康", "微創手術最新發展"], topicsEn: ["Prostate health", "Latest advances in minimally invasive surgery"], sortOrder: 5 },
-          { moduleNumber: 6, titleZh: "主題6 - 認識肺癌：從診斷到個人化治療", titleEn: "Topic 6 - Understanding Lung Cancer: From Diagnosis to Personalised Treatment", duration: "1.5 Hours", topicsZh: ["肺癌診斷", "個人化治療"], topicsEn: ["Lung cancer diagnosis", "Personalised treatment"], sortOrder: 6 },
+          { moduleNumber: 1, titleZh: "主題一 - 香港醫療體制發展、大灣區醫療概況與醫療保障證書課程", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
+          { moduleNumber: 2, titleZh: "主題二 - 危疾系列：乳癌診斷、臨床治療與患者支援", titleEn: "Topic 2 - Critical Illness Series: Breast Cancer Diagnosis, Clinical Treatment & Patient Support", duration: "1.5 Hours", topicsZh: ["乳癌診斷", "臨床治療", "患者支援"], topicsEn: ["Breast cancer diagnosis", "Clinical treatment", "Patient support"], sortOrder: 2 },
+          { moduleNumber: 3, titleZh: "主題三 - 常見運動受傷的處理", titleEn: "Topic 3 - Common Sports Injury Management", duration: "1.5 Hours", topicsZh: ["常見運動受傷處理"], topicsEn: ["Common sports injury management"], sortOrder: 3 },
+          { moduleNumber: 4, titleZh: "主題四 - 危疾系列：認識婦科癌症", titleEn: "Topic 4 - Critical Illness Series: Understanding Gynecological Cancers", duration: "1.5 Hours", topicsZh: ["婦科癌症認識"], topicsEn: ["Understanding gynecological cancers"], sortOrder: 4 },
+          { moduleNumber: 5, titleZh: "主題五 - 危疾系列：前列腺健康及微創手術最新發展", titleEn: "Topic 5 - Critical Illness Series: Prostate Health & Latest Advances in Minimally Invasive Surgery", duration: "1.5 Hours", topicsZh: ["前列腺健康", "微創手術最新發展"], topicsEn: ["Prostate health", "Latest advances in minimally invasive surgery"], sortOrder: 5 },
+          { moduleNumber: 6, titleZh: "主題六 - 認識肺癌：從診斷到個人化治療", titleEn: "Topic 6 - Understanding Lung Cancer: From Diagnosis to Personalised Treatment", duration: "1.5 Hours", topicsZh: ["肺癌診斷", "個人化治療"], topicsEn: ["Lung cancer diagnosis", "Personalised treatment"], sortOrder: 6 },
         ],
       },
       schedules: {

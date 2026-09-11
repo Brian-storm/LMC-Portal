@@ -7,6 +7,7 @@
   "owner": "",
   "agent": "",
   "approvalRequired": true,
+  "track": "backend",
   "createdAt": "2026-09-11",
   "epic": "課程管理",
   "userStory": "",

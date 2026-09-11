@@ -91,6 +91,17 @@ export interface ApiCourseDetail {
   registrationStatus: string;
   deliveryMode: string | null;
   language: string | null;
+  organizerZh: string | null;
+  organizerEn: string | null;
+  coOrganizerZh: string | null;
+  coOrganizerEn: string | null;
+  courseCode: string | null;
+  feeDescriptionZh: string | null;
+  feeDescriptionEn: string | null;
+  feeDescriptionCn: string | null;
+  certificateDescriptionZh: string | null;
+  certificateDescriptionEn: string | null;
+  certificateDescriptionCn: string | null;
   instructors: ApiCourseInstructor[];
   syllabusItems: ApiSyllabusItem[];
   schedules: ApiSchedule[];
@@ -186,6 +197,15 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     accreditationBody: c.accreditationBody ?? undefined,
+    organizer: localized(c.organizerZh, c.organizerEn),
+    coOrganizer: localized(c.coOrganizerZh, c.coOrganizerEn),
+    courseCode: c.courseCode ?? undefined,
+    feeDescriptionZh: c.feeDescriptionZh ?? undefined,
+    feeDescriptionEn: c.feeDescriptionEn ?? undefined,
+    feeDescriptionCn: c.feeDescriptionCn ?? undefined,
+    certificateDescriptionZh: c.certificateDescriptionZh ?? undefined,
+    certificateDescriptionEn: c.certificateDescriptionEn ?? undefined,
+    certificateDescriptionCn: c.certificateDescriptionCn ?? undefined,
     instructors,
     syllabus,
     schedules,
