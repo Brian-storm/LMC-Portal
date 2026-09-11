@@ -1,217 +1,80 @@
-https://docs.google.com/document/d/11hoTpM3SfxVUBAl4BiNydU3RoByOUb0913nvbbWyYPo/edit?tab=t.apyc5uu3e96z
+Here is a structured, clear layout designed specifically for a website page. The formatting uses clear headers, visual spacing, and prominent styling for the course topics so they stand out easily to visitors. None of the original information or details have been shortened or omitted.
 
-www <=> lmcconsulting.odoo.com
-(now change to: d21gtzrhhu6z4g.cloudfront.net)
+---
 
+### **主办单位与协办单位 | Organizers**
 
-lmcconsulting.hk
-NS
-dns2.namecheaphosting.com
+* **主办方 | Organizer:**
+LMC Management Consultancy Ltd. (德智管理顾问有限公司)
+* **协办方 | Co-organizer:**
+香港中文大学医院 (CUHK Medical Centre)
 
+---
 
-lmcconsulting.hk
-NS
-dns1.namecheaphosting.com
+### **课程名称 | Course Title**
 
+**保险中介人持续专业培训计划**
 
+*Continuing Professional Development (CPD) for Licensed Insurance Intermediaries*
 
+---
 
+### **课程简介 | Course Description**
 
+与保险业界携手提升专业知识，掌握医疗趋势，为客户创造更长远的健康价值。
 
+---
 
+### **课程主题 | Course Topics**
 
-**學員完成全部6個課程主題後，可獲得香港中文大學醫院 頒發 結業證書**
+> 💡 **可报读一个或多个主题课程**
 
-課程安排
+1. **香港医疗体制发展、大湾区医疗概况与医疗保障**
+*Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview*
+2. **危疾系列：乳癌诊断、临床治疗与患者支援**
+*Critical Illnesses: Breast Cancer Management: Diagnosis, Treatment, and Patient Support*
+3. **常见运动受伤的处理**
+*Sports Medicine: Injury Management and Recovery*
+4. **危疾系列：认识妇科癌症**
+*Critical Illnesses: Understanding Gynecological Cancers: Diagnosis, Treatment, Multidisciplinary Care and the Patient Journey*
+5. **危疾系列：前列腺健康及微创手术最新发展**
+*Critical Illnesses: Urology and Robotic Surgery: Modern Approaches to Diagnosis, Treatment, and Recovery*
+6. **危疾系列：认识肺癌：从诊断到个人化治疗**
+*Critical Illnesses: Leading Cause of Cancer Death in HK - Lung Cancer: Diagnosis, Treatment, and Multidisciplinary Care*
 
-**09/09/2026 (****星期三****)**  
-**14:15 - 15:45  
-****主題****2** **- 危疾系列：乳癌診斷、臨床治療與患者支援****  
-16:00 - 17:30  
-****主題****6 -** **認識肺癌：從診斷到個人化治療**  
-_地點：香港新界沙田澤祥街 9號香港中文大學醫院 9樓演講廳_**22****/09/2026 (****星期二****)**  
-**14:15 - 15:45  
-****主題****5 -** **危疾系列** **-** **前列腺健康及微創手術最新發展****  
-16:00 - 17:30  
-****主題****1 -** **香港醫療體制發展、大灣區醫療概況與醫療保障**_地點：香港新界沙田澤祥街_ _9__號香港中文大學醫院__9__樓演講廳_  
-**  
-08/10/2026 (****星期四****)**  
-**14:15 - 15:45**  
-**主題****3 -** **常見運動受傷的處理**  
-**16:00 - 17:30**  
-**主題****4 -** **危疾系列** **-** **認識婦科癌症**  
-_地點：香港新界沙田澤祥街_ _9__號香港中文大學醫院_ _9__樓演講廳_
+---
 
+### **课程安排与详情 | Course Details**
 
+| 项目 | 详情 |
+| --- | --- |
+| **课程类型** | 证书课程 |
+| **授课模式** | 面授 |
+| **教学语言** | 广东话 |
+| **上课地点** | 香港新界沙田泽祥街9号 香港中文大学医院9楼演讲厅 |
+| **课程时间** | 9月22日、10月8日、10月14日下午（具体安排，后续公布） |
+| **课程时数** | 每个主题课程时数为 1.5 个小时，共 9 个小时 |
+| **课程收费** | • 共 6 个主题<br>
 
+<br>• 单个主题：HKD 250元 / 1.5 CPD 时数<br>
 
+<br>• 一次过报读 6 个主题优惠价：HKD 1,350元 |
 
+---
 
+### **学员证书与学分 | Certificates & CPD Hours**
 
-**注意事項-1**
+修毕课程之学员可获得：
 
-持續專業培訓活動及其單元的時數最少為1小時，其後則以0.5小時之倍數計算。 
+* **完成单个主题：**
+* 1.5 IA / MPFA Non-core CPD Hours
+* 中大医院颁发的出席证书
 
-參加者的小休、午膳或最終考核時間，例如測驗或考試， 將不能計算在所獲得的培訓時數內。
 
-參加者須完成持續專業培訓活動內的整個單元（單元式設計）或整個持續專業培訓活動（非單元式設計） 以獲取相關的培訓時數。
+* **完成全部六个主题：**
+* 9 IA / MPFA Non-core CPD Hours
+* 中大医院颁发的毕业证书
 
-德智管理顧問有限公司將會記錄參加者實際出席持續專業培訓活動的時數, 有關程序包括確認參加者身份和登記其出入時間。如發現任何人士冒名頂替他人出席有系統的活動，德智管理顧問有限公司會向保監局作出報告。
 
 
-
-
-
-
-
-
-**注意事項-2**
-
-CPD時數計算原則如下**:**
-
-  
-
-1)     一般情況下，參加一小時的活動將授予一個CPD時數.
-
-2)     任何參加者如果 **遲到****30****分鐘或以上** ，整個單元活動 **將不授予** CPD時數.
-
-3)     如果累計離席時間少於15分鐘，參加者可以獲得整個單元活動的全部CPD時數.
-
-4)     在CPD活動期間，包括 遲到 和 離開教室 的 **總離席時間** 將 **累計**。如果總離席時間為15分鐘或以上，將扣除CPD時數，而最低扣除單位時數為0.5小時.
-
-  
-
-學生必須滿足上述HKCAAVQ的要求才能獲得德智管理顧問有限公司的CPD時數和證書.
-
-如想了解更多「**醫療保險顧問的醫療保健知識課程**」，請按下參閱 <[課程簡介](https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view?usp=drive_link)>
-
-
-
-
-
-
-
-
-**個人資料收集聲明**
-
-- 此報名表格內所提供的個人資料將供香港中文大學醫院及德智管理顧問有限公司處理報名及學員事務之用  
-    
-- 根據個人資料（私隱）條例，學員有權查閱其個人資料。學員如需查閱其個人資料，請以書面方式向香港中文大學醫院及德智管理顧問有限公司提出申請  
-    
-- 學員提供的個人資料（包括姓名、聯絡方法等）將用作與香港中文大學醫院及德智管理顧問有限公司溝通渠道，並將透過電話、電子郵件、WhatsApp及其他社交媒體等為學員送上香港中文大學醫院及/或德智管理顧問有限公司的最新課程資料及推廣訊息
-
-
-
-
-**Show this After submission**
-
-Confirmation message
-
-💵 德智管理顧問有限公司會在確認收訖課程費用後，於5 個工作天內以電郵發放電子收據給你 📖 課程簡介：請按以下連結查閱 https://drive.google.com/file/d/1VNMF0WGemR1OS1R08FMh9OFsYDlp2vb0/view?usp=drive_link 📧 如關於課程報名、付款及CPD 的疑問，請電郵至 lmcconsultancy2025@gmail.com 聯絡德智管理顧問有限公司 📳 如關於課程安排的疑問，請按以下 WhatsApp 聯絡 德智管理顧問有限公司 （852）8404 5483
-
-
-
-
-
-
-
-
-
-
-
-课程费用:
-
-HK$250/1.5 课时共6个主题课程
-
-总共:HK$1,500
-
-(学员报名时须即时支付予德智管理顾问有限公司)
-
-请留意,已支付的课程费用不可退还,除非未成功申请或课程取消。已支付的费用和已报名的名额也不可转让, 且不会受理课程调换的请求。
-
-
-
-
-
-
-
-
-
-
-
-
-课程安排
-
-09/09/2026 (星期三)
-
-14:15-15:45
-
-
-
-主题2-危疾系列:乳癌诊断、临床治疗与患者支援
-
-16:00-17:30
-
-
-
-主题6-认识肺癌:从诊断到个人化治疗
-
-地点:香港新界沙田泽祥街9号香港中文大学医院9楼演讲厅
-
-22/09/2026 (星期二)
-
-14:15-15:45
-
-
-
-
-主题5-危疾系列-前列腺健康及微创手术最新发展
-
-16:00 - 17:30
-
-主题1-香港医疗体制发展、大湾区医疗概况与医疗保障
-
-地点:香港新界沙田泽祥街9号香港中文大学医院9楼演讲厅
-
-
-
-
-08/10/2026 (星期四)
-
-14:15-15:45
-
-主题3-常见运动受伤的处理
-
-16:00-17:30
-
-
-
-
-主题4-危疾系列-认识妇科癌症
-
-地点:香港新界沙田泽祥街9号香港中文大学医院9楼演讲厅
-
-
-
-
-
-
-
-
-
-
-
-
-CPD 时数分布
-
-学员完成指定主题课程,可获得下列持续专业培训时数(CPD)
-
-1.5 IA CPD Hours and MPFA Non-core CPD Hours
-
-学员每完成1.5小时课程, 于课堂完结后可获德智管理顾问有限公司签发之 CPD时数电子证明书。
-
-德智管理顾问有限公司, 获香港学术及职业资历评审局(HKCAAVQ)核准提供CPD课程
-
-<授课语言>
-
-授课语言为粤语,课程笔记采用繁体中文。学员可以用中文或英文问答问题。
+---

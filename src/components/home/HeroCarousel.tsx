@@ -25,7 +25,7 @@ const DEFAULT_SLIDES = [
     ctaText: "Explore Courses",
     ctaLink: "/courses",
     image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1600&auto=format&fit=crop",
   },
   {
     id: 2,

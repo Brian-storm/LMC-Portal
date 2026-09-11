@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
+import { ShieldCheck, Mail, Phone, MapPin, MessageSquare } from "lucide-react";
 import { FooterDict } from "@/dictionaries/types";
 
 interface FooterProps {
@@ -132,6 +132,14 @@ export function Footer({ dict, currentLocale }: FooterProps) {
               <li className="flex items-center">
                 <Phone className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
                 <span>+852 2151 8022</span>
+              </li>
+              <li className="flex items-center">
+                <MessageSquare className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
+                <span>{dict.contactWhatsApp}</span>
+              </li>
+              <li className="flex items-center">
+                <MessageSquare className="w-4 h-4 mr-2 text-emerald-800 shrink-0" />
+                <span>{dict.contactWeChat}</span>
               </li>
             </ul>
           </div>

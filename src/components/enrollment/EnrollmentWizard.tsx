@@ -1107,8 +1107,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                   type="checkbox"
                                   checked={isSelected}
                                   disabled={isFull}
-                                  onChange={() => toggleSchedule(sch.id)}
-                                  className="accent-primary shrink-0 mt-0.5"
+                                  readOnly
+                                  className="accent-primary shrink-0 mt-0.5 pointer-events-none"
                                 />
                                 <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                                 <span>{sch.dateAndTime}</span>

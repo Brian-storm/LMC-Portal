@@ -70,8 +70,8 @@
       "description": "由資深行業領袖及專家親授。"
     },
     "portal": {
-      "title": "安全企業級專區",
-      "description": "全天候 24/7 存取學員記錄與學習資源。"
+      "title": "專業發展管理系統",
+      "description": "一站式掌握培訓歷程與專業發展"
     }
   },
   "featureCards": {
@@ -103,7 +103,7 @@
       "hksarRecognized": "香港特區認可"
     },
     "catalogTitle": "CPD 課程目錄",
-    "catalogDescription": "符合法定監管要求的合資格持續專業培訓 (CPD) 課程官方名錄。完成課程後將獲發可核實的出席證書。",
+    "catalogDescription": "符合法定監管要求的合資格持續專業培訓 (CPD) 課程官方名錄。",
     "regulatoryComplianceBadge": "符合香港特區法例監管標準",
     "searchPlaceholder": "按課程名稱、主題或關鍵字搜尋...",
     "filterAll": "所有類別",
@@ -150,7 +150,7 @@
     "sections": {
       "syllabus": "課程大綱",
       "scheduleAndLocation": "上課時間及地點",
-      "instructors": "講師簡介及照片",
+      "instructors": "講師簡介",
       "faqs": "常見問題（FAQ）"
     },
     "status": {
@@ -208,11 +208,11 @@
   },
   "footer": {
     "aboutTitle": "德智管理顧問有限公司",
-    "aboutDesc": "香港專業合規與管理顧問機構，為金融及保險從業員提供獲認可的持續專業培訓（CPD）課程。",
+    "aboutDesc": "香港專業管理與諮詢顧問機構，為金融及保險從業員提供獲認可的持續專業培訓（CPD）課程。",
     "accredited": "香港 CPD 認可培訓機構",
     "colCourses": "CPD 培訓與課程目錄",
     "colPortals": "學員專區與服務",
-    "colContact": "香港諮詢辦事處",
+    "colContact": "香港辦事處",
     "course1": "遺產規劃課程",
     "course2": "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
     "course3": "瀏覽所有 CPD 課程",
@@ -220,11 +220,13 @@
     "portal1": "學員證書核實系統",
     "portal2": "機構教職員登入",
     "portal3": "關於 LMC 顧問服務",
-    "location": "香港尖沙咀新文華中心 10樓1011-1015",
+    "location": "香港尖沙咀東部新文華中心B座10樓11-15室",
     "copyright": "版權所有，不得轉載。",
     "privacy": "私隱政策",
     "terms": "服務條款",
-    "contactEmail": "lmcconsultancy2025@gmail.com"
+    "contactEmail": "lmcconsultancy2025@gmail.com",
+    "contactWhatsApp": "(852) 8404 5483",
+    "contactWeChat": "(86) 19519053480"
   },
   "termsPage": {
     "backToPortal": "返回機構主頁",
@@ -532,7 +534,7 @@
       "alreadyEnrolled": "您已報名此課程，無法重複報名。"
     },
     "navigation": {
-      "proceedToSchedule": "前往選擇時間",
+      "proceedToSchedule": "選擇報讀主題課程",
       "proceedToDeclaration": "前往聲明頁",
       "proceedToPayment": "前往付款"
     },

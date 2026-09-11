@@ -70,8 +70,8 @@
       "description": "由资深行业领袖及专家亲授。"
     },
     "portal": {
-      "title": "安全企业级专区",
-      "description": "全天候 24/7 访问学员记录与学习资源。"
+      "title": "专业发展管理系统",
+      "description": "一站式掌握培训历程与专业发展"
     }
   },
   "featureCards": {
@@ -103,7 +103,7 @@
       "hksarRecognized": "香港特区认可"
     },
     "catalogTitle": "CPD 课程目录",
-    "catalogDescription": "符合法定监管要求的合资格持续专业培训 (CPD) 课程官方名录。完成课程后将获发可核实的出席证书。",
+    "catalogDescription": "符合法定监管要求的合资格持续专业培训 (CPD) 课程官方名录。",
     "regulatoryComplianceBadge": "符合香港特区法律监管标准",
     "searchPlaceholder": "按课程名称、主题或关键字搜索...",
     "filterAll": "所有类别",
@@ -150,7 +150,7 @@
     "sections": {
       "syllabus": "课程大纲",
       "scheduleAndLocation": "上课时间及地点",
-      "instructors": "讲师简介及照片",
+      "instructors": "讲师简介",
       "faqs": "常见问题（FAQ）"
     },
     "status": {
@@ -208,11 +208,11 @@
   },
   "footer": {
     "aboutTitle": "德智管理顾问有限公司",
-    "aboutDesc": "香港专业合规与管理顾问机构，为金融及保险从业人员提供获认可的持续专业培训（CPD）课程。",
+    "aboutDesc": "香港专业管理与咨询顾问机构，为金融及保险从业人员提供获认可的持续专业培训（CPD）课程。",
     "accredited": "香港 CPD 认可培训机构",
     "colCourses": "CPD 培训与课程目录",
     "colPortals": "学员专区与服务",
-    "colContact": "香港咨询办公室",
+    "colContact": "香港办事处",
     "course1": "遗产规划课程",
     "course2": "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
     "course3": "浏览所有 CPD 课程",
@@ -220,11 +220,13 @@
     "portal1": "学员证书核实系统",
     "portal2": "机构教职员登录",
     "portal3": "关于 LMC 顾问服务",
-    "location": "香港尖沙咀新文华中心 10楼1011-1015",
+    "location": "香港尖沙咀东部新文华中心B座10楼11-15室",
     "copyright": "版权所有，不得转载。",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "contactEmail": "lmcconsultancy2025@gmail.com"
+    "contactEmail": "lmcconsultancy2025@gmail.com",
+    "contactWhatsApp": "(852) 8404 5483",
+    "contactWeChat": "(86) 19519053480"
   },
   "termsPage": {
     "backToPortal": "返回机构主页",
@@ -532,7 +534,7 @@
       "alreadyEnrolled": "您已报名此课程，无法重复报名。"
     },
     "navigation": {
-      "proceedToSchedule": "前往选择时间",
+      "proceedToSchedule": "选择报读主题课程",
       "proceedToDeclaration": "前往声明页",
       "proceedToPayment": "前往付款"
     },

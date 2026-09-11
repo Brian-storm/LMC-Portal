@@ -70,8 +70,8 @@
       "description": "Taught by seasoned industry leaders."
     },
     "portal": {
-      "title": "Secure Enterprise Portal",
-      "description": "24/7 access to student records and resources."
+      "title": "Professional Development Management System",
+      "description": "One-stop tracking of training history and professional development"
     }
   },
   "featureCards": {
@@ -103,7 +103,7 @@
       "hksarRecognized": "HKSAR RECOGNIZED"
     },
     "catalogTitle": "CPD Course Catalog",
-    "catalogDescription": "Official registry of qualified Continuous Professional Development (CPD) programs compliant with statutory regulations. Verifiable certificates of attendance are issued upon completion.",
+    "catalogDescription": "Official registry of qualified Continuous Professional Development (CPD) programs compliant with statutory regulations.",
     "regulatoryComplianceBadge": "HKSAR Regulatory Standards Compliant",
     "searchPlaceholder": "Search courses by title, topic, or keyword...",
     "filterAll": "All Categories",
@@ -211,11 +211,11 @@
   },
   "footer": {
     "aboutTitle": "LMC Consultancy",
-    "aboutDesc": "Hong Kong’s professional compliance and management consultancy. Delivering accredited Continuing Professional Development (CPD) modules for finance and insurance practitioners.",
+    "aboutDesc": "Hong Kong’s professional management and consultancy. Delivering accredited Continuing Professional Development (CPD) modules for finance and insurance practitioners.",
     "accredited": "HK CPD Accredited",
     "colCourses": "CPD Training & Directory",
     "colPortals": "Portals & Services",
-    "colContact": "Hong Kong Advisory Office",
+    "colContact": "Hong Kong Office",
     "course1": "Certificate in Legacy Planning",
     "course2": "Development of Hong Kong's Healthcare System, Overview of Healthcare in the Greater Bay Area, and Healthcare Protection Certificate Course",
     "course3": "Browse All CPD Modules",
@@ -223,11 +223,13 @@
     "portal1": "Student Verification Portal",
     "portal2": "Institutional Staff Access",
     "portal3": "About LMC Consultancy",
-    "location": "Unit 1011-15, 10/F., Tower B, New Mandarin Plaza, Tsim Sha Tsui East, Kowloon, Hong Kong",
+    "location": "Unit 1011-15, 10/F., Tower B, New Mandarin Plaza, Tsim Sha Tsui East, Hong Kong",
     "copyright": "All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "contactEmail": "lmcconsultancy2025@gmail.com"
+    "contactEmail": "lmcconsultancy2025@gmail.com",
+    "contactWhatsApp": "(852) 8404 5483",
+    "contactWeChat": "(86) 19519053480"
   },
   "termsPage": {
     "backToPortal": "Return to Institutional Portal",
@@ -535,7 +537,7 @@
       "alreadyEnrolled": "You are already enrolled in this course. Duplicate enrollments are not allowed."
     },
     "navigation": {
-      "proceedToSchedule": "Proceed to Schedule",
+      "proceedToSchedule": "Select Subject Course to Enroll",
       "proceedToDeclaration": "Proceed to Declaration",
       "proceedToPayment": "Proceed to Payment"
     },

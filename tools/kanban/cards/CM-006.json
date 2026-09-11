@@ -1,0 +1,51 @@
+{
+  "id": "CM-006",
+  "title": "課程編號 cpd-102 → CPD26090103 變更",
+  "content": "將課程「香港醫療體制發展、大灣區醫療概況與醫療保障」的 course number 從 cpd-102 改為 CPD26090103。涉及 seed.ts、brochure route、及一份文件的變更。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-11",
+  "epic": "課程管理",
+  "userStory": "",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problemClarified": true,
+    "nonGoalsClarified": true,
+    "acceptanceCriteriaTestable": true,
+    "relevantFilesKnown": true,
+    "scopeDefined": true,
+    "verificationContractExists": false,
+    "approvalRecorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "codeReview": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/course-data-maintenance/cpd-102-slug-change-impact.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/seed.ts",
+    "src/app/api/courses/[slug]/brochure/route.ts",
+    "ai/artifacts/enrollment/fee-calculation-spec.md"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": "資料庫 FK 關聯與已上線的舊 URL 為主要風險"
+  },
+  "comments": []
+}
