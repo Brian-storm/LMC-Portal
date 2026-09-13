@@ -464,7 +464,6 @@
       "organization": "團體報名",
       "orgDescription": "以單一帳單為多位參加者報名。填寫此表格者為主要聯絡人。",
       "orgBlockedTitle": "團體報名需另行聯絡安排",
-      "orgBlockedDescription": "如需以機構名義為多人報名，請透過電郵或 WhatsApp 與我們聯絡。我們將為您安排帳單及報名事宜。",
       "orgContactLabel": "聯絡人",
       "orgContactEmail": "電郵",
       "orgContactMobile": "Mobile / WhatsApp",

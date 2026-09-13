@@ -827,9 +827,6 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           <Building2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                           <div>
                             <h3 className="text-sm font-bold text-amber-900">{dict.formLabels.orgBlockedTitle}</h3>
-                            <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                              {dict.formLabels.orgBlockedDescription}
-                            </p>
                           </div>
                         </div>
                         <div className="text-xs text-amber-800 space-y-1">
