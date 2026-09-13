@@ -521,7 +521,7 @@
     "step2": {
       "title": "Select Schedule",
       "subtitle": "Choose your preferred class sessions",
-      "selectAtLeastOne": "Please select at least one session to continue.",
+      "selectAtLeastOne": "Please select at least one topic to continue.",
       "allSessionsSelected": "You have selected all sessions! A 10% bulk discount applies.",
       "sessionsSelected": "sessions selected",
       "noSessions": "No available sessions at this time.",
@@ -560,7 +560,7 @@
       "subtotal": "Subtotal:",
       "discount": "Bulk Discount (10%):",
       "sessionsLabel": "Sessions:",
-      "invoiceNotice": "Official Tax Invoice & Attendance Certificate issued immediately upon course completion."
+      "invoiceNotice": "Certificate of Attendance will be issued upon course completion."
     },
     "errors": {
       "enrollmentFailed": "Enrollment failed. Please try again.",
@@ -577,7 +577,7 @@
       "message": "Thank you for your enrollment. Your application has been received and is being processed.",
       "receiptNotice": "An electronic receipt will be sent to your email within 5 working days.",
       "brochureLink": "Download Course Brochure",
-      "brochureUrl": "/company/posters/Healthcare%20CPD%20Course%20Syllabus.pdf",
+      "brochureUrl": "/company/posters/CPD-healthcare-poster.pdf",
       "contactEmail": "lmcconsultancy2025@gmail.com",
       "contactWhatsApp": "+852 8404 5483",
       "contactPrompt": "For enquiries, please contact us at",

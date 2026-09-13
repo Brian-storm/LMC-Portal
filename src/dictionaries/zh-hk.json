@@ -517,7 +517,7 @@
     "step2": {
       "title": "選擇上課時間",
       "subtitle": "選擇您想參加的課堂時段",
-      "selectAtLeastOne": "請選擇至少一個時段以繼續。",
+      "selectAtLeastOne": "請選擇至少一個主題以繼續。",
       "allSessionsSelected": "您已選擇全部時段！可享 10% 批量折扣。",
       "sessionsSelected": "個時段已選",
       "noSessions": "目前沒有可選的課堂時段。",
@@ -531,8 +531,8 @@
       "personalDataNotice": "本表格所收集的個人資料將用於課程報名行政管理、出席記錄、證書簽發及相關監管機構的要求。您有權查閱及更正我們所持有的個人資料。您的資料亦可能用於日後 CPD 課程及服務的直接推廣。詳情請參閱我們的私隱政策。",
       "declarationLabel": "本人聲明所提供資料準確無誤，並與本人之專業註冊記錄一致。",
       "termsLabel": "本人同意",
-      "termsLinkText": "機構報名條款",
-      "termsSuffix": "、CPD 出席監察政策及取消規則。",
+      "termsLinkText": "",
+      "termsSuffix": "CPD 出席監察政策及取消規則。",
       "backButton": "返回",
       "proceedButton": "前往付款"
     },
@@ -556,7 +556,7 @@
       "subtotal": "小計：",
       "discount": "批量折扣 (10%)：",
       "sessionsLabel": "課堂數：",
-      "invoiceNotice": "完成課程後將即時發出正式收據及出席證書。"
+      "invoiceNotice": "完成課程後將發出出席證書。"
     },
     "errors": {
       "enrollmentFailed": "報名失敗，請重試。",
@@ -573,7 +573,7 @@
       "message": "感謝您的報名。您的申請已收到，正在處理中。",
       "receiptNotice": "電子收據將於 5 個工作天內發送至您的電郵。",
       "brochureLink": "下載課程簡介",
-      "brochureUrl": "/company/posters/Healthcare%20CPD%20Course%20Syllabus.pdf",
+      "brochureUrl": "/company/posters/CPD-healthcare-poster.pdf",
       "contactEmail": "lmcconsultancy2025@gmail.com",
       "contactWhatsApp": "+852 8404 5483",
       "contactPrompt": "如有查詢，請聯絡我們",

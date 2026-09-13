@@ -382,7 +382,7 @@ async function main() {
       price: 1500.0,
       unitPrice: 250.0,
       capacity: 50,
-      imageUrl: "/company/posters/Healthcare CPD Course Syllabus_page-0001.jpg",
+      imageUrl: "/company/posters/CPD-healthcare-poster.jpeg",
       registrationStatus: RegistrationStatus.OPEN,
       deliveryMode: "In-person",
       language: "Cantonese",

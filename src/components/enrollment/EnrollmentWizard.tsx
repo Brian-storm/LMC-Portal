@@ -40,6 +40,7 @@ interface CourseData {
     dateAndTime: string;
     venue: string;
     quotaRemaining: number;
+    instructor?: { name: string; title: string; bio: string };
     topics: {
       syllabusItem: {
         id: string;
@@ -954,6 +955,19 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                   <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
                                   <span className="leading-tight">{sch.venue}</span>
                                 </div>
+                                {/* Instructor info — visible when API provides it */}
+                                {sch.instructor && (
+                                  <div className="flex items-start gap-1.5 text-[11px] text-slate-600 pt-0.5">
+                                    <User className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
+                                    <div className="leading-tight">
+                                      <span className="font-semibold text-slate-700">{sch.instructor.name}</span>
+                                      {sch.instructor.title && <> — {sch.instructor.title}</>}
+                                      {sch.instructor.bio && (
+                                        <p className="text-[10px] text-slate-500 mt-0.5">{sch.instructor.bio}</p>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                             {/* Full badge */}
@@ -1067,15 +1081,18 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       />
                       <span className="leading-relaxed">
                         {dict.step3.termsLabel}{" "}
-                        <Link
-                          href={`/${locale}/terms`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-primary underline hover:text-emerald-900 font-semibold"
-                        >
-                          {dict.step3.termsLinkText}
-                        </Link>
+                        {dict.step3.termsLinkText && (
+                          <Link
+                            href={`/${locale}/terms`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-primary underline hover:text-emerald-900 font-semibold"
+                          >
+                            {dict.step3.termsLinkText}
+                          </Link>
+                        )}
+                        {dict.step3.termsLinkText && " "}
                         {dict.step3.termsSuffix}
                       </span>
                     </label>
@@ -1249,7 +1266,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   const si = s.topics[0]?.syllabusItem;
                   const topicAbbr = si
                     ? (locale === "en"
-                      ? `Topic ${si.moduleNumber}`
+                      ? si.titleEn
                       : si.titleZh)
                     : "";
                   return (

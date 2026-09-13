@@ -39,14 +39,14 @@ let pdfBlob: Blob;
         "public",
         "company",
         "posters",
-        "Healthcare CPD Course Syllabus.pdf",
+        "CPD-healthcare-poster.pdf",
       );
       // Read file as ArrayBuffer to avoid Node.js Buffer type incompatibility with BlobPart
       const pdfArrayBuffer = await readFile(pdfPath).then((buf) =>
         buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength),
       );
       pdfBlob = new Blob([pdfArrayBuffer], { type: "application/pdf" });
-      filename = "Healthcare CPD Course Syllabus.pdf";
+      filename = "CPD-healthcare-poster.pdf";
     } else {
       // 2: Placeholder PDF for all other courses — replace with real PDF from S3
       // once brochureUrl is configured per course
