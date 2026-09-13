@@ -833,7 +833,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                           </div>
                         </div>
                         <div className="text-xs text-amber-800 space-y-1">
-                          <p><span className="font-bold">{dict.formLabels.orgContactLabel}:</span> Mr. Anthony Yuen 阮德添</p>
+                          <p><span className="font-bold">{dict.formLabels.orgContactLabel}:</span> Mr. Anthony Yuen{locale === "en" ? "" : " 阮德添"}</p>
                           <p><span className="font-bold">{dict.formLabels.orgContactEmail}:</span> <a href="mailto:yuentaktim@outlook.com" className="underline hover:text-amber-900">yuentaktim@outlook.com</a></p>
                           <p><span className="font-bold">{dict.formLabels.orgContactMobile}:</span> <a href="https://wa.me/85260302488" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-900">(852) 60302488</a></p>
                         </div>
