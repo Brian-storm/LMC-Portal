@@ -26,9 +26,7 @@
 | `npx tsx prisma/seed.ts` | Same — direct execution |
 | `npx prisma studio` | Open browser-based DB GUI |
 
-## Local Database Management
-
-The database runs in a Docker container managed by npm scripts:
+## Local Database (Docker)
 
 | Command | Purpose |
 |---|---|
@@ -37,71 +35,43 @@ The database runs in a Docker container managed by npm scripts:
 | `npm run db:reset` | Destroy & recreate local DB (drops **all** data) |
 | `npm run db:migrate` | Run `prisma migrate dev` against local DB |
 
-> **CAUTION**: `npm run db:reset` runs `docker compose down -v` which destroys the volume. All data is lost.
+## Workflow: Local → Production
 
-## Local → Production Workflow
+### 1. Make changes locally
 
-Use this flow when you change schema (`schema.prisma`) **or** seed data (`seed.ts`).
-
-### 1. Update Local Database
-
-**Scenario A — Schema change** (e.g., new table, new column):
-
-```sh
-# Create a new migration file and apply it locally
+**Schema change** (new table, column, etc.):
+```
 npx prisma migrate dev --name describe-the-change
 ```
 
-**Scenario B — Seed data change only** (e.g., fixed instructor mapping):
-
-```sh
-# Reset local DB, re-run migrations, then seed
-npm run db:reset
-npm run db:migrate
-npx prisma db seed
+**Seed data change only** (e.g., fixed instructor data):
+```
+npm run db:reset && npm run db:migrate && npx prisma db seed
 ```
 
-Then verify:
-
-```sh
+Verify:
+```
 npm run typecheck && npm run lint
-npm run dev    # manually check the UI
 ```
 
-### 2. Commit & Push
+### 2. Commit & push
 
-```sh
-git add -A
-git commit -m "describe what changed and why"
-git push
+```
+git add -A && git commit -m "describe the change" && git push
 ```
 
-The migration file (in `prisma/migrations/`) and seed script are now in the remote repo.
+### 3. Deploy to production
 
-### 3. Update Production Database
+Set `DATABASE_URL` in production environment to point to the production PostgreSQL instance.
 
-Set `DATABASE_URL` in your production environment (e.g., AWS Amplify environment variables) to point to the production PostgreSQL instance.
-
-**Production deploy** — applies only pending migrations, does **not** create new ones:
-
-```sh
-# Point to production DATABASE_URL first, then:
+**Apply migrations** (never use `migrate dev` here):
+```
 npx prisma migrate deploy
 ```
 
-**Seed on production** (only if the production DB needs seed data):
-
-```sh
+**Seed if needed**:
+```
 npx prisma db seed
 ```
 
-> **Never** run `npm run db:reset` or `prisma migrate dev` against production — those are local-only commands.
-
-### Summary of Key Differences
-
-| | Local | Production |
-|---|---|---|
-| Migration command | `prisma migrate dev` | `prisma migrate deploy` |
-| Data reset | `npm run db:reset` | ❌ Never |
-| Seed | `prisma db seed` | Only if needed |
-| DATABASE_URL | Local Docker Postgres | Production PostgreSQL |
+> ⚠️ Never run `npm run db:reset` or `prisma migrate dev` against production.

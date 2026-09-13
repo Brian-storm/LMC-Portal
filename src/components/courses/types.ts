@@ -68,6 +68,7 @@ export interface Course {
   deliveryMode: string;
   language: string;
   fee: string;
+  feeHKD?: number | string;
   feeBreakdown?: string;
   status?: CourseStatus;
   brochureUrl?: string;

@@ -3,6 +3,24 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+/**
+ * Parse a dateAndTime string into a Date for the sessionDate field.
+ * Handles two formats:
+ *   "2026-09-15 (Sat) 10:00 - 17:00"  → YYYY-MM-DD with time range
+ *   "22/09/2026 (星期二) 14:15 - 15:45" → DD/MM/YYYY with weekday and time range
+ */
+function parseSessionDate(dateAndTime: string): Date {
+  const yyyyMmDd = dateAndTime.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (yyyyMmDd) {
+    return new Date(`${yyyyMmDd[1]}-${yyyyMmDd[2]}-${yyyyMmDd[3]}T00:00:00Z`);
+  }
+  const ddMmYyyy = dateAndTime.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (ddMmYyyy) {
+    return new Date(`${ddMmYyyy[3]}-${ddMmYyyy[2]}-${ddMmYyyy[1]}T00:00:00Z`);
+  }
+  throw new Error(`Cannot parse dateAndTime: ${dateAndTime}`);
+}
+
 async function main() {
   // ─── Instructors ──────────────────────────────────────────
   const cyrus = await prisma.instructor.upsert({
@@ -224,6 +242,7 @@ async function main() {
       schedules: {
         create: {
           dateAndTime: "2026-09-15 (Sat) 10:00 - 17:00",
+          sessionDate: parseSessionDate("2026-09-15 (Sat) 10:00 - 17:00"),
           venue: "Unit 1011, Tower B, New Mandarin Plaza, Tsim Sha Tsui",
           quotaRemaining: 3,
         },
@@ -309,12 +328,12 @@ async function main() {
   const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
   const cpd26090103VenueZh = "香港新界沙田澤祥街9號 香港中文大學醫院";
   const cpd26090103Schedules = [
-    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 14:00 - 15:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 15:45 - 17:15", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "14/10/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", sessionDate: parseSessionDate("22/09/2026 (星期二) 14:15 - 15:45"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", sessionDate: parseSessionDate("22/09/2026 (星期二) 16:00 - 17:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 14:00 - 15:30", sessionDate: parseSessionDate("08/10/2026 (星期四) 14:00 - 15:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 15:45 - 17:15", sessionDate: parseSessionDate("08/10/2026 (星期四) 15:45 - 17:15"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 14:15 - 15:45", sessionDate: parseSessionDate("14/10/2026 (星期三) 14:15 - 15:45"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", sessionDate: parseSessionDate("14/10/2026 (星期三) 16:00 - 17:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
   ];
 
   await prisma.course.upsert({
@@ -563,7 +582,7 @@ async function main() {
     });
     const allSchedules = await prisma.schedule.findMany({
       where: { courseId: cpd26090103.id },
-      orderBy: { dateAndTime: "asc" },
+      orderBy: { sessionDate: "asc" },
     });
     // Map each class (matched by its exact date & time string) to the single topic it covers.
     const scheduleTopicMap: Record<string, number[]> = {
