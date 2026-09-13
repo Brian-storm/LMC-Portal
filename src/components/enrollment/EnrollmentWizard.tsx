@@ -516,19 +516,18 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   </div>
 
                   {/* Payer / Primary Attendee Information (shown for both types) */}
+                  {enrollmentType === "INDIVIDUAL" && (
                   <div className="pb-2 border-b border-slate-200">
                     <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
                       <User className="w-4 h-4" />
-                      <span>{enrollmentType === "ORGANIZATION" ? dict.formLabels.primaryContact : dict.formLabels.attendeeInfo}</span>
+                      <span>{dict.formLabels.attendeeInfo}</span>
                     </h2>
-                    {enrollmentType === "ORGANIZATION" && (
-                      <p className="text-xs text-amber-700 mt-0.5">{dict.formLabels.orgHelperText}</p>
-                    )}
-                    {enrollmentType === "INDIVIDUAL" && (
-                      <p className="text-xs text-slate-500 mt-0.5">{dict.formLabels.individualHelperText}</p>
-                    )}
+                    <p className="text-xs text-slate-500 mt-0.5">{dict.formLabels.individualHelperText}</p>
                   </div>
 
+)}
+
+                  {enrollmentType === "INDIVIDUAL" && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div className="space-y-1 sm:col-span-2">
                       <label className="font-bold text-slate-700 block">
@@ -824,6 +823,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     )}
                   </div>
                   </div>
+                  )}
 
                   {/* Dynamic Group Member Rows (only for ORGANIZATION) */}
                   {enrollmentType === "ORGANIZATION" && (

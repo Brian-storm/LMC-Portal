@@ -26,6 +26,7 @@ export interface ApiCourse {
   schedules: Array<{
     id: string;
     dateAndTime: string;
+    sessionDate: string | null;
     venue: string;
     venueEn: string | null;
     venueZh: string | null;
