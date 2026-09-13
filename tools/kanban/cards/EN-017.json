@@ -1,0 +1,72 @@
+{
+  "id": "EN-017",
+  "title": "報名流程 UX 改善：草稿持久化、確認頁可回溯、錯誤復原",
+  "content": "EnrollmentWizard （1533 行單體元件）與 PaymentSlipUploader 存在多項 UX 缺口，影響使用者完成報名的可靠性。\n\n## 觀察到的問題\n\n1. **無表單草稿持久化**：使用者在 Step 2/3/4 重整瀏覽器後，所有已填資料全部遺失。唯一解法是從頭來過。\n2. **提交後無法回到上傳頁**：提交後跳轉至 `/checkout/confirmation`，一旦離開該頁（關分頁、回首頁），沒有任何入口可重新找到上傳頁面。無「我的報名」頁面或 dashboard 連結。\n3. **未登入訪客（guest）的驗證機制薄弱**：email 以 URL query parameter `?email=...` 傳遞，出現在瀏覽器歷史紀錄中，可被分享或側錄。\n4. **上傳取消後 S3 殘留物件**：使用者點 Cancel 中斷 PUT，但 S3 可能已寫入部分或完整物件，無清理機制。\n5. **上傳失敗無重試機制**：presigned URL 成功取得但 PUT 失敗後，使用者只能重新選檔上傳（產生新 URL），無重試按鈕。\n6. **重複報名檢查僅在 client 端**：src/components/enrollment/EnrollmentWizard.tsx:344-351 的 duplicate check 可被 devtools bypass。應以後端為主要防線。\n7. **無障礙（a11y）缺漏**：file input 無 `aria-describedby` 關聯錯誤訊息；progress bar 無 `aria-valuenow/min/max`。\n\n## 非目標\n- 不重新設計 EnrollmentWizard 的 UI 版面或步驟順序\n- 不改變 API contract（/api/enroll、/api/upload/*）\n- 不引入新的第三方套件（除非必要）\n- 不重構整個 EnrollmentWizard 的元件拆分（可另開任務）\n\n## 範圍\n第一階段（高優先）：#1（草稿持久化）+ #2（確認頁回溯入口）\n第二階段：#4（S3 清理）+ #5（重試按鈕）\n第三階段：#3（guest token）、#6（server-side duplicate guard）、#7（a11y）",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "報名與結帳",
+  "userStory": "報名流程 UX 強化",
+  "track": "n/a",
+  "dependsOn": [],
+  "order": 17,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/components/PaymentSlipUploader.tsx",
+    "src/app/[locale]/checkout/confirmation/page.tsx",
+    "src/app/[locale]/courses/[slug]/enroll/page.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "階段一：表單資料在重整後保留（sessionStorage 每 step 自動存檔）",
+    "階段一：確認頁提供「回到報名頁再次上傳」或「我的報名清單」入口（已登入使用者）",
+    "階段一：訪客 email 不暴露在 URL 參數中（改用短暫 token）",
+    "階段二：上傳取消時呼叫 S3 刪除 API 清理殘留物件",
+    "階段二：上傳失敗後顯示「重試」按鈕（複用既有 presigned URL）",
+    "階段三：a11y 屬性補齊（aria-describedby, aria-valuenow）",
+    "階段三：伺服器端 duplicate enrollment 檢查（API 層，不依賴 client）",
+    "所有階段不影響既有的報名成功流程",
+    "TypeScript + ESLint 無新錯誤"
+  ],
+  "files": [
+    "src/components/enrollment/EnrollmentWizard.tsx",
+    "src/components/PaymentSlipUploader.tsx",
+    "src/app/[locale]/checkout/confirmation/page.tsx",
+    "src/app/[locale]/api/enroll/route.ts"
+  ],
+  "dependencies": "無（純前端改善 + 後端 API 小幅度調整）",
+  "verification": "手動驗證：Step 1 填資料後重整 → 資料保留；提交報名 → 複製確認頁 URL → 關閉分頁 → 重新開啟 URL → 仍可上傳付款證明。自動驗證：npm run typecheck && npm run lint。"
+}

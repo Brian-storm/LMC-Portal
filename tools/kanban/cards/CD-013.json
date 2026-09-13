@@ -1,0 +1,98 @@
+{
+  "id": "CD-013",
+  "title": "課程時間表排序改為日期時間升序 + 獨立顯示區塊",
+  "content": "課程詳情頁的時間表目前被分組掛在 syllabus item（主題）下方，視覺順序依主題編號（sortOrder）而非日期時間。使用者看到的時間順序混亂（例如 09/09 的課出現在 Topic 2 下方，而 22/09 的課出現在 Topic 1 下方）。\n\n本卡實作兩個變更：\n\n**方案 A：Schema 強化**\n- Schedule 模型新增 `sessionDate` DateTime 欄位，用於正確的日期時間排序\n- 保留 `dateAndTime` String 欄位維持顯示不變\n- Prisma migration + seed 更新：所有 schedule 同時填入 `sessionDate`\n- API 查詢改為 `orderBy: { sessionDate: \"asc\" }` 取代字典序的 `dateAndTime`\n\n**選項 1：顯示層重構**\n- 移除 `CourseDetailView.tsx` 中 schedule 依 syllabus item 分組的邏輯（scheduleByModuleId）\n- 在 description 區塊之後、topics 區塊之前新增獨立「課程時間表」區塊\n- 以純日期時間升序列出所有 schedule（Calendar icon + 日期時間 | MapPin icon + 場地）\n- 每個 schedule 下方列出該堂課涵蓋的主題（從 sch.topics 取出）\n- topics 區塊內移除 schedule 顯示（回歸純 syllabus 列表）\n\n**不包含**：\n- 不修改其他課程頁面的 schedule 顯示\n- 不修改報名流程中的 schedule 選擇邏輯\n- 不修改管理員後台的 schedule 管理\n\n風險：low\n依賴：無（獨立修改）",
+  "stage": "ready",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-11",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "track": "fullstack",
+  "dependsOn": [],
+  "order": 13,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/schema.prisma",
+    "src/app/api/courses/[slug]/route.ts",
+    "src/lib/map-course-detail.ts",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/components/courses/types.ts",
+    "prisma/seed.ts",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [
+      "npx prisma migrate dev --name add_schedule_session_date",
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "Schedule.dateAndTime 是 String，Prisma orderBy 做字典序，跨月份排序錯誤",
+      "CourseDetailView.tsx:73-83 以 scheduleByModuleId 分組，依 syllabus.sortOrder 排序",
+      "CourseDetailView.tsx:217-237 每個 topic 下顯示關聯的 schedule",
+      "seed.ts 中 scheduleTopicMap 每個 schedule 只對應一個 topic",
+      "cpd-101 的 schedule 沒有 ScheduleTopic 連結（topics 為空）",
+      "datesText 的解析邏輯在 map-course-detail.ts:148-160 使用 regex"
+    ],
+    "residual": ""
+  },
+  "comments": [
+    {
+      "name": "opencode",
+      "time": "2026-09-11",
+      "text": "決議紀錄：2026-09-11 與 Brian 確認採用方案 A（新增 DateTime 欄位）+ 選項 1（獨立日期排序時間表區塊）。原 CD-013 已建立。"
+    }
+  ],
+  "acceptance": [
+    "Schedule 模型新增 sessionDate DateTime 欄位，migration 成功",
+    "API GET /api/courses/[slug] 的 schedules 按 sessionDate 升序排序（非字典序）",
+    "seed.ts 中所有 schedule 都填入正確的 sessionDate",
+    "CourseDetailView.tsx 在 description 下方、topics 上方新增獨立「課程時間表」區塊",
+    "時間表區塊以日期時間升序列出所有 schedule（Calendar + 時間 | MapPin + 場地）",
+    "每個 schedule 下方顯示涵蓋的主題名稱（從 sch.topics 取出）",
+    "topics 區塊不再顯示 schedule 資訊（回歸純 syllabus）",
+    "cpd-101 的 schedule 也能正確顯示（即使 topics 為空也不破版）",
+    "npm run typecheck 與 npm run lint 通過",
+    "瀏覽 /en/courses/CPD26090103 確認時間順序正確：09/09 → 22/09 → 08/10"
+  ],
+  "files": [
+    "prisma/schema.prisma",
+    "prisma/seed.ts",
+    "src/app/api/courses/[slug]/route.ts",
+    "src/lib/map-course-detail.ts",
+    "src/components/courses/CourseDetailView.tsx",
+    "src/components/courses/types.ts",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "dependencies": "prisma CLI",
+  "verification": "1) npx prisma migrate dev --name add_schedule_session_date && npm run typecheck && npm run lint 2) 瀏覽 /en/courses/CPD26090103 與 /en/courses/cpd-101 確認時間表正確排序且顯示正常"
+}

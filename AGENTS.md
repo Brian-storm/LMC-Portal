@@ -7,6 +7,11 @@
 - `npm run start` — run production server
 - `npm run lint` — run ESLint
 - `npm run typecheck` — run `tsc --noEmit` to verify types
+- `npm run db:start` — start local PostgreSQL via Docker (detached)
+- `npm run db:stop` — stop local PostgreSQL container
+- `npm run db:reset` — destroy & recreate local PostgreSQL (drops all data)
+- `npm run db:migrate` — run Prisma migrations against local DB
+- `docker compose up -d` — alias for db:start (can use either)
 
 ## Architecture
 
