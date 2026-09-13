@@ -467,6 +467,8 @@
       "individual": "Individual",
       "organization": "Organization",
       "orgDescription": "Register multiple attendees under a single billing. The person completing this form is the primary contact.",
+      "orgBlockedTitle": "Group enrollment is handled offline",
+      "orgBlockedDescription": "To register multiple attendees under an organization, please contact us by email or WhatsApp. Our team will arrange the billing and registration for you.",
       "primaryContact": "Primary Contact Details",
       "attendeeInfo": "Attendee Information",
       "orgHelperText": "The person submitting this enrollment. Group members are added below.",

@@ -15,9 +15,7 @@ import {
   FileCheck,
   Building,
   Loader2,
-  Plus,
   Users,
-  Trash2,
   Calendar,
   Clock,
   MapPin,
@@ -131,52 +129,6 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       idDocNumber: string;
     }[]
   >([]);
-
-  // Compute combined idDocNumber for a member — now just returns the raw number
-  const getMemberIdDocNumber = (member: {
-    idDocType: "HKID" | "PASSPORT" | "PERMIT" | "OTHER";
-    hkidNumber: string;
-    passportNumber: string;
-    permitNumber: string;
-    otherIdDocVal: string;
-  }) => {
-    if (member.idDocType === "HKID") {
-      if (!member.hkidNumber) return "";
-      return member.hkidNumber.toUpperCase();
-    } else if (member.idDocType === "PASSPORT") {
-      return member.passportNumber.trim();
-    } else if (member.idDocType === "PERMIT") {
-      return member.permitNumber.trim();
-    }
-    // OTHER: prefix with "Others: "
-    return member.otherIdDocVal.trim() ? `Others: ${member.otherIdDocVal.trim()}` : "";
-  };
-
-  // Handler for individual registrant member fields
-  const handleMemberChange = (
-    index: number,
-    field: "nameZh" | "nameEn" | "email" | "idDocType" | "hkidNumber" | "passportNumber" | "permitNumber" | "otherIdDocVal" | "idDocNumber",
-    value: string,
-  ) => {
-    setRegistrantMembers((prev) => {
-      const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: value };
-      return updated;
-    });
-  };
-
-  // Add a blank member row
-  const addMember = () => {
-    setRegistrantMembers((prev) => [
-      ...prev,
-      { nameZh: "", nameEn: "", email: "", idDocType: "HKID", hkidNumber: "", passportNumber: "", permitNumber: "", otherIdDocVal: "", idDocNumber: "" },
-    ]);
-  };
-
-  // Remove a member row by index
-  const removeMember = (index: number) => {
-    setRegistrantMembers((prev) => prev.filter((_, i) => i !== index));
-  };
 
   const totalRegistrants = enrollmentType === "ORGANIZATION"
     ? registrantMembers.length
@@ -313,19 +265,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     !fieldErrors.email &&
     !fieldErrors.phone &&
     !fieldErrors.iaLicenseNo &&
-    (enrollmentType !== "ORGANIZATION" ||
-      !registrantMembers.some(
-        (m) =>
-          !m.nameEn ||
-          !m.email ||
-          (m.idDocType === "HKID"
-            ? !m.hkidNumber
-            : m.idDocType === "PASSPORT"
-              ? !m.passportNumber.trim()
-              : m.idDocType === "PERMIT"
-                ? !m.permitNumber.trim()
-                : !m.otherIdDocVal.trim()),
-      ));
+    enrollmentType !== "ORGANIZATION";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -353,16 +293,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
       // Build the combined identity document number from the split HKID fields
       const idDocNumber = getCombinedIdDocNumber();
 
-      // Build the registrants array for ORGANIZATION enrollment, computing combined idDocNumber per member
-      const registrants = enrollmentType === "ORGANIZATION" && registrantMembers.length > 0
-        ? registrantMembers.map((m) => ({
-            nameZh: m.nameZh,
-            nameEn: m.nameEn,
-            email: m.email,
-            idDocType: m.idDocType,
-            idDocNumber: getMemberIdDocNumber(m),
-          }))
-        : [];
+      // Build the registrants array for ORGANIZATION enrollment (currently blocked — always empty)
+      const registrants = [] as { nameZh: string; nameEn: string; email: string; idDocType: string; idDocNumber: string }[];
 
       const payload = {
         courseId: course!.id,
@@ -577,8 +509,8 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       </button>
                     </div>
                     {enrollmentType === "ORGANIZATION" && (
-                      <p className="text-[10px] text-slate-500 mt-1.5">
-                        {dict.formLabels.orgDescription}
+                      <p className="text-[10px] text-amber-700 mt-1.5">
+{dict.formLabels.orgBlockedTitle}
                       </p>
                     )}
                   </div>
@@ -895,171 +827,40 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
 
                   {/* Dynamic Group Member Rows (only for ORGANIZATION) */}
                   {enrollmentType === "ORGANIZATION" && (
-                    <div className="pt-2 border-t border-slate-200 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
-                          <Users className="w-3.5 h-3.5 mr-1" />
-                          {dict.formLabels.groupMembers} ({registrantMembers.length})
-                        </h3>
-                        <button
-                          type="button"
-                          onClick={addMember}
-                          className="inline-flex items-center space-x-1 text-primary hover:text-primary/80 disabled:opacity-40 text-xs font-bold"
-                        >
-                          <Plus className="w-3 h-3" />
-                          <span>{dict.formLabels.addMember}</span>
-                        </button>
-                      </div>
-
-                      {registrantMembers.length === 0 && (
-                        <p className="text-xs text-slate-400 italic py-2">
-                          {dict.formLabels.noMembers}
-                        </p>
-                      )}
-
-                      {registrantMembers.map((member, index) => (
-                        <div
-                          key={index}
-                          className="border border-slate-200 bg-slate-50/50 p-3 rounded-xs space-y-2"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold uppercase text-slate-500">
-                              {dict.formLabels.memberLabel} {index + 1}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => removeMember(index)}
-                              className="text-rose-600 hover:text-rose-800 p-0.5"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
+                    <div className="pt-2 border-t border-slate-200">
+                      <div className="bg-amber-50 border border-amber-200 rounded-xs p-4 space-y-3">
+                        <div className="flex items-start gap-2">
+                          <Building2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <div>
+                            <h3 className="text-sm font-bold text-amber-900">{dict.formLabels.orgBlockedTitle}</h3>
+                            <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                              {dict.formLabels.orgBlockedDescription}
+                            </p>
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <input
-                              type="text"
-                              placeholder={dict.formLabels.nameZhPlaceholder}
-                              value={member.nameZh}
-                              onChange={(e) => handleMemberChange(index, "nameZh", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
-                            />
-                            <input
-                              type="text"
-                              placeholder={`${dict.formLabels.nameEnPlaceholder} *`}
-                              required
-                              value={member.nameEn}
-                              onChange={(e) => handleMemberChange(index, "nameEn", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
-                            />
-                            <input
-                              type="email"
-                              placeholder={`${dict.formLabels.emailPlaceholderShort} *`}
-                              required
-                              value={member.email}
-                              onChange={(e) => handleMemberChange(index, "email", e.target.value)}
-                              className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
-                            />
-                          </div>
-                          {/* Identity document type toggle for this member */}
-                          <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                            <button
-                              type="button"
-                              onClick={() => handleMemberChange(index, "idDocType", "HKID")}
-                              className={`py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                                member.idDocType === "HKID"
-                                  ? "bg-primary text-primary-foreground border-primary"
-                                  : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                              }`}
-                            >
-                              <User className="w-2.5 h-2.5 inline mr-0.5" />
-                              {dict.formLabels.hkid}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleMemberChange(index, "idDocType", "PASSPORT")}
-                              className={`py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                                member.idDocType === "PASSPORT"
-                                  ? "bg-primary text-primary-foreground border-primary"
-                                  : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                              }`}
-                            >
-                              <FileCheck className="w-2.5 h-2.5 inline mr-0.5" />
-                              {dict.formLabels.passport}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleMemberChange(index, "idDocType", "PERMIT")}
-                              className={`py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                                member.idDocType === "PERMIT"
-                                  ? "bg-primary text-primary-foreground border-primary"
-                                  : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                              }`}
-                            >
-                              <FileCheck className="w-2.5 h-2.5 inline mr-0.5" />
-                              {dict.formLabels.permit}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleMemberChange(index, "idDocType", "OTHER")}
-                              className={`py-1 text-[10px] font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                                member.idDocType === "OTHER"
-                                  ? "bg-primary text-primary-foreground border-primary"
-                                  : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                              }`}
-                            >
-                              <FileCheck className="w-2.5 h-2.5 inline mr-0.5" />
-                              {dict.formLabels.otherId}
-                            </button>
-                          </div>
-                          {member.idDocType === "HKID" && (
-                            <div className="sm:col-span-2">
-                              <input
-                                type="text"
-                                placeholder={dict.formLabels.hkidPlaceholder}
-                                value={member.hkidNumber}
-                                onChange={(e) => handleMemberChange(index, "hkidNumber", e.target.value.replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 9))}
-                                maxLength={9}
-                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-primary"
-                              />
-                            </div>
-                          )}
-                          {member.idDocType === "PASSPORT" && (
-                            <div className="sm:col-span-2">
-                              <input
-                                type="text"
-                                placeholder={dict.formLabels.passportPlaceholder}
-                                value={member.passportNumber}
-                                onChange={(e) => handleMemberChange(index, "passportNumber", e.target.value)}
-                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
-                              />
-                            </div>
-                          )}
-                          {member.idDocType === "PERMIT" && (
-                            <div className="sm:col-span-2">
-                              <input
-                                type="text"
-                                placeholder={dict.formLabels.permitPlaceholder}
-                                value={member.permitNumber}
-                                onChange={(e) => handleMemberChange(index, "permitNumber", e.target.value)}
-                                className="w-full bg-white border border-slate-300 rounded-xs px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-primary"
-                              />
-                            </div>
-                          )}
-                          {member.idDocType === "OTHER" && (
-                            <div className="sm:col-span-2 flex items-stretch">
-                              <span className="inline-flex items-center bg-slate-200 text-slate-600 font-bold text-[9px] uppercase tracking-wider px-2 rounded-l-xs border border-r-0 border-slate-300 shrink-0">
-                                {dict.formLabels.otherPrefix}
-                              </span>
-                              <input
-                                type="text"
-                                placeholder={dict.formLabels.otherIdPlaceholder}
-                                value={member.otherIdDocVal}
-                                onChange={(e) => handleMemberChange(index, "otherIdDocVal", e.target.value)}
-                                className="flex-1 min-w-0 bg-white border rounded-r-xs px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-primary"
-                              />
-                            </div>
-                          )}
                         </div>
-                      ))}
+                        <div className="flex flex-col sm:flex-row gap-2 text-xs">
+                          <a
+                            href={`mailto:${dict.confirmation.contactEmail}`}
+                            className="inline-flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xs transition-colors"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            {dict.confirmation.contactEmail}
+                          </a>
+                          <a
+                            href={`https://wa.me/${dict.confirmation.contactWhatsApp.replace(/[^0-9]/g, "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xs transition-colors"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.346.223-.643.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.47 4.453-9.923 9.923-9.923 2.65 0 5.14 1.032 7.012 2.906 1.872 1.874 2.903 4.365 2.902 7.014 0 5.469-4.453 9.921-9.924 9.921" />
+                            </svg>
+                            WhatsApp
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   )}
 

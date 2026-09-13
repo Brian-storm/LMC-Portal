@@ -2,7 +2,7 @@
   "id": "EN-018",
   "title": "阻擋團體報名（ORGANIZATION）自行註冊流程，改為顯示聯絡資訊",
   "content": "目前 EnrollmentWizard Step 1 的「Organization」按鈕會展開完整的多人表單（動態成員列、身分證欄位），並允許用戶通過 Step 2–4 完成一般註冊流程並 submit 到 /api/enroll。\n\n業務需求：團體報名不應透過自助註冊流程完成，應改為顯示聯絡資訊，引導用戶透過個別安排（電話/Email/WhatsApp）辦理。\n\n變更範圍：\n1. EnrollmentWizard.tsx — ORGANIZATION 分支 UI 改為琥珀色資訊卡（含聯絡 Email 與 WhatsApp 連結）；step1Valid 在 ORGANIZATION 下恆為 false，使「Proceed to Schedule」按鈕無法點擊\n2. en.json / zh-hk.json / zh-cn.json — 新增 orgBlockedTitle、orgBlockedDescription 字典鍵\n\n後端 API、Prisma schema、後台管理、收據/上傳流程皆不變動。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -48,10 +48,24 @@
       "npm run typecheck",
       "npm run lint"
     ],
-    "findings": [],
+    "findings": [
+      "ORGANIZATION branch now shows amber info card with email/WhatsApp instead of member form",
+      "step1Valid returns false for ORGANIZATION (enrollmentType !== 'ORGANIZATION')",
+      "dict keys added: orgBlockedTitle, orgBlockedDescription (en.json, zh-hk.json, zh-cn.json)",
+      "registrantMembers state preserved but handlers (addMember, removeMember, handleMemberChange, getMemberIdDocNumber) removed",
+      "Plus, Trash2 icons removed from imports",
+      "npm run typecheck — 0 errors",
+      "npm run lint — 0 errors, 3 pre-existing warnings"
+    ],
     "residual": "後續若要實作後台手動建立 ORGANIZATION enrollment 的介面，可獨立開卡。"
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "opencode",
+      "time": "2026-09-13",
+      "text": "2026-09-13 實作完成：ORGANIZATION 按鈕改為顯示琥珀色資訊卡（附電郵及 WhatsApp 連結），group members 表單移除，step1Valid 在 ORGANIZATION 下恆為 false，「Proceed to Schedule」按鈕無法點擊。en.json / zh-hk.json / zh-cn.json 新增 orgBlockedTitle、orgBlockedDescription 鍵。"
+    }
+  ],
   "acceptance": [
     "選擇 Organization → 看到琥珀色資訊卡（含聯絡 Email 與 WhatsApp 連結），無成員表單",
     "選擇 Organization → 「Proceed to Schedule」按鈕 disabled",
