@@ -197,7 +197,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     feeStructureLines.push(isZh ? `共 ${topicCount} 個主題` : `Total: ${topicCount} topics`);
     if (c.unitPrice) {
       const unitPriceStr = Number(c.unitPrice).toLocaleString();
-      feeStructureLines.push(isZh ? `每個主題 HKD ${unitPriceStr}` : `Each topic HKD ${unitPriceStr}`);
+      feeStructureLines.push(isZh ? `每個主題 $${unitPriceStr}` : `Each topic $${unitPriceStr}`);
     }
   }
 

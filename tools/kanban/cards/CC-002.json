@@ -1,0 +1,73 @@
+{
+  "id": "CC-002",
+  "title": "CUHK 課程講師顯示改為「香港中文大學醫院專科醫生主講」",
+  "content": "課程 CPD26090103（香港醫療體制發展、大灣區醫療概況與醫療保障證書課程）在 CourseCard 上的 speaker 欄位目前顯示「香港中文大學醫院 專科醫生」（seed.ts:64 的 nameZh，含一個空格）。需求改為顯示「香港中文大學醫院專科醫生主講」（移除空格 + 加上「主講」後綴）。\n\n**方案 A（推薦）：在 mapApiCourse.ts 中對 speaker 值加後綴**\n- 在 mapApiCourse() 中，locate speaker 賦值後，若 isZh 則 speaker += "主講"，若 !isZh 則 speaker = "Lectured by " + speaker\n- 此方法不修改 seed data，所有 course 的 speaker 都會套用此格式\n- 若 user 只希望特定 course 有此格式，則改方案 B\n\n**方案 B（替代）：只改 seed.ts 的 nameZh**\n- 將 cuhkSpecialist 的 nameZh 從「香港中文大學醫院 專科醫生」改為「香港中文大學醫院專科醫生主講」\n- nameEn 從「CUHK Medical Centre Specialist」改為「Lectured by CUHK Medical Centre Specialist」\n- 缺點：seed 會與真實 instructor 名稱不一致\n\n**方案 C（替代）：在 CourseCard.tsx 中對 speaker 做本地化後綴**\n- 在 CourseCard 渲染時，對 speaker 值加上「主講」後綴\n- 此方案會修改 CourseCard（與 CC-001 有 conflict，不推薦）\n\n推薦方案 A，因為它保持 CourseCard 不變、不污染 seed 數據，且格式統一套用於所有課程。\n\n**不包含**：\n- 不修改 CourseCard 版面\n- 不修改 dicitionaries\n- 不修改 API\n\n風險：low\n依賴：無（與 CC-001 無關聯，可獨立實作）",
+  "stage": "verify",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "課程管理",
+  "userStory": "課程目錄頁",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/map-course.ts",
+    "prisma/seed.ts"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "mapApiCourse.ts:77-79 從 instructors[0].instructor.nameZh 取值 speaker",
+      "seed.ts:64 的 cuhkSpecialist.nameZh = '香港中文大學醫院 專科醫生'（含空格）",
+      "seed.ts:65 的 nameEn = 'CUHK Medical Centre Specialist'",
+      "titleZh = '香港中文大學醫院專科醫生團隊'（無空格、有團隊）",
+      "course CPD26090103 以 ins-cuhk-specialist 為第一個 instructor"
+    ],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "中文 locale 下，CourseCard 的 instructor 欄位顯示「香港中文大學醫院專科醫生主講」",
+    "英文 locale 下，顯示「Lectured by CUHK Medical Centre Specialist」",
+    "所有課程的 speaker 欄位都套用「主講」格式（統一）",
+    "原有空格被移除",
+    "npm run typecheck 通過",
+    "npm run lint 通過"
+  ],
+  "files": [
+    "src/lib/map-course.ts"
+  ],
+  "dependencies": "無",
+  "verification": "1) npm run typecheck && npm run lint 2) 瀏覽 /en/courses 確認 CPD26090103 card 的 instructor 為「Lectured by CUHK Medical Centre Specialist」, /zh-hk/courses 為「香港中文大學醫院專科醫生主講」"
+}

@@ -63,7 +63,7 @@ async function main() {
       id: "ins-cuhk-specialist",
       nameZh: "香港中文大學醫院 專科醫生",
       nameEn: "CUHK Medical Centre Specialist",
-      titleZh: "香港中文大學醫院專科醫生團隊",
+      titleZh: "香港中文大學醫院專科醫生",
       titleEn: "Specialist Team of CUHK Medical Centre",
       bioZh: "由香港中文大學醫院不同專科的醫生輪流主講，涵蓋各專科最新的診斷與治療發展。",
       bioEn: "Delivered by a rotating panel of specialist doctors from CUHK Medical Centre, covering the latest diagnostic and treatment developments across clinical specialties.",

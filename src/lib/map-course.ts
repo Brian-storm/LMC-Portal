@@ -74,8 +74,11 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     iaRefNumber: c.iaRefNumber ?? undefined,
     iaCode: c.iaRefNumber ?? undefined,
     // Derive speaker display name from the first instructor (locale-aware)
+    // Append "主講" suffix for Chinese locales, "Lectured by " prefix for English
     speaker: c.instructors?.[0]
-      ? (isZh ? c.instructors[0].instructor.nameZh : c.instructors[0].instructor.nameEn)
+      ? (isZh
+        ? `${c.instructors[0].instructor.nameZh.replace(/\s+/g, "")}主講`
+        : `Lectured by ${c.instructors[0].instructor.nameEn}`)
       : undefined,
     venue: c.schedules?.[0]
       ? (isZh

@@ -1,0 +1,71 @@
+{
+  "id": "CC-001",
+  "title": "CourseCard 版面重構 — 海報放大至 1/3、移除右側面板、縮小查看課程按鈕",
+  "content": "CG 課程目錄頁的卡片目前是 3 欄水平配置：海報（160px）| 課程詳情（flex-1）| 右側面板（CPD 時數、費用、CTA）。需求是：\n\n1. 移除右側面板（費用與 CPD 時數搬到詳細區內）\n2. 海報寬度放大至卡片的 1/3（w-1/3）\n3. 查看課程按鈕縮小並移入課程詳情區（例如放在 metadata grid 底部或描述下方）\n\n**方案**：\n- 刪除 section 5（右側面板）及其所有子元素（fee, CPD hours badge, CTA buttons）\n- 將海報區的容器從 `w-[160px]` 改為 `w-1/3`（響應式 md 以上生效）\n- 將 CTA 按鈕移到課程詳情區底部（在 metadata grid 下方），使用更小的尺寸 `text-[10px] px-1.5 py-0.5` 而非目前的 `text-[12px] px-2 py-1`\n- 費用（formattedFee）與 feeBreakdown 移到 metadata grid 內或描述下方\n- 下載大綱按鈕（brochure download）也隨 CTA 一起移入詳情區\n\n**不包含**：\n- 不修改 CourseCard 以外的任何元件\n- 不修改 types.ts 或字典\n- 不修改 API 或資料 mapping\n\n風險：low\n依賴：無",
+  "stage": "verify",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "課程管理",
+  "userStory": "課程目錄頁",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/courses/CourseCard.tsx"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "CourseCard.tsx 目前是 flex-col md:flex-row 三區：海報(160px) + 詳情(flex-1) + 右側面板(min-w-[100px])",
+      "右側面板包含 fee、feeBreakdown、viewCourse CTA、brochure download",
+      "查看課程按鈕目前 text-[12px] px-2 py-1"
+    ],
+    "residual": "版面視覺效果需人工驗收確認"
+  },
+  "comments": [],
+  "acceptance": [
+    "海報容器寬度為 w-1/3（取代 w-[160px]）",
+    "右側面板（fee/CPD/CTA 區）已完全移除",
+    "查看課程 + 下載大綱按鈕出現在卡片詳情區內（metadata grid 下方或描述區旁）",
+    "查看課程按鈕尺寸小於原本（text-[10px] 或更小）",
+    "課程費用資訊仍顯示在卡片上（移到詳情區內）",
+    "npm run typecheck 通過",
+    "npm run lint 通過"
+  ],
+  "files": [
+    "src/components/courses/CourseCard.tsx"
+  ],
+  "dependencies": "無",
+  "verification": "1) npm run typecheck && npm run lint 2) 瀏覽 /en/courses 確認卡片海報為 1/3 寬、無右側面板、CTA 在左下角且尺寸縮小"
+}
