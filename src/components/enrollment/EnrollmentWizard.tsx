@@ -508,12 +508,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         {dict.formLabels.organization}
                       </button>
                     </div>
-                    {enrollmentType === "ORGANIZATION" && (
-                      <p className="text-[10px] text-amber-700 mt-1.5">
-{dict.formLabels.orgBlockedTitle}
-                      </p>
-                    )}
-                  </div>
+                    </div>
 
                   {/* Payer / Primary Attendee Information (shown for both types) */}
                   {enrollmentType === "INDIVIDUAL" && (
@@ -522,7 +517,6 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                       <User className="w-4 h-4" />
                       <span>{dict.formLabels.attendeeInfo}</span>
                     </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">{dict.formLabels.individualHelperText}</p>
                   </div>
 
 )}
