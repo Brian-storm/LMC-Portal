@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { Upload, CheckCircle2, FileText, AlertCircle, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import {
   Card,
@@ -47,6 +48,14 @@ export function PaymentSlipUploader({
     direct_transfer: dict.methodDirectTransfer,
   };
   const paymentMethodLabel = methodLabelMap[paymentMethod] || "";
+
+  // Map form paymentMethod value to QR code image path
+  const methodImageMap: Record<string, string> = {
+    fps: "/company/payments/fps-code.jpeg",
+    alipay: "/company/payments/alipay-qr-code.jpeg",
+    direct_transfer: "/company/payments/bank-transfer.jpeg",
+  };
+  const paymentMethodImage = methodImageMap[paymentMethod] || "";
 
   function validateFile(f: File): string | null {
     if (!ALLOWED_TYPES.includes(f.type)) {
@@ -245,6 +254,15 @@ export function PaymentSlipUploader({
           <p className="text-xs text-amber-800">
             {dict.reminderCompletePayment}
           </p>
+          {paymentMethodImage && (
+            <Image
+              src={paymentMethodImage}
+              alt={paymentMethodLabel}
+              width={180}
+              height={180}
+              className="mx-auto object-contain border border-amber-200 rounded-xs"
+            />
+          )}
         </div>
 
         {/* File input */}

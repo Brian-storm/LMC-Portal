@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -13,14 +14,12 @@ import {
   ChevronRight,
   AlertCircle,
   FileCheck,
-  Building,
   Loader2,
   Users,
   Calendar,
   Clock,
   Tag,
   BookOpen,
-  Smartphone,
   Wallet,
 } from "lucide-react";
 import type { EnrollPageDict } from "@/dictionaries/types";
@@ -1133,9 +1132,9 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                     </div>
                   </div>
 
-                  <div className="space-y-2 text-xs">
-                    <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                      <div className="flex items-center space-x-2">
+                  <div className="space-y-6 text-xs">
+                    <div className="space-y-3">
+                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -1147,12 +1146,20 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <span className="font-bold text-slate-800">
                           {dict.step4.fps}
                         </span>
+                      </label>
+                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
+                        <Image
+                          src="/company/payments/fps-code.jpeg"
+                          alt={dict.step4.fps}
+                          width={240}
+                          height={240}
+                          className="object-contain"
+                        />
                       </div>
-                      <Smartphone className="w-4 h-4 text-slate-400" />
-                    </label>
+                    </div>
 
-                    <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                      <div className="flex items-center space-x-2">
+                    <div className="space-y-2">
+                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -1164,12 +1171,20 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <span className="font-bold text-slate-800">
                           {dict.step4.alipay}
                         </span>
+                      </label>
+                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
+                        <Image
+                          src="/company/payments/alipay-qr-code.jpeg"
+                          alt={dict.step4.alipay}
+                          width={240}
+                          height={240}
+                          className="object-contain"
+                        />
                       </div>
-                      <Wallet className="w-4 h-4 text-slate-400" />
-                    </label>
+                    </div>
 
-                    <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                      <div className="flex items-center space-x-2">
+                    <div className="space-y-2">
+                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -1183,9 +1198,17 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <span className="font-bold text-slate-800">
                           {dict.step4.directTransfer}
                         </span>
+                      </label>
+                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
+                        <Image
+                          src="/company/payments/bank-transfer.jpeg"
+                          alt={dict.step4.directTransfer}
+                          width={480}
+                          height={320}
+                          className="object-contain w-full max-w-[480px]"
+                        />
                       </div>
-                      <Building className="w-4 h-4 text-slate-400" />
-                    </label>
+                    </div>
                   </div>
 
                   {/* Inline error display when the API returns 4xx/5xx */}
