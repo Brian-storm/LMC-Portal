@@ -928,7 +928,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                   </div>
                                   {/* Duration (i18n) + sub-topics */}
                                   <div className="space-y-1">
-                                    <span className="text-xs font-mono text-slate-500">
+                                    <span className="text-[14px] font-mono text-slate-500 no-scale pb-0.5">
                                       {syllabusItem.duration} {dict.step2.durationUnit}
                                     </span>
                                     <ul className="space-y-0.5">

@@ -261,7 +261,7 @@ export function CourseDetailView({
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}
-                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center text-sm"
+                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-[#5e923c] transition-colors rounded-xs shadow-2xs border bg-white hover:bg-[#5e923c] hover:text-white active:bg-[#5e923c]/90 border-[#5e923c]/40 text-center text-sm"
                   >
                     {dict.enrollCta}
                   </Link>
@@ -423,7 +423,7 @@ export function CourseDetailView({
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}
-                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center text-sm"
+                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-[#5e923c] transition-colors rounded-xs shadow-2xs border bg-white hover:bg-[#5e923c] hover:text-white active:bg-[#5e923c]/90 border-[#5e923c]/40 text-center text-sm"
                   >
                     {dict.enrollCta}
                   </Link>

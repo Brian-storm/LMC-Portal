@@ -29,16 +29,6 @@ const DEFAULT_SLIDES = [
   },
   {
     id: 2,
-    title: "Seamless Access via Student & Client Portals",
-    subtitle:
-      "Track certifications, access course materials, and manage accounts with enterprise security.",
-    ctaText: "Access Portal",
-    ctaLink: "/portal",
-    image:
-      "https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?q=80&w=1600&auto=format&fit=crop",
-  },
-  {
-    id: 3,
     title: "Industry Leadership & Strategic Insight",
     subtitle:
       "Stay ahead of compliance regulations, financial technologies, and corporate governance standards.",
