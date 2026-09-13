@@ -82,10 +82,11 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
         {/* Poster image at 2205×3305 portrait aspect ratio (≈2:3)            */}
         {/* Poster URL sourced from dictionary rather than DB seed            */}
         {/* ------------------------------------------------------------------ */}
+        {course.imageUrl && (
         <div className="w-1/3 shrink-0">
           <div className="relative w-full aspect-[2205/3305] bg-slate-200 overflow-hidden rounded-xs">
             <Image
-              src={dict.cardPosterUrl}
+              src={course.imageUrl}
               alt={course.title}
               fill
               className="object-cover"
@@ -93,6 +94,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
             />
           </div>
         </div>
+      )}
 
         {/* Course Core Details Column — 2/3 width */}
         <div className="w-2/3 space-y-1.5">
@@ -204,7 +206,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           <div className="flex items-center gap-1 pt-1">
             <Link
               href={`/${currentLocale}/courses/${targetSlug}`}
-              className="inline-flex items-center justify-center space-x-1 bg-primary hover:bg-primary/80 active:bg-primary/90 text-primary-foreground font-mono font-bold px-1.5 py-0.5 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-primary/40 text-xs leading-none"
+              className="inline-flex items-center justify-center space-x-1 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-emerald-600 font-mono font-bold px-3 py-1.5 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-emerald-500/30 text-[13px] leading-none"
             >
               <span>{dict.viewCourse}</span>
               <ArrowRight className="w-2.5 h-2.5 shrink-0" />
