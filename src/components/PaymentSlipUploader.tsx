@@ -258,8 +258,8 @@ export function PaymentSlipUploader({
             <Image
               src={paymentMethodImage}
               alt={paymentMethodLabel}
-              width={180}
-              height={180}
+              width={paymentMethod === "direct_transfer" ? 480 : 240}
+              height={paymentMethod === "direct_transfer" ? 320 : 240}
               className="mx-auto object-contain border border-amber-200 rounded-xs"
             />
           )}
