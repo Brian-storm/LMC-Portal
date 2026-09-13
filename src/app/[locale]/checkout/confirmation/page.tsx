@@ -4,7 +4,7 @@ import type { EnrollPageDict, PaymentUploadDict } from "@/dictionaries/types";
 
 type ConfirmationPageProps = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ registrantId?: string; email?: string }>;
+  searchParams: Promise<{ registrantId?: string; email?: string; pm?: string }>;
 };
 
 export default async function ConfirmationPage({
@@ -15,6 +15,7 @@ export default async function ConfirmationPage({
   const resolvedParams = await searchParams;
   const registrantId = resolvedParams.registrantId || "";
   const email = resolvedParams.email || "";
+  const paymentMethod = resolvedParams.pm || "";
 
   const dict = await getDictionary(locale);
   const enrollDict: EnrollPageDict = dict.enrollPage;
@@ -29,6 +30,7 @@ export default async function ConfirmationPage({
           confirmationDict={c}
           registrantId={registrantId}
           email={email}
+          paymentMethod={paymentMethod}
         />
       ) : (
         <p className="text-xs text-slate-500 text-center">

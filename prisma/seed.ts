@@ -69,6 +69,103 @@ async function main() {
     },
   });
 
+  // ─── CPD26090103 schedule-level instructors ────────────────
+  // Dr. Ngo Chang Chung — Urology & Robotic Surgery (22/09 14:15)
+  const drNgo = await prisma.instructor.upsert({
+    where: { id: "ins-ngo-chang-chung" },
+    update: {},
+    create: {
+      id: "ins-ngo-chang-chung",
+      nameZh: "Dr. Ngo Chang Chung",
+      nameEn: "Dr. Ngo Chang Chung",
+      titleZh: "MB BS (HK); FRCSEd (Urol); FCSHK; FHKAM (Surgery)",
+      titleEn: "MB BS (HK); FRCSEd (Urol); FCSHK; FHKAM (Surgery)",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
+  // Dr. Jacqueline Choi — HK Healthcare System & GBA (22/09 16:00)
+  const drJacquelineChoi = await prisma.instructor.upsert({
+    where: { id: "ins-jacqueline-choi" },
+    update: {},
+    create: {
+      id: "ins-jacqueline-choi",
+      nameZh: "Dr. Jacqueline Choi",
+      nameEn: "Dr. Jacqueline Choi",
+      titleZh: "MB ChB (CUHK); MRCP (UK); M Med (Public Health) (Singapore); Dip Med (CUHK); FHKCCM; FFPH; FHKAM (Community Medicine)",
+      titleEn: "MB ChB (CUHK); MRCP (UK); M Med (Public Health) (Singapore); Dip Med (CUHK); FHKCCM; FFPH; FHKAM (Community Medicine)",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
+  // Dr. George Law — Sports Medicine (08/10 14:00)
+  const drGeorgeLaw = await prisma.instructor.upsert({
+    where: { id: "ins-george-law" },
+    update: {},
+    create: {
+      id: "ins-george-law",
+      nameZh: "Dr. George Law",
+      nameEn: "Dr. George Law",
+      titleZh: "MB ChB (CUHK); FRCSEd(Orth); FHKAM (Orthopaedic Surgery); FHKCOS",
+      titleEn: "MB ChB (CUHK); FRCSEd(Orth); FHKAM (Orthopaedic Surgery); FHKCOS",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
+  // Dr. Carol Yeung — Gynecological Cancers (08/10 15:45)
+  const drCarolYeung = await prisma.instructor.upsert({
+    where: { id: "ins-carol-yeung" },
+    update: {},
+    create: {
+      id: "ins-carol-yeung",
+      nameZh: "Dr. Carol Yeung",
+      nameEn: "Dr. Carol Yeung",
+      titleZh: "MB ChB (CUHK); MRCOG; FHKCOG; Cert HKCOG (Gynae Onc); FHKAM (Obstetrics and Gynaecology)",
+      titleEn: "MB ChB (CUHK); MRCOG; FHKCOG; Cert HKCOG (Gynae Onc); FHKAM (Obstetrics and Gynaecology)",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
+  // Dr. Yolanda Chan — Breast Cancer (14/10 14:15)
+  const drYolandaChan = await prisma.instructor.upsert({
+    where: { id: "ins-yolanda-chan" },
+    update: {},
+    create: {
+      id: "ins-yolanda-chan",
+      nameZh: "Dr. Yolanda Chan",
+      nameEn: "Dr. Yolanda Chan",
+      titleZh: "MB BS (HK); FHKAM (Surgery); FCSHK; FRCSEd",
+      titleEn: "MB BS (HK); FHKAM (Surgery); FCSHK; FRCSEd",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
+  // Dr. Linda Leung — Lung Cancer (14/10 16:00)
+  const drLindaLeung = await prisma.instructor.upsert({
+    where: { id: "ins-linda-leung" },
+    update: {},
+    create: {
+      id: "ins-linda-leung",
+      nameZh: "Dr. Linda Leung",
+      nameEn: "Dr. Linda Leung",
+      titleZh: "MB BS (Lond); MRCP (UK); FHKCP; FHKAM (Medicine); MPH (HK)",
+      titleEn: "MB BS (Lond); MRCP (UK); FHKCP; FHKAM (Medicine); MPH (HK)",
+      bioZh: null,
+      bioEn: null,
+      avatarUrl: null,
+    },
+  });
+
   // ─── Courses ──────────────────────────────────────────────
   await prisma.course.upsert({
     where: { slug: "cpd-101" },
@@ -205,16 +302,19 @@ async function main() {
   }
 
   // CPD26090103 is delivered as 6 standalone 90-minute classes: each of the 3 dates
-  // hosts two sequential sessions (14:15 - 15:45 and 16:00 - 17:30) at the same venue.
+  // hosts two sequential sessions at the same venue.
+  //   22/09: 14:15–15:45 & 16:00–17:30
+  //   08/10: 14:00–15:30 & 15:45–17:15
+  //   14/10: 14:15–15:45 & 16:00–17:30
   const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
   const cpd26090103VenueZh = "香港新界沙田澤祥街9號 香港中文大學醫院";
   const cpd26090103Schedules = [
-    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
     { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
     { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 14:00 - 15:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 15:45 - 17:15", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
   ];
 
   await prisma.course.upsert({
@@ -226,13 +326,27 @@ async function main() {
         "Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
       nameCn: "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
       iaRefNumber: "CPD26090103",
+      organizerZh: "德智顧問管理有限公司",
+      organizerEn: "LMC Management Consultancy Ltd.",
+      organizerLogoUrl: "/company/logo-text-black.svg",
+      coOrganizerZh: "香港中文大學醫院",
+      coOrganizerEn: "CUHK Medical Centre",
+      coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
       schedules: {
         deleteMany: {},
         create: cpd26090103Schedules,
       },
       instructors: {
         deleteMany: {},
-        create: { instructorId: cuhkSpecialist.id },
+        create: [
+          { instructorId: cuhkSpecialist.id },
+          { instructorId: drNgo.id },
+          { instructorId: drJacquelineChoi.id },
+          { instructorId: drGeorgeLaw.id },
+          { instructorId: drCarolYeung.id },
+          { instructorId: drYolandaChan.id },
+          { instructorId: drLindaLeung.id },
+        ],
       },
     },
     create: {
@@ -266,8 +380,22 @@ async function main() {
       registrationStatus: RegistrationStatus.OPEN,
       deliveryMode: "In-person",
       language: "Cantonese",
+      organizerZh: "德智顧問管理有限公司",
+      organizerEn: "LMC Management Consultancy Ltd.",
+      organizerLogoUrl: "/company/logo-text-black.svg",
+      coOrganizerZh: "香港中文大學醫院",
+      coOrganizerEn: "CUHK Medical Centre",
+      coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
       instructors: {
-        create: { instructorId: cuhkSpecialist.id },
+        create: [
+          { instructorId: cuhkSpecialist.id },
+          { instructorId: drNgo.id },
+          { instructorId: drJacquelineChoi.id },
+          { instructorId: drGeorgeLaw.id },
+          { instructorId: drCarolYeung.id },
+          { instructorId: drYolandaChan.id },
+          { instructorId: drLindaLeung.id },
+        ],
       },
       syllabusItems: {
         create: [
@@ -438,15 +566,13 @@ async function main() {
       orderBy: { dateAndTime: "asc" },
     });
     // Map each class (matched by its exact date & time string) to the single topic it covers.
-    // 09/09 → Topic 2 (14:15) & Topic 6 (16:00); 22/09 → Topic 5 (14:15) & Topic 1 (16:00);
-    // 08/10 → Topic 3 (14:15) & Topic 4 (16:00).
     const scheduleTopicMap: Record<string, number[]> = {
-      "09/09/2026 (星期三) 14:15 - 15:45": [2],
-      "09/09/2026 (星期三) 16:00 - 17:30": [6],
       "22/09/2026 (星期二) 14:15 - 15:45": [5],
       "22/09/2026 (星期二) 16:00 - 17:30": [1],
-      "08/10/2026 (星期四) 14:15 - 15:45": [3],
-      "08/10/2026 (星期四) 16:00 - 17:30": [4],
+      "08/10/2026 (星期四) 14:00 - 15:30": [3],
+      "08/10/2026 (星期四) 15:45 - 17:15": [4],
+      "14/10/2026 (星期三) 14:15 - 15:45": [2],
+      "14/10/2026 (星期三) 16:00 - 17:30": [6],
     };
     for (const schedule of allSchedules) {
       const modNums = scheduleTopicMap[schedule.dateAndTime] ?? [];
@@ -466,18 +592,31 @@ async function main() {
     console.log("ScheduleTopic links created for CPD26090103");
   }
 
-  // Link all CPD26090103 schedules to placeholder instructor
+  // Link each CPD26090103 schedule to its specific instructor
+  // Match by dateAndTime string (same approach as scheduleTopicMap above) to
+  // avoid position-mismatch bugs when schedules are sorted alphabetically.
+  const scheduleInstructorMapByDate: Record<string, string> = {
+    "22/09/2026 (星期二) 14:15 - 15:45": drNgo.id,
+    "22/09/2026 (星期二) 16:00 - 17:30": drJacquelineChoi.id,
+    "08/10/2026 (星期四) 14:00 - 15:30": drGeorgeLaw.id,
+    "08/10/2026 (星期四) 15:45 - 17:15": drCarolYeung.id,
+    "14/10/2026 (星期三) 14:15 - 15:45": drYolandaChan.id,
+    "14/10/2026 (星期三) 16:00 - 17:30": drLindaLeung.id,
+  };
   const cpd26090103SchedulesDb = await prisma.schedule.findMany({
     where: { course: { slug: "CPD26090103" } },
   });
-  if (placeholderInstructor) {
-    for (const sched of cpd26090103SchedulesDb) {
-      await prisma.scheduleInstructor.upsert({
-        where: { scheduleId_instructorId: { scheduleId: sched.id, instructorId: placeholderInstructor.id } },
-        update: {},
-        create: { scheduleId: sched.id, instructorId: placeholderInstructor.id },
-      });
+  for (const sched of cpd26090103SchedulesDb) {
+    const instructorId = scheduleInstructorMapByDate[sched.dateAndTime];
+    if (!instructorId) {
+      console.warn(`No instructor mapped for schedule: ${sched.dateAndTime}`);
+      continue;
     }
+    await prisma.scheduleInstructor.upsert({
+      where: { scheduleId_instructorId: { scheduleId: sched.id, instructorId } },
+      update: {},
+      create: { scheduleId: sched.id, instructorId },
+    });
   }
 
   // ─── Test receipt (VERIFIED enrolment with receipt number) ─

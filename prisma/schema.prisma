@@ -116,8 +116,10 @@ model Course {
   language          String?
   organizerZh       String?
   organizerEn       String?
+  organizerLogoUrl  String?
   coOrganizerZh     String?
   coOrganizerEn     String?
+  coOrganizerLogoUrl String?
   courseCode        String?
   feeDescriptionZh  String?
   feeDescriptionEn  String?

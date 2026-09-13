@@ -35,6 +35,18 @@ interface ApiSchedule {
   venueZh: string | null;
   quotaRemaining: number;
   cpdHoursIa: number;
+  instructors: {
+    instructor: {
+      id: string;
+      nameZh: string;
+      nameEn: string;
+      titleZh: string | null;
+      titleEn: string | null;
+      bioZh: string | null;
+      bioEn: string | null;
+      avatarUrl: string | null;
+    };
+  }[];
   topics: {
     sortOrder: number;
     syllabusItem: {
@@ -96,8 +108,10 @@ export interface ApiCourseDetail {
   language: string | null;
   organizerZh: string | null;
   organizerEn: string | null;
+  organizerLogoUrl: string | null;
   coOrganizerZh: string | null;
   coOrganizerEn: string | null;
+  coOrganizerLogoUrl: string | null;
   courseCode: string | null;
   feeDescriptionZh: string | null;
   feeDescriptionEn: string | null;
@@ -114,6 +128,13 @@ export interface ApiCourseDetail {
 
 export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): DetailedCourse {
   const isZh = locale === "zh-hk" || locale === "zh-cn";
+
+  // Extract numeric portion from a duration string (e.g. "1.5 Hours" → "1.5")
+  const extractDurationNumber = (s: string) => {
+    const m = s.match(/^[\d.]+/);
+    return m ? m[0] : s;
+  };
+
   // zh-cn locale prefers the Simplified Chinese variant, falling back to
   // Traditional (nameZh) and then English. zh-hk still uses Traditional first.
   const isSimplified = locale === "zh-cn";
@@ -192,7 +213,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     id: si.id,
     moduleNumber: si.moduleNumber,
     title: localized(si.titleZh, si.titleEn),
-    duration: si.duration,
+    duration: extractDurationNumber(si.duration),
     topics: isZh ? si.topicsZh : si.topicsEn,
   }));
 
@@ -202,12 +223,17 @@ const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     venue: localizedVenue(s),
     quotaRemaining: s.quotaRemaining,
     cpdHoursIa: s.cpdHoursIa,
+    instructor: s.instructors.length > 0 ? {
+      name: localized(s.instructors[0].instructor.nameZh, s.instructors[0].instructor.nameEn),
+      title: localized(s.instructors[0].instructor.titleZh, s.instructors[0].instructor.titleEn),
+      bio: localized(s.instructors[0].instructor.bioZh, s.instructors[0].instructor.bioEn),
+    } : undefined,
     topics: (s.topics ?? []).map((t) => ({
       syllabusItem: {
         id: t.syllabusItem.id,
         moduleNumber: t.syllabusItem.moduleNumber,
         title: localized(t.syllabusItem.titleZh, t.syllabusItem.titleEn),
-        duration: t.syllabusItem.duration,
+        duration: extractDurationNumber(t.syllabusItem.duration),
         topics: isZh ? t.syllabusItem.topicsZh : t.syllabusItem.topicsEn,
       },
     })),
@@ -254,6 +280,8 @@ const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     accreditationBody: c.accreditationBody ?? undefined,
     organizer: localized(c.organizerZh, c.organizerEn),
     coOrganizer: localized(c.coOrganizerZh, c.coOrganizerEn),
+    organizerLogoUrl: c.organizerLogoUrl ?? undefined,
+    coOrganizerLogoUrl: c.coOrganizerLogoUrl ?? undefined,
     courseCode: c.courseCode ?? undefined,
     feeDescriptionZh: c.feeDescriptionZh ?? undefined,
     feeDescriptionEn: c.feeDescriptionEn ?? undefined,

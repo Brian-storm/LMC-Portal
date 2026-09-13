@@ -1,0 +1,84 @@
+{
+  "id": "CD-SI-001",
+  "title": "Backend & Data: API query + types + mapper for schedule instructors + duration dict",
+  "content": "Completed changes:\n1. API route GET /api/courses/[slug] — added instructors include inside schedules Prisma query\n2. types.ts — added instructor: { name, title, bio } to ScheduleSession type\n3. map-course-detail.ts — updated ApiSchedule interface + mapping for schedule instructors (locale-aware name/title/bio)\n4. map-course-detail.ts — added extractDurationNumber() helper to strip unit (\"1.5 Hours\" → \"1.5\"), applied to syllabus + schedule mappings\n5. Dictionaries — added labels.durationUnit (\"hours\" / \"小時\" / \"学时\")\n6. Schema NOT changed (durationZh/durationEn reverted per user request)",
+  "stage": "done",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "track": "fullstack",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/courses/[slug]/route.ts",
+    "src/components/courses/types.ts",
+    "src/lib/map-course-detail.ts",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "typecheck: 0 errors from changed files (2 pre-existing CourseCard errors)",
+      "lint: 0 errors, 0 new warnings"
+    ],
+    "residual": "Schema unchanged: duration remains single string field, locale handled by dict"
+  },
+  "comments": [
+    {
+      "name": "opencode",
+      "time": "2026-09-13",
+      "text": "Initial schema migration for durationZh/durationEn was reverted per user request. Duration unit handled via dictionary keys instead."
+    }
+  ],
+  "acceptance": [
+    "API GET /api/courses/[slug] returns schedule with instructors[] containing id, nameZh, nameEn, titleZh, titleEn, bioZh, bioEn, avatarUrl",
+    "ScheduleSession type has optional instructor: { name, title, bio }",
+    "mapApiCourseDetail extracts numeric duration (strips units), maps first schedule instructor locale-aware",
+    "Dictionaries have durationUnit key in all 3 locales",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/courses/[slug]/route.ts",
+    "src/components/courses/types.ts",
+    "src/lib/map-course-detail.ts",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "dependencies": "none",
+  "verification": "1) npm run typecheck && npm run lint 2) Inspect API response at /api/courses/CPD26090103?locale=en to verify schedules include instructors"
+}

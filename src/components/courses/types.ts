@@ -30,6 +30,11 @@ export interface ScheduleSession {
   venue: string;
   quotaRemaining: number;
   cpdHoursIa: number;
+  instructor?: {
+    name: string;
+    title: string;
+    bio: string;
+  };
   topics: { syllabusItem: SyllabusModule }[];
 }
 
@@ -63,7 +68,6 @@ export interface Course {
   deliveryMode: string;
   language: string;
   fee: string;
-  feeHKD?: number | string;
   feeBreakdown?: string;
   status?: CourseStatus;
   brochureUrl?: string;
@@ -84,6 +88,8 @@ export interface DetailedCourse extends Course {
   accreditationBody?: string;
   organizer?: string;
   coOrganizer?: string;
+  organizerLogoUrl?: string;
+  coOrganizerLogoUrl?: string;
   courseCode?: string;
   feeDescriptionZh?: string;
   feeDescriptionEn?: string;

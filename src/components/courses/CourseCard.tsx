@@ -206,9 +206,19 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           <div className="text-left md:text-right space-y-0.5 font-mono">
 
             {/* Course Fee Display — show per-topic breakdown when available */}
-            <div className="text-right font-serif font-bold text-slate-900 pt-0.5 leading-tight max-w-[120px] ml-auto">
+            <div className="text-right font-serif font-bold text-slate-900 pt-0.5 leading-tight max-w-[160px] ml-auto">
               {course.feeBreakdown ? (
-                <span className="text-[8.5px]">{course.feeBreakdown}</span>
+                <span className="text-[8.5px]">
+                  {(() => {
+                    const parts = course.feeBreakdown!.split("，");
+                    return parts.map((part, i) => (
+                      <span key={i}>
+                        {part}{i < parts.length - 1 ? "，" : ""}
+                        {i < parts.length - 1 ? <br /> : ""}
+                      </span>
+                    ));
+                  })()}
+                </span>
               ) : (
                 <span className="text-xs whitespace-nowrap">{formattedFee}</span>
               )}

@@ -43,6 +43,22 @@ export async function GET(
           where: { isActive: true },
           orderBy: { dateAndTime: "asc" },
           include: {
+            instructors: {
+              include: {
+                instructor: {
+                  select: {
+                    id: true,
+                    nameZh: true,
+                    nameEn: true,
+                    titleZh: true,
+                    titleEn: true,
+                    bioZh: true,
+                    bioEn: true,
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
             topics: {
               include: {
                 syllabusItem: {

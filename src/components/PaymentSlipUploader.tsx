@@ -25,11 +25,13 @@ export function PaymentSlipUploader({
   confirmationDict,
   registrantId,
   email = "",
+  paymentMethod = "",
 }: {
   dict: PaymentUploadDict;
   confirmationDict: ConfirmationDict;
   registrantId: string;
   email?: string;
+  paymentMethod?: string;
 }) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadState, setUploadState] = useState<UploadState>("idle");
@@ -37,6 +39,14 @@ export function PaymentSlipUploader({
   const [error, setError] = useState("");
   const xhrRef = useRef<XMLHttpRequest | null>(null);
   const { locale } = useParams();
+
+  // Map form paymentMethod value to display label
+  const methodLabelMap: Record<string, string> = {
+    fps: dict.methodFps,
+    alipay: dict.methodAlipay,
+    direct_transfer: dict.methodDirectTransfer,
+  };
+  const paymentMethodLabel = methodLabelMap[paymentMethod] || "";
 
   function validateFile(f: File): string | null {
     if (!ALLOWED_TYPES.includes(f.type)) {
@@ -221,6 +231,22 @@ export function PaymentSlipUploader({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Payment reminder banner */}
+        <div className="bg-amber-50 border border-amber-300 rounded-xs p-4 space-y-2">
+          <p className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            {dict.reminderTitle}
+          </p>
+          {paymentMethodLabel && (
+            <p className="text-xs text-amber-800">
+              {dict.paymentMethodLabel} <strong>{paymentMethodLabel}</strong>
+            </p>
+          )}
+          <p className="text-xs text-amber-800">
+            {dict.reminderCompletePayment}
+          </p>
+        </div>
+
         {/* File input */}
         <div className="space-y-2">
           <input

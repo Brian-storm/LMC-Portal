@@ -1,0 +1,68 @@
+{
+  "id": "CD-SI-002",
+  "title": "Frontend: Update syllabus topic schedule display — remove venue, add instructor, relabel + durationUnit badge",
+  "content": "Completed changes to CourseDetailView.tsx:\n1. Removed venue/MapPin icon from each schedule line in syllabus section\n2. Added instructor row (User icon + labels.instructor + name + title qualifications)\n3. Changed from single \"scheduleAndLocation\" sub-header to two rows per schedule entry:\n   - Row 1: Calendar icon + labels.dateAndTime + dateAndTime\n   - Row 2: User icon + labels.instructor + instructor name + (title)\n4. Syllabus duration badge now renders as {mod.duration} {dict.labels?.durationUnit}\n   (e.g. \"Duration: 1.5 hours\" / \"單元時數: 1.5 小時\")\n5. Removed unused Award/MapPin imports from lucide-react",
+  "stage": "done",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "track": "frontend",
+  "dependsOn": ["CD-SI-001"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/courses/CourseDetailView.tsx"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "typecheck: 0 errors from changed files",
+      "lint: 0 errors, 0 new warnings"
+    ],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Each schedule displays dateAndTime with Calendar icon + labels.dateAndTime as first row",
+    "Each schedule displays instructor name + title with User icon + labels.instructor as second row",
+    "No venue/MapPin display in syllabus schedule section",
+    "Duration badge shows numeric value + durationUnit from dict",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/courses/CourseDetailView.tsx"
+  ],
+  "dependencies": "CD-SI-001",
+  "verification": "1) npm run typecheck && npm run lint 2) Browse /en/courses/CPD26090103 — syllabus schedules show date+instructor without venue, duration shows localized unit"
+}

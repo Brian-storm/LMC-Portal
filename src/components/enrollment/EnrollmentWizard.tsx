@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ShieldCheck,
   Building2,
-  CreditCard,
   User,
   ChevronRight,
   AlertCircle,
@@ -24,6 +23,8 @@ import {
   MapPin,
   Tag,
   BookOpen,
+  Smartphone,
+  Wallet,
 } from "lucide-react";
 import type { EnrollPageDict } from "@/dictionaries/types";
 
@@ -57,9 +58,9 @@ interface CourseData {
 
 // Map form payment method labels to API PaymentMethod enum values
 const paymentMethodMap: Record<string, string> = {
-  credit_card: "E_BANKING",
-  fps_alipay: "FPS",
-  corporate_invoice: "CORPORATE_INVOICE",
+  fps: "FPS",
+  alipay: "ALIPAY",
+  direct_transfer: "CORPORATE_INVOICE",
 };
 
 interface EnrollmentWizardProps {
@@ -91,7 +92,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     iaLicenseNo: "",
     agreedToTerms: false,
     declaredEligible: false,
-    paymentMethod: "credit_card",
+    paymentMethod: "fps",
   });
 
   // Identity document type: HKID, Passport, Permit, or Other
@@ -414,7 +415,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         ? `&email=${encodeURIComponent(formData.email)}`
         : "";
       router.push(
-        `/${locale}/checkout/confirmation?registrantId=${result.registrantId}${emailParam}`,
+        `/${locale}/checkout/confirmation?registrantId=${result.registrantId}&pm=${formData.paymentMethod}${emailParam}`,
       );
     } catch (error) {
       setSubmitError(
@@ -1319,7 +1320,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                 <div className="space-y-4">
                   <div className="pb-2 border-b border-slate-200">
                     <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
-                      <CreditCard className="w-4 h-4" />
+                      <Wallet className="w-4 h-4" />
                       <span>{dict.step4.title}</span>
                     </h2>
                   </div>
@@ -1338,16 +1339,16 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <input
                           type="radio"
                           name="paymentMethod"
-                          value="credit_card"
-                          checked={formData.paymentMethod === "credit_card"}
+                          value="fps"
+                          checked={formData.paymentMethod === "fps"}
                           onChange={handleInputChange}
                           className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
-                          {dict.step4.creditCard}
+                          {dict.step4.fps}
                         </span>
                       </div>
-                      <CreditCard className="w-4 h-4 text-slate-400" />
+                      <Smartphone className="w-4 h-4 text-slate-400" />
                     </label>
 
                     <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
@@ -1355,16 +1356,16 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <input
                           type="radio"
                           name="paymentMethod"
-                          value="fps_alipay"
-                          checked={formData.paymentMethod === "fps_alipay"}
+                          value="alipay"
+                          checked={formData.paymentMethod === "alipay"}
                           onChange={handleInputChange}
                           className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
-                          {dict.step4.fpsAlipay}
+                          {dict.step4.alipay}
                         </span>
                       </div>
-                      <Building2 className="w-4 h-4 text-slate-400" />
+                      <Wallet className="w-4 h-4 text-slate-400" />
                     </label>
 
                     <label className="flex items-center justify-between p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
@@ -1372,15 +1373,15 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         <input
                           type="radio"
                           name="paymentMethod"
-                          value="corporate_invoice"
+                          value="direct_transfer"
                           checked={
-                            formData.paymentMethod === "corporate_invoice"
+                            formData.paymentMethod === "direct_transfer"
                           }
                           onChange={handleInputChange}
                           className="text-primary accent-primary"
                         />
                         <span className="font-bold text-slate-800">
-                          {dict.step4.corporateBilling}
+                          {dict.step4.directTransfer}
                         </span>
                       </div>
                       <Building className="w-4 h-4 text-slate-400" />
