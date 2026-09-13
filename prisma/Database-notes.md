@@ -142,3 +142,13 @@ npx prisma generate
 ### Key Takeaway
 
 Always verify `.env` points to **local Docker** before running `migrate dev`, and always check generated migration `.sql` files for BOM before committing.
+
+### 5. `imageUrl` not updated on production after seed re-run
+
+**Problem:** Course `CPD26090103` still showed old poster (`Healthcare CPD Course Syllabus_page-0001.jpg`) on production after a fresh seed run.
+
+**Root cause:** The `upsert` in `prisma/seed.ts` only runs the `update` block when the course already exists. The `create` block had `imageUrl: "/company/posters/CPD-healthcare-poster.jpeg"` (line 463) but the `update` block (lines 414–434) did **not** include `imageUrl`, so the old DB value persisted.
+
+**Solution:** Added `imageUrl` to the `update` block so re-running `npx prisma db seed` overwrites it.
+
+**Lesson:** When adding/updating a field via seed `upsert`, always mirror it in **both** `create` and `update` blocks — otherwise existing records will keep the old value.
