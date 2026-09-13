@@ -148,7 +148,8 @@ model Instructor {
   bioEn     String?
   avatarUrl String?
 
-  courses   CourseInstructor[]
+  courses            CourseInstructor[]
+  scheduleInstructors ScheduleInstructor[]
 
   @@map("instructors")
 }
@@ -161,6 +162,16 @@ model CourseInstructor {
 
   @@id([courseId, instructorId])
   @@map("course_instructors")
+}
+
+model ScheduleInstructor {
+  scheduleId   String
+  instructorId String
+  schedule     Schedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@id([scheduleId, instructorId])
+  @@map("schedule_instructors")
 }
 
 model SyllabusItem {
@@ -193,6 +204,7 @@ model Schedule {
   course         Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
   registrants    RegistrantSchedule[]
   topics         ScheduleTopic[]
+  instructors    ScheduleInstructor[]
 
   @@map("schedules")
 }

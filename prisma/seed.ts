@@ -53,6 +53,22 @@ async function main() {
     },
   });
 
+  // Placeholder instructor for schedule-level instructor links
+  const placeholderInstructor = await prisma.instructor.upsert({
+    where: { id: "ins-placeholder" },
+    update: {},
+    create: {
+      id: "ins-placeholder",
+      nameZh: "待定講師",
+      nameEn: "Placeholder Instructor",
+      titleZh: "待定",
+      titleEn: "To be confirmed",
+      bioZh: "此課堂的講師資料將於稍後公佈。",
+      bioEn: "Instructor details for this session will be announced later.",
+      avatarUrl: null,
+    },
+  });
+
   // ─── Courses ──────────────────────────────────────────────
   await prisma.course.upsert({
     where: { slug: "cpd-101" },
@@ -176,6 +192,18 @@ async function main() {
     },
   });
 
+  // Link cpd-101 schedule to placeholder instructor
+  const cpd101Schedule = await prisma.schedule.findFirst({
+    where: { course: { slug: "cpd-101" } },
+  });
+  if (cpd101Schedule && placeholderInstructor) {
+    await prisma.scheduleInstructor.upsert({
+      where: { scheduleId_instructorId: { scheduleId: cpd101Schedule.id, instructorId: placeholderInstructor.id } },
+      update: {},
+      create: { scheduleId: cpd101Schedule.id, instructorId: placeholderInstructor.id },
+    });
+  }
+
   // CPD26090103 is delivered as 6 standalone 90-minute classes: each of the 3 dates
   // hosts two sequential sessions (14:15 - 15:45 and 16:00 - 17:30) at the same venue.
   const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
@@ -193,9 +221,10 @@ async function main() {
     where: { slug: "CPD26090103" },
     // Resync schedules & instructors on every run so the seed stays authoritative for CPD26090103.
     update: {
-      nameZh: "保險中介人持續專業培訓計劃",
-      nameEn: "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
-      nameCn: "保险中介人持续专业培训计划",
+      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
+      nameEn:
+        "Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
+      nameCn: "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
       iaRefNumber: "CPD26090103",
       schedules: {
         deleteMany: {},
@@ -209,20 +238,27 @@ async function main() {
     create: {
       id: "CPD26090103",
       slug: "CPD26090103",
-      nameZh: "保險中介人持續專業培訓計劃",
-      nameEn: "Continuing Professional Development (CPD) for Licensed Insurance Intermediaries",
-      nameCn: "保险中介人持续专业培训计划",
-      descriptionZh: "涵蓋香港醫療體制、大灣區醫療概況、危疾系列（乳癌、婦科癌症、前列腺健康、肺癌）及常見運動受傷處理的綜合課程。",
-      descriptionEn: "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
-      descriptionCn: "涵盖香港医疗体制、大湾区医疗概况、危疾系列（乳癌、妇科癌症、前列腺健康、肺癌）及常见运动受伤处理的综合课程。",
+      nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
+      nameEn:
+        "Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
+      nameCn: "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
+      descriptionZh:
+        "涵蓋香港醫療體制、大灣區醫療概況、危疾系列（乳癌、婦科癌症、前列腺健康、肺癌）及常見運動受傷處理的綜合課程。",
+      descriptionEn:
+        "A comprehensive course covering HK healthcare system, GBA healthcare overview, critical illness series (breast cancer, gynecological cancers, prostate health, lung cancer) and common sports injury management.",
+      descriptionCn:
+        "涵盖香港医疗体制、大湾区医疗概况、危疾系列（乳癌、妇科癌症、前列腺健康、肺癌）及常见运动受伤处理的综合课程。",
       category: "cpd",
       iaRefNumber: "CPD26090103",
       accreditationBody: "HK Insurance Authority",
       cpdHours: 9,
       cpdHoursIa: 9,
-      cpdRulesZh: "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
-      cpdRulesEn: "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
-      cpdRulesCn: "出席记录将直接提交至相关认证机构。必须全程出席并通过身份验证方可获得认可 CPD 学时。",
+      cpdRulesZh:
+        "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
+      cpdRulesEn:
+        "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
+      cpdRulesCn:
+        "出席记录将直接提交至相关认证机构。必须全程出席并通过身份验证方可获得认可 CPD 学时。",
       price: 1500.0,
       unitPrice: 250.0,
       capacity: 50,
@@ -235,12 +271,76 @@ async function main() {
       },
       syllabusItems: {
         create: [
-          { moduleNumber: 1, titleZh: "主題一 - 香港醫療體制發展、大灣區醫療概況與醫療保障證書課程", titleEn: "Topic 1 - Hong Kong Healthcare System Development, GBA Overview & Medical Insurance Certificate Course", duration: "1.5 Hours", topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"], topicsEn: ["HK healthcare system development", "GBA healthcare overview", "Medical insurance"], sortOrder: 1 },
-          { moduleNumber: 2, titleZh: "主題二 - 危疾系列：乳癌診斷、臨床治療與患者支援", titleEn: "Topic 2 - Critical Illness Series: Breast Cancer Diagnosis, Clinical Treatment & Patient Support", duration: "1.5 Hours", topicsZh: ["乳癌診斷", "臨床治療", "患者支援"], topicsEn: ["Breast cancer diagnosis", "Clinical treatment", "Patient support"], sortOrder: 2 },
-          { moduleNumber: 3, titleZh: "主題三 - 常見運動受傷的處理", titleEn: "Topic 3 - Common Sports Injury Management", duration: "1.5 Hours", topicsZh: ["常見運動受傷處理"], topicsEn: ["Common sports injury management"], sortOrder: 3 },
-          { moduleNumber: 4, titleZh: "主題四 - 危疾系列：認識婦科癌症", titleEn: "Topic 4 - Critical Illness Series: Understanding Gynecological Cancers", duration: "1.5 Hours", topicsZh: ["婦科癌症認識"], topicsEn: ["Understanding gynecological cancers"], sortOrder: 4 },
-          { moduleNumber: 5, titleZh: "主題五 - 危疾系列：前列腺健康及微創手術最新發展", titleEn: "Topic 5 - Critical Illness Series: Prostate Health & Latest Advances in Minimally Invasive Surgery", duration: "1.5 Hours", topicsZh: ["前列腺健康", "微創手術最新發展"], topicsEn: ["Prostate health", "Latest advances in minimally invasive surgery"], sortOrder: 5 },
-          { moduleNumber: 6, titleZh: "主題六 - 認識肺癌：從診斷到個人化治療", titleEn: "Topic 6 - Understanding Lung Cancer: From Diagnosis to Personalised Treatment", duration: "1.5 Hours", topicsZh: ["肺癌診斷", "個人化治療"], topicsEn: ["Lung cancer diagnosis", "Personalised treatment"], sortOrder: 6 },
+          {
+            moduleNumber: 1,
+            titleZh: "主題 - 香港醫療體制發展、大灣區醫療概況與醫療保障",
+            titleEn:
+              "Topic - Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
+            duration: "1.5 Hours",
+            topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"],
+            topicsEn: [
+              "HK healthcare system development",
+              "GBA healthcare overview",
+              "Medical insurance",
+            ],
+            sortOrder: 1,
+          },
+          {
+            moduleNumber: 2,
+            titleZh: "主題 - 危疾系列：乳癌診斷、臨床治療與患者支援",
+            titleEn:
+              "Topic - Critical Illness: Breast Cancer Diagnosis, Clinical Treatment and Patient Support",
+            duration: "1.5 Hours",
+            topicsZh: ["乳癌診斷", "臨床治療", "患者支援"],
+            topicsEn: [
+              "Breast cancer diagnosis",
+              "Clinical treatment",
+              "Patient support",
+            ],
+            sortOrder: 2,
+          },
+          {
+            moduleNumber: 3,
+            titleZh: "主題 - 常見運動受傷的處理",
+            titleEn: "Topic - Sports Medicine: Injury Management and Recovery",
+            duration: "1.5 Hours",
+            topicsZh: ["常見運動受傷處理"],
+            topicsEn: ["Common sports injury management"],
+            sortOrder: 3,
+          },
+          {
+            moduleNumber: 4,
+            titleZh: "主題 - 危疾系列：認識婦科癌症",
+            titleEn:
+              "Topic - Critical Illness: Understanding Gynecological Cancers: Diagnosis, Treatment, Multidisciplinary Care and the Patient Journey",
+            duration: "1.5 Hours",
+            topicsZh: ["婦科癌症認識"],
+            topicsEn: ["Understanding gynecological cancers"],
+            sortOrder: 4,
+          },
+          {
+            moduleNumber: 5,
+            titleZh: "主題 - 危疾系列：前列腺健康及微創手術最新發展",
+            titleEn:
+              "Topic - Critical Illness: Urology and Robotic Surgery: Modern Approaches to Diagnosis, Treatment, and Recovery",
+            duration: "1.5 Hours",
+            topicsZh: ["前列腺健康", "微創手術最新發展"],
+            topicsEn: [
+              "Prostate health",
+              "Latest advances in minimally invasive surgery",
+            ],
+            sortOrder: 5,
+          },
+          {
+            moduleNumber: 6,
+            titleZh: "主題 - 認識肺癌：從診斷到個人化治療",
+            titleEn:
+              "Topic - Critical Illness: Leading Cause of Cancer Death in HK - Lung Cancer: Diagnosis, Treatment, and Multidisciplinary",
+            duration: "1.5 Hours",
+            topicsZh: ["肺癌診斷", "個人化治療"],
+            topicsEn: ["Lung cancer diagnosis", "Personalised treatment"],
+            sortOrder: 6,
+          },
         ],
       },
       schedules: {
@@ -261,36 +361,47 @@ async function main() {
           {
             questionZh: "此課程如何申報CPD時數？",
             questionEn: "How do I declare CPD hours for this course?",
-            answerZh: "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: CPD26090103。",
-            answerEn: "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: CPD26090103.",
+            answerZh:
+              "完成100%出席率後，出席記錄將直接提交至香港保險業監管局。IA REF: CPD26090103。",
+            answerEn:
+              "Upon 100% attendance, attendance records will be submitted directly to the HK Insurance Authority under IA REF: CPD26090103.",
             sortOrder: 1,
           },
           {
             questionZh: "面授課程的出席要求是什麼？",
-            questionEn: "What is the attendance requirement for in-person sessions?",
-            answerZh: "參加者必須達100%出席率。須簽到及簽退，遲到或早退超過15分鐘可能導致CPD學分被取消。",
-            answerEn: "Participants must achieve 100% attendance. Sign-in and sign-out are mandatory. Late arrivals or early departures beyond 15 minutes may result in forfeiture of CPD credit.",
+            questionEn:
+              "What is the attendance requirement for in-person sessions?",
+            answerZh:
+              "參加者必須達100%出席率。須簽到及簽退，遲到或早退超過15分鐘可能導致CPD學分被取消。",
+            answerEn:
+              "Participants must achieve 100% attendance. Sign-in and sign-out are mandatory. Late arrivals or early departures beyond 15 minutes may result in forfeiture of CPD credit.",
             sortOrder: 2,
           },
           {
             questionZh: "如何及何時收到CPD證書？",
             questionEn: "How and when will I receive my CPD certificate?",
-            answerZh: "電子證書(PDF)將於確認全程出席後3至5個工作天內透過電郵發出。",
-            answerEn: "Electronic certificates (PDF) are issued via email within 3 to 5 business days after successfully verifying your full attendance.",
+            answerZh:
+              "電子證書(PDF)將於確認全程出席後3至5個工作天內透過電郵發出。",
+            answerEn:
+              "Electronic certificates (PDF) are issued via email within 3 to 5 business days after successfully verifying your full attendance.",
             sortOrder: 3,
           },
           {
             questionZh: "場地位置及交通？",
             questionEn: "Venue location and transportation?",
-            answerZh: "香港新界沙田澤祥街9號 香港中文大學醫院。港鐵大學站步行約8分鐘。",
-            answerEn: "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT. About 8 min walk from University MTR station.",
+            answerZh:
+              "香港新界沙田澤祥街9號 香港中文大學醫院。港鐵大學站步行約8分鐘。",
+            answerEn:
+              "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT. About 8 min walk from University MTR station.",
             sortOrder: 4,
           },
           {
             questionZh: "退款或改期政策是什麼？",
             questionEn: "What is the refund or rescheduling policy?",
-            answerZh: "開課前至少7個曆日提出取消可獲90%退款（10%手續費）。請參閱完整條款及細則與私隱政策。",
-            answerEn: "Cancellations requested at least 7 calendar days prior to the start date are eligible for a 90% refund (10% processing fee). Please review our full Terms and Conditions and Privacy Policy.",
+            answerZh:
+              "開課前至少7個曆日提出取消可獲90%退款（10%手續費）。請參閱完整條款及細則與私隱政策。",
+            answerEn:
+              "Cancellations requested at least 7 calendar days prior to the start date are eligible for a 90% refund (10% processing fee). Please review our full Terms and Conditions and Privacy Policy.",
             sortOrder: 5,
           },
         ],
@@ -353,6 +464,20 @@ async function main() {
       }
     }
     console.log("ScheduleTopic links created for CPD26090103");
+  }
+
+  // Link all CPD26090103 schedules to placeholder instructor
+  const cpd26090103SchedulesDb = await prisma.schedule.findMany({
+    where: { course: { slug: "CPD26090103" } },
+  });
+  if (placeholderInstructor) {
+    for (const sched of cpd26090103SchedulesDb) {
+      await prisma.scheduleInstructor.upsert({
+        where: { scheduleId_instructorId: { scheduleId: sched.id, instructorId: placeholderInstructor.id } },
+        update: {},
+        create: { scheduleId: sched.id, instructorId: placeholderInstructor.id },
+      });
+    }
   }
 
   // ─── Test receipt (VERIFIED enrolment with receipt number) ─

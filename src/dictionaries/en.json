@@ -123,7 +123,7 @@
     "totalListings": "Total Listings:",
     "emptyState": "No courses match your selected filters.",
     "resetSearchParameters": "Reset Search Parameters",
-    "iaRef": "IA REF:",
+    "iaRef": "Course REF:",
     "coreRegulatoryRequirement": "Core Regulatory Requirement",
     "deliveryMode": "Delivery Mode",
     "language": "Language",
@@ -191,7 +191,8 @@
       "venue": "Venue / Location",
       "module": "Module",
       "duration": "Duration",
-      "topics": "Key Topics Covered"
+      "topics": "Key Topics Covered",
+      "instructor": "Instructor"
     },
 
     "categoryValues": {
@@ -199,6 +200,8 @@
       "compliance": "Regulatory Compliance",
       "management": "Executive Management"
     },
+
+    "iaSchemeLabel": "Insurance Intermediary CPD Scheme",
 
     "deliveryModeValues": {
       "Online": "Online",
@@ -615,7 +618,7 @@
     "date": "Date",
     "registrantName": "Registrant Name",
     "courseName": "Course Name",
-    "iaRef": "IA Reference",
+    "iaRef": "Course Reference",
     "cpdHours": "CPD Hours",
     "fee": "Amount Paid",
     "paymentMethod": "Payment Method",
@@ -643,7 +646,7 @@
     "viewAll": "View All",
     "courseList": "Course List",
     "courseName": "Course Name",
-    "iaRef": "IA Reference",
+    "iaRef": "Course Reference",
     "cpdHours": "CPD Hours",
     "price": "Price",
     "enrolments": "Enrolments",
@@ -664,7 +667,7 @@
     "date": "Date",
     "registrantName": "Registrant Name",
     "courseName": "Course Name",
-    "iaRef": "IA Reference",
+    "iaRef": "Course Reference",
     "cpdHours": "CPD Hours",
     "fee": "Amount Paid",
     "paymentMethod": "Payment Method",

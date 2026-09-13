@@ -163,6 +163,10 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   const perTopicDuration = c.syllabusItems.length > 0
     ? (isZh ? c.syllabusItems[0].duration.replace(/hours/i, "小時").trim() : c.syllabusItems[0].duration)
     : `${c.cpdHours}${isZh ? "小時" : " hours"}`;
+  const perTopicLabel = isZh ? "每個主題" : "Each topic";
+  const hoursText = c.syllabusItems.length > 0
+    ? `${perTopicLabel} ${perTopicDuration}，${isZh ? "共" : "total"} ${c.cpdHours} ${isZh ? "小時" : "hours"}`
+    : `${c.cpdHours}${isZh ? "小時" : " hours"}`;
 
   // Build feeStructureLines from syllabus count + unitPrice (bundle price not in DB)
   const feeStructureLines: string[] = [];
@@ -171,11 +175,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     feeStructureLines.push(isZh ? `共 ${topicCount} 個主題` : `Total: ${topicCount} topics`);
     if (c.unitPrice) {
       const unitPriceStr = Number(c.unitPrice).toLocaleString();
-      if (isZh) {
-        feeStructureLines.push(`• 單個主題：HKD ${unitPriceStr} / ${perTopicDuration}`);
-      } else {
-        feeStructureLines.push(`• Single topic: HKD ${unitPriceStr} / ${perTopicDuration}`);
-      }
+      feeStructureLines.push(isZh ? `每個主題 HKD ${unitPriceStr}` : `Each topic HKD ${unitPriceStr}`);
     }
   }
 
@@ -243,9 +243,7 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     fee: c.price === 0 ? freeLabel : `HKD ${c.price.toLocaleString()}`,
     venue: uniqueVenues.join(isZh ? "；" : "; "),
     datesText: dates.join("、"),
-    hoursText: isZh
-      ? `每堂 ${perTopicDuration}，共 ${c.cpdHours} 小時`
-      : `${perTopicDuration} per session, ${c.cpdHours} hours total`,
+    hoursText,
     feeStructureLines,
     status: (c.registrationStatus?.toLowerCase() ?? "open") as DetailedCourse["status"],
     capacity: c.capacity,

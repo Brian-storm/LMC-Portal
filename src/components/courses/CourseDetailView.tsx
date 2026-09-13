@@ -1,20 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   Award,
   MapPin,
   FileText,
   Calendar,
-  User,
-  HelpCircle,
-  ChevronDown,
   Building2,
   GraduationCap,
   Clock,
 } from "lucide-react";
-import { CourseViewDict, DetailedCourse, CourseStatus, ScheduleSession } from "./types";
+import { CourseViewDict, DetailedCourse, ScheduleSession } from "./types";
+// Hidden sections (preserved for potential re-enable):
+// import { CourseInstructors, CourseFaqs } from "./CourseHiddenSections";
 
 interface CourseDetailViewProps {
   currentLocale: string;
@@ -41,29 +39,6 @@ export function CourseDetailView({
     ? (course.certificateDescriptionCn || course.certificateDescriptionZh || course.certificateDescriptionEn)
     : (course.certificateDescriptionZh || course.certificateDescriptionCn || course.certificateDescriptionEn);
 
-  const getStatusBadge = (status: CourseStatus) => {
-    const statusMap = {
-      open: {
-        text: dict.status?.open,
-        color: "bg-emerald-50 text-emerald-900 border-emerald-300",
-      },
-      fewSeats: {
-        text: dict.status?.fewSeats,
-        color: "bg-amber-50 text-amber-900 border-amber-300",
-      },
-      full: {
-        text: dict.status?.full,
-        color: "bg-rose-50 text-rose-900 border-rose-300",
-      },
-      closed: {
-        text: dict.status?.closed,
-        color: "bg-slate-100 text-slate-800 border-slate-300",
-      },
-    };
-    return statusMap[status] || statusMap.closed;
-  };
-
-  const statusBadge = getStatusBadge(course.status);
   const isEnrollable = course.status === "open" || course.status === "fewSeats";
   const targetSlug = course.slug || course.id;
   const enrollUrl = currentLocale
@@ -138,23 +113,6 @@ export function CourseDetailView({
                   <span className="text-slate-400 font-bold mr-1">{dict.iaRef}:</span>
                   {course.iaRefNumber}
                 </span>
-              )}
-            </div>
-            <div className="inline-flex items-center gap-2">
-              <div
-                className="inline-flex items-center space-x-1 text-primary font-bold bg-emerald-50 px-2 py-0.5 border border-emerald-300 rounded-xs"
-                style={{ fontSize: "11.5px" }}
-              >
-                <Award className="w-3 h-3 text-primary shrink-0" />
-                <span>{course.cpdHours} {dict.hours}</span>
-              </div>
-              {course.cpdHoursIa && (
-                <div
-                  className="inline-flex items-center space-x-1 text-emerald-800 font-bold bg-emerald-50/60 px-2 py-0.5 border border-emerald-200 rounded-xs"
-                  style={{ fontSize: "11.5px" }}
-                >
-                  <span>{course.cpdHoursIa} {dict.iaShort} {dict.hours}{dict.perSession}</span>
-                </div>
               )}
             </div>
           </div>
@@ -248,6 +206,37 @@ export function CourseDetailView({
           <div className="space-y-6 lg:col-span-1 self-start sticky top-24">
 
         {/* ================================================================== */}
+        {/* 6a. ENROLLMENT CARD — desktop: top of sidebar                      */}
+        {/* ================================================================== */}
+        <div className="hidden lg:block bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+          <div className="space-y-3">
+            {isEnrollable ? (
+              <Link
+                href={enrollUrl}
+                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center text-sm"
+              >
+                {dict.enrollCta}
+              </Link>
+            ) : (
+              <span
+                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-slate-500 bg-slate-300 border border-slate-400 rounded-xs shadow-2xs text-center cursor-not-allowed select-none text-sm"
+              >
+                {dict.enrollCta}
+              </span>
+            )}
+            <a
+              href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+              download
+              className="block w-full py-2 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5 text-xs"
+            >
+              <FileText className="w-3.5 h-3.5 text-slate-600" />
+              <span>{dict.downloadBrochure}</span>
+            </a>
+          </div>
+        </div>
+
+        {/* ================================================================== */}
         {/* 4. COURSE DETAILS TABLE                                            */}
         {/* ================================================================== */}
         <section className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs">
@@ -278,10 +267,6 @@ export function CourseDetailView({
                 <td className="py-2">{course.venue}</td>
               </tr>
               <tr>
-                <td className="py-2 pr-4 font-bold text-slate-500 font-mono uppercase text-xs align-top">{dict.courseDates}</td>
-                <td className="py-2">{course.datesText}</td>
-              </tr>
-              <tr>
                 <td className="py-2 pr-4 font-bold text-slate-500 font-mono uppercase text-xs align-top">{dict.courseHours}</td>
                 <td className="py-2">{course.hoursText}</td>
               </tr>
@@ -298,58 +283,6 @@ export function CourseDetailView({
           {feeDescription && (
             <p className="mt-3 text-xs text-slate-500 italic border-t border-slate-200 pt-3">{feeDescription}</p>
           )}
-        </section>
-
-        {/* ================================================================== */}
-        {/* 6. ENROLLMENT CARD (sidebar summary)                               */}
-        {/* ================================================================== */}
-        <section className="bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
-          <div className="space-y-5">
-            <div className="flex items-center justify-between">
-              <span
-                className={`border px-2 py-0.5 font-bold uppercase rounded-xs ${statusBadge.color}`}
-                style={{ fontSize: "10.5px" }}
-              >
-                {statusBadge.text}
-              </span>
-              <span className="font-mono font-bold text-slate-700 text-sm">{course.cpdHours} {dict.hours} {dict.cpd}</span>
-            </div>
-
-            <div className="text-center border-b border-slate-200 pb-4">
-              <span className="text-slate-400 font-mono block uppercase font-bold text-xs tracking-wider mb-1">{dict.officialCourseFee}</span>
-              <span className="text-2xl font-sans font-bold text-slate-900">{course.fee}</span>
-              {course.unitPrice && (
-                <span className="text-slate-500 font-mono block text-xs mt-0.5">
-                  {dict.unitPrice} {dict.currency} {typeof course.unitPrice === 'number' ? course.unitPrice.toLocaleString() : course.unitPrice}
-                </span>
-              )}
-            </div>
-
-            {isEnrollable ? (
-              <Link
-                href={enrollUrl}
-                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center text-sm"
-              >
-                {dict.enrollCta}
-              </Link>
-            ) : (
-              <span
-                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-slate-500 bg-slate-300 border border-slate-400 rounded-xs shadow-2xs text-center cursor-not-allowed select-none text-sm"
-              >
-                {dict.enrollCta}
-              </span>
-            )}
-
-            <a
-              href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
-              download
-              className="block w-full py-2 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5 text-xs"
-            >
-              <FileText className="w-3.5 h-3.5 text-slate-600" />
-              <span>{dict.downloadBrochure}</span>
-            </a>
-          </div>
         </section>
 
         {/* ================================================================== */}
@@ -400,73 +333,44 @@ export function CourseDetailView({
         </section>
 
         {/* ================================================================== */}
-        {/* 9. COURSE POSTER (optional)                                        */}
+        {/* 6b. ENROLLMENT CARD — mobile: bottom of sidebar                     */}
         {/* ================================================================== */}
-        {course.imageUrl && (
-          <div className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs">
-            <div className="relative w-full bg-slate-100 overflow-hidden rounded-xs border border-slate-200">
-              <Image
-                src={course.imageUrl}
-                alt={course.title}
-                width={800}
-                height={600}
-                className="w-full h-auto object-contain"
-                sizes="(max-width: 768px) 100vw, 600px"
-              />
-            </div>
+        <div className="block lg:hidden bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+          <div className="space-y-3">
+            {isEnrollable ? (
+              <Link
+                href={enrollUrl}
+                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-primary-foreground transition-colors rounded-xs shadow-2xs border bg-primary hover:bg-primary/80 active:bg-primary/90 border-primary/40 text-center text-sm"
+              >
+                {dict.enrollCta}
+              </Link>
+            ) : (
+              <span
+                className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-slate-500 bg-slate-300 border border-slate-400 rounded-xs shadow-2xs text-center cursor-not-allowed select-none text-sm"
+              >
+                {dict.enrollCta}
+              </span>
+            )}
+            <a
+              href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+              download
+              className="block w-full py-2 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5 text-xs"
+            >
+              <FileText className="w-3.5 h-3.5 text-slate-600" />
+              <span>{dict.downloadBrochure}</span>
+            </a>
           </div>
-        )}
-          </div> {/* End Right Column */}
+        </div>
+
+        </div> {/* End Right Column */}
 
           {/* Left Column — Main Content (continued) */}
           <div className="space-y-6 lg:col-span-2">
 
-        {/* ================================================================== */}
-        {/* 7. INSTRUCTORS & FACULTY                                           */}
-        {/* ================================================================== */}
-        <section id="instructors" className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs">
-          <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-            <User className="w-4 h-4 text-primary" />
-            <span>{dict.sections?.instructors}</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {course.instructors.map((ins) => (
-              <div key={ins.id} className="flex gap-3 border border-slate-300 rounded-xs p-3 bg-slate-50/50">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden border border-slate-300 rounded-xs bg-slate-200">
-                  <Image src={ins.photoUrl} alt={ins.name} fill className="object-cover" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-sans font-bold text-slate-900 text-sm truncate">{ins.name}</h3>
-                  <p className="font-mono text-primary font-semibold truncate text-xs">{ins.title}</p>
-                  <p className="mt-1 text-slate-600 line-clamp-2 leading-tight text-sm">{ins.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* 8. FAQS                                                            */}
-        {/* ================================================================== */}
-        {course.faqs && course.faqs.length > 0 && (
-          <section id="faqs" className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs">
-            <h2 className="font-sans font-bold text-slate-900 text-sm sm:text-base uppercase tracking-wider flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-              <HelpCircle className="w-4 h-4 text-primary" />
-              <span>{dict.sections?.faqs}</span>
-            </h2>
-            <div className="space-y-2">
-              {course.faqs.map((faq) => (
-                <details key={faq.id} className="group border border-slate-300 rounded-xs bg-slate-50 p-3">
-                  <summary className="cursor-pointer font-semibold text-slate-800 list-none flex justify-between items-center text-sm">
-                    <span>{faq.question}</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-500 transition-transform group-open:rotate-180 shrink-0 ml-2" />
-                  </summary>
-                  <p className="mt-2 text-slate-600 border-t border-slate-200 pt-2 leading-relaxed text-sm">{faq.answer}</p>
-                </details>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Hidden sections (preserved for potential re-enable): */}
+        {/* <CourseInstructors dict={dict} course={course} /> */}
+        {/* <CourseFaqs dict={dict} course={course} /> */}
           </div> {/* End Left Column */}
         </div> {/* End Grid */}
       </div>

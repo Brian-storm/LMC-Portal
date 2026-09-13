@@ -16,11 +16,13 @@ export interface ApiCourse {
   iaRefNumber: string | null;
   cpdHours: number;
   price: number;
+  unitPrice: number | null;
   capacity: number;
   imageUrl: string | null;
   registrationStatus: string;
   deliveryMode: string;
   language: string;
+  _count: { syllabusItems: number };
   schedules: Array<{
     id: string;
     dateAndTime: string;
@@ -42,6 +44,16 @@ export interface ApiCourse {
  */
 export function mapApiCourse(c: ApiCourse, locale: string): Course {
   const isZh = locale === "zh-hk" || locale === "zh-cn";
+
+  // Build a localized fee breakdown line when unitPrice and syllabus items exist
+  const topicCount = c._count?.syllabusItems ?? 0;
+  const feeBreakdown =
+    c.unitPrice && topicCount > 0
+      ? isZh
+        ? `共 ${topicCount} 個主題，每個 HK$ ${Number(c.unitPrice).toLocaleString()}`
+        : `${topicCount} topics, HK$ ${Number(c.unitPrice).toLocaleString()} each`
+      : undefined;
+
   return {
     id: c.id,
     slug: c.slug,
@@ -52,6 +64,7 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     deliveryMode: c.deliveryMode,
     language: c.language,
     fee: c.price === 0 ? "Free" : `HKD ${c.price.toLocaleString()}`,
+    feeBreakdown,
     status: (c.registrationStatus?.toLowerCase() ?? "open") as Course["status"],
     imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,

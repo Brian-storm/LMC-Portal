@@ -123,7 +123,7 @@
     "totalListings": "课程总数：",
     "emptyState": "没有找到符合您筛选条件的课程。",
     "resetSearchParameters": "重置搜索条件",
-    "iaRef": "保监局参考编号：",
+    "iaRef": "课程参考编号：",
     "coreRegulatoryRequirement": "核心监管强制要求",
     "deliveryMode": "授课模式",
     "language": "教学语言",
@@ -187,7 +187,8 @@
       "venue": "上课地点",
       "module": "课程单元",
       "duration": "单元学时",
-      "topics": "单元主题"
+      "topics": "单元主题",
+      "instructor": "讲师"
     },
 
     "categoryValues": {
@@ -195,6 +196,8 @@
       "compliance": "监管合规",
       "management": "行政管理"
     },
+
+    "iaSchemeLabel": "保险中介人持续专业培训计划",
 
     "deliveryModeValues": {
       "Online": "线上",
@@ -242,7 +245,7 @@
     "course4": "",
     "portal1": "学员证书核实系统",
     "portal2": "机构教职员登录",
-    "portal3": "关于 LMC 顾问服务",
+    "portal3": "关于德智管理顾问服务",
     "location": "香港尖沙咀东部新文华中心B座10楼11-15室",
     "copyright": "版权所有，不得转载。",
     "privacy": "隐私政策",
@@ -611,7 +614,7 @@
     "date": "日期",
     "registrantName": "学员姓名",
     "courseName": "课程名称",
-    "iaRef": "保监局参考编号",
+    "iaRef": "课程参考编号",
     "cpdHours": "CPD 学时",
     "fee": "缴费金额",
     "paymentMethod": "付款方式",
@@ -639,7 +642,7 @@
     "viewAll": "查看全部",
     "courseList": "课程列表",
     "courseName": "课程名称",
-    "iaRef": "保监局参考编号",
+    "iaRef": "课程参考编号",
     "cpdHours": "CPD 学时",
     "price": "价格",
     "enrolments": "报名人数",
@@ -660,7 +663,7 @@
     "date": "日期",
     "registrantName": "学员姓名",
     "courseName": "课程名称",
-    "iaRef": "保监局参考编号",
+    "iaRef": "课程参考编号",
     "cpdHours": "CPD 学时",
     "fee": "缴费金额",
     "paymentMethod": "付款方式",
