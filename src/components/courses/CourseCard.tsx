@@ -7,7 +7,6 @@ import {
   ArrowRight,
   ExternalLink,
   ShieldAlert,
-  ImageIcon,
   DollarSign,
 } from "lucide-react";
 import { CourseViewDict } from "@/dictionaries/types";
@@ -81,28 +80,18 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
         {/* ------------------------------------------------------------------ */}
         {/* 3A. POSTER-SIZED COURSE IMAGE — 1/3 WIDTH                        */}
         {/* Poster image at 2205×3305 portrait aspect ratio (≈2:3)            */}
+        {/* Poster URL sourced from dictionary rather than DB seed            */}
         {/* ------------------------------------------------------------------ */}
         <div className="w-1/3 shrink-0">
-          {course.imageUrl ? (
-            <div className="relative w-full aspect-[2205/3305] bg-slate-200 overflow-hidden rounded-xs">
-              <Image
-                src={course.imageUrl}
-                alt={course.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-            </div>
-          ) : (
-            <div className="w-full aspect-[2205/3305] bg-slate-100 border border-slate-200 rounded-xs flex flex-col items-center justify-center text-slate-400 gap-1.5">
-              <ImageIcon className="w-6 h-6" />
-              <span
-                className="font-mono text-xs text-slate-400 uppercase tracking-wider text-center px-1"
-              >
-                {dict.poster}
-              </span>
-            </div>
-          )}
+          <div className="relative w-full aspect-[2205/3305] bg-slate-200 overflow-hidden rounded-xs">
+            <Image
+              src={dict.cardPosterUrl}
+              alt={course.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
         </div>
 
         {/* Course Core Details Column — 2/3 width */}
