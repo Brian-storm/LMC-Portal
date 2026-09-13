@@ -41,7 +41,7 @@ export async function GET(
         syllabusItems: { orderBy: { sortOrder: "asc" } },
         schedules: {
           where: { isActive: true },
-          orderBy: { sessionDate: "asc" },
+          orderBy: [{ sessionDate: "asc" }, { dateAndTime: "asc" }],
           include: {
             instructors: {
               include: {

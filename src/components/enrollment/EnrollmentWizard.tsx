@@ -832,27 +832,10 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                             </p>
                           </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-2 text-xs">
-                          <a
-                            href={`mailto:${dict.confirmation.contactEmail}`}
-                            className="inline-flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xs transition-colors"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            {dict.confirmation.contactEmail}
-                          </a>
-                          <a
-                            href={`https://wa.me/${dict.confirmation.contactWhatsApp.replace(/[^0-9]/g, "")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xs transition-colors"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.346.223-.643.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.47 4.453-9.923 9.923-9.923 2.65 0 5.14 1.032 7.012 2.906 1.872 1.874 2.903 4.365 2.902 7.014 0 5.469-4.453 9.921-9.924 9.921" />
-                            </svg>
-                            WhatsApp
-                          </a>
+                        <div className="text-xs text-amber-800 space-y-1">
+                          <p><span className="font-bold">{dict.formLabels.orgContactLabel}:</span> Mr. Anthony Yuen 阮德添</p>
+                          <p><span className="font-bold">{dict.formLabels.orgContactEmail}:</span> <a href="mailto:yuentaktim@outlook.com" className="underline hover:text-amber-900">yuentaktim@outlook.com</a></p>
+                          <p><span className="font-bold">{dict.formLabels.orgContactMobile}:</span> <a href="https://wa.me/85260302488" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-900">(852) 60302488</a></p>
                         </div>
                       </div>
                     </div>

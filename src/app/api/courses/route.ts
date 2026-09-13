@@ -95,7 +95,7 @@ select: {
               venueZh: true,
               quotaRemaining: true,
             },
-            orderBy: { sessionDate: "asc" },
+            orderBy: [{ sessionDate: "asc" }, { dateAndTime: "asc" }],
           },
         },
       }),
