@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -871,7 +871,13 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   )}
 
                   <div className="space-y-2.5">
-                    {course.schedules.map((sch) => {
+                    {course.schedules.map((sch, idx) => {
+                      // Track date changes from the previous schedule to render date-group separators
+                      const datePrefix = sch.dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? "";
+                      const prevDatePrefix = idx > 0
+                        ? course.schedules[idx - 1].dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? ""
+                        : "";
+                      const isNewDateGroup = idx === 0 || datePrefix !== prevDatePrefix;
                       const isSelected = selectedScheduleIds.includes(sch.id);
                       const isFull = sch.quotaRemaining <= 0;
                       // Use the first linked syllabus item as the primary topic
@@ -885,12 +891,19 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                         ? (locale === "en" ? syllabusItem.topicsEn : syllabusItem.topicsZh)
                         : [];
                       return (
-                        <button
-                          key={sch.id}
-                          type="button"
-                          disabled={isFull}
-                          onClick={() => toggleSchedule(sch.id)}
-                          className={`w-full text-left p-3 rounded-xs border transition-colors ${
+                        <React.Fragment key={sch.id}>
+                          {isNewDateGroup && (
+                            <div className="flex items-center gap-3 pt-1 pb-0.5">
+                              <div className="h-px flex-1 bg-slate-200" />
+                              <span className="text-xs font-bold text-slate-500 font-mono tracking-wider uppercase">{datePrefix}</span>
+                              <div className="h-px flex-1 bg-slate-200" />
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            disabled={isFull}
+                            onClick={() => toggleSchedule(sch.id)}
+                            className={`w-full text-left p-3 rounded-xs border transition-colors ${
                             isSelected
                               ? "bg-primary/5 border-primary"
                               : isFull
@@ -953,6 +966,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                             </div>
                           </div>
                         </button>
+                        </React.Fragment>
                       );
                     })}
                   </div>

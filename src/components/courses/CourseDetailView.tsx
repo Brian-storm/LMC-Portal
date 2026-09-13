@@ -9,7 +9,7 @@ import {
   Clock,
   User,
 } from "lucide-react";
-import { CourseViewDict, DetailedCourse, ScheduleSession } from "./types";
+import { CourseViewDict, DetailedCourse } from "./types";
 // Hidden sections (preserved for potential re-enable):
 // import { CourseInstructors, CourseFaqs } from "./CourseHiddenSections";
 
@@ -43,18 +43,6 @@ export function CourseDetailView({
   const enrollUrl = currentLocale
     ? `/${currentLocale}/courses/${targetSlug}/enroll`
     : `/courses/${targetSlug}/enroll`;
-
-  // Build schedule-by-module map
-  const scheduleByModuleId = new Map<string, ScheduleSession[]>();
-  for (const sch of course.schedules) {
-    for (const t of sch.topics) {
-      const id = t.syllabusItem.id;
-      if (!scheduleByModuleId.has(id)) {
-        scheduleByModuleId.set(id, []);
-      }
-      scheduleByModuleId.get(id)!.push(sch);
-    }
-  }
 
   // Pick organizer / co-organizer (already localized by the mapper, no fallback
   // literals so missing DB data surfaces as empty instead of masking)
@@ -180,74 +168,73 @@ export function CourseDetailView({
                 {dict.topicsHint}
               </p>
               <ol className="space-y-3">
-                {course.syllabus.map((mod, index) => {
-                  const moduleSchedules = scheduleByModuleId.get(mod.id) ?? [];
+                {course.schedules.map((sch, idx) => {
+                  const syllabusItem = sch.topics[0]?.syllabusItem;
                   return (
                     <li
-                      key={mod.id}
+                      key={sch.id}
                       className="border border-slate-300 rounded-xs bg-slate-50/50 p-3 sm:p-4"
                     >
                       <div className="flex items-start gap-3">
                         <span className="flex items-center justify-center shrink-0 w-7 h-7 rounded-full bg-primary text-white font-bold text-xs">
-                          {index + 1}
+                          {idx + 1}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <span className="font-bold text-slate-900 text-sm block">
-                            {mod.title}
-                          </span>
-                          <span className="font-mono text-slate-500 text-xs block mt-0.5">
-                            {mod.topics.join(" • ")}
-                          </span>
+                          {syllabusItem && (
+                            <>
+                              <span className="font-bold text-slate-900 text-sm block">
+                                {syllabusItem.title}
+                              </span>
+                              <span className="font-mono text-slate-500 text-xs block mt-0.5">
+                                {syllabusItem.topics.join(" • ")}
+                              </span>
+                            </>
+                          )}
                         </div>
-                        <span className="font-mono text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded-xs shrink-0 text-xs">
-                          {dict.labels?.duration}: {mod.duration} {dict.labels?.durationUnit}
-                        </span>
+                        {syllabusItem && (
+                          <span className="font-mono text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded-xs shrink-0 text-xs">
+                            {dict.labels?.duration}: {syllabusItem.duration} {dict.labels?.durationUnit}
+                          </span>
+                        )}
                       </div>
-                      {moduleSchedules.length > 0 && (
-                        <div className="mt-3 pt-3 border-t border-slate-200 space-y-2 ml-10">
-                          {moduleSchedules.map((sch) => (
-                            <div
-                              key={sch.id}
-                              className="flex flex-col gap-1.5 text-slate-700 bg-white border border-slate-200 rounded-xs px-2.5 py-2 text-sm"
-                            >
-                              <div className="flex items-center gap-1.5 font-semibold text-slate-900 shrink-0">
-                                <Calendar className="w-3 h-3 text-primary shrink-0" />
-                                <span className="font-mono font-bold uppercase text-slate-400 text-xs mr-1">
-                                  {dict.labels?.dateAndTime}:
-                                </span>
-                                <span>{sch.dateAndTime}</span>
-                              </div>
-                              {sch.instructor && (
-                                <div className="flex flex-col gap-0.5">
-                                  <div className="flex items-start gap-1.5">
-                                    <User className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
-                                    <div className="min-w-0 flex-1">
-                                      <div className="flex items-center gap-1.5 flex-wrap">
-                                        <span className="font-mono font-bold uppercase text-slate-400 text-xs">
-                                          {dict.labels?.instructor}:
-                                        </span>
-                                        <span className="font-semibold text-slate-800">
-                                          {sch.instructor.name}
-                                        </span>
-                                      </div>
-                                      {sch.instructor.title && (
-                                        <div className="text-slate-500 text-[10px] leading-tight">
-                                          {sch.instructor.title}
-                                        </div>
-                                      )}
-                                      {sch.instructor.bio && (
-                                        <div className="text-slate-600 text-xs leading-relaxed">
-                                          {sch.instructor.bio}
-                                        </div>
-                                      )}
-                                    </div>
+                      <div className="mt-3 pt-3 border-t border-slate-200 space-y-2 ml-10">
+                        <div className="flex flex-col gap-1.5 text-slate-700 bg-white border border-slate-200 rounded-xs px-2.5 py-2 text-sm">
+                          <div className="flex items-center gap-1.5 font-semibold text-slate-900 shrink-0">
+                            <Calendar className="w-3 h-3 text-primary shrink-0" />
+                            <span className="font-mono font-bold uppercase text-slate-400 text-xs mr-1">
+                              {dict.labels?.dateAndTime}:
+                            </span>
+                            <span>{sch.dateAndTime}</span>
+                          </div>
+                          {sch.instructor && (
+                            <div className="flex flex-col gap-0.5">
+                              <div className="flex items-start gap-1.5">
+                                <User className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <span className="font-mono font-bold uppercase text-slate-400 text-xs">
+                                      {dict.labels?.instructor}:
+                                    </span>
+                                    <span className="font-semibold text-slate-800">
+                                      {sch.instructor.name}
+                                    </span>
                                   </div>
+                                  {sch.instructor.title && (
+                                    <div className="text-slate-500 text-[10px] leading-tight">
+                                      {sch.instructor.title}
+                                    </div>
+                                  )}
+                                  {sch.instructor.bio && (
+                                    <div className="text-slate-600 text-xs leading-relaxed">
+                                      {sch.instructor.bio}
+                                    </div>
+                                  )}
                                 </div>
-                              )}
+                              </div>
                             </div>
-                          ))}
+                          )}
                         </div>
-                      )}
+                      </div>
                     </li>
                   );
                 })}
