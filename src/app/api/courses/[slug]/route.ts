@@ -22,20 +22,16 @@ export async function GET(
     const course = await prisma.course.findUnique({
       where: { slug },
       include: {
-        instructors: {
-          include: {
-            instructor: {
-              select: {
-                id: true,
-                nameZh: true,
-                nameEn: true,
-                titleZh: true,
-                titleEn: true,
-                bioZh: true,
-                bioEn: true,
-                avatarUrl: true,
-              },
-            },
+        generalInstructor: {
+          select: {
+            id: true,
+            nameZh: true,
+            nameEn: true,
+            titleZh: true,
+            titleEn: true,
+            bioZh: true,
+            bioEn: true,
+            avatarUrl: true,
           },
         },
         syllabusItems: { orderBy: { sortOrder: "asc" } },
@@ -134,18 +130,13 @@ export async function PATCH(
     }
 
     // Separate nested relations from flat course fields
-    const { instructors, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
+    const { generalInstructorId, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
 
     const course = await prisma.course.update({
       where: { slug },
       data: {
         ...courseData,
-        instructors: instructors
-          ? {
-              deleteMany: {},
-              create: instructors.map((i) => ({ instructorId: i.instructorId })),
-            }
-          : undefined,
+        generalInstructorId: generalInstructorId ?? undefined,
         syllabusItems: syllabusItems
           ? {
               deleteMany: {},
@@ -166,7 +157,7 @@ export async function PATCH(
           : undefined,
       },
       include: {
-        instructors: { include: { instructor: true } },
+        generalInstructor: true,
         syllabusItems: true,
         schedules: true,
         faqs: true,

@@ -130,7 +130,8 @@ model Course {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 
-  instructors       CourseInstructor[]
+  generalInstructorId String?
+  generalInstructor   Instructor?       @relation(fields: [generalInstructorId], references: [id], onDelete: SetNull)
   syllabusItems     SyllabusItem[]
   schedules         Schedule[]
   reviews           Review[]
@@ -150,20 +151,10 @@ model Instructor {
   bioEn     String?
   avatarUrl String?
 
-  courses            CourseInstructor[]
   scheduleInstructors ScheduleInstructor[]
+  generalCourses      Course[]
 
   @@map("instructors")
-}
-
-model CourseInstructor {
-  courseId     String
-  instructorId String
-  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-
-  @@id([courseId, instructorId])
-  @@map("course_instructors")
 }
 
 model ScheduleInstructor {

@@ -32,9 +32,7 @@ export interface ApiCourse {
     venueZh: string | null;
     quotaRemaining: number;
   }>;
-  instructors: Array<{
-    instructor: { nameZh: string; nameEn: string };
-  }>;
+  generalInstructor: { nameZh: string; nameEn: string } | null;
 }
 
 /**
@@ -73,12 +71,12 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     iaCode: c.iaRefNumber ?? undefined,
-    // Derive speaker display name from the first instructor (locale-aware)
+    // Derive speaker display name from the general instructor (locale-aware)
     // Append "主講" suffix for Chinese locales, "Lectured by " prefix for English
-    speaker: c.instructors?.[0]
+    speaker: c.generalInstructor
       ? (isZh
-        ? `${c.instructors[0].instructor.nameZh.replace(/\s+/g, "")}主講`
-        : `Lectured by ${c.instructors[0].instructor.nameEn}`)
+        ? `${c.generalInstructor.nameZh.replace(/\s+/g, "")}主講`
+        : `Lectured by ${c.generalInstructor.nameEn}`)
       : undefined,
     venue: c.schedules?.[0]
       ? (isZh

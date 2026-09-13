@@ -21,7 +21,7 @@ interface AdminCourse {
   cpdHours: number;
   price: number;
   registrationStatus: string;
-  instructors: { instructor: { nameEn: string; nameZh: string } }[];
+  generalInstructor: { nameEn: string; nameZh: string } | null;
   _count: { registrants: number };
 }
 
@@ -136,9 +136,11 @@ export default function AdminCoursesPage() {
                       </span>
                     </td>
                     <td className="py-3 px-3 text-slate-600">
-                      {course.instructors.map((i) =>
-                        locale === "zh-hk" || locale === "zh-cn" ? i.instructor.nameZh : i.instructor.nameEn
-                      ).join(", ") || "—"}
+                      {course.generalInstructor
+                        ? (locale === "zh-hk" || locale === "zh-cn"
+                          ? course.generalInstructor.nameZh
+                          : course.generalInstructor.nameEn)
+                        : "—"}
                     </td>
                     <td className="py-3 px-3">
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 ${statusBadge(course.registrationStatus)}`}>

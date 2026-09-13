@@ -20,11 +20,7 @@ export async function GET() {
     const courses = await prisma.course.findMany({
       orderBy: { createdAt: "desc" },
       include: {
-        instructors: {
-          include: {
-            instructor: { select: { nameEn: true, nameZh: true } },
-          },
-        },
+        generalInstructor: { select: { nameEn: true, nameZh: true } },
         _count: { select: { registrants: true } },
       },
     });

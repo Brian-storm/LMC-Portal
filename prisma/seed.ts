@@ -205,9 +205,7 @@ async function main() {
       registrationStatus: RegistrationStatus.FEW_SEATS,
       deliveryMode: "Online / In-person",
       language: "Cantonese / English",
-      instructors: {
-        create: { instructorId: cyrus.id },
-      },
+      generalInstructorId: cyrus.id,
       syllabusItems: {
         create: [
           {
@@ -338,7 +336,7 @@ async function main() {
 
   await prisma.course.upsert({
     where: { slug: "CPD26090103" },
-    // Resync schedules & instructors on every run so the seed stays authoritative for CPD26090103.
+    // Resync schedules on every run so the seed stays authoritative for CPD26090103.
     update: {
       nameZh: "香港醫療體制發展、大灣區醫療概況與醫療保障證書課程",
       nameEn:
@@ -351,21 +349,10 @@ async function main() {
       coOrganizerZh: "香港中文大學醫院",
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
+      generalInstructorId: cuhkSpecialist.id,
       schedules: {
         deleteMany: {},
         create: cpd26090103Schedules,
-      },
-      instructors: {
-        deleteMany: {},
-        create: [
-          { instructorId: cuhkSpecialist.id },
-          { instructorId: drNgo.id },
-          { instructorId: drJacquelineChoi.id },
-          { instructorId: drGeorgeLaw.id },
-          { instructorId: drCarolYeung.id },
-          { instructorId: drYolandaChan.id },
-          { instructorId: drLindaLeung.id },
-        ],
       },
     },
     create: {
@@ -405,17 +392,7 @@ async function main() {
       coOrganizerZh: "香港中文大學醫院",
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
-      instructors: {
-        create: [
-          { instructorId: cuhkSpecialist.id },
-          { instructorId: drNgo.id },
-          { instructorId: drJacquelineChoi.id },
-          { instructorId: drGeorgeLaw.id },
-          { instructorId: drCarolYeung.id },
-          { instructorId: drYolandaChan.id },
-          { instructorId: drLindaLeung.id },
-        ],
-      },
+      generalInstructorId: cuhkSpecialist.id,
       syllabusItems: {
         create: [
           {

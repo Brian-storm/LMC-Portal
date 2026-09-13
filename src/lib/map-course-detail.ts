@@ -1,19 +1,5 @@
 import { DetailedCourse, SyllabusModule, Instructor, ScheduleSession, CourseReview, CourseFAQ } from "@/components/courses/types";
 
-/** Raw API instructor from the junction table { instructor: { ... } } */
-interface ApiCourseInstructor {
-  instructor: {
-    id: string;
-    nameZh: string;
-    nameEn: string;
-    titleZh: string | null;
-    titleEn: string | null;
-    bioZh: string | null;
-    bioEn: string | null;
-    avatarUrl: string | null;
-  };
-}
-
 /** Raw API syllabus item with locale-aware fields */
 interface ApiSyllabusItem {
   id: string;
@@ -119,7 +105,16 @@ export interface ApiCourseDetail {
   certificateDescriptionZh: string | null;
   certificateDescriptionEn: string | null;
   certificateDescriptionCn: string | null;
-  instructors: ApiCourseInstructor[];
+  generalInstructor: {
+    id: string;
+    nameZh: string;
+    nameEn: string;
+    titleZh: string | null;
+    titleEn: string | null;
+    bioZh: string | null;
+    bioEn: string | null;
+    avatarUrl: string | null;
+  } | null;
   syllabusItems: ApiSyllabusItem[];
   schedules: ApiSchedule[];
   reviews: ApiReview[];
@@ -201,13 +196,16 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     }
   }
 
-  const instructors: Instructor[] = c.instructors.map((ci) => ({
-    id: ci.instructor.id,
-    name: localized(ci.instructor.nameZh, ci.instructor.nameEn),
-    title: localized(ci.instructor.titleZh, ci.instructor.titleEn),
-    photoUrl: ci.instructor.avatarUrl ?? "/placeholder.svg",
-    bio: localized(ci.instructor.bioZh, ci.instructor.bioEn),
-  }));
+  // Build instructors array from the optional general instructor
+  const instructors: Instructor[] = c.generalInstructor
+    ? [{
+        id: c.generalInstructor.id,
+        name: localized(c.generalInstructor.nameZh, c.generalInstructor.nameEn),
+        title: localized(c.generalInstructor.titleZh, c.generalInstructor.titleEn),
+        photoUrl: c.generalInstructor.avatarUrl ?? "/placeholder.svg",
+        bio: localized(c.generalInstructor.bioZh, c.generalInstructor.bioEn),
+      }]
+    : [];
 
   const syllabus: SyllabusModule[] = c.syllabusItems.map((si) => ({
     id: si.id,

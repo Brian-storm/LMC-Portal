@@ -59,29 +59,28 @@ export async function GET(request: NextRequest) {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: "desc" },
-select: {
-            id: true,
-            slug: true,
-            nameZh: true,
-            nameEn: true,
-            descriptionZh: true,
-            descriptionEn: true,
-            category: true,
-            iaRefNumber: true,
-            cpdHours: true,
-            price: true,
-            unitPrice: true,
-            capacity: true,
-            imageUrl: true,
-            registrationStatus: true,
-            deliveryMode: true,
-            language: true,
-            createdAt: true,
-            _count: { select: { syllabusItems: true } },
-          // Include the first instructor name for the speaker field on cards
-          instructors: {
-            select: { instructor: { select: { nameZh: true, nameEn: true } } },
-            take: 1,
+        select: {
+          id: true,
+          slug: true,
+          nameZh: true,
+          nameEn: true,
+          descriptionZh: true,
+          descriptionEn: true,
+          category: true,
+          iaRefNumber: true,
+          cpdHours: true,
+          price: true,
+          unitPrice: true,
+          capacity: true,
+          imageUrl: true,
+          registrationStatus: true,
+          deliveryMode: true,
+          language: true,
+          createdAt: true,
+          _count: { select: { syllabusItems: true } },
+          // Include the general instructor name for the speaker field on cards
+          generalInstructor: {
+            select: { nameZh: true, nameEn: true },
           },
           // Include active schedules so the front-end can show upcoming dates
           schedules: {
@@ -148,7 +147,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Separate nested relations from flat course fields
-    const { instructors, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
+    const { generalInstructorId, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
 
     const existing = await prisma.course.findUnique({ where: { slug: courseData.slug } });
     if (existing) {
@@ -161,9 +160,7 @@ export async function POST(request: NextRequest) {
     const course = await prisma.course.create({
       data: {
         ...courseData,
-        instructors: instructors?.length
-          ? { create: instructors.map((i) => ({ instructorId: i.instructorId })) }
-          : undefined,
+        generalInstructorId: generalInstructorId ?? undefined,
         syllabusItems: syllabusItems?.length
           ? { create: syllabusItems }
           : undefined,
@@ -175,7 +172,7 @@ export async function POST(request: NextRequest) {
           : undefined,
       },
       include: {
-        instructors: { include: { instructor: true } },
+        generalInstructor: true,
         syllabusItems: true,
         schedules: true,
         faqs: true,

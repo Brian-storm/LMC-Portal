@@ -27,13 +27,7 @@ const faqSchema = z.object({
   sortOrder: z.number().int().min(0).default(0),
 });
 
-// Reference to an existing instructor — only the ID is needed
-const instructorIdSchema = z.object({
-  instructorId: z.string().min(1, "instructorId is required"),
-});
-
-// ── Full create schema — all fields required except nested arrays ──
-
+// Reference to an existing instructor — optional direct ID on the course
 export const courseCreateSchema = z.object({
   slug: z
     .string()
@@ -61,7 +55,7 @@ export const courseCreateSchema = z.object({
     .default("OPEN"),
   deliveryMode: z.string().optional(),
   language: z.string().optional(),
-  instructors: z.array(instructorIdSchema).optional(),
+  generalInstructorId: z.string().optional(),
   syllabusItems: z.array(syllabusItemSchema).optional(),
   schedules: z.array(scheduleSchema).optional(),
   faqs: z.array(faqSchema).optional(),
