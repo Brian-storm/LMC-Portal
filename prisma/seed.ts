@@ -212,7 +212,7 @@ async function main() {
             moduleNumber: 1,
             titleZh: "信託管治入門",
             titleEn: "Introduction to Trust Governance",
-            duration: "3 Hours",
+            duration: "3",
             topicsZh: ["法律框架", "受信責任", "常見結構"],
             topicsEn: ["Legal framework", "Fiduciary duties", "Common structures"],
             sortOrder: 1,
@@ -221,7 +221,7 @@ async function main() {
             moduleNumber: 2,
             titleZh: "跨境遺產規劃",
             titleEn: "Cross-border Estate Planning",
-            duration: "4 Hours",
+            duration: "4",
             topicsZh: ["稅務影響", "跨司法管轄區資產"],
             topicsEn: ["Tax implications", "Multi-jurisdictional assets"],
             sortOrder: 2,
@@ -230,7 +230,7 @@ async function main() {
             moduleNumber: 3,
             titleZh: "財富傳承案例研究",
             titleEn: "Wealth Succession Case Studies",
-            duration: "3 Hours",
+            duration: "3",
             topicsZh: ["家族信託管理", "爭議預防"],
             topicsEn: ["Family trust administration", "Dispute prevention"],
             sortOrder: 3,
@@ -334,6 +334,80 @@ async function main() {
     { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", sessionDate: parseSessionDate("14/10/2026 (星期三) 16:00 - 17:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
   ];
 
+  // Syllabus items for CPD26090103, used in both create and update branches of the upsert.
+  const cpd26090103SyllabusItems = [
+    {
+      moduleNumber: 1,
+      titleZh: "主題 - 香港醫療體制發展、大灣區醫療概況與醫療保障",
+      titleEn:
+        "Topic - Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
+      duration: "1.5",
+      topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"],
+      topicsEn: [
+        "HK healthcare system development",
+        "GBA healthcare overview",
+        "Medical insurance",
+      ],
+      sortOrder: 1,
+    },
+    {
+      moduleNumber: 2,
+      titleZh: "主題 - 危疾系列：乳癌診斷、臨床治療與患者支援",
+      titleEn:
+        "Topic - Critical Illness: Breast Cancer Diagnosis, Clinical Treatment and Patient Support",
+      duration: "1.5",
+      topicsZh: ["乳癌診斷", "臨床治療", "患者支援"],
+      topicsEn: [
+        "Breast cancer diagnosis",
+        "Clinical treatment",
+        "Patient support",
+      ],
+      sortOrder: 2,
+    },
+    {
+      moduleNumber: 3,
+      titleZh: "主題 - 常見運動受傷的處理",
+      titleEn: "Topic - Sports Medicine: Injury Management and Recovery",
+      duration: "1.5",
+      topicsZh: ["常見運動受傷處理"],
+      topicsEn: ["Common sports injury management"],
+      sortOrder: 3,
+    },
+    {
+      moduleNumber: 4,
+      titleZh: "主題 - 危疾系列：認識婦科癌症",
+      titleEn:
+        "Topic - Critical Illness: Understanding Gynecological Cancers: Diagnosis, Treatment, Multidisciplinary Care and the Patient Journey",
+      duration: "1.5",
+      topicsZh: ["婦科癌症認識"],
+      topicsEn: ["Understanding gynecological cancers"],
+      sortOrder: 4,
+    },
+    {
+      moduleNumber: 5,
+      titleZh: "主題 - 危疾系列：前列腺健康及微創手術最新發展",
+      titleEn:
+        "Topic - Critical Illness: Urology and Robotic Surgery: Modern Approaches to Diagnosis, Treatment, and Recovery",
+      duration: "1.5",
+      topicsZh: ["前列腺健康", "微創手術最新發展"],
+      topicsEn: [
+        "Prostate health",
+        "Latest advances in minimally invasive surgery",
+      ],
+      sortOrder: 5,
+    },
+    {
+      moduleNumber: 6,
+      titleZh: "主題 - 認識肺癌：從診斷到個人化治療",
+      titleEn:
+        "Topic - Critical Illness: Leading Cause of Cancer Death in HK - Lung Cancer: Diagnosis, Treatment, and Multidisciplinary",
+      duration: "1.5",
+      topicsZh: ["肺癌診斷", "個人化治療"],
+      topicsEn: ["Lung cancer diagnosis", "Personalised treatment"],
+      sortOrder: 6,
+    },
+  ];
+
   await prisma.course.upsert({
     where: { slug: "CPD26090103" },
     // Resync schedules on every run so the seed stays authoritative for CPD26090103.
@@ -350,6 +424,10 @@ async function main() {
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
       generalInstructorId: cuhkSpecialist.id,
+      syllabusItems: {
+        deleteMany: {},
+        create: cpd26090103SyllabusItems,
+      },
       schedules: {
         deleteMany: {},
         create: cpd26090103Schedules,
@@ -394,78 +472,7 @@ async function main() {
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
       generalInstructorId: cuhkSpecialist.id,
       syllabusItems: {
-        create: [
-          {
-            moduleNumber: 1,
-            titleZh: "主題 - 香港醫療體制發展、大灣區醫療概況與醫療保障",
-            titleEn:
-              "Topic - Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
-            duration: "1.5 Hours",
-            topicsZh: ["香港醫療體制發展", "大灣區醫療概況", "醫療保障"],
-            topicsEn: [
-              "HK healthcare system development",
-              "GBA healthcare overview",
-              "Medical insurance",
-            ],
-            sortOrder: 1,
-          },
-          {
-            moduleNumber: 2,
-            titleZh: "主題 - 危疾系列：乳癌診斷、臨床治療與患者支援",
-            titleEn:
-              "Topic - Critical Illness: Breast Cancer Diagnosis, Clinical Treatment and Patient Support",
-            duration: "1.5 Hours",
-            topicsZh: ["乳癌診斷", "臨床治療", "患者支援"],
-            topicsEn: [
-              "Breast cancer diagnosis",
-              "Clinical treatment",
-              "Patient support",
-            ],
-            sortOrder: 2,
-          },
-          {
-            moduleNumber: 3,
-            titleZh: "主題 - 常見運動受傷的處理",
-            titleEn: "Topic - Sports Medicine: Injury Management and Recovery",
-            duration: "1.5 Hours",
-            topicsZh: ["常見運動受傷處理"],
-            topicsEn: ["Common sports injury management"],
-            sortOrder: 3,
-          },
-          {
-            moduleNumber: 4,
-            titleZh: "主題 - 危疾系列：認識婦科癌症",
-            titleEn:
-              "Topic - Critical Illness: Understanding Gynecological Cancers: Diagnosis, Treatment, Multidisciplinary Care and the Patient Journey",
-            duration: "1.5 Hours",
-            topicsZh: ["婦科癌症認識"],
-            topicsEn: ["Understanding gynecological cancers"],
-            sortOrder: 4,
-          },
-          {
-            moduleNumber: 5,
-            titleZh: "主題 - 危疾系列：前列腺健康及微創手術最新發展",
-            titleEn:
-              "Topic - Critical Illness: Urology and Robotic Surgery: Modern Approaches to Diagnosis, Treatment, and Recovery",
-            duration: "1.5 Hours",
-            topicsZh: ["前列腺健康", "微創手術最新發展"],
-            topicsEn: [
-              "Prostate health",
-              "Latest advances in minimally invasive surgery",
-            ],
-            sortOrder: 5,
-          },
-          {
-            moduleNumber: 6,
-            titleZh: "主題 - 認識肺癌：從診斷到個人化治療",
-            titleEn:
-              "Topic - Critical Illness: Leading Cause of Cancer Death in HK - Lung Cancer: Diagnosis, Treatment, and Multidisciplinary",
-            duration: "1.5 Hours",
-            topicsZh: ["肺癌診斷", "個人化治療"],
-            topicsEn: ["Lung cancer diagnosis", "Personalised treatment"],
-            sortOrder: 6,
-          },
-        ],
+        create: cpd26090103SyllabusItems,
       },
       schedules: {
         create: cpd26090103Schedules,

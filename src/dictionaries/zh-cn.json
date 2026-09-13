@@ -521,6 +521,7 @@
       "allSessionsSelected": "您已选择全部时段！可享 10% 批量折扣。",
       "sessionsSelected": "个时段已选",
       "noSessions": "目前没有可选的课堂时段。",
+      "durationUnit": "学时",
       "backButton": "返回",
       "proceedButton": "前往声明页"
     },

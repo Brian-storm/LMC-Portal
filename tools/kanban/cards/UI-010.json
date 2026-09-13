@@ -1,0 +1,76 @@
+{
+  "id": "UI-010",
+  "title": "Mobile Responsiveness Audit — Viewport, Admin Layout, Touch Optimization",
+  "content": "Mobile responsiveness audit identified 3 critical and 2 moderate issues across the codebase. Viewport meta tag is entirely missing from the root layout, causing potential incorrect zoom on mobile browsers. The admin layout sidebar is fixed-width with no collapse/drawer pattern, making it unusable below ~768px. No JS-based breakpoint hooks exist for auto-dismissing mobile menus on resize. Touch/scroll optimization CSS (`-webkit-overflow-scrolling`, `touch-action`, `overscroll-behavior`) is absent. The Navbar logo's clipPath polygon can protrude horizontally on small screens.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-13",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "導航與頁面修復",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 60,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": false,
+    "acceptance_testable": false,
+    "files_known": true,
+    "scope_defined": false,
+    "verification_contract": false,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "tools/kanban/cards/UI-010.json",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/layout.tsx",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/components/Navbar.tsx",
+    "src/app/globals.css",
+    "src/components/courses/CourseCard.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [
+      "CRITICAL: No `export const viewport` in root layout — mobile browsers may render at incorrect zoom",
+      "CRITICAL: Admin sidebar is always visible (fixed w-56, no collapse) — unusable below ~768px",
+      "MODERATE: No JS breakpoint hooks — mobile menus stay visible on window resize",
+      "MODERATE: Missing touch/scroll CSS — no -webkit-overflow-scrolling, touch-action, overscroll-behavior",
+      "MINOR: Navbar logo clipPath polygon may protrude horizontally on small screens",
+      "MINOR: CourseCard uses static w-1/3/w-2/3 that persist in flex-col mobile layout",
+      "MINOR: Admin enrolments 10-column table requires excessive horizontal scrolling"
+    ],
+    "residual": ""
+  },
+  "comments": [
+    "Full audit report and findings from 2026-09-13 automated exploration"
+  ],
+  "acceptance": [
+    "TBD — card is in backlog, scope needs refinement before implementation"
+  ],
+  "files": [
+    "src/app/layout.tsx",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/components/Navbar.tsx",
+    "src/app/globals.css",
+    "src/components/courses/CourseCard.tsx"
+  ],
+  "verification": "TBD"
+}

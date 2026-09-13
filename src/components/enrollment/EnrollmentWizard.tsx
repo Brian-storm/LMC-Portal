@@ -18,7 +18,6 @@ import {
   Users,
   Calendar,
   Clock,
-  MapPin,
   Tag,
   BookOpen,
   Smartphone,
@@ -924,19 +923,18 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                               {/* Topic header */}
                               {syllabusItem && (
                                 <div className="space-y-1">
-                                  <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-                                    <BookOpen className="w-3.5 h-3.5 text-primary shrink-0" />
-                                    <span className="leading-tight">{moduleTitle}</span>
+                                  <div className="flex items-center gap-1.5 text-sm font-bold text-slate-800">
+                                    <BookOpen className="w-4 h-4 text-primary shrink-0" />
+                                    <span className="leading-snug">{moduleTitle}</span>
                                   </div>
-                                  {/* Duration + sub-topics */}
-                                  <div className="ml-5 space-y-1">
-                                    <span className="text-[11px] font-mono text-slate-500">
-                                      <Clock className="w-3 h-3 inline align-text-bottom mr-0.5" />
-                                      {syllabusItem.duration}
+                                  {/* Duration (i18n) + sub-topics */}
+                                  <div className="space-y-1">
+                                    <span className="text-xs font-mono text-slate-500">
+                                      {syllabusItem.duration} {dict.step2.durationUnit}
                                     </span>
                                     <ul className="space-y-0.5">
                                       {moduleTopics.map((topic, i) => (
-                                        <li key={i} className="text-[11px] text-slate-600 flex items-start gap-1">
+                                        <li key={i} className="text-xs text-slate-600 flex items-start gap-1">
                                           <span className="text-primary select-none shrink-0 leading-tight">•</span>
                                           <span className="leading-tight">{topic}</span>
                                         </li>
@@ -946,24 +944,20 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                                 </div>
                               )}
                               {/* Schedule info */}
-                              <div className="ml-5 pt-2 border-t border-slate-200 space-y-0.5">
-                                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-                                  <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                              <div className="pt-2 border-t border-slate-200 space-y-0.5">
+                                <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                                  <Clock className="w-4 h-4 text-slate-500 shrink-0" />
                                   <span>{sch.dateAndTime}</span>
-                                </div>
-                                <div className="flex items-center gap-1.5 text-[11px] text-slate-600">
-                                  <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                                  <span className="leading-tight">{sch.venue}</span>
                                 </div>
                                 {/* Instructor info — visible when API provides it */}
                                 {sch.instructor && (
-                                  <div className="flex items-start gap-1.5 text-[11px] text-slate-600 pt-0.5">
-                                    <User className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
-                                    <div className="leading-tight">
+                                  <div className="flex items-start gap-1.5 text-xs text-slate-600 pt-0.5">
+                                    <User className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                                    <div className="leading-snug">
                                       <span className="font-semibold text-slate-700">{sch.instructor.name}</span>
                                       {sch.instructor.title && <> — {sch.instructor.title}</>}
                                       {sch.instructor.bio && (
-                                        <p className="text-[10px] text-slate-500 mt-0.5">{sch.instructor.bio}</p>
+                                        <p className="text-[11px] text-slate-500 mt-0.5">{sch.instructor.bio}</p>
                                       )}
                                     </div>
                                   </div>

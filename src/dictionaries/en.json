@@ -525,6 +525,7 @@
       "allSessionsSelected": "You have selected all sessions! A 10% bulk discount applies.",
       "sessionsSelected": "sessions selected",
       "noSessions": "No available sessions at this time.",
+      "durationUnit": "hours",
       "backButton": "Back",
       "proceedButton": "Proceed to Declaration"
     },
