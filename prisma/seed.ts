@@ -417,6 +417,7 @@ async function main() {
         "Hong Kong's Healthcare System and the Evolving Landscape of Greater Bay Area Healthcare Development, with Medical Protection Overview",
       nameCn: "香港医疗体制发展、大湾区医疗概况与医疗保障证书课程",
       iaRefNumber: "CPD26090103",
+      imageUrl: "/company/posters/CPD-healthcare-poster.jpeg",
       organizerZh: "德智顧問管理有限公司",
       organizerEn: "LMC Management Consultancy Ltd.",
       organizerLogoUrl: "/company/logo-text-black.svg",
