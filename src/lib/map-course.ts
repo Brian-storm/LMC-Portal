@@ -31,6 +31,9 @@ export interface ApiCourse {
     venueZh: string | null;
     quotaRemaining: number;
   }>;
+  instructors: Array<{
+    instructor: { nameZh: string; nameEn: string };
+  }>;
 }
 
 /**
@@ -69,6 +72,10 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
     imageUrl: c.imageUrl ?? undefined,
     iaRefNumber: c.iaRefNumber ?? undefined,
     iaCode: c.iaRefNumber ?? undefined,
+    // Derive speaker display name from the first instructor (locale-aware)
+    speaker: c.instructors?.[0]
+      ? (isZh ? c.instructors[0].instructor.nameZh : c.instructors[0].instructor.nameEn)
+      : undefined,
     venue: c.schedules?.[0]
       ? (isZh
         ? (c.schedules[0].venueZh ?? c.schedules[0].venueEn ?? c.schedules[0].venue)

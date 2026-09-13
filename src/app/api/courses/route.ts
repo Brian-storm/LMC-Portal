@@ -78,6 +78,11 @@ select: {
             language: true,
             createdAt: true,
             _count: { select: { syllabusItems: true } },
+          // Include the first instructor name for the speaker field on cards
+          instructors: {
+            select: { instructor: { select: { nameZh: true, nameEn: true } } },
+            take: 1,
+          },
           // Include active schedules so the front-end can show upcoming dates
           schedules: {
             where: { isActive: true },

@@ -200,6 +200,7 @@ model Schedule {
   venueZh        String?
   quotaRemaining Int
   isActive       Boolean @default(true)
+  cpdHoursIa     Decimal @db.Decimal(4, 1) @default(1.5)
 
   course         Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
   registrants    RegistrantSchedule[]

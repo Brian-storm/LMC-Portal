@@ -118,12 +118,12 @@ export function CourseDetailView({
           </div>
 
           {/* Course Title with English subtitle rendered from description */}
-          <h1 className="text-xl sm:text-2xl font-sans font-bold text-slate-900 leading-snug tracking-tight">
-            {course.title}
-          </h1>
           <p className="mt-1 text-slate-500 text-sm font-mono italic">
             {dict.titleSubtitle}
           </p>
+          <h1 className="text-xl sm:text-2xl font-sans font-bold text-slate-900 leading-snug tracking-tight">
+            {course.title}
+          </h1>
           <p
             className="mt-3 text-slate-700 border-l-2 border-slate-300 pl-3 py-0.5 leading-relaxed"
             style={{ fontSize: "14px" }}
@@ -295,13 +295,13 @@ export function CourseDetailView({
           </h2>
           <div className="space-y-3 text-sm text-slate-700">
             <div className="flex items-start gap-3">
-              <Award className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              {/* <Award className="w-4 h-4 text-primary shrink-0 mt-0.5" /> */}
               <div>
-                <span className="font-bold text-slate-800">{dict.singleTopicCpd}</span>
+                <span className="font-bold text-slate-800">{dict.singleTopicCpd }</span>
                 <ul className="mt-1 space-y-0.5 text-slate-600">
                   <li className="flex items-start gap-1.5">
                     <span className="text-primary shrink-0 leading-tight">•</span>
-                    <span>{course.cpdHoursIa} {dict.cpdHoursLabel}</span>
+                    <span>{course.schedules[0]?.cpdHoursIa ?? 1.5} {dict.cpdHoursLabel}</span>
                   </li>
                   <li className="flex items-start gap-1.5">
                     <span className="text-primary shrink-0 leading-tight">•</span>
@@ -311,7 +311,7 @@ export function CourseDetailView({
               </div>
             </div>
             <div className="border-t border-slate-200 pt-3 flex items-start gap-3">
-              <Award className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              {/* <Award className="w-4 h-4 text-primary shrink-0 mt-0.5" /> */}
               <div>
                 <span className="font-bold text-slate-800">{dict.allTopicsCpd}</span>
                 <ul className="mt-1 space-y-0.5 text-slate-600">

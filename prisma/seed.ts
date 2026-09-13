@@ -209,12 +209,12 @@ async function main() {
   const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
   const cpd26090103VenueZh = "香港新界沙田澤祥街9號 香港中文大學醫院";
   const cpd26090103Schedules = [
-    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
-    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
-    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
-    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
-    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
-    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true },
+    { dateAndTime: "09/09/2026 (星期三) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "09/09/2026 (星期三) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 14:15 - 15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 16:00 - 17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
   ];
 
   await prisma.course.upsert({

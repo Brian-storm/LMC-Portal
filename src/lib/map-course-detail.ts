@@ -34,6 +34,7 @@ interface ApiSchedule {
   venueEn: string | null;
   venueZh: string | null;
   quotaRemaining: number;
+  cpdHoursIa: number;
   topics: {
     sortOrder: number;
     syllabusItem: {
@@ -195,11 +196,12 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
     topics: isZh ? si.topicsZh : si.topicsEn,
   }));
 
-  const schedules: ScheduleSession[] = c.schedules.map((s) => ({
+const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     id: s.id,
     dateAndTime: s.dateAndTime,
     venue: localizedVenue(s),
     quotaRemaining: s.quotaRemaining,
+    cpdHoursIa: s.cpdHoursIa,
     topics: (s.topics ?? []).map((t) => ({
       syllabusItem: {
         id: t.syllabusItem.id,

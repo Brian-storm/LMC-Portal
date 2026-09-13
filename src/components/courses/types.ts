@@ -29,6 +29,7 @@ export interface ScheduleSession {
   dateAndTime: string;
   venue: string;
   quotaRemaining: number;
+  cpdHoursIa: number;
   topics: { syllabusItem: SyllabusModule }[];
 }
 
