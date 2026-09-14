@@ -545,7 +545,7 @@
     },
     "step4": {
       "title": "Select Payment Method",
-      "refundNotice": "If you need a refund, please contact our staff. Refer to our Terms of Service for details.",
+      "refundNotice": "If you need a refund, please contact our staff.",
       "fps": "FPS / 轉數快",
       "alipay": "Alipay / 支付寶",
       "directTransfer": "Direct Bank Transfer / 直接轉賬至銀行戶口",

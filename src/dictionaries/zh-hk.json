@@ -541,7 +541,7 @@
     },
     "step4": {
       "title": "選擇付款方式",
-      "refundNotice": "如需退款，請聯絡我們的職員。詳情請參閱服務條款。",
+      "refundNotice": "如需退款，請聯絡我們的職員。",
       "fps": "轉數快 / FPS",
       "alipay": "Alipay / 支付寶",
       "directTransfer": "直接轉賬至銀行戶口 / Direct Bank Transfer",
