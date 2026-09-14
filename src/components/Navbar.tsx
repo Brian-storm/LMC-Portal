@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import NextImage from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Home, BookOpen, User, PhoneCall, Info, Menu, X, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -20,6 +20,17 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
 
+  // Auto-close mobile menu when window resizes past md breakpoint
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleSignOut = async () => {
     try {
       await signOut({ redirect: false });
@@ -33,7 +44,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-navbar-bg/95 backdrop-blur-md text-foreground shadow-xs border-b border-primary/10">
+    <header className="sticky top-0 z-50 bg-navbar-bg/95 backdrop-blur-md text-foreground shadow-xs border-b border-primary/10 overflow-x-hidden">
       <div className="w-full flex items-center justify-between">
         {/* ================= LEFT SECTION: FLUSH EDGE LOGO ================= */}
         <Link

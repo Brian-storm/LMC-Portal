@@ -3,10 +3,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Font Definition */
 @theme {
   --font-sans: Arial, "Helvetica Neue", Helvetica, "PingFang HK", "Microsoft JhengHei", "微軟正黑體", sans-serif;
@@ -232,4 +228,20 @@
 
 .animate-indeterminate {
   animation: indeterminate 1.6s infinite ease-in-out;
+}
+
+/* Mobile touch & scroll optimizations */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+html {
+  overflow-x: hidden;
+}
+body {
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+[data-overflow-container] {
+  overscroll-behavior: contain;
+  touch-action: pan-x;
 }
