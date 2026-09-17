@@ -100,6 +100,37 @@ export async function GET(request: NextRequest) {
             cpdHours: true,
           },
         },
+        schedules: {
+          select: {
+            schedule: {
+              select: {
+                id: true,
+                dateAndTime: true,
+                sessionDate: true,
+                venue: true,
+                venueEn: true,
+                venueZh: true,
+                cpdHoursIa: true,
+                instructors: {
+                  select: {
+                    instructor: {
+                      select: { id: true, nameEn: true, nameZh: true },
+                    },
+                  },
+                },
+                topics: {
+                  select: {
+                    syllabusItem: {
+                      select: { id: true, titleEn: true, titleZh: true },
+                    },
+                    sortOrder: true,
+                  },
+                  orderBy: { sortOrder: "asc" },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -133,6 +164,7 @@ export async function GET(request: NextRequest) {
         id: string;
         fee: number | null;
         user: typeof rawRegistrants[number]["user"];
+        schedules: typeof rawRegistrants[number]["schedules"];
       }>;
     })[] = [];
 
@@ -174,6 +206,7 @@ export async function GET(request: NextRequest) {
             id: m.id,
             fee: m.fee ? Number(m.fee) : null,
             user: m.user,
+            schedules: m.schedules,
           })),
         });
       }

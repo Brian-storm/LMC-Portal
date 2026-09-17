@@ -50,10 +50,28 @@ interface EnrolmentUser {
   organization: string | null;
 }
 
+interface EnrolmentSchedule {
+  id: string;
+  dateAndTime: string;
+  sessionDate: string | null;
+  venue: string;
+  venueEn: string | null;
+  venueZh: string | null;
+  cpdHoursIa: number;
+  instructors: Array<{
+    instructor: { id: string; nameEn: string; nameZh: string };
+  }>;
+  topics: Array<{
+    syllabusItem: { id: string; titleEn: string; titleZh: string };
+    sortOrder: number;
+  }>;
+}
+
 interface EnrolmentMember {
   id: string;
   fee: number | null;
   user: EnrolmentUser;
+  schedules: Array<{ schedule: EnrolmentSchedule }>;
 }
 
 interface EnrolmentCourse {
@@ -81,6 +99,7 @@ interface Enrolment {
   submittedAt: string;
   user: EnrolmentUser;
   course: EnrolmentCourse;
+  schedules: Array<{ schedule: EnrolmentSchedule }>;
   members?: EnrolmentMember[];
 }
 
@@ -449,6 +468,7 @@ export default function AdminEnrolmentsPage() {
                     <th className="py-2.5 px-3">Enrollee</th>
                     <th className="py-2.5 px-3">ID Doc</th>
                     <th className="py-2.5 px-3">Course</th>
+                    <th className="py-2.5 px-3">Schedules</th>
                     <th className="py-2.5 px-3">Type</th>
                     <th className="py-2.5 px-3">Registrants</th>
                     <th className="py-2.5 px-3">Payment</th>
@@ -538,6 +558,28 @@ export default function AdminEnrolmentsPage() {
                               {enrolment.course.iaRefNumber ?? enrolment.course.slug}
                               <span className="ml-1.5">{enrolment.course.cpdHours} CPD hrs</span>
                             </div>
+                          </td>
+
+                          {/* Schedules — enrolled sessions for this registrant */}
+                          <td className="py-3 px-3">
+                            {(!isGroup && enrolment.schedules && enrolment.schedules.length > 0) ? (
+                              <div className="space-y-1">
+                                {enrolment.schedules.map((rs) => (
+                                  <div key={rs.schedule.id} className="text-[10px] leading-tight">
+                                    <div className="font-medium text-slate-700">{rs.schedule.dateAndTime}</div>
+                                    <div className="text-slate-400">
+                                      {locale === "zh-hk" || locale === "zh-cn"
+                                        ? (rs.schedule.venueZh ?? rs.schedule.venue)
+                                        : (rs.schedule.venueEn ?? rs.schedule.venue)}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : isGroup ? (
+                              <span className="text-slate-400 text-[10px]">See members</span>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
                           </td>
 
                           {/* Type */}
@@ -694,6 +736,20 @@ export default function AdminEnrolmentsPage() {
                             </td>
                             {/* Course — empty for member rows (inherit from parent) */}
                             <td className="py-2 px-3" />
+                            {/* Schedules — each member has their own schedule selections */}
+                            <td className="py-2 px-3">
+                              {member.schedules && member.schedules.length > 0 ? (
+                                <div className="text-[10px] leading-tight space-y-0.5">
+                                  {member.schedules.map((rs) => (
+                                    <div key={rs.schedule.id} className="text-slate-500">
+                                      {rs.schedule.dateAndTime}
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-slate-400 text-[10px]">—</span>
+                              )}
+                            </td>
                             {/* Type — empty */}
                             <td className="py-2 px-3" />
                             {/* Registrants — empty */}
