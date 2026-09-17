@@ -43,6 +43,8 @@ interface EnrolmentUser {
   nameEn: string;
   nameZh: string;
   email: string;
+  phone: string;
+  idDocType: string | null;
   idDocNumber: string;
   iaLicense: string | null;
   organization: string | null;
@@ -112,6 +114,13 @@ const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   CHEQUE: "Cheque",
   CASH: "Cash",
   CORPORATE_INVOICE: "Corporate Invoice",
+};
+
+const ID_DOC_TYPE_LABELS: Record<string, string> = {
+  HKID: "HKID",
+  PASSPORT: "Passport",
+  PERMIT: "Permit",
+  OTHER: "Other",
 };
 
 export default function AdminEnrolmentsPage() {
@@ -485,7 +494,15 @@ export default function AdminEnrolmentsPage() {
                                   )}
                                 </div>
                                 <div className="text-[10px] text-slate-500">
-                                  {enrolment.user.organization ?? enrolment.user.email}
+                                  {enrolment.user.email}
+                                </div>
+                                {enrolment.user.organization && (
+                                  <div className="text-[10px] text-slate-400">
+                                    {enrolment.user.organization}
+                                  </div>
+                                )}
+                                <div className="text-[10px] text-slate-400">
+                                  {enrolment.user.phone}
                                 </div>
                                 {enrolment.user.iaLicense && (
                                   <div className="text-[10px] font-mono text-slate-400">
@@ -501,7 +518,12 @@ export default function AdminEnrolmentsPage() {
                             {isGroup ? (
                               <span className="text-slate-400">—</span>
                             ) : enrolment.user.idDocNumber ? (
-                              <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
+                              <>
+                                <span className="text-[10px] text-slate-500 mr-1">
+                                  {enrolment.user.idDocType ? ID_DOC_TYPE_LABELS[enrolment.user.idDocType] ?? enrolment.user.idDocType : ""}
+                                </span>
+                                <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
+                              </>
                             ) : (
                               <span className="text-slate-400">—</span>
                             )}
@@ -658,12 +680,16 @@ export default function AdminEnrolmentsPage() {
                               </div>
                               <div className="ml-4 text-[10px] text-slate-500 space-y-0.5 mt-0.5">
                                 {member.user.idDocNumber && (
-                                  <span className="font-mono mr-3">{member.user.idDocNumber}</span>
+                                  <span className="font-mono mr-3">
+                                    {member.user.idDocType ? `${ID_DOC_TYPE_LABELS[member.user.idDocType] ?? member.user.idDocType} ` : ""}
+                                    {member.user.idDocNumber}
+                                  </span>
                                 )}
                                 {member.user.iaLicense && (
                                   <span className="font-mono mr-3">IA: {member.user.iaLicense}</span>
                                 )}
-                                <span>{member.user.email}</span>
+                                <span className="mr-3">{member.user.email}</span>
+                                <span>{member.user.phone}</span>
                               </div>
                             </td>
                             {/* Course — empty for member rows (inherit from parent) */}

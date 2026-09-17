@@ -82,6 +82,8 @@ export async function GET(request: NextRequest) {
             nameEn: true,
             nameZh: true,
             email: true,
+            phone: true,
+            idDocType: true,
             idDocNumber: true,
             iaLicense: true,
             organization: true,
@@ -117,7 +119,7 @@ export async function GET(request: NextRequest) {
     const enrollers = enrollerUserIds.length > 0
       ? await prisma.user.findMany({
           where: { id: { in: enrollerUserIds } },
-          select: { id: true, organization: true, nameEn: true, nameZh: true, email: true },
+          select: { id: true, organization: true, nameEn: true, nameZh: true, email: true, phone: true },
         })
       : [];
     const enrollerOrgMap = new Map(enrollers.map(e => [e.id, e]));
@@ -160,6 +162,8 @@ export async function GET(request: NextRequest) {
             nameEn: enrollerInfo?.nameEn ?? firstMember.user.nameEn,
             nameZh: enrollerInfo?.nameZh ?? firstMember.user.nameZh,
             email: enrollerInfo?.email ?? firstMember.user.email,
+            phone: enrollerInfo?.phone ?? firstMember.user.phone,
+            idDocType: null, // Enroller is not a registrant — no ID doc type
             idDocNumber: "",  // Enroller is not a registrant — no ID doc
             iaLicense: null,  // Enroller is not a registrant — no IA license
             organization: enrollerInfo?.organization ?? firstMember.user.organization,
