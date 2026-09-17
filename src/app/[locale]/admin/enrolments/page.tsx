@@ -566,12 +566,7 @@ export default function AdminEnrolmentsPage() {
                               <div className="space-y-1">
                                 {enrolment.schedules.map((rs) => (
                                   <div key={rs.schedule.id} className="text-[10px] leading-tight">
-                                    <div className="font-medium text-slate-700">{rs.schedule.dateAndTime}</div>
-                                    <div className="text-slate-400">
-                                      {locale === "zh-hk" || locale === "zh-cn"
-                                        ? (rs.schedule.venueZh ?? rs.schedule.venue)
-                                        : (rs.schedule.venueEn ?? rs.schedule.venue)}
-                                    </div>
+                                    <span className="text-slate-700">{rs.schedule.dateAndTime}</span>
                                   </div>
                                 ))}
                               </div>
