@@ -1,146 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import { useState, useEffect, useCallback, Fragment } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
+import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  ShieldAlert,
-  Clock,
-  FileText,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Loader2,
-  ChevronLeft,
-  ChevronRight,
-  Ban,
-  Eye,
-  User,
-  Users,
-  Copy,
-  DollarSign,
-} from "lucide-react";
-
-// ── Types matching the API response ──
-
-type PaymentStatus = "PENDING_VERIFICATION" | "VERIFIED" | "REJECTED" | "REFUNDED";
-type EnrollmentType = "INDIVIDUAL" | "ORGANIZATION";
-type PaymentMethod = "FPS" | "ALIPAY" | "E_BANKING" | "CHEQUE" | "CASH" | "CORPORATE_INVOICE";
-
-interface EnrolmentUser {
-  id: string;
-  nameEn: string;
-  nameZh: string;
-  email: string;
-  phone: string;
-  idDocType: string | null;
-  idDocNumber: string;
-  iaLicense: string | null;
-  organization: string | null;
-}
-
-interface EnrolmentSchedule {
-  id: string;
-  dateAndTime: string;
-  sessionDate: string | null;
-  venue: string;
-  venueEn: string | null;
-  venueZh: string | null;
-  cpdHoursIa: number;
-  instructors: Array<{
-    instructor: { id: string; nameEn: string; nameZh: string };
-  }>;
-  topics: Array<{
-    syllabusItem: { id: string; titleEn: string; titleZh: string };
-    sortOrder: number;
-  }>;
-}
-
-interface EnrolmentMember {
-  id: string;
-  fee: number | null;
-  user: EnrolmentUser;
-  schedules: Array<{ schedule: EnrolmentSchedule }>;
-}
-
-interface EnrolmentCourse {
-  id: string;
-  slug: string;
-  nameEn: string;
-  nameZh: string;
-  nameCn: string | null;
-  iaRefNumber: string | null;
-  cpdHours: number;
-}
-
-interface Enrolment {
-  id: string;
-  enrollmentType: EnrollmentType;
-  groupId: string | null;
-  registrantCount: number | null;
-  paymentStatus: PaymentStatus;
-  paymentMethod: PaymentMethod | null;
-  fee: number | null;
-  isThirdPartyPay: boolean;
-  payerFullName: string | null;
-  paymentProofUrl: string | null;
-  receiptNumber: string | null;
-  submittedAt: string;
-  user: EnrolmentUser;
-  course: EnrolmentCourse;
-  schedules: Array<{ schedule: EnrolmentSchedule }>;
-  members?: EnrolmentMember[];
-}
-
-interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
-
-// ── Status tag definitions ──
-
-const STATUS_TABS: { label: string; value: PaymentStatus | "ALL" }[] = [
-  { label: "All", value: "ALL" },
-  { label: "Pending", value: "PENDING_VERIFICATION" },
-  { label: "Verified", value: "VERIFIED" },
-  { label: "Rejected", value: "REJECTED" },
-];
-
-const STATUS_BADGE: Record<PaymentStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  PENDING_VERIFICATION: { label: "Pending", variant: "outline" },
-  VERIFIED: { label: "Verified", variant: "default" },
-  REJECTED: { label: "Rejected", variant: "destructive" },
-  REFUNDED: { label: "Refunded", variant: "secondary" },
-};
-
-const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
-  FPS: "FPS",
-  ALIPAY: "Alipay",
-  E_BANKING: "E-Banking",
-  CHEQUE: "Cheque",
-  CASH: "Cash",
-  CORPORATE_INVOICE: "Corporate Invoice",
-};
-
-const ID_DOC_TYPE_LABELS: Record<string, string> = {
-  HKID: "HKID",
-  PASSPORT: "Passport",
-  PERMIT: "Permit",
-  OTHER: "Other",
-};
+import type { Enrolment, Pagination, EnrolmentUser, PaymentStatus } from "@/components/admin/types";
+import EnrolmentFilters from "@/components/admin/EnrolmentFilters";
+import EnrolmentRow from "@/components/admin/EnrolmentRow";
+import RejectDialog from "@/components/admin/RejectDialog";
+import PaymentProofPreview from "@/components/admin/PaymentProofPreview";
+import EnrolmentPagination from "@/components/admin/EnrolmentPagination";
 
 export default function AdminEnrolmentsPage() {
   const params = useParams();
@@ -186,7 +56,6 @@ export default function AdminEnrolmentsPage() {
       // Compute duplicate credentials: same courseId + same user.idDocNumber OR same user.iaLicense
       const seen = new Map<string, string[]>();
       const dupes = new Set<string>();
-      // Helper to check a user record against duplicates
       const checkUser = (entryId: string, courseId: string, user: EnrolmentUser) => {
         if (user.idDocNumber) {
           const key = `${courseId}:idDoc:${user.idDocNumber}`;
@@ -203,7 +72,6 @@ export default function AdminEnrolmentsPage() {
       };
       for (const e of data.enrolments as Enrolment[]) {
         checkUser(e.id, e.course.id, e.user);
-        // Also check members of group enrolments
         if (e.members) {
           for (const m of e.members) {
             checkUser(m.id, e.course.id, m.user);
@@ -223,14 +91,14 @@ export default function AdminEnrolmentsPage() {
     }
   }, [limit]);
 
-  // Fetch on mount only — subsequent fetches are triggered by the tab click or pagination click handlers
+  // Fetch on mount only
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchEnrolments(statusFilter, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Tab click handler: update both filter and page atomically ──
+  // ── Handlers ──
 
   const handleStatusTabClick = (value: PaymentStatus | "ALL") => {
     setStatusFilter(value);
@@ -238,12 +106,10 @@ export default function AdminEnrolmentsPage() {
     fetchEnrolments(value, 1);
   };
 
-  // ── Approve handler ──
-  // 1: Set the approving button to loading state to prevent double-clicks
-  // 2: Call PATCH /api/admin/enrolments/[id] with action=APPROVE
-  // 3: On success, optimistically update the local row to VERIFIED (no refetch needed)
-  // 4: On failure, show a danger toast with the error message
-  // 5: Always clear the loading state in finally
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    fetchEnrolments(statusFilter, newPage);
+  };
 
   const handleApprove = async (id: string, groupId?: string | null) => {
     setApprovingId(id);
@@ -257,7 +123,6 @@ export default function AdminEnrolmentsPage() {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || `Request failed: ${res.status}`);
       }
-      // Optimistically update the local state
       setEnrolments((prev) =>
         prev.map((e) => {
           if (groupId && e.groupId === groupId) {
@@ -278,15 +143,6 @@ export default function AdminEnrolmentsPage() {
     }
   };
 
-  // ── Reject handler ──
-  // 1: Guard against null rejectTarget (dialog closed without confirming)
-  // 2: Set rejecting=true to show loading state on the confirm button
-  // 3: Call PATCH /api/admin/enrolments/[id] with action=REJECT + the typed reason
-  // 4: On success, optimistically update the local row to REJECTED
-  // 5: Close the rejection dialog and clear the reason input
-  // 6: On failure, show a danger toast with the error message
-  // 7: Always clear the loading state in finally
-
   const handleReject = async () => {
     if (!rejectTarget) return;
     setRejecting(true);
@@ -300,7 +156,6 @@ export default function AdminEnrolmentsPage() {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || `Request failed: ${res.status}`);
       }
-      // Optimistically update the local state
       setEnrolments((prev) =>
         prev.map((e) => {
           if (rejectTarget.groupId && e.groupId === rejectTarget.groupId) {
@@ -325,46 +180,6 @@ export default function AdminEnrolmentsPage() {
     }
   };
 
-  // ── Helpers ──
-
-  // formatDate: converts ISO string to YYYY-MM-DD using en-CA locale (simplest cross-browser approach)
-  const formatDate = (iso: string) => {
-    const d = new Date(iso);
-    return d.toLocaleDateString("en-CA");
-  };
-
-  // getName: returns the best available name for the current locale (zh fields for zh-hk/zh-cn, en fallback)
-  const getName = (user: { nameZh: string; nameEn: string }) => {
-    const name = locale === "zh-hk" || locale === "zh-cn" ? user.nameZh : user.nameEn;
-    return name || user.nameEn;
-  };
-
-  // getCourseName: same locale-aware selection for course names
-  const getCourseName = (e: Enrolment) => {
-    if (locale === "zh-cn") return e.course.nameCn || e.course.nameZh;
-    return locale === "zh-hk" ? e.course.nameZh : e.course.nameEn;
-  };
-
-  // getStatusVariant: maps PaymentStatus to the corresponding Badge variant for consistent visual styling
-  const getStatusVariant = (status: PaymentStatus): "default" | "secondary" | "destructive" | "outline" => {
-    return STATUS_BADGE[status]?.variant ?? "outline";
-  };
-
-  // getTotalFee: for groups, sum all member fees; for individual, return the single fee
-  const getTotalFee = (enrolment: Enrolment): number | null => {
-    if (enrolment.enrollmentType === "ORGANIZATION" && enrolment.members && enrolment.members.length > 0) {
-      const total = enrolment.members.reduce((sum, m) => sum + (m.fee ?? 0), 0);
-      return total > 0 ? total : enrolment.fee;
-    }
-    return enrolment.fee;
-  };
-
-  // formatFee: format a number as HK$x,xxx.xx
-  const formatFee = (fee: number | null): string => {
-    if (fee == null) return "—";
-    return `HK$${fee.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
-
   // ── Render ──
 
   return (
@@ -387,43 +202,30 @@ export default function AdminEnrolmentsPage() {
         </header>
 
         {/* ── Status filter tabs ── */}
-        <div className="flex items-center gap-1 flex-wrap">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => handleStatusTabClick(tab.value)}
-              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs transition-colors ${
-                statusFilter === tab.value
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
-              }`}
-            >
-              {tab.label}
-              {tab.value !== "ALL" && pagination && statusFilter === tab.value && (
-                <span className="ml-1.5 text-[10px] opacity-70">({pagination.total})</span>
-              )}
-            </button>
-          ))}
-        </div>
+        <EnrolmentFilters
+          statusFilter={statusFilter}
+          pagination={pagination}
+          onTabClick={handleStatusTabClick}
+        />
 
         {/* ── Main content area ── */}
         <section className="bg-white border border-slate-300 shadow-2xs">
-          {/* ── Loading state: skeleton rows ── */}
+          {/* ── Loading state ── */}
           {loading && (
             <div className="p-6 space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-4 animate-pulse">
-                  <div className="h-3 w-32 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-20 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-40 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-20 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-14 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-16 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-24 bg-slate-200 rounded-xs" />
-                  <div className="h-3 w-24 bg-slate-200 rounded-xs ml-auto" />
+                  <div className="h-4 w-32 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-20 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-40 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-20 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-14 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-16 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-24 bg-slate-200 rounded-xs" />
+                  <div className="h-4 w-24 bg-slate-200 rounded-xs ml-auto" />
                 </div>
               ))}
-              <div className="text-xs text-slate-400 text-center pt-2">
+              <div className="text-center pt-2 text-slate-400">
                 <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-1.5" />
                 Loading enrolments...
               </div>
@@ -434,8 +236,8 @@ export default function AdminEnrolmentsPage() {
           {!loading && error && (
             <div className="p-12 text-center space-y-3">
               <AlertTriangle className="w-8 h-8 text-destructive mx-auto" />
-              <p className="text-sm font-bold text-destructive">Failed to load enrolments</p>
-              <p className="text-xs text-slate-500">{error}</p>
+              <p className="font-bold text-destructive">Failed to load enrolments</p>
+              <p className="text-slate-500">{error}</p>
               <Button variant="outline" size="sm" onClick={() => fetchEnrolments(statusFilter, page)}>
                 Retry
               </Button>
@@ -446,12 +248,12 @@ export default function AdminEnrolmentsPage() {
           {!loading && !error && enrolments.length === 0 && (
             <div className="p-12 text-center space-y-3">
               <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
-              <p className="text-sm font-bold text-slate-700">
+              <p className="font-bold text-slate-700">
                 {statusFilter === "ALL"
                   ? "No enrolments yet"
-                  : `No ${STATUS_BADGE[statusFilter as PaymentStatus]?.label.toLowerCase() ?? ""} enrolments`}
+                  : `No ${statusFilter?.toLowerCase().replace("_", " ")} enrolments`}
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-slate-500">
                 {statusFilter === "ALL"
                   ? "Enrolments will appear here once learners submit their registration."
                   : "Try switching to a different status tab to see more results."}
@@ -462,312 +264,35 @@ export default function AdminEnrolmentsPage() {
           {/* ── Data table ── */}
           {!loading && !error && enrolments.length > 0 && (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+              <table className="w-full text-left text-xs border-collapse table-fixed">
                 <thead>
-                  <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
-                    <th className="py-2.5 px-3">Enrollee</th>
-                    <th className="py-2.5 px-3">ID Doc</th>
-                    <th className="py-2.5 px-3">Course</th>
-                    <th className="py-2.5 px-3">Schedules</th>
-                    <th className="py-2.5 px-3">Type</th>
-                    <th className="py-2.5 px-3">Registrants</th>
-                    <th className="py-2.5 px-3">Payment</th>
-                    <th className="py-2.5 px-3"><DollarSign className="w-3 h-3 inline mr-0.5" />Fee</th>
-                    <th className="py-2.5 px-3">Status</th>
-                    <th className="py-2.5 px-3">Submitted</th>
-                    <th className="py-2.5 px-3 text-right">Actions</th>
+                  <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold tracking-wider">
+                    <th className="py-2 px-2 w-[160px]">Enrollee</th>
+                    <th className="py-2 px-2 w-[120px]">ID Doc</th>
+                    <th className="py-2 px-2 w-[180px]">Course</th>
+                    <th className="py-2 px-2 w-[200px]">Schedules</th>
+                    <th className="py-2 px-2 w-[80px]">Type</th>
+                    <th className="py-2 px-2 w-[80px]">Registrants</th>
+                    <th className="py-2 px-2 w-[100px]">Payment</th>
+                    <th className="py-2 px-2 w-[90px]"><DollarSign className="w-3.5 h-3.5 inline mr-0.5" />Fee</th>
+                    <th className="py-2 px-2 w-[80px]">Status</th>
+                    <th className="py-2 px-2 w-[90px]">Submitted</th>
+                    <th className="py-2 px-2 w-[140px] text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
-                  {enrolments.map((enrolment) => {
-                    const isGroup = enrolment.enrollmentType === "ORGANIZATION";
-                    const totalFee = getTotalFee(enrolment);
-                    return (
-                      <Fragment key={enrolment.id}>
-                        {/* Parent row: enroller or individual */}
-                        <tr className="hover:bg-slate-50/80">
-                          {/* Enrollee */}
-                          <td className="py-3 px-3">
-                            {isGroup ? (
-                              <>
-                                <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                                  <Users className="w-3 h-3 text-slate-400 shrink-0" />
-                                  {enrolment.user.organization || getName(enrolment.user)}
-                                </div>
-                                <div className="text-[10px] text-slate-500">
-                                  Enroller: {enrolment.user.email}
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                                  <User className="w-3 h-3 text-slate-400 shrink-0" />
-                                  {getName(enrolment.user)}
-                                  {duplicateIds.has(enrolment.id) && (
-                                    <span
-                                      className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-xs"
-                                      title={`Duplicate credential: ${enrolment.user.idDocNumber}`}
-                                    >
-                                      <Copy className="w-2.5 h-2.5" />
-                                      Duplicate
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="text-[10px] text-slate-500">
-                                  {enrolment.user.email}
-                                </div>
-                                {enrolment.user.organization && (
-                                  <div className="text-[10px] text-slate-400">
-                                    {enrolment.user.organization}
-                                  </div>
-                                )}
-                                <div className="text-[10px] text-slate-400">
-                                  {enrolment.user.phone}
-                                </div>
-                                {enrolment.user.iaLicense && (
-                                  <div className="text-[10px] font-mono text-slate-400">
-                                    IA: {enrolment.user.iaLicense}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </td>
-
-                          {/* ID Doc — empty for organization (enroller is not a registrant) */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            {isGroup ? (
-                              <span className="text-slate-400">—</span>
-                            ) : enrolment.user.idDocNumber ? (
-                              <>
-                                <span className="text-[10px] text-slate-500 mr-1">
-                                  {enrolment.user.idDocType ? ID_DOC_TYPE_LABELS[enrolment.user.idDocType] ?? enrolment.user.idDocType : ""}
-                                </span>
-                                <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
-                              </>
-                            ) : (
-                              <span className="text-slate-400">—</span>
-                            )}
-                          </td>
-
-                          {/* Course */}
-                          <td className="py-3 px-3">
-                            <div className="font-serif font-bold text-slate-900">
-                              {getCourseName(enrolment)}
-                            </div>
-                            <div className="font-mono text-[10px] text-slate-500">
-                              {enrolment.course.iaRefNumber ?? enrolment.course.slug}
-                              <span className="ml-1.5">{enrolment.course.cpdHours} CPD hrs</span>
-                            </div>
-                          </td>
-
-                          {/* Schedules — enrolled sessions for this registrant */}
-                          <td className="py-3 px-3">
-                            {(!isGroup && enrolment.schedules && enrolment.schedules.length > 0) ? (
-                              <div className="space-y-1">
-                                {enrolment.schedules.map((rs) => (
-                                  <div key={rs.schedule.id} className="text-[10px] leading-tight">
-                                    <span className="text-slate-700">{rs.schedule.dateAndTime}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : isGroup ? (
-                              <span className="text-slate-400 text-[10px]">See members</span>
-                            ) : (
-                              <span className="text-slate-400">—</span>
-                            )}
-                          </td>
-
-                          {/* Type */}
-                          <td className="py-3 px-3">
-                            <div className="flex items-center gap-1">
-                              {isGroup ? (
-                                <Users className="w-3 h-3 text-slate-400" />
-                              ) : (
-                                <User className="w-3 h-3 text-slate-400" />
-                              )}
-                              <span className="text-slate-700">
-                                {isGroup ? "Group" : "Individual"}
-                              </span>
-                            </div>
-                            {enrolment.isThirdPartyPay && (
-                              <div className="text-[10px] text-amber-700">
-                                3rd-party: {enrolment.payerFullName}
-                              </div>
-                            )}
-                          </td>
-
-                          {/* Registrants */}
-                          <td className="py-3 px-3 text-center">
-                            {isGroup && enrolment.registrantCount != null ? (
-                              <>
-                                <span className="font-bold text-slate-900">{enrolment.registrantCount}</span>
-                                <div className="text-[10px] text-slate-400">(excl. enroller)</div>
-                              </>
-                            ) : (
-                              <span className="text-slate-400">—</span>
-                            )}
-                          </td>
-
-                          {/* Payment */}
-                          <td className="py-3 px-3">
-                            {enrolment.paymentMethod ? (
-                              <span className="font-mono text-slate-700">
-                                {PAYMENT_METHOD_LABELS[enrolment.paymentMethod] ?? enrolment.paymentMethod}
-                              </span>
-                            ) : (
-                              <span className="text-slate-400">—</span>
-                            )}
-                            {enrolment.receiptNumber && (
-                              <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700">
-                                <span>RCPT: {enrolment.receiptNumber}</span>
-                                <a
-                                  href={`/api/admin/enrolments/${enrolment.id}/receipt`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-medium text-emerald-700 hover:bg-emerald-50 transition-colors"
-                                  title="Download receipt PDF"
-                                >
-                                  <FileText className="w-3 h-3" />
-                                </a>
-                              </div>
-                            )}
-                          </td>
-
-                          {/* Fee — total for group, individual for single */}
-                          <td className="py-3 px-3 whitespace-nowrap text-right">
-                            {totalFee != null ? (
-                              <div className={`font-mono font-bold ${isGroup ? "text-primary" : "text-slate-900"}`}>
-                                {formatFee(totalFee)}
-                              </div>
-                            ) : (
-                              <span className="text-slate-400">—</span>
-                            )}
-                          </td>
-
-                          {/* Status */}
-                          <td className="py-3 px-3">
-                            <Badge variant={getStatusVariant(enrolment.paymentStatus)}>
-                              {STATUS_BADGE[enrolment.paymentStatus]?.label ?? enrolment.paymentStatus}
-                            </Badge>
-                            {enrolment.paymentStatus === "REJECTED" && enrolment.payerFullName && (
-                              <div className="text-[10px] text-destructive mt-0.5 max-w-32 truncate" title={enrolment.payerFullName}>
-                                {enrolment.payerFullName}
-                              </div>
-                            )}
-                          </td>
-
-                          {/* Submitted */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            <div className="flex items-center gap-1 text-slate-600">
-                              <Clock className="w-3 h-3 shrink-0" />
-                              {formatDate(enrolment.submittedAt)}
-                            </div>
-                          </td>
-
-                          {/* Actions — on parent row only */}
-                          <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
-                            {enrolment.paymentProofUrl && (
-                              <Button
-                                variant="outline"
-                                size="xs"
-                                onClick={() => setPreviewTarget(enrolment)}
-                                title="View payment proof"
-                              >
-                                <Eye className="w-3 h-3" />
-                              </Button>
-                            )}
-
-                            {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
-                              <Button
-                                variant="default"
-                                size="xs"
-                                loading={approvingId === enrolment.id}
-                                disabled={approvingId === enrolment.id}
-                                onClick={() => handleApprove(enrolment.id, isGroup ? enrolment.groupId : null)}
-                              >
-                                <CheckCircle2 className="w-3 h-3" />
-                                Approve
-                              </Button>
-                            )}
-
-                            {enrolment.paymentStatus === "PENDING_VERIFICATION" && (
-                              <Button
-                                variant="outline"
-                                size="xs"
-                                onClick={() => { setRejectTarget(enrolment); setRejectReason(""); }}
-                                className="border-rose-300 text-rose-700 hover:bg-rose-50"
-                              >
-                                <XCircle className="w-3 h-3" />
-                                Reject
-                              </Button>
-                            )}
-                          </td>
-                        </tr>
-
-                        {/* Children rows: group members */}
-                        {isGroup && enrolment.members && enrolment.members.map((member, idx) => (
-                          <tr key={member.id} className="bg-slate-50/40 text-[11px]">
-                            <td className="py-2 px-3 pl-8" colSpan={2}>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-slate-300 select-none">
-                                  {idx === enrolment.members!.length - 1 ? "└─" : "├─"}
-                                </span>
-                                <User className="w-2.5 h-2.5 text-slate-300 shrink-0" />
-                                <span className="font-medium text-slate-800">{getName(member.user)}</span>
-                              </div>
-                              <div className="ml-4 text-[10px] text-slate-500 space-y-0.5 mt-0.5">
-                                {member.user.idDocNumber && (
-                                  <span className="font-mono mr-3">
-                                    {member.user.idDocType ? `${ID_DOC_TYPE_LABELS[member.user.idDocType] ?? member.user.idDocType} ` : ""}
-                                    {member.user.idDocNumber}
-                                  </span>
-                                )}
-                                {member.user.iaLicense && (
-                                  <span className="font-mono mr-3">IA: {member.user.iaLicense}</span>
-                                )}
-                                <span className="mr-3">{member.user.email}</span>
-                                <span>{member.user.phone}</span>
-                              </div>
-                            </td>
-                            {/* Course — empty for member rows (inherit from parent) */}
-                            <td className="py-2 px-3" />
-                            {/* Schedules — each member has their own schedule selections */}
-                            <td className="py-2 px-3">
-                              {member.schedules && member.schedules.length > 0 ? (
-                                <div className="text-[10px] leading-tight space-y-0.5">
-                                  {member.schedules.map((rs) => (
-                                    <div key={rs.schedule.id} className="text-slate-500">
-                                      {rs.schedule.dateAndTime}
-                                    </div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <span className="text-slate-400 text-[10px]">—</span>
-                              )}
-                            </td>
-                            {/* Type — empty */}
-                            <td className="py-2 px-3" />
-                            {/* Registrants — empty */}
-                            <td className="py-2 px-3" />
-                            {/* Payment — empty */}
-                            <td className="py-2 px-3" />
-                            {/* Fee — individual member fee, right-aligned to match parent fee column */}
-                            <td className="py-2 px-3 whitespace-nowrap text-right">
-                              <span className="font-mono text-slate-500 text-[11px]">
-                                {formatFee(member.fee)}
-                              </span>
-                            </td>
-                            {/* Status — empty (inherits from parent) */}
-                            <td className="py-2 px-3" />
-                            {/* Submitted — empty */}
-                            <td className="py-2 px-3" />
-                            {/* Actions — empty (actions on parent only) */}
-                            <td className="py-2 px-3" />
-                          </tr>
-                        ))}
-                      </Fragment>
-                    );
-                  })}
+                  {enrolments.map((enrolment) => (
+                    <EnrolmentRow
+                      key={enrolment.id}
+                      enrolment={enrolment}
+                      locale={locale}
+                      duplicateIds={duplicateIds}
+                      approvingId={approvingId}
+                      onApprove={handleApprove}
+                      onRejectClick={(e) => { setRejectTarget(e); setRejectReason(""); }}
+                      onPreviewClick={setPreviewTarget}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -775,154 +300,32 @@ export default function AdminEnrolmentsPage() {
 
           {/* ── Pagination footer ── */}
           {pagination && pagination.totalPages > 1 && (
-            <div className="border-t border-slate-200 px-3 py-2 flex items-center justify-between text-xs text-slate-500">
-              <span>
-                Page {pagination.page} of {pagination.totalPages}
-                &nbsp;({pagination.total} total)
-              </span>
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="outline"
-                  size="xs"
-                  disabled={page <= 1}
-                  onClick={() => { const next = Math.max(1, page - 1); setPage(next); fetchEnrolments(statusFilter, next); }}
-                >
-                  <ChevronLeft className="w-3 h-3" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="xs"
-                  disabled={page >= pagination.totalPages}
-                  onClick={() => { const next = page + 1; setPage(next); fetchEnrolments(statusFilter, next); }}
-                >
-                  <ChevronRight className="w-3 h-3" />
-                </Button>
-              </div>
-            </div>
+            <EnrolmentPagination
+              pagination={pagination}
+              page={page}
+              onPageChange={handlePageChange}
+            />
           )}
         </section>
       </div>
 
       {/* ── Reject confirmation dialog ── */}
-      <Dialog open={!!rejectTarget} onOpenChange={(open) => { if (!open) setRejectTarget(null); }}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Reject Enrolment</DialogTitle>
-            <DialogDescription>
-              This will mark the enrolment as rejected. The learner will be notified.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-3 py-2">
-            {rejectTarget && (
-              <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Enrollee:</span>
-                  <span className="font-bold text-slate-800">{getName(rejectTarget.user)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Course:</span>
-                  <span className="font-bold text-slate-800">{getCourseName(rejectTarget)}</span>
-                </div>
-              </div>
-            )}
-
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-700 block">
-                Rejection reason <span className="text-destructive">*</span>
-              </label>
-              <div className="flex flex-wrap gap-1.5 pb-2">
-                {["Payment proof is illegible, please re-upload a clear copy.", "Uploaded slip is invalid — please provide the correct payment proof.", "Blurry image — please re-upload a clearer photo/screenshot of the payment slip.", "Incorrect payment amount — please verify the amount and re-upload."].map((reason) => (
-                  <button
-                    key={reason}
-                    type="button"
-                    onClick={() => setRejectReason(reason)}
-                    className={`text-[11px] px-2 py-1 rounded-xs border transition-colors ${
-                      rejectReason === reason
-                        ? "bg-destructive/10 border-destructive text-destructive font-bold"
-                        : "bg-white border-slate-300 text-slate-600 hover:border-slate-400"
-                    }`}
-                  >
-                    {reason === "Payment proof is illegible, please re-upload a clear copy."
-                      ? "Illegible"
-                      : reason === "Uploaded slip is invalid — please provide the correct payment proof."
-                        ? "Invalid slip"
-                        : reason === "Blurry image — please re-upload a clearer photo/screenshot of the payment slip."
-                          ? "Blurry image"
-                          : "Incorrect value"}
-                  </button>
-                ))}
-              </div>
-              <textarea
-                value={rejectReason}
-                onChange={(e) => setRejectReason(e.target.value)}
-                placeholder="e.g. Payment proof is illegible, please re-upload a clear copy."
-                rows={3}
-                className="w-full text-xs border border-slate-300 bg-white px-2.5 py-1.5 rounded-xs focus:outline-none focus:border-primary resize-none"
-              />
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRejectTarget(null)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleReject}
-              loading={rejecting}
-              disabled={!rejectReason.trim() || rejecting}
-            >
-              <Ban className="w-3.5 h-3.5" />
-              Confirm Rejection
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <RejectDialog
+        rejectTarget={rejectTarget}
+        rejectReason={rejectReason}
+        rejecting={rejecting}
+        locale={locale}
+        onReasonChange={setRejectReason}
+        onConfirm={handleReject}
+        onClose={() => { setRejectTarget(null); setRejectReason(""); }}
+      />
 
       {/* ── Payment proof preview dialog ── */}
-      <Dialog open={!!previewTarget} onOpenChange={(open) => { if (!open) setPreviewTarget(null); }}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Payment Proof</DialogTitle>
-            <DialogDescription>
-              {previewTarget && `${getName(previewTarget.user)} — ${getCourseName(previewTarget)}`}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="flex items-center justify-center min-h-[200px] bg-slate-50 border border-slate-200 rounded-xs">
-            {previewTarget?.paymentProofUrl ? (
-              <div className="text-center space-y-2 p-4">
-                <Image
-                  src={`/api/upload/s3-proxy?key=${encodeURIComponent(previewTarget.paymentProofUrl)}`}
-                  alt="Payment proof"
-                  className="max-w-full max-h-[60vh] object-contain border border-slate-200"
-                  width={800}
-                  height={600}
-                  unoptimized
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                    e.currentTarget.nextElementSibling?.classList.remove("hidden");
-                  }}
-                />
-                <p className="text-xs text-slate-500 hidden">
-                  Payment proof image could not be loaded.
-                </p>
-                <p className="text-[10px] font-mono text-slate-400 truncate max-w-full">
-                  {previewTarget.paymentProofUrl}
-                </p>
-              </div>
-            ) : (
-              <div className="text-center p-4">
-                <FileText className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                <p className="text-xs text-slate-500">No payment proof uploaded.</p>
-              </div>
-            )}
-          </div>
-
-          <DialogFooter showCloseButton />
-        </DialogContent>
-      </Dialog>
+      <PaymentProofPreview
+        previewTarget={previewTarget}
+        locale={locale}
+        onClose={() => setPreviewTarget(null)}
+      />
     </div>
   );
 }

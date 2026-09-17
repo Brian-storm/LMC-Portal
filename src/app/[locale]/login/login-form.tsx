@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn, getSession } from "next-auth/react";
 import { Building2, Lock, User, ArrowRight, AlertCircle } from "lucide-react";
@@ -13,7 +13,6 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ locale, dict }: LoginFormProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const redirectPath = searchParams.get("from");
@@ -46,13 +45,12 @@ export function LoginForm({ locale, dict }: LoginFormProps) {
       const isAdmin = session?.user?.role === "ADMIN";
 
       if (redirectPath) {
-        router.push(redirectPath);
+        window.location.href = redirectPath;
       } else if (isAdmin) {
-        router.push(`/${locale}/admin`);
+        window.location.href = `/${locale}/admin`;
       } else {
-        router.push(`/${locale}/dashboard`);
+        window.location.href = `/${locale}/dashboard`;
       }
-      router.refresh();
     } catch {
       setError(dict.errorUnexpected);
       setIsLoading(false);
