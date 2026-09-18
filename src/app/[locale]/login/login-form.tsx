@@ -45,10 +45,13 @@ export function LoginForm({ locale, dict }: LoginFormProps) {
       const isAdmin = session?.user?.role === "ADMIN";
 
       if (redirectPath) {
+        // Hard refresh intentional: redirectPath may be external (from `?from=` query param)
         window.location.href = redirectPath;
       } else if (isAdmin) {
+        // Hard refresh intentional after login to ensure fresh server component render with new session
         window.location.href = `/${locale}/admin`;
       } else {
+        // Hard refresh intentional after login to ensure fresh server component render with new session
         window.location.href = `/${locale}/dashboard`;
       }
     } catch {

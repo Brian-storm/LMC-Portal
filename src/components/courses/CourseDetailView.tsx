@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   FileText,
   Calendar,
@@ -67,9 +68,11 @@ export function CourseDetailView({
                 {organizer && (
                   <div className="flex flex-col items-center gap-2 p-3 border border-slate-200 rounded-xs bg-slate-50/50">
                     {course.organizerLogoUrl && (
-                      <img
+                      <Image
                         src={course.organizerLogoUrl}
                         alt={organizer}
+                        width={120}
+                        height={48}
                         className="h-12 sm:h-16 w-auto object-contain"
                       />
                     )}
@@ -80,9 +83,11 @@ export function CourseDetailView({
                 {coOrganizer && (
                   <div className="flex flex-col items-center gap-2 p-3 border border-slate-200 rounded-xs bg-slate-50/50">
                     {course.coOrganizerLogoUrl && (
-                      <img
+                      <Image
                         src={course.coOrganizerLogoUrl}
                         alt={coOrganizer}
+                        width={120}
+                        height={48}
                         className="h-12 sm:h-16 w-auto object-contain"
                       />
                     )}
