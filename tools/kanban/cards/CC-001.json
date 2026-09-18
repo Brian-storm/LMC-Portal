@@ -2,7 +2,7 @@
   "id": "CC-001",
   "title": "CourseCard 版面重構 — 海報放大至 1/3、移除右側面板、縮小查看課程按鈕",
   "content": "CG 課程目錄頁的卡片目前是 3 欄水平配置：海報（160px）| 課程詳情（flex-1）| 右側面板（CPD 時數、費用、CTA）。需求是：\n\n1. 移除右側面板（費用與 CPD 時數搬到詳細區內）\n2. 海報寬度放大至卡片的 1/3（w-1/3）\n3. 查看課程按鈕縮小並移入課程詳情區（例如放在 metadata grid 底部或描述下方）\n\n**方案**：\n- 刪除 section 5（右側面板）及其所有子元素（fee, CPD hours badge, CTA buttons）\n- 將海報區的容器從 `w-[160px]` 改為 `w-1/3`（響應式 md 以上生效）\n- 將 CTA 按鈕移到課程詳情區底部（在 metadata grid 下方），使用更小的尺寸 `text-[10px] px-1.5 py-0.5` 而非目前的 `text-[12px] px-2 py-1`\n- 費用（formattedFee）與 feeBreakdown 移到 metadata grid 內或描述下方\n- 下載大綱按鈕（brochure download）也隨 CTA 一起移入詳情區\n\n**不包含**：\n- 不修改 CourseCard 以外的任何元件\n- 不修改 types.ts 或字典\n- 不修改 API 或資料 mapping\n\n風險：low\n依賴：無",
-  "stage": "verify",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

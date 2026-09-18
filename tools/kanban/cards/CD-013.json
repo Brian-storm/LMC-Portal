@@ -2,7 +2,7 @@
   "id": "CD-013",
   "title": "課程時間表排序改為日期時間升序",
   "content": "課程詳情頁與報名流程的時間表目前因 `dateAndTime` 為 String 欄位，Prisma 使用字典序排序，造成跨月份排序錯誤（例如 08/10/2026 < 09/09/2026 < 22/09/2026）。\n\n本卡實作：\n\n**方案：Schema 強化 + API 排序修正**\n- Schedule 模型新增 `sessionDate` DateTime 欄位，用於正確的日期時間排序\n- 保留 `dateAndTime` String 欄位維持顯示不變\n- Prisma migration + seed 更新：所有 schedule 同時填入 `sessionDate`\n- API 查詢改為 `orderBy: { sessionDate: \"asc\" }` 取代字典序的 `dateAndTime`\n- 因 CourseDetailView 與 EnrollmentWizard 皆依 API 回傳順序迭代，排序修正自動套用至兩個頁面，無需前端改動\n\n**不包含**：\n- 不修改 schedule 的顯示方式或版面配置\n- 不新增獨立「課程時間表」區塊\n- 不修改 topics 區塊的 schedule 顯示\n- 不修改報名流程中的 schedule 選擇邏輯\n- 不修改管理員後台的 schedule 管理\n\n風險：low\n依賴：無（獨立修改）",
-  "stage": "ready",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

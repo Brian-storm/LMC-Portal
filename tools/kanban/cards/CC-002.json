@@ -2,7 +2,7 @@
   "id": "CC-002",
   "title": "CUHK 課程講師顯示改為「香港中文大學醫院專科醫生主講」",
   "content": "課程 CPD26090103（香港醫療體制發展、大灣區醫療概況與醫療保障證書課程）在 CourseCard 上的 speaker 欄位目前顯示「香港中文大學醫院 專科醫生」（seed.ts:64 的 nameZh，含一個空格）。需求改為顯示「香港中文大學醫院專科醫生主講」（移除空格 + 加上「主講」後綴）。\n\n**方案 A（推薦）：在 mapApiCourse.ts 中對 speaker 值加後綴**\n- 在 mapApiCourse() 中，locate speaker 賦值後，若 isZh 則 speaker += \"主講\"，若 !isZh 則 speaker = \"Lectured by \" + speaker\n- 此方法不修改 seed data，所有 course 的 speaker 都會套用此格式\n- 若 user 只希望特定 course 有此格式，則改方案 B\n\n**方案 B（替代）：只改 seed.ts 的 nameZh**\n- 將 cuhkSpecialist 的 nameZh 從「香港中文大學醫院 專科醫生」改為「香港中文大學醫院專科醫生主講」\n- nameEn 從「CUHK Medical Centre Specialist」改為「Lectured by CUHK Medical Centre Specialist」\n- 缺點：seed 會與真實 instructor 名稱不一致\n\n**方案 C（替代）：在 CourseCard.tsx 中對 speaker 做本地化後綴**\n- 在 CourseCard 渲染時，對 speaker 值加上「主講」後綴\n- 此方案會修改 CourseCard（與 CC-001 有 conflict，不推薦）\n\n推薦方案 A，因為它保持 CourseCard 不變、不污染 seed 數據，且格式統一套用於所有課程。\n\n**不包含**：\n- 不修改 CourseCard 版面\n- 不修改 dicitionaries\n- 不修改 API\n\n風險：low\n依賴：無（與 CC-001 無關聯，可獨立實作）",
-  "stage": "verify",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

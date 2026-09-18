@@ -2,7 +2,7 @@
   "id": "PR-004",
   "title": "金流端到端整合驗收 (AWS 全線串接)",
   "content": "End-to-end verification of the complete payment-to-receipt flow. Receipt PDFs are generated on-the-fly (no S3), password-protected with the registrant's idDocNumber, and delivered via SES. This card is verification-only against staging with real AWS services.",
-  "stage": "ready",
+  "stage": "blocked",
   "risk": "high",
   "owner": "Brian",
   "agent": "",
@@ -66,7 +66,13 @@
     ],
     "residual": "Receipt PDFs now generated on-the-fly from DB (no S3 storage). Password protection via pdf-lib-encrypt AES-256. SES sender email still needs AWS verification. PR-004 requires deploy to staging with real AWS services to fully verify."
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "Brian",
+      "time": "2026-09-18",
+      "text": "部分功能尚未實作，移至 blocked"
+    }
+  ],
   "acceptance": [
     "1. Payment proof upload: submit enrolment via /en/courses/{slug}/enroll → file stored in S3, paymentProofUrl saved in DB (existing flow, unchanged)",
     "2. Admin review list: visit /en/admin/enrolments → table loads all enrolments with real user/course data from RDS",
