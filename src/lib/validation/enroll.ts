@@ -48,6 +48,17 @@ export const enrollSchema = z
       return true;
     },
     { message: "registrants array is required for ORGANIZATION enrollment", path: ["registrants"] },
+  )
+  // Guest enrollment (email present): idDocNumber and iaLicenseNo are required
+  // Logged-in enrollment: they come from the User table, not the request body
+  .refine(
+    (data) => {
+      if (data.email) {
+        return !!data.idDocNumber && !!data.iaLicenseNo;
+      }
+      return true;
+    },
+    { message: "idDocNumber and iaLicenseNo are required for guest enrollment", path: ["idDocNumber"] },
   );
 
 export type EnrollInput = z.infer<typeof enrollSchema>;

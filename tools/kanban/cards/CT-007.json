@@ -1,12 +1,12 @@
 {
   "id": "CT-007",
   "title": "將身份證明文件及 IA 牌照設為必填欄位（註冊 + 報名）",
-  "content": "Make ID document number and IA license number required fields in both registration form and enrollment wizard.",
-  "stage": "blocked",
-  "risk": "medium",
-  "owner": "TBD",
+  "content": "Make ID document number and IA license number required fields in the enrollment flow (backend Zod validation). Registration form does NOT need these as required — ID doc and IA license are not mandatory for account creation.\n\n實作內容：\n- `src/lib/validation/enroll.ts` 新增 `.refine()`：當 email 存在（guest 報名），強制 idDocNumber 和 iaLicenseNo 必填\n- 已登入報名不受影響（從 DB User table 取值）\n- 註冊表單不修改\n\n風險：low\n依賴：無",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
   "agent": "",
-  "approvalRequired": true,
+  "approvalRequired": false,
   "createdAt": "2026-09-07",
   "epic": "報名與結帳",
   "userStory": "註冊與報名表單必填欄位確認",
@@ -40,27 +40,30 @@
   },
   "refs": [],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": "BLOCKED: Need product confirmation on whether these fields should be mandatory. Currently ID doc is optional in registration (HKID split with no asterisk/required flag) and IA license is optional in registration. In enrollment, IA license is required but ID doc is required via HKID split. Need to confirm desired behavior."
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "enroll.ts:39-41 — iaLicenseNo/idDocType/idDocNumber 原為 .optional()",
+      "新增 .refine() 於 enroll.ts:54-62: guest 時強制必填",
+      "已登入路徑 (route.ts:49-81) 從 DB User 取值，不受影響",
+      "註冊表單不需修改 (product 確認無需必填)"
+    ],
+    "residual": "Zod refine 僅攔截格式驗證層級，實際寫入邏輯 (guest fallback UUID) 保留不變"
   },
   "comments": [
-    "BLOCKED — awaiting product decision on whether ID doc and IA license should be required in registration and enrollment forms"
+    "2026-09-18: Product confirmed — registration does NOT require ID doc/IA license. Enrollment backend Zod refine added to enforce guest required fields. CT-007 done."
   ],
   "acceptance": [
-    "Registration form: ID document (HKID or Passport) is marked as required with red asterisk",
-    "Registration form: IA license number is marked as required with red asterisk",
-    "Enrollment wizard: IA license number remains required (already required)",
-    "Enrollment wizard: ID document remains required (already required)",
-    "All 3 locales reflect the required-field labels correctly",
-    "Form validation blocks submission if required fields are empty"
+    "Guest 報名 API 拒收缺少 idDocNumber 或 iaLicenseNo 的請求",
+    "已登入報名不受影響（從 DB User 取值）",
+    "註冊表單不要求必填",
+    "npm run typecheck 通過",
+    "npm run lint 通過 (0 errors)"
   ],
   "files": [
-    "src/app/[locale]/register/register-form.tsx",
-    "src/components/enrollment/EnrollmentWizard.tsx",
-    "src/dictionaries/en.json",
-    "src/dictionaries/zh-hk.json",
-    "src/dictionaries/zh-cn.json"
+    "src/lib/validation/enroll.ts"
   ],
   "verification": "Submit registration form with empty ID doc → error shown. Submit with empty IA license → error shown. Submit enrollment with empty IA license → error shown. All 3 locales display correct required labels."
 }
