@@ -1,0 +1,72 @@
+{
+  "id": "AF-009",
+  "title": "WhatsApp 聊天機器人 — 會話管理 + 全流程驗證",
+  "content": "強化和驗證 WhatsApp 聊天機器人的對話體驗。\n\n任務：\n1. 會話/狀態管理\n   - 依 sender phone number 追蹤對話狀態\n   - 支援多輪對話（例如：選單 → 選擇類別 → 顯示該類別 FAQ）\n   - 會話超時（例如 30 分鐘無互動後重置）\n   - 儲存在 Redis 或記憶體（依環境決定）\n\n2. 互動式選單\n   - 歡迎訊息 + 選單選項（數字回覆）\n   - 類別選單：「回覆 1 查詢報名資訊，回覆 2 查詢課程...」\n   - 回到主選單指令（回覆 0）\n   - 轉接真人指令（回覆 9 → 通知管理員）\n\n3. WhatsApp 專屬 FAQ 匹配\n   - 支援較寬鬆的關鍵字匹配（WhatsApp 使用者打字較簡短）\n   - 回覆格式最佳化（純文字，無 HTML，限 4096 字元）\n   - 多步驟回覆（若答案過長，分段發送）\n\n4. 管理端通知（可選）\n   - 當使用者要求轉接真人時，發送 email 通知管理員\n\n⚠️ 依賴 AF-008 的通訊層與 AF-005 的 FAQ matcher。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "WhatsApp Business 聊天機器人",
+  "dependsOn": ["AF-008"],
+  "order": 9,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/whatsapp/session.ts",
+    "src/lib/whatsapp/menu.ts",
+    "src/lib/whatsapp/handler.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "WhatsApp welcome message shows interactive menu with numbered options",
+    "User can navigate categories by replying numbers",
+    "FAQ matching works with abbreviated/casual input",
+    "Session expires after 30 mins inactivity and resets to main menu",
+    "Reply '0' returns to main menu from any state",
+    "Reply '9' triggers human handoff notification (email to admin)",
+    "Long answers split into multiple messages if >4096 chars",
+    "All texts use correct locale based on user's first interaction language detection",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/whatsapp/session.ts (new — session state management)",
+    "src/lib/whatsapp/menu.ts (new — interactive menu builder)",
+    "src/lib/whatsapp/handler.ts (new — message handler + state machine)",
+    ".env.example (update — add WHATSAPP_SESSION_TIMEOUT)",
+    "src/dictionaries/en.json (update — add WhatsApp menu texts)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint. Send messages via WhatsApp test number → verify menu navigation, FAQ answers, session timeout, handoff."
+}

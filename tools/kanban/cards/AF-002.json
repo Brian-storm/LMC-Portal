@@ -1,0 +1,79 @@
+{
+  "id": "AF-002",
+  "title": "FAQ 管理端 UI — 類別 + 問題 CRUD 頁面",
+  "content": "在 Admin 後台建立 FAQ 管理介面：\n\n頁面：\n- /admin/faq — 主頁，顯示 FAQ 類別列表（可展開）及每個類別下的問題列表\n- /admin/faq/categories/new — 新增類別表單\n- /admin/faq/categories/[id]/edit — 編輯類別\n- /admin/faq/new — 新增問題（可選類別、輸入三語 Q&A）\n- /admin/faq/[id]/edit — 編輯問題\n- 刪除操作：類別刪除需確認對話框（提示將影響底下問題），問題刪除需確認\n\n功能需求：\n- 類別可拖曳排序 (order field)\n- 問題在列表可拖曳排序\n- 問題可切換發布/隱藏狀態 (isPublished toggle)\n- Loading / error / empty states\n- i18n 支援（使用 AdminDict 現有模式）\n- 表單驗證（Zod schema 對應 API）\n- Toasty 通知（成功/錯誤）\n\n⚠️ 依賴 AF-001 的 API routes。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/faq/",
+    "src/app/api/admin/faq/",
+    "src/dictionaries/en.json (admin.faq section)",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts (AdminDict)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "/admin/faq shows categories as expandable sections with questions under each",
+    "Create/edit category forms work with all 3 locale name fields",
+    "Create/edit question forms work with all 3 locale Q&A fields + category selector",
+    "Delete category shows confirmation with warning about affected questions",
+    "Delete question works with confirmation dialog",
+    "isPublished toggle works inline on question rows",
+    "All forms show inline Zod validation errors",
+    "Success/error toast notifications appear",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "Loading skeleton and empty states render correctly",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/faq/page.tsx (new — FAQ management main page with categories + questions)",
+    "src/app/[locale]/admin/faq/categories/new/page.tsx (new — create category form)",
+    "src/app/[locale]/admin/faq/categories/[id]/edit/page.tsx (new — edit category form)",
+    "src/app/[locale]/admin/faq/new/page.tsx (new — create question form)",
+    "src/app/[locale]/admin/faq/[id]/edit/page.tsx (new — edit question form)",
+    "src/dictionaries/types.ts (update — add faq keys to AdminDict)",
+    "src/dictionaries/en.json (update — add admin.faq keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/faq — create category add questions edit toggle publish delete all work."
+}

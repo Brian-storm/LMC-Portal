@@ -1,0 +1,72 @@
+{
+  "id": "AF-015",
+  "title": "Alipay 付款管理 — 管理端檢視 + 退款 + 對帳",
+  "content": "建立管理員對 Alipay 付款的檢視與管理功能。\n\n任務：\n1. Admin Enrolments 頁面更新\n   - 付款方式欄顯示「Alipay」\n   - 付款狀態包含 Alipay 交易狀態（PENDING / SUCCESS / FAILED / REFUNDED）\n   - 點擊 Alipay trade no 顯示交易詳情\n\n2. 退款功能 (POST /api/admin/payments/[id]/refund)\n   - 管理員可對成功的 Alipay 交易退款\n   - 呼叫 Alipay 退款 API\n   - 更新 DB payment status 為 REFUNDED\n   - 僅限管理員操作\n\n3. 對帳報表 (GET /api/admin/payments/report)\n   - 匯出指定日期範圍的 Alipay 交易記錄\n   - 欄位：交易時間、Alipay trade no、學員、課程、金額、狀態、退款時間\n   - 格式：JSON（給前端顯示表格）\n\n4. Admin Payments 頁面 (/admin/payments)\n   - 列表顯示所有付款記錄（不限 Alipay）\n   - 搜尋/過濾：付款方式、狀態、日期範圍\n   - 對帳報表可下載\n\n⚠️ 高風險 — 退款直接涉及金流。退款前需二次確認。\n⚠️ 依賴 AF-013 與 AF-014。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "線上支付 (Alipay)",
+  "dependsOn": ["AF-013"],
+  "order": 15,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/payments/",
+    "src/app/api/admin/payments/",
+    "src/app/[locale]/admin/enrolments/",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Admin Enrolments shows Alipay payment method and trade status",
+    "Refund flow: admin clicks refund → confirmation dialog → refund processed → status = REFUNDED",
+    "Refund calls Alipay refund API and handles failure",
+    "/admin/payments lists all payments with search/filter",
+    "Payment report API returns correct data for specified date range",
+    "All admin labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/payments/route.ts (new — GET payments with filters + report)",
+    "src/app/api/admin/payments/[id]/refund/route.ts (new — POST refund)",
+    "src/lib/payment/alipay/refund.ts (new — Alipay refund API)",
+    "src/app/[locale]/admin/payments/page.tsx (new — payments list page)",
+    "src/dictionaries/types.ts (update — add payment admin keys)",
+    "src/dictionaries/en.json (update — add admin.payments keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/payments → list loads, refund works in sandbox."
+}

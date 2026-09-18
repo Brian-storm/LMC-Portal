@@ -1,0 +1,67 @@
+{
+  "id": "AF-019",
+  "title": "資料匯入匯出共用函式庫 — CSV + Excel 工具",
+  "content": "建立所有匯入匯出功能共用的底層工具庫。\n\n任務：\n1. CSV 工具 (src/lib/data/csv.ts)\n   - 匯出：array of objects → CSV string (支援 BOM for Excel 中文相容)\n   - 匯入：CSV string → array of objects（欄位對映 + 驗證）\n   - 預設 UTF-8 BOM、雙引號跳脫\n\n2. Excel 工具 (src/lib/data/excel.ts)\n   - 使用 exceljs 套件\n   - 匯出：worksheet → .xlsx buffer（支援合併欄、樣式）\n   - 匯入：.xlsx buffer → array of objects\n   - 支援多 sheet\n\n3. 共用型別 (src/lib/data/types.ts)\n   - ExportColumn: { key, header, width?, format? }\n   - ImportResult: { success: boolean, imported: number, errors: ImportError[] }\n   - DataExporter: interface for export implementations\n   - DataImporter: interface for import implementations\n\n4. 共用工具\n   - 欄位對映（資料庫欄位名稱 → 匯出標題）\n   - 日期格式化\n   - 檔案下載 helper（Response with Content-Disposition）\n   - 大檔案串流（避免記憶體爆掉）\n\n安裝依賴：npm install exceljs\n\n⚠️ 此卡僅建立工具庫，不包含具體業務功能的匯入/匯出。具體功能在後續卡片實作。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": [],
+  "order": 19,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/data/csv.ts",
+    "src/lib/data/excel.ts",
+    "src/lib/data/types.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "CSV export produces valid UTF-8 BOM CSV with correct escaping",
+    "CSV import parses standard CSV files correctly",
+    "Excel export produces valid .xlsx file that opens in Excel",
+    "Excel import parses .xlsx files correctly",
+    "ExportColumn[] → CSV string and Excel buffer both work",
+    "ImportResult returns correct counts and error details",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/data/csv.ts (new — CSV export/import utilities)",
+    "src/lib/data/excel.ts (new — Excel export/import via exceljs)",
+    "src/lib/data/types.ts (new — shared data types for import/export)",
+    "package.json (update — add exceljs dependency)"
+  ],
+  "verification": "npm install exceljs && npm run typecheck && Export test data to CSV + Excel → files open correctly. Import CSV + Excel → data parsed correctly."
+}

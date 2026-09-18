@@ -1,0 +1,73 @@
+{
+  "id": "AF-011",
+  "title": "自動化證書後端 — 管理端發證 API + PDF 生成",
+  "content": "建立證書生成與管理後端。\n\nAPI Routes:\n- POST /api/admin/certificates — 管理員手動發證給特定 registrant\n  - Body: { registrantId: number, courseId: number }\n  - 自動產生 certificateNumber (CERT-YYYY-NNNNN)\n  - 自動產生 antiForgeryId (UUID)\n  - 生成 PDF\n  - 上傳至 S3\n  - 寫入 DB\n\n- GET /api/admin/certificates — 列出所有已發證書（可依 registrant/course 過濾）\n- PATCH /api/admin/certificates/[id]/revoke — 撤銷證書\n- GET /api/certificates/verify?code={antiForgeryId} — 公開驗證證書真偽\n\nPDF 生成 (src/lib/certificate/generate.tsx):\n- 使用 @react-pdf/renderer（沿用 PR-003 模式）\n- 版面：學員名稱、課程名稱、發證機構、完成日期、證書編號、QR code（若決議使用）\n- 字型：Noto Sans SC（CJK + Latin，沿用收據字型）\n- 上傳至 S3 certificates/ prefix\n\n⚠️ Anti-forgery 機制 TBC。當前實作 UUID + verification URL 端點，等待最終決策後可能有 QR code 調整。\n⚠️ 依賴 AF-010 的資料模型。PDF 生成模式沿用 PR-003 的 @react-pdf/renderer 實作模式。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動化證書",
+  "dependsOn": ["AF-010", "PR-003"],
+  "order": 11,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/certificates/route.ts",
+    "src/app/api/admin/certificates/[id]/route.ts",
+    "src/app/api/certificates/verify/route.ts",
+    "src/lib/certificate/generate.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "POST /api/admin/certificates creates Certificate record with auto-generated number + UUID",
+    "PDF generates correctly via @react-pdf/renderer with Noto Sans SC font",
+    "PDF uploads to S3 certificates/ prefix",
+    "GET /api/admin/certificates returns filtered certificate list",
+    "PATCH /api/admin/certificates/[id]/revoke sets status to REVOKED",
+    "GET /api/certificates/verify?code={antiForgeryId} returns certificate validity status",
+    "Error handling: duplicate issue attempt returns 409, invalid input returns 400",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/certificates/route.ts (new — POST issue + GET list)",
+    "src/app/api/admin/certificates/[id]/revoke/route.ts (new — PATCH revoke)",
+    "src/app/api/certificates/verify/route.ts (new — GET public verification)",
+    "src/lib/certificate/generate.tsx (new — PDF generation using @react-pdf/renderer)",
+    "src/lib/certificate/styles.ts (new — certificate PDF styles)",
+    "src/lib/certificate/number.ts (new — certificate number generator CERT-YYYY-NNNNN)",
+    "src/lib/certificate/s3.ts (new — S3 upload/download for certificates)",
+    "prisma/seed.ts (update — add test certificate data)"
+  ],
+  "verification": "npm run typecheck && npm run lint && POST admin/certificates → certificate created in DB + PDF in S3 + verification URL works."
+}

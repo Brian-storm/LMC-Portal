@@ -1,0 +1,70 @@
+{
+  "id": "AF-001",
+  "title": "FAQ 架構基礎 — Prisma 模型 + 管理端 API",
+  "content": "Phase 2 的 FAQ 系統需要資料庫模型與管理端 CRUD API。\n\nPrisma 模型：\n- FAQCategory: id, nameZh, nameEn, nameZhCn, order, createdAt, updatedAt\n- FAQ: id, categoryId (FK → FAQCategory), questionZh, questionEn, questionZhCn, answerZh, answerEn, answerZhCn, order, isPublished, createdAt, updatedAt\n\nAPI Routes (admin only, admin role required):\n- GET /api/admin/faq/categories — all categories ordered\n- POST /api/admin/faq/categories — create category\n- PATCH /api/admin/faq/categories/[id] — update category\n- DELETE /api/admin/faq/categories/[id] — delete category (cascade FAQs or block)\n- GET /api/admin/faq — all FAQs (with category), paginated\n- POST /api/admin/faq — create FAQ\n- PATCH /api/admin/faq/[id] — update FAQ\n- DELETE /api/admin/faq/[id] — delete FAQ\n\nPublic API (no auth):\n- GET /api/faq — published FAQs grouped by category, for public page\n\n⚠️ All API routes must validate with Zod and return 400 on invalid input. Admin routes must check session role === 'ADMIN'.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["PS-002"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/schema.prisma",
+    "src/app/api/admin/faq/",
+    "src/app/api/faq/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Prisma migration creates FAQCategory and FAQ tables with all specified fields",
+    "GET /api/admin/faq/categories returns all categories ordered by `order`",
+    "POST/PATCH/DELETE admin category routes work with proper auth check",
+    "GET /api/admin/faq returns paginated FAQs with category relation",
+    "POST/PATCH/DELETE admin FAQ routes work with Zod validation",
+    "GET /api/faq returns published FAQs grouped by category (public, no auth)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add FAQCategory + FAQ models)",
+    "prisma/seed.ts (update — add sample FAQ data)",
+    "src/app/api/admin/faq/categories/route.ts (new — GET + POST)",
+    "src/app/api/admin/faq/categories/[id]/route.ts (new — PATCH + DELETE)",
+    "src/app/api/admin/faq/route.ts (new — GET + POST)",
+    "src/app/api/admin/faq/[id]/route.ts (new — PATCH + DELETE)",
+    "src/app/api/faq/route.ts (new — public GET grouped by category)"
+  ],
+  "verification": "npx prisma migrate dev --name add_faq_models && npm run typecheck && curl GET /api/faq returns published FAQs grouped by category. Admin CRUD routes work with valid auth token."
+}

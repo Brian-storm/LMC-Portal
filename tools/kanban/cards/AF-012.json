@@ -1,0 +1,72 @@
+{
+  "id": "AF-012",
+  "title": "自動化證書管理端 UI — 發證/撤銷/列表頁面",
+  "content": "在 Admin 後台建立證書管理介面。\n\n頁面：\n- /admin/certificates — 證書列表\n  - 表格：certificateNumber、學員名稱、課程名稱、發證日期、發證管理員、狀態 badge、操作按鈕\n  - 搜尋：依 certificateNumber / registrant name 過濾\n  - 過濾：依狀態 (ISSUED / REVOKED)、日期範圍\n  - 分頁\n- /admin/certificates/issue — 發證表單\n  - 搜尋 registrant（依姓名/email/IA license）\n  - 選擇 registrant 後顯示其 enrolments（已完成課程）\n  - 選擇課程 → 確認發證 → POST /api/admin/certificates\n  - 發證成功後顯示證書預覽 + verification URL\n\n功能需求：\n- 列表操作：撤銷（需確認對話框）、預覽證書 PDF\n- Loading / error / empty states\n- i18n 支援（dict keys）\n- 成功/錯誤 toast 通知\n\n⚠️ 依賴 AF-011 的 API routes。\n⚠️ 發證時需驗證 registrant 已註冊該課程且未持有有效證書。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動化證書",
+  "dependsOn": ["AF-011"],
+  "order": 12,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/certificates/",
+    "src/app/api/admin/certificates/",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "/admin/certificates lists all certificates in sortable paginated table",
+    "Search by certificateNumber or registrant name works",
+    "Filter by status (ISSUED/REVOKED) and date range works",
+    "Issue flow: search registrant → select course → confirm → certificate issued",
+    "Issue form validates registrant is enrolled and has no existing active certificate",
+    "After issue, verification URL displayed for copying",
+    "Revoke button shows confirmation dialog and updates status",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "Loading skeleton, empty state, error state handled",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/certificates/page.tsx (new — certificate list page)",
+    "src/app/[locale]/admin/certificates/issue/page.tsx (new — issue certificate form)",
+    "src/dictionaries/types.ts (update — add certificate keys to AdminDict)",
+    "src/dictionaries/en.json (update — add admin.certificates keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/certificates — list loads, issue flow works, revoke works."
+}

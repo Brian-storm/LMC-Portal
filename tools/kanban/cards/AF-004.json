@@ -1,0 +1,62 @@
+{
+  "id": "AF-004",
+  "title": "FAQ 端到端串接驗證",
+  "content": "將 FAQ 系統所有部分（管理端 API → 管理端 UI → 公開 API → 公開頁面）串接並驗證完整流程。\n\n驗證項目：\n1. Admin 建立類別（三語）→ 類別出現在列表\n2. Admin 建立問題（三語，選擇類別）→ 問題出現在類別下\n3. Admin 切換發布狀態 → 公開頁面顯示/隱藏對應\n4. Admin 編輯類別/問題 → 更新正確反映\n5. Admin 刪除類別/問題 → 正確移除\n6. 公開頁面手風琴展開/收起正常\n7. 公開頁面搜尋過濾正常\n8. 公開頁面 URL hash 導航正常\n9. 三語切換正確\n10. Loading / error / empty states 正確顯示\n\n此卡為純驗證，不包含程式碼變更（除修復發現的 bug 外）。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-002", "AF-003"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/faq/",
+    "src/app/[locale]/faq/",
+    "src/app/api/faq/",
+    "src/app/api/admin/faq/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Full CRUD flow verified: create → read → update → delete for both categories and questions",
+    "Public page renders correct published FAQs in correct locale",
+    "Search, accordion, hash navigation all work on public page",
+    "All loading/error/empty states behave correctly",
+    "No console errors in admin or public pages",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [],
+  "verification": "Run through all acceptance criteria manually. Screenshots of admin CRUD and public page for each locale."
+}

@@ -1,0 +1,69 @@
+{
+  "id": "AF-008",
+  "title": "WhatsApp Business API 整合 — Webhook + 訊息收發",
+  "content": "建立 WhatsApp Business API 直接整合，作為獨立頻道（非網站可接近）。\n\n任務：\n1. WhatsApp Business Account (WABA) 設定\n   - 建立/連結 Meta Business Manager\n   - 設定 WhatsApp Business Account\n   - 獲取 Permanent Access Token\n   - 設定 Webhook URL\n\n2. Webhook 端點 (POST /api/whatsapp/webhook)\n   - Meta 驗證（GET — hub.verify_token 挑戰）\n   - 接收 incoming messages (text)\n   - 解析 message body、sender phone number\n   - 將訊息送入 FAQ 匹配引擎取得回覆\n   - 透過 WhatsApp Cloud API 發送回覆\n\n3. 訊息發送模組 (src/lib/whatsapp/send.ts)\n   - POST to https://graph.facebook.com/v18.0/{phone-number-id}/messages\n   - 支援 text messages\n   - 錯誤處理（rate limit、token 過期）\n\n4. 環境變數\n   - WHATSAPP_TOKEN (permanent access token)\n   - WHATSAPP_PHONE_NUMBER_ID\n   - WHATSAPP_VERIFY_TOKEN (for webhook)\n   - WHATSAPP_WEBHOOK_SECRET\n\n⚠️ 此卡只負責 WhatsApp 通訊層，FAQ 匹配邏輯共用 AF-005 的 matcher。\n⚠️ 此功能需要 Meta Business Manager 與 WhatsApp Business Account 已設定。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "WhatsApp Business 聊天機器人",
+  "dependsOn": ["AF-005"],
+  "order": 8,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/whatsapp/webhook/route.ts",
+    "src/lib/whatsapp/send.ts",
+    ".env.example (WHATSAPP_* vars)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/whatsapp/webhook returns hub.challenge for Meta verification",
+    "POST /api/whatsapp/webhook receives incoming messages and returns 200 OK",
+    "Incoming text message triggers FAQ matching and sends reply via WhatsApp Cloud API",
+    "Message send module handles rate limiting and token expiry gracefully",
+    "All WhatsApp env vars documented in .env.example",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/whatsapp/webhook/route.ts (new — GET verify + POST receive webhook)",
+    "src/lib/whatsapp/send.ts (new — WhatsApp Cloud API message sender)",
+    "src/lib/whatsapp/types.ts (new — WhatsApp webhook payload types)",
+    ".env.example (update — add WHATSAPP_* env vars)",
+    "src/dictionaries/en.json (update — add WhatsApp fallback messages)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "Meta webhook verification passes. Send message to WhatsApp number → bot replies with FAQ answer. Verify with Meta webhook test tool."
+}

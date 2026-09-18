@@ -1,0 +1,79 @@
+{
+  "id": "AF-025",
+  "title": "批量電郵活動前端 — Campaign Composer + 收件者選取 + 發送監控",
+  "content": "建立批量電郵活動的管理端 UI。\n\n頁面：\n1. /admin/email-campaigns — 活動列表\n   - 表格：活動名稱、狀態、收件人數、已發送/失敗、建立日期\n   - 搜尋/過濾：依名稱、狀態\n   - 點擊進入編輯或檢視\n\n2. /admin/email-campaigns/new — 新增活動\n   - Step 1: 基本設定（活動名稱、主旨）\n   - Step 2: 內容編輯器\n     - 選擇範本 → 預覽 → 編輯\n     - 插入變數按鈕（點擊插入 {{variable}}）\n     - 預覽模式（HTML 渲染）\n     - 純文字備用編輯\n   - Step 3: 收件者選取\n     - 左側過濾條件（課程、報名狀態、付款狀態、日期範圍）\n     - 右側顯示符合條件的 registrant 計數 + sample list\n     - 確認收件者清單\n   - Step 4: 預覽 + 發送\n     - 發送測試郵件按鈕\n     - 排程發送或立即發送\n     - 最終確認對話框\n\n3. /admin/email-campaigns/[id] — 活動詳情\n   - 活動狀態卡片\n   - 發送進度條（已發送 / 總數）\n   - 收件者發送狀態表格（可分頁、依狀態過濾）\n   - 暫停/取消按鈕（若正在發送）\n\n4. UI 需求\n   - i18n 支援\n   - Loading / error / empty states\n   - Toast 通知\n   - 響應式設計\n\n⚠️ 依賴 AF-024 的 API routes。\n⚠️ 活動一經發送不可編輯（僅可檢視）。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "管理員後台增強",
+  "dependsOn": ["AF-024"],
+  "order": 25,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/email-campaigns/",
+    "src/app/api/admin/email-campaigns/",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Campaign list page shows all campaigns with status badges",
+    "New campaign wizard has 4 steps: Basic → Content → Recipients → Preview",
+    "Content editor has template selector, variable insertion buttons, and HTML preview",
+    "Recipient selection shows filtered count with sample list, confirms before proceeding",
+    "Test email sends to admin email and shows success toast",
+    "Campaign detail page shows progress bar and recipient status table",
+    "Sending campaign can be paused from detail page",
+    "Sent campaigns are read-only (no edit)",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/email-campaigns/page.tsx (new — campaign list)",
+    "src/app/[locale]/admin/email-campaigns/new/page.tsx (new — 4-step wizard)",
+    "src/app/[locale]/admin/email-campaigns/[id]/page.tsx (new — campaign detail)",
+    "src/components/admin/email-campaigns/CampaignBasicStep.tsx (new)",
+    "src/components/admin/email-campaigns/CampaignContentEditor.tsx (new)",
+    "src/components/admin/email-campaigns/CampaignRecipientSelector.tsx (new)",
+    "src/components/admin/email-campaigns/CampaignPreviewStep.tsx (new)",
+    "src/components/admin/email-campaigns/CampaignProgressBar.tsx (new)",
+    "src/components/admin/email-campaigns/RecipientStatusTable.tsx (new)",
+    "src/dictionaries/en.json (update — add campaign UI keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add campaign UI dict keys)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/email-campaigns → create campaign with full wizard → send test → view detail page."
+}

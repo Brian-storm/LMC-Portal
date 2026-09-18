@@ -1,0 +1,75 @@
+{
+  "id": "AF-021",
+  "title": "匯入學員資料 — Admin Preview-then-Confirm",
+  "content": "實作管理員從 CSV/Excel 匯入學員（registrants）資料的功能，採用預覽→確認流程。\n\n任務：\n1. 匯入 API (POST /api/admin/import/registrants/preview)\n   - Accept: multipart/form-data (CSV 或 Excel 檔案)\n   - 解析檔案 → 驗證欄位格式\n   - 回傳：preview data + 錯誤資訊\n   - 不回寫資料庫\n\n2. 確認 API (POST /api/admin/import/registrants/confirm)\n   - Body: { importId: string }（preview 階段回傳的暫存 ID）\n   - 批次寫入資料庫\n   - 回傳：成功筆數、失敗筆數、錯誤明細\n   - 使用 transaction 確保一致性\n\n3. Admin UI (/admin/import/registrants)\n   - Step 1: 上傳頁面\n     - 拖曳上傳或選擇檔案\n     - 支援格式：.csv, .xlsx\n     - 顯示預計匯入欄位說明\n   - Step 2: 預覽頁面\n     - 表格顯示前 20 筆資料\n     - 紅色標記有錯誤的行\n     - 顯示錯誤原因（email 格式錯誤、IA 牌照已存在等）\n     - 「繼續」或「取消」按鈕\n   - Step 3: 結果頁面\n     - 顯示成功/失敗筆數\n     - 錯誤明細可下載\n\n4. 匯入模板下載\n   - /admin/import/registrants/template\n   - 下載 CSV + Excel 範本檔案（含欄位說明 header）\n\n⚠️ 高安全性需求：匯入資料需嚴謹驗證，避免 SQL injection 或資料毀損。\n⚠️ 依賴 AF-019 的工具庫。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": ["AF-019"],
+  "order": 21,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/import/registrants/",
+    "src/app/[locale]/admin/import/registrants/",
+    "src/lib/data/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Upload CSV/Excel → preview shows first 20 rows with error highlights",
+    "Validation catches: invalid email, missing required fields, duplicate IA license",
+    "Confirm import writes valid rows to DB, reports errors for invalid rows",
+    "Import uses transaction: all-or-nothing per batch",
+    "Template download produces CSV + Excel with correct column headers",
+    "Admin UI has 3-step wizard: Upload → Preview → Result",
+    "Error detail file downloadable after partial success",
+    "File type validation (.csv, .xlsx only), max file size limit (10MB)",
+    "All UI labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/import/registrants/preview/route.ts (new — POST preview import)",
+    "src/app/api/admin/import/registrants/confirm/route.ts (new — POST confirm import)",
+    "src/app/api/admin/import/registrants/template/route.ts (new — GET template download)",
+    "src/lib/data/import/registrants.ts (new — registrant import validation + mapping)",
+    "src/app/[locale]/admin/import/registrants/page.tsx (new — 3-step import wizard)",
+    "src/dictionaries/en.json (update — add import UI keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add import dict keys)"
+  ],
+  "verification": "npm run typecheck && npm run lint && Upload test CSV → preview shows data → confirm → registrants created in DB. Invalid rows show errors."
+}

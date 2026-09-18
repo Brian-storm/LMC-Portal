@@ -1,0 +1,78 @@
+{
+  "id": "AF-024",
+  "title": "批量電郵活動後端 — Campaign 模型 + 範本 + 發送佇列 API",
+  "content": "建立批量電郵活動（Bulk Email Campaign）的後端基礎設施。\n\n任務：\n1. Campaign 資料模型 (Prisma)\n   - EmailCampaign: id, name, subject, bodyHtml, bodyText, templateId?, status(DRAFT/SCHEDULED/SENDING/SENT/FAILED), recipientCount, sentCount, failedCount, scheduledAt, sentAt, createdById, createdAt, updatedAt\n   - EmailCampaignRecipient: id, campaignId, registrantId, email, status(PENDING/SENT/FAILED/BOUNCED), errorMessage, sentAt\n\n2. Campaign API Routes\n   - POST /api/admin/email-campaigns — 建立活動（DRAFT 狀態）\n   - GET /api/admin/email-campaigns — 列出所有活動\n   - GET /api/admin/email-campaigns/[id] — 活動詳情\n   - PATCH /api/admin/email-campaigns/[id] — 更新草稿\n   - DELETE /api/admin/email-campaigns/[id] — 刪除草稿\n   - POST /api/admin/email-campaigns/[id]/send — 發送（或排程）\n   - POST /api/admin/email-campaigns/[id]/test — 發送測試郵件\n   - GET /api/admin/email-campaigns/[id]/recipients — 收件者發送狀態\n\n3. 收件者選取 API (GET /api/admin/registrants/for-campaign)\n   - 查詢可成為收件者的 registrants\n   - 參數：?courseId=, ?status=, ?paymentStatus=, ?dateRange=\n   - 回傳：count + sample list\n\n4. 範本系統（共用 AF-017 的郵件範本）\n   - 管理員可選擇既有範本作為基礎 → 編輯主題/內容\n   - 或者從空白建立\n   - 變數插入：{{registrantName}}, {{courseName}}, {{enrolmentDate}} 等\n\n5. 發送引擎\n   - 非同步發送：background job\n   - 使用 SES 批次發送（注意 rate limit）\n   - 逐筆更新 EmailCampaignRecipient 狀態\n   - 進度回報\n\n⚠️ 高風險 — 大量郵件發送可能觸發 SES rate limit 或 spam 投訴。需實作 rate limiting + 退信處理。\n⚠️ 依賴 AF-016（SES 正式化）、AF-017（郵件範本）。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "管理員後台增強",
+  "dependsOn": ["AF-016", "AF-017"],
+  "order": 24,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/schema.prisma (EmailCampaign + EmailCampaignRecipient)",
+    "src/app/api/admin/email-campaigns/",
+    "src/app/api/admin/registrants/for-campaign",
+    "src/lib/email/campaign.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Prisma migration creates EmailCampaign + EmailCampaignRecipient tables",
+    "Full CRUD API for email campaigns works",
+    "Send API submits all recipients to send queue and returns campaign ID",
+    "Recipient selection API returns filtered registrants with count",
+    "Template variables ({{registrantName}}, etc.) inject correctly",
+    "Campaign with DRAFT status can be edited, SENDING cannot",
+    "Test email sends to admin's own email for preview",
+    "Rate limiting prevents SES quota exceedance",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add EmailCampaign + EmailCampaignRecipient models)",
+    "src/app/api/admin/email-campaigns/route.ts (new — POST create + GET list)",
+    "src/app/api/admin/email-campaigns/[id]/route.ts (new — GET + PATCH + DELETE)",
+    "src/app/api/admin/email-campaigns/[id]/send/route.ts (new — POST send)",
+    "src/app/api/admin/email-campaigns/[id]/test/route.ts (new — POST test)",
+    "src/app/api/admin/email-campaigns/[id]/recipients/route.ts (new — GET recipient status)",
+    "src/app/api/admin/registrants/for-campaign/route.ts (new — GET filterable registrant list)",
+    "src/lib/email/campaign.ts (new — campaign send engine with rate limiting)",
+    "src/dictionaries/en.json (update — add campaign API keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update)"
+  ],
+  "verification": "Create campaign via API → add recipients → send test → send live → recipient status tracks correctly."
+}

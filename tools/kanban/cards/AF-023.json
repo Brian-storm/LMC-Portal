@@ -1,0 +1,79 @@
+{
+  "id": "AF-023",
+  "title": "管理員後台進階分析儀表板 — 圖表 + 趨勢 + 收入統計",
+  "content": "強化現有 Admin Dashboard（AD-001 實作的基本統計卡片），加入進階資料視覺化。\n\n任務：\n1. 統計 API 擴充 (GET /api/admin/dashboard)\n   - 新增欄位：\n     - 本月收入、本月收入 vs 上月變化百分比\n     - 本月報名人數、上月對比\n     - 各課程報名人數排名（top 5）\n     - 每月報名趨勢（過去 12 個月）\n     - 付款狀態分布（PENDING / VERIFIED / REJECTED / REFUNDED）\n     - 熱門課程（依報名人數）\n\n2. 圖表視覺化 (src/components/admin/charts/)\n   - RevenueTrendChart — 月收入折線圖（過去 12 個月）\n   - EnrolmentTrendChart — 月報名人數長條圖（過去 12 個月）\n   - PaymentStatusPieChart — 付款狀態圓餅圖\n   - TopCoursesBarChart — 熱門課程長條圖（top 10）\n   - 使用 recharts 或 chart.js（選擇已有相依或輕量套件）\n\n3. Dashboard UI 更新\n   - 保留現有統計卡片（AD-001 實作）\n   - 下方新增「分析」區塊顯示圖表\n   - 可切換時間範圍（3 個月 / 6 個月 / 12 個月）\n   - Loading / error / empty states\n   - RWD 支援\n   - i18n\n\n4. 資料匯出儀表板資料\n   - 「下載報表」按鈕 → 匯出為 Excel（含圖表資料表）\n\n安裝依賴：npm install recharts\n\n⚠️ 依賴 AD-001（現有 Admin Dashboard）。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "管理員後台增強",
+  "dependsOn": ["AD-001"],
+  "order": 23,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/dashboard/route.ts",
+    "src/app/[locale]/admin/page.tsx",
+    "src/components/admin/charts/",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Dashboard shows revenue trend chart (12-month line chart)",
+    "Dashboard shows enrolment trend chart (12-month bar chart)",
+    "Dashboard shows payment status pie chart",
+    "Dashboard shows top courses bar chart",
+    "Time range switcher (3m/6m/12m) updates all charts",
+    "All charts have loading skeletons and error states",
+    "Existing stat cards remain unchanged above charts",
+    "'Download Report' button exports dashboard data as Excel",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/dashboard/route.ts (refactor — add analytics data fields)",
+    "src/components/admin/charts/RevenueTrendChart.tsx (new — revenue line chart)",
+    "src/components/admin/charts/EnrolmentTrendChart.tsx (new — enrolment bar chart)",
+    "src/components/admin/charts/PaymentStatusPieChart.tsx (new — payment pie chart)",
+    "src/components/admin/charts/TopCoursesBarChart.tsx (new — top courses chart)",
+    "src/components/admin/charts/DashboardAnalytics.tsx (new — analytics section container)",
+    "src/app/[locale]/admin/page.tsx (refactor — add analytics section below stat cards)",
+    "src/dictionaries/en.json (update — add analytics keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add analytics dict keys)",
+    "package.json (update — add recharts dependency)"
+  ],
+  "verification": "npm install recharts && npm run typecheck && npm run lint && visit /en/admin → charts render with real data. Time range switch updates charts."
+}

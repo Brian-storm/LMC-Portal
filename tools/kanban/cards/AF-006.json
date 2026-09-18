@@ -1,0 +1,76 @@
+{
+  "id": "AF-006",
+  "title": "網站聊天機器人 Widget 前端元件",
+  "content": "建立網站聊天機器人的前端 UI 元件，嵌入所有公開頁面。\n\n元件：\n- ChatbotWidget — 主容器元件，嵌入 app/layout.tsx（所有頁面全域顯示）\n- ChatbotToggle — 右下角浮動聊天按鈕（氣泡圖示），點擊展開/收起\n- ChatbotPanel — 聊天面板，包含：\n  - 標題列（機器人名稱 + 關閉按鈕）\n  - 訊息歷史（滾動區域，使用者訊息靠右，機器人回覆靠左）\n  - 輸入框 + 送出按鈕\n  - 打字動畫（顯示「正在輸入...」）\n- ChatbotMessage — 單則訊息（區分使用者/機器人樣式）\n- ChatbotSuggestions — 快速提問按鈕（顯示 3-4 個常見問題）\n\n功能需求：\n- 全域浮動在右下角，z-index high (z-50)\n- 展開時置中在手機螢幕（全屏 modal），桌面板在右下角 panel\n- 呼叫 POST /api/chatbot/message\n- 支援打字動畫（模擬 AI 回應延遲）\n- 顯示訊息時間戳\n- 支援快速提問按鈕（FAQ 熱門問題）\n- i18n 支援（dict 提供介面文字）\n- 可折疊狀態保存在 localStorage（重整頁面保持狀態）\n- 可拖曳（桌面版）\n\n⚠️ 依賴 AF-005 的 API endpoint。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "網站聊天機器人",
+  "dependsOn": ["AF-005"],
+  "order": 6,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/chatbot/",
+    "src/app/[locale]/layout.tsx",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Chatbot toggle button (bubble) fixed to bottom-right on all pages",
+    "Clicking toggle expands ChatbotPanel with full chat UI",
+    "User can type message, press Enter or click send → message appears in chat history",
+    "Bot replies with typing animation delay (1-2s) showing FAQ answer",
+    "Quick suggestion buttons (3-4 common questions) shown on open",
+    "Message history scrolls to latest, auto-scroll on new message",
+    "Responsive: mobile = full-screen modal, desktop = bottom-right panel",
+    "Collapse state persists across page navigation (localStorage)",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/chatbot/ChatbotWidget.tsx (new — main widget container)",
+    "src/components/chatbot/ChatbotToggle.tsx (new — floating bubble button)",
+    "src/components/chatbot/ChatbotPanel.tsx (new — expandable chat panel)",
+    "src/components/chatbot/ChatbotMessage.tsx (new — message bubble component)",
+    "src/components/chatbot/ChatbotSuggestions.tsx (new — quick question buttons)",
+    "src/app/[locale]/layout.tsx (update — add ChatbotWidget)",
+    "src/dictionaries/en.json (update — add chatbot UI keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add chatbot UI keys)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit any public page → chatbot bubble visible. Click → chat panel opens, type question → bot replies with FAQ answer."
+}

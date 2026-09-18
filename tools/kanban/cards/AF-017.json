@@ -1,0 +1,75 @@
+{
+  "id": "AF-017",
+  "title": "自動電郵範本 — 新郵件類型 (付款確認、課程提醒等)",
+  "content": "擴展現有 SES 郵件範本，新增多種自動郵件類型。\n\n現有郵件（PR-003）：\n- 核准通知 (approval notification with receipt PDF)\n\n新增郵件類型：\n1. 付款確認信\n   - 觸發：Alipay 付款成功 callback\n   - 內容：付款成功確認、課程詳情、日期、費用\n   - 附件：收據 PDF（沿用 PR-003）\n\n2. 報名確認信\n   - 觸發：報名成功提交\n   - 內容：報名成功、課程資訊、付款指引\n\n3. 課程開始提醒\n   - 觸發：排程發送（開課前 7 天/3 天/1 天）\n   - 內容：課程即將開始、時間地點、準備事項\n\n4. 證書發放通知\n   - 觸發：管理員發證（AF-011）\n   - 內容：證書已可下載、verification URL\n\n5. WhatsApp 轉真人通知\n   - 觸發：使用者回覆 9 要求轉真人客服\n   - 內容：WhatsApp 使用者要求轉接\n\n每個郵件類型需要：\n- Bilingual 主題 + 正文（ZH + EN，依使用者偏好）\n- HTML 範本（響應式設計，LMC 品牌）\n- Plain text 備用版本\n- 動態變數注入\n\n⚠️ 依賴 AF-016 的強化版 SES 發送模組。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動電郵與收據強化",
+  "dependsOn": ["AF-016"],
+  "order": 17,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/email/templates.ts",
+    "src/lib/email/send.ts",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Payment confirmation email sends on Alipay success callback",
+    "Enrolment confirmation email sends on successful registration",
+    "Course reminder email templates created (7d/3d/1d before start)",
+    "Certificate notification email sends on admin issue (AF-011)",
+    "WhatsApp handoff notification email sends to admin",
+    "Each template has bilingual ZH+EN versions",
+    "HTML emails render correctly in major email clients (test via SES preview)",
+    "Plain text fallback included for each template",
+    "Dynamic variables (registrant name, course name, date, URL) inject correctly",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/email/templates.ts (refactor — add all new template types)",
+    "src/lib/email/templates/payment-confirmation.ts (new)",
+    "src/lib/email/templates/enrolment-confirmation.ts (new)",
+    "src/lib/email/templates/course-reminder.ts (new)",
+    "src/lib/email/templates/certificate-notification.ts (new)",
+    "src/lib/email/templates/whatsapp-handoff.ts (new)",
+    "src/dictionaries/en.json (update — add email template texts)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && Trigger each email type → verify HTML renders correctly with dynamic data."
+}

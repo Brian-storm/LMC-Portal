@@ -1,0 +1,74 @@
+{
+  "id": "AF-013",
+  "title": "Alipay 金流後端整合 — SDK + 跳轉 + 回呼處理",
+  "content": "建立 Alipay 線上支付整合的後端基礎設施。使用標準跳轉式（redirect-based）金流。\n\n任務：\n1. Alipay SDK 整合\n   - 安裝 alipay-sdk (Node.js) 或使用 Alipay OpenAPI\n   - 建立 Alipay 客戶端 (src/lib/payment/alipay/client.ts)\n   - 設定：appId, privateKey, alipayPublicKey, gateway（沙箱/正式）\n\n2. 付款請求 API (POST /api/payment/alipay/create)\n   - Body: { registrationId: number, amount: number, description: string }\n   - 回傳：付款跳轉 URL（Alipay 頁面）\n   - 記錄 payment record 到 DB：關聯 registrant、金額、狀態(PENDING)\n\n3. 回呼端點 (GET /api/payment/alipay/callback)\n   - Alipay 付款完成後跳轉回此 URL\n   - 驗證 Alipay 回傳的簽名\n   - 更新 payment status（SUCCESS / FAILED）\n   - 若成功：更新 registrant paymentStatus = VERIFIED\n   - 跳轉到結果頁面（成功/失敗）\n\n4. 非同步通知端點 (POST /api/payment/alipay/notify)\n   - Alipay server-to-server 非同步通知\n   - 驗證通知簽名\n   - 更新 payment status\n   - 回傳 \"success\" 或 \"fail\" 給 Alipay\n\nPayment 資料模型更新：\n- 新增 Payment 表或擴展現有的 Registrant.payment 相關欄位\n- paymentMethod: ALIPAY\n- alipayTradeNo, alipayBuyerId 等 Alipay 回傳資料\n\n環境變數：\n- ALIPAY_APP_ID\n- ALIPAY_PRIVATE_KEY\n- ALIPAY_PUBLIC_KEY\n- ALIPAY_GATEWAY (sandbox / production)\n\n⚠️ 高風險 — 金流正確性直接影響營收。所有交易必須記錄不可竄改的 log。\n⚠️ 使用沙箱環境開發測試後再切換正式金鑰。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "線上支付 (Alipay)",
+  "dependsOn": ["PS-002", "EN-001"],
+  "order": 13,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/payment/alipay/",
+    "src/app/api/payment/alipay/",
+    "prisma/schema.prisma (Payment model)",
+    ".env.example (ALIPAY_* vars)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "POST /api/payment/alipay/create returns valid Alipay redirect URL",
+    "Payment record created in DB with status PENDING",
+    "GET /api/payment/alipay/callback verifies signature and updates status",
+    "POST /api/payment/alipay/notify handles async notification correctly",
+    "Success callback updates Registrant.paymentStatus to VERIFIED",
+    "Failed callback shows appropriate error state",
+    "All Alipay env vars documented in .env.example",
+    "Alipay sandbox mode configurable via env var",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add Payment model or extend for Alipay fields)",
+    "src/lib/payment/alipay/client.ts (new — Alipay SDK client)",
+    "src/lib/payment/alipay/types.ts (new — Alipay data types)",
+    "src/lib/payment/alipay/signature.ts (new — signature verification)",
+    "src/app/api/payment/alipay/create/route.ts (new — POST create payment)",
+    "src/app/api/payment/alipay/callback/route.ts (new — GET callback handler)",
+    "src/app/api/payment/alipay/notify/route.ts (new — POST async notification handler)",
+    ".env.example (update — add ALIPAY_* env vars)"
+  ],
+  "verification": "npm run typecheck && npm run lint && POST /api/payment/alipay/create returns redirect URL. Alipay sandbox callback flow works end-to-end."
+}

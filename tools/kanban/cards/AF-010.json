@@ -1,0 +1,65 @@
+{
+  "id": "AF-010",
+  "title": "自動化證書架構基礎 — Prisma 模型 + S3 儲存設定",
+  "content": "建立自動化證書系統的資料庫模型與儲存基礎設施。\n\nPrisma 模型 - Certificate:\n- id: Int (PK, autoincrement)\n- registrantId: Int (FK → Registrant)\n- courseId: Int (FK → Course)\n- certificateNumber: String (unique, format: CERT-YYYY-NNNNN)\n- antiForgeryId: String (unique, UUID — for verification URL)\n- verificationUrl: String (URL to verify certificate authenticity)\n- issuedAt: DateTime\n- issuedById: Int (FK → User, admin who issued)\n- pdfUrl: String? (S3 URL for stored PDF)\n- status: CertificateStatus (ISSUED, REVOKED)\n\nS3 設定：\n- 新增 S3 Bucket 或使用現有 bucket 的 certificates/ prefix\n- 上傳方式：直接上傳（非 presigned URL，因為是 server-side）\n- PDF 命名：certificates/{certificateNumber}.pdf\n\n⚠️ Anti-forgery 機制 TBC（等待決策：QR code + verification URL vs 純 sequential ID）。此卡先支援 UUID + verification URL，若後續決策變更再調整。\n\n⚠️ 依賴課程資料的 certificateIssuer / certificateTitle 欄位（CD-011 已處理）。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動化證書",
+  "dependsOn": ["PS-002", "CD-001"],
+  "order": 10,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/schema.prisma",
+    "src/lib/aws.ts (S3 client)",
+    "src/lib/certificate/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Prisma migration creates Certificate table with all specified fields",
+    "Certificate model has unique certificateNumber and antiForgeryId",
+    "S3 client configured to upload to certificates/ prefix",
+    "Certificate PDF naming convention: certificates/{certificateNumber}.pdf",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add Certificate model + CertificateStatus enum)",
+    "src/lib/certificate/types.ts (new — Certificate data types)",
+    "src/lib/aws.ts (update — ensure S3 has certificates/ prefix access)",
+    ".env.example (update — add CERTIFICATE_BUCKET if separate)"
+  ],
+  "verification": "npx prisma migrate dev --name add_certificate_model && npm run typecheck && Certificate table exists with all fields in DB."
+}

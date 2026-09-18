@@ -1,0 +1,71 @@
+{
+  "id": "AF-005",
+  "title": "網站聊天機器人架構基礎 — FAQ 匹配引擎 + 抽象層",
+  "content": "建立網站聊天機器人的核心基礎設施：\n\n1. FAQ 匹配引擎 (src/lib/chatbot/matcher.ts)\n   - 接收使用者輸入文字\n   - 從 FAQ 資料庫搜尋最相關的問題（關鍵字比對、模糊匹配）\n   - 回傳匹配到的 FAQ 答案或「找不到答案」的回應\n   - 支援多語（依頁面 locale 過濾對應語系的 FAQ）\n\n2. AI 抽象層 (src/lib/chatbot/engine.ts)\n   - 定義 IChatEngine 介面\n   - 實作 FaqEngine (目前使用 FAQ 匹配)\n   - 預留 AiEngine 介面（後續接入 Microsoft Foundry）\n   - 可透過環境變數 CHATBOT_ENGINE=faq|ai 切換\n\n3. API Route (POST /api/chatbot/message)\n   - 接收 { message: string, locale: string, sessionId?: string }\n   - 透過引擎取得回應\n   - 回傳 { reply: string, source: 'faq'|'ai'|'fallback', sessionId: string, matchedFaqId?: number }\n\n⚠️ 依賴 AF-001 的 FAQ 資料模型與 GET /api/faq。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "網站聊天機器人",
+  "dependsOn": ["AF-001"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/chatbot/matcher.ts",
+    "src/lib/chatbot/engine.ts",
+    "src/app/api/chatbot/message/route.ts",
+    "src/app/api/faq/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "FAQ matching engine returns correct answer for known questions in all 3 locales",
+    "Engine returns helpful fallback message when no FAQ match found",
+    "POST /api/chatbot/message returns { reply, source, sessionId } on valid input",
+    "Zod validation rejects empty messages with 400",
+    "CHATBOT_ENGINE env var switches between faq and ai engines",
+    "IChatEngine interface defined for future AI implementation",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/chatbot/matcher.ts (new — FAQ keyword matching engine)",
+    "src/lib/chatbot/engine.ts (new — IChatEngine interface + FaqEngine implementation)",
+    "src/app/api/chatbot/message/route.ts (new — POST chatbot message endpoint)",
+    "src/dictionaries/en.json (update — add chatbot fallback messages)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add chatbot dict keys)"
+  ],
+  "verification": "npm run typecheck && npm run lint && curl POST /api/chatbot/message with known question → returns FAQ answer. Unknown question → returns fallback."
+}

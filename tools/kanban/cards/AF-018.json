@@ -1,0 +1,73 @@
+{
+  "id": "AF-018",
+  "title": "電郵排程與觸發引擎 — 事件驅動 + 排程發送",
+  "content": "建立電郵自動發送的排程與觸發系統。\n\n任務：\n1. 事件驅動觸發器\n   - 報名成功 → 發送報名確認信\n   - Alipay 付款成功 → 發送付款確認信 + 收據 PDF\n   - 管理員核准 → 發送核准通知\n   - 管理員發證 → 發送證書通知\n   - WhatsApp 轉真人 → 發送管理員通知\n   - 抽象為 Event → Email 映對表，易於擴充\n\n2. 排程發送引擎\n   - 課程開始提醒：開課前 7 天、3 天、1 天\n   - 實作方式：每日 cron job（可設定的時間）\n   - API Route: GET /api/cron/send-reminders (受保護，僅限 cron 調用)\n   - 查詢未來 7/3/1 天內開始的課程 → 發送提醒給已報名學員\n   - 避免重複發送（記錄已發送的提醒）\n\n3. 管理端排程管理\n   - 檢視排程佇列（待發送的郵件）\n   - 手動觸發特定郵件類型\n   - 檢視發送歷史\n\n⚠️ Cron job 建議使用 AWS EventBridge Scheduler 或 Vercel Cron Jobs，定期呼叫 /api/cron/send-reminders。\n⚠️ 依賴 AF-016 與 AF-017。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動電郵與收據強化",
+  "dependsOn": ["AF-017"],
+  "order": 18,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/email/trigger.ts",
+    "src/lib/email/scheduler.ts",
+    "src/app/api/cron/send-reminders/route.ts",
+    "prisma/schema.prisma (EmailSchedule model)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Event-to-email mapping works: each triggering event sends correct email type",
+    "Course reminder cron finds registrants for courses starting in 7/3/1 days",
+    "Reminder emails send only once per registrant per course per reminder window",
+    "Cron endpoint is protected (secret header or IP whitelist)",
+    "Admin can view scheduled emails queue",
+    "Admin can manually trigger specific email type for testing",
+    "Duplicate sending prevention (EmailLog check before sending)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add EmailSchedule or reminder tracking model)",
+    "src/lib/email/trigger.ts (new — event-based email dispatcher)",
+    "src/lib/email/scheduler.ts (new — cron-based reminder engine)",
+    "src/app/api/cron/send-reminders/route.ts (new — cron endpoint for course reminders)",
+    "src/app/api/admin/email-trigger/route.ts (new — manual email trigger)",
+    "src/dictionaries/en.json (update — add scheduler keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && Trigger enrolment event → email sent. Run cron endpoint → course reminders sent for upcoming courses."
+}

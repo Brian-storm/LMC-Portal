@@ -1,0 +1,60 @@
+{
+  "id": "AF-007",
+  "title": "網站聊天機器人 — 全流程驗證與修復",
+  "content": "將網站聊天機器人從後端 API 到前端 Widget 串接驗證完整流程。\n\n驗證項目：\n1. Widget 在所有公開頁面顯示（含 FAQ、課程詳情、聯絡等）\n2. 輸入問題 → API 回覆 FAQ 答案 → Widget 正確顯示\n3. 多語：在 en/zh-hk/zh-cn 頁面問問題，回覆用對應語系\n4. 快速提問按鈕正常運作\n5. 打字動畫順暢\n6. 無已知問題時 fallback 訊息顯示\n7. 手機版面正常（全屏 modal）\n8. localStorage 狀態正確持久化\n9. 管理端新增 FAQ → chatbot 立即反映（不需重啟）\n10. 無 console error\n\n此卡為純驗證，不包含程式碼變更（除修復發現的 bug 外）。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "網站聊天機器人",
+  "dependsOn": ["AF-006"],
+  "order": 7,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/chatbot/",
+    "src/app/api/chatbot/message/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Chatbot works on all public pages in all 3 locales",
+    "FAQ answers display correctly from database",
+    "Fallback message shows when no match found",
+    "Quick suggestions, typing animation, mobile layout all work",
+    "No console errors across all states",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [],
+  "verification": "Manual E2E test: browse site, open chatbot, ask questions in all 3 locales. Screenshots of mobile + desktop."
+}

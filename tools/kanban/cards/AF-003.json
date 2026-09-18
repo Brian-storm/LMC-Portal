@@ -1,0 +1,76 @@
+{
+  "id": "AF-003",
+  "title": "FAQ 公開頁面 — 分類手風琴式 FAQ",
+  "content": "建立公開 FAQ 頁面，從 GET /api/faq 取得已發布的 FAQ 資料，以分類手風琴（accordion）樣式呈現。\n\n位置：/[locale]/faq\n\n功能需求：\n- 頁面標題、metadata (generateMetadata) 可設定\n- 類別作為區段標題顯示\n- 每個問題可點擊展開/收起答案（手風琴互動）\n- 支援 URL hash 直接展開特定問題（如 /faq#faq-{id}）\n- 搜尋框可過濾問題（前端即時過濾）\n- i18n 支援（dict 提供頁面標籤文字，FAQ 內容已三語儲存）\n- Loading skeleton\n- Error state（API 失敗時顯示 retry 按鈕）\n- Empty state（無 FAQ 時顯示提示）\n- RWD 支援（電腦 + 手機）\n- Breadcrumbs\n\n⚠️ 依賴 AF-001 的 GET /api/faq。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/faq/page.tsx",
+    "src/app/api/faq/route.ts",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /[locale]/faq renders published FAQs grouped by category",
+    "Accordion interaction: click question → expand answer, click again → collapse",
+    "URL hash navigation: /faq#faq-{id} auto-expands the specific question",
+    "Search input filters questions by keyword (frontend, real-time)",
+    "Only one question expanded at a time (accordion behavior)",
+    "Loading skeleton shows during API fetch",
+    "Error state shows message with retry button",
+    "Empty state shows 'No FAQs available' message",
+    "i18n: page labels use dict (en, zh-hk, zh-cn)",
+    "Responsive: works on mobile and desktop",
+    "Breadcrumbs visible (Home > FAQ)",
+    "Page title and metadata set correctly per locale",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/faq/page.tsx (new — public FAQ page)",
+    "src/components/faq/FAQAccordion.tsx (new — accordion component with search)",
+    "src/components/faq/FAQCategorySection.tsx (new — category section wrapper)",
+    "src/dictionaries/en.json (update — add faqPage keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add FaqPageDict)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/faq — accordion works, search filters, hash navigation works. Same for zh-hk and zh-cn."
+}

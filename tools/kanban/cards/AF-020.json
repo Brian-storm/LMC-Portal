@@ -1,0 +1,74 @@
+{
+  "id": "AF-020",
+  "title": "匯出學員報名資料 + 付款報表 — Admin CSV + Excel",
+  "content": "在 Admin 後台實作資料匯出功能。\n\n任務：\n1. 匯出報名資料 (GET /api/admin/enrolments/export)\n   - 格式：?format=csv | xlsx\n   - 參數：?status=, ?courseId=, ?startDate=, ?endDate=, ?search=\n   - 欄位：報名編號、學員姓名、Email、IA 牌照、課程名稱、課程編號、報名類型（個人/團體）、付款方式、金額、狀態、報名日期、繳費日期\n   - 回傳：檔案下載（Content-Disposition: attachment）\n\n2. 匯出付款報表 (GET /api/admin/payments/export)\n   - 格式：?format=csv | xlsx\n   - 參數：?status=, ?paymentMethod=, ?startDate=, ?endDate=\n   - 欄位：交易編號、Alipay Trade No、學員、課程、金額、付款方式、狀態、交易時間、退款時間\n   - 回傳：檔案下載\n\n3. Admin UI 匯出按鈕\n   - Enrolments 頁面：右上角「匯出 CSV」「匯出 Excel」按鈕\n   - Payments 頁面：同樣的匯出按鈕\n   - 點擊後直接下載檔案（不阻擋操作）\n   - Loading 狀態（大量資料時顯示進度）\n\n4. 大檔案處理\n   - 資料量大於 10000 筆時顯示「資料過大，將以背景方式產生並郵寄」\n   - 實作背景匯出 + email 通知機制（可選，MVP 可先限制最大值）\n\n⚠️ 依賴 AF-019 的工具庫。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": ["AF-019"],
+  "order": 20,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/enrolments/export/route.ts",
+    "src/app/api/admin/payments/export/route.ts",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/app/[locale]/admin/payments/page.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/enrolments/export?format=csv downloads valid CSV file",
+    "GET /api/admin/enrolments/export?format=xlsx downloads valid Excel file",
+    "GET /api/admin/payments/export?format=csv downloads valid CSV file",
+    "All filter params (status, courseId, date range) applied correctly in export",
+    "Admin Enrolments page has Export CSV + Export Excel buttons",
+    "Admin Payments page has Export CSV + Export Excel buttons",
+    "Download triggers immediate file download with correct filename",
+    "Large dataset (>10000 rows) shows appropriate handling message",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/enrolments/export/route.ts (new — export enrolments to CSV/Excel)",
+    "src/app/api/admin/payments/export/route.ts (new — export payments to CSV/Excel)",
+    "src/app/[locale]/admin/enrolments/page.tsx (update — add export buttons)",
+    "src/app/[locale]/admin/payments/page.tsx (update — add export buttons)",
+    "src/dictionaries/en.json (update — add export UI keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add export dict keys)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/enrolments → click Export CSV → file downloads and opens correctly in Excel."
+}

@@ -1,0 +1,68 @@
+{
+  "id": "AF-022",
+  "title": "匯出課程資料 + 匯入匯出整合驗證",
+  "content": "補齊課程資料匯出功能，並對整個 Import/Export 系統進行整合驗證。\n\n任務：\n1. 匯出課程資料 (GET /api/admin/courses/export)\n   - 格式：?format=csv | xlsx\n   - 參數：?category=, ?status=, ?search=\n   - 欄位：課程編號、課程名稱（三語）、類別、CPD 時數、費用、授課模式、語言、狀態（OPEN/CLOSED）、報名人數、名額\n   - 回傳：檔案下載\n\n2. Admin Courses 頁面匯出按鈕\n   - 右上角「匯出 CSV」「匯出 Excel」按鈕\n\n3. 整合驗證\n   - AF-019 共用工具庫 → 所有匯出功能正確使用\n   - AF-020 匯出報名/付款 → 所有 filter 正確\n   - AF-021 匯入學員 → 完整 preview→confirm 流程\n   - AF-022 匯出課程 → 正確運作\n   - 檢查：所有匯入匯出功能 i18n 正確\n   - 檢查：檔案命名一致（lmc-{type}-{date}.{ext}）\n   - 檢查：所有 API error handling 完成\n\n⚠️ 依賴 AF-019、AF-020、AF-021。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": ["AF-019", "AF-020", "AF-021"],
+  "order": 22,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/courses/export/route.ts",
+    "src/app/[locale]/admin/courses/page.tsx",
+    "src/lib/data/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/courses/export?format=csv downloads courses CSV",
+    "GET /api/admin/courses/export?format=xlsx downloads courses Excel",
+    "All filter params work correctly in course export",
+    "Admin Courses page has Export CSV + Export Excel buttons",
+    "All import/export functionality verified end-to-end",
+    "File naming convention: lmc-{type}-{YYYY-MM-DD}.{ext}",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/courses/export/route.ts (new — export courses to CSV/Excel)",
+    "src/app/[locale]/admin/courses/page.tsx (update — add export buttons)",
+    "src/dictionaries/en.json (update — add course export keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "verification": "npm run typecheck && npm run lint && Visit /en/admin/courses → Export CSV/Excel works. All export+import features verified."
+}

@@ -1,0 +1,76 @@
+{
+  "id": "AF-016",
+  "title": "SES 郵件系統正式化 — 寄件者驗證 + 錯誤處理 + 監控",
+  "content": "將現有的 SES 郵件程式碼（PR-003）正式化為生產品質。\n\n任務：\n1. SES Sender 驗證與設定\n   - 在 AWS SES 主控台驗證寄件者 email/domain\n   - 移出生產環境沙箱模式（提交 SES 限制提升請求）\n   - 設定 DKIM、SPF、DMARC 記錄\n\n2. 錯誤處理強化 (src/lib/email/send.ts)\n   - Rate limiting（SES 有每秒/每日配額）\n   - 退信處理（bounce notification → webhook 或 SNS）\n   - 投訴處理（complaint → 標記使用者不發信）\n   - 重試機制（失敗後指數退避重試 3 次）\n   - 降級策略（SES 完全失敗時 log 錯誤但不阻斷主要流程）\n\n3. 郵件記錄 (EmailLog 模型)\n   - 新增 Prisma model: EmailLog\n   - 欄位：id, to, subject, templateName, status (SENT/FAILED/BOUNCED/COMPLAINT), sentAt, errorMessage\n   - 管理端可檢視郵件發送記錄\n\n4. 環境變數\n   - SES_REGION, SES_ACCESS_KEY, SES_SECRET_KEY (或使用 IAM role)\n   - EMAIL_FROM (寄件者地址)\n   - EMAIL_FROM_NAME\n   - EMAIL_REPLY_TO\n\n⚠️ 需 AWS Console 操作（SES sender verification, quota increase request, SNS setup for bounces）。\n⚠️ 依賴 PR-003 的現有 src/lib/email/ 程式碼，在此基礎上強化。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "自動電郵與收據強化",
+  "dependsOn": ["PR-003"],
+  "order": 16,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/email/send.ts",
+    "src/lib/email/templates.ts",
+    "prisma/schema.prisma (EmailLog model)",
+    ".env.example (SES/EMAIL vars)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "SES sender verified in AWS Console (email or domain)",
+    "Email sending has retry logic (3 attempts with exponential backoff)",
+    "Bounce and complaint handling via SNS or webhook",
+    "EmailLog records every sent email with status",
+    "Rate limiting prevents exceeding SES quotas",
+    "SES failure does not block main user flow (graceful degradation)",
+    "All SES/email env vars documented in .env.example",
+    "Admin can view email logs from admin panel",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — add EmailLog model)",
+    "src/lib/email/send.ts (refactor — add retry, rate limiting, logging)",
+    "src/lib/email/log.ts (new — EmailLog create/query helpers)",
+    "src/app/api/admin/email-logs/route.ts (new — GET email logs)",
+    "src/app/[locale]/admin/email-logs/page.tsx (new — email log viewer)",
+    "src/dictionaries/en.json (update — add email log keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add email log dict keys)",
+    ".env.example (update — add SES/EMAIL vars)"
+  ],
+  "verification": "npm run typecheck && npm run lint && curl POST email endpoint → EmailLog created. Admin page shows log. SES sandbox email arrives in inbox."
+}

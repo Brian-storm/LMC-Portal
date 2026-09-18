@@ -1,0 +1,74 @@
+{
+  "id": "AF-014",
+  "title": "Alipay 付款前端 — 結帳金流 + 結果頁面",
+  "content": "在前端結帳流程中加入 Alipay 付款選項與跳轉金流。\n\n任務：\n1. 結帳頁面 Alipay 付款選項\n   - 在付款方式選擇中加入「Alipay 支付寶」選項\n   - 選擇 Alipay 後顯示「使用支付寶付款」按鈕\n   - 點擊後呼叫 POST /api/payment/alipay/create\n   - 取得跳轉 URL 後 redirect 使用者到 Alipay 頁面\n\n2. 付款結果頁 (/[locale]/payment/result)\n   - Alipay callback URL 設定到此頁面\n   - 顯示付款成功/失敗狀態\n   - 成功：顯示綠色的成功訊息、訂單明細、返回按鈕\n   - 失敗：顯示紅色的失敗訊息、重試按鈕\n   - Loading state（等待 callback 驗證）\n\n3. 付款等待頁 (/[locale]/payment/pending)\n   - 顯示「正在跳轉至支付寶...」訊息\n   - 自動 redirect 到 Alipay\n   - 手動點擊連結備用\n\n4. i18n 支援\n   - dict 提供所有付款頁面文字\n   - 三語（en, zh-hk, zh-cn）\n\n⚠️ 依賴 AF-013 的 API routes。\n⚠️ 金流頁面需處理瀏覽器重新整理、返回按鈕等邊緣情況。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "第二階段：進階功能",
+  "userStory": "線上支付 (Alipay)",
+  "dependsOn": ["AF-013"],
+  "order": 14,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/payment/",
+    "src/app/[locale]/(portal)/enrolment/checkout/",
+    "src/app/api/payment/alipay/",
+    "src/dictionaries/"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Checkout page has Alipay as selectable payment method",
+    "Selecting Alipay shows 'Pay with Alipay' button",
+    "Clicking button calls API and redirects to Alipay",
+    "Payment result page (/payment/result) shows success/failure with correct styling",
+    "Success page shows order summary and 'Return to Dashboard' button",
+    "Failure page shows retry button that re-initiates payment",
+    "Payment pending page shows loading state with manual link fallback",
+    "Browser refresh and back button handled (no duplicate payments)",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/payment/result/page.tsx (new — payment result page with success/failure states)",
+    "src/app/[locale]/payment/pending/page.tsx (new — Alipay redirect waiting page)",
+    "src/components/payment/AlipayPaymentOption.tsx (new — Alipay option in checkout)",
+    "src/dictionaries/en.json (update — add payment pages keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add PaymentDict)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit checkout → select Alipay → redirected to Alipay sandbox → callback → result page shows correct status."
+}
