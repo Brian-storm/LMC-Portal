@@ -4,25 +4,18 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowLeft,
-  CheckCircle2,
-  ShieldCheck,
-  Building2,
-  User,
-  ChevronRight,
   AlertCircle,
-  FileCheck,
   Loader2,
-  Users,
-  Calendar,
-  Clock,
-  Tag,
-  BookOpen,
-  Wallet,
 } from "lucide-react";
 import type { EnrollPageDict } from "@/dictionaries/types";
+import { ProgressTracker } from "./ProgressTracker";
+import { AttendeeDetailsStep } from "./AttendeeDetailsStep";
+import { ScheduleSelectionStep } from "./ScheduleSelectionStep";
+import { RegulatoryDeclarationStep } from "./RegulatoryDeclarationStep";
+import { PaymentMethodStep } from "./PaymentMethodStep";
+import { SummarySidebar } from "./SummarySidebar";
 
 interface CourseData {
   id: string;
@@ -115,7 +108,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   const [enrollmentType, setEnrollmentType] = useState<"INDIVIDUAL" | "ORGANIZATION">("INDIVIDUAL");
 
   // Multi-registrant rows for ORGANIZATION enrollment
-  const [registrantMembers, setRegistrantMembers] = useState<
+  const [registrantMembers] = useState<
     {
       nameZh: string;
       nameEn: string;
@@ -356,6 +349,19 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
     }
   };
 
+  // Handle identity document type change — clears errors for all identity fields
+  const handleIdDocTypeChange = (type: "HKID" | "PASSPORT" | "PERMIT" | "OTHER") => {
+    setIdDocType(type);
+    setFieldErrors((prev) => {
+      const n = { ...prev };
+      delete n.hkidNumber;
+      delete n.passportNumber;
+      delete n.permitNumber;
+      delete n.otherIdDocVal;
+      return n;
+    });
+  };
+
   // Loading state while course data is being fetched
   if (courseLoading) {
     return (
@@ -414,58 +420,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         </header>
 
         {/* Progress Tracker */}
-        <div className="bg-white border border-slate-300 p-4 shadow-2xs">
-          <div className="grid grid-cols-4 gap-2 text-center text-xs font-bold uppercase tracking-wider">
-            <div
-              className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
-                step >= 1
-                  ? "border-primary text-primary"
-                  : "border-slate-200 text-slate-400"
-              }`}
-            >
-              <span className="w-5 h-5 rounded-full bg-slate-100 border border-current flex items-center justify-center text-[10px]">
-                1
-              </span>
-              <span className="hidden sm:inline">{dict.step1Title}</span>
-            </div>
-            <div
-              className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
-                step >= 2
-                  ? "border-primary text-primary"
-                  : "border-slate-200 text-slate-400"
-              }`}
-            >
-              <span className="w-5 h-5 rounded-full bg-slate-100 border border-current flex items-center justify-center text-[10px]">
-                2
-              </span>
-              <span className="hidden sm:inline">{dict.step2Title}</span>
-            </div>
-            <div
-              className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
-                step >= 3
-                  ? "border-primary text-primary"
-                  : "border-slate-200 text-slate-400"
-              }`}
-            >
-              <span className="w-5 h-5 rounded-full bg-slate-100 border border-current flex items-center justify-center text-[10px]">
-                3
-              </span>
-              <span className="hidden sm:inline">{dict.step3Title}</span>
-            </div>
-            <div
-              className={`pb-2 border-b-2 flex items-center justify-center space-x-1.5 ${
-                step >= 4
-                  ? "border-primary text-primary"
-                  : "border-slate-200 text-slate-400"
-              }`}
-            >
-              <span className="w-5 h-5 rounded-full bg-slate-100 border border-current flex items-center justify-center text-[10px]">
-                4
-              </span>
-              <span className="hidden sm:inline">{dict.step4Title}</span>
-            </div>
-          </div>
-        </div>
+        <ProgressTracker step={step} dict={dict} />
 
         {/* Main Content Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -474,882 +429,91 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
             <form onSubmit={handleSubmit}>
               {/* STEP 1: ATTENDEE DETAILS */}
               {step === 1 && (
-                <div className="space-y-4">
-                  {/* Enrollment Type Toggle — Individual vs Organization */}
-                  <div className="bg-slate-50 border border-slate-200 p-3 rounded-xs">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-600 block mb-2">
-                      <Users className="w-3.5 h-3.5 inline mr-1 -mt-0.5" />
-                      {dict.formLabels.enrollmentType}
-                    </label>
-                    <div className="flex space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => { setEnrollmentType("INDIVIDUAL"); setRegistrantMembers([]); }}
-                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          enrollmentType === "INDIVIDUAL"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <User className="w-3.5 h-3.5 inline mr-1" />
-                        {dict.formLabels.individual}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEnrollmentType("ORGANIZATION")}
-                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          enrollmentType === "ORGANIZATION"
-                            ? "bg-accent text-accent-foreground border-accent"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <Building2 className="w-3.5 h-3.5 inline mr-1" />
-                        {dict.formLabels.organization}
-                      </button>
-                    </div>
-                    </div>
-
-                  {/* Payer / Primary Attendee Information (shown for both types) */}
-                  {enrollmentType === "INDIVIDUAL" && (
-                  <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
-                      <User className="w-4 h-4" />
-                      <span>{dict.formLabels.attendeeInfo}</span>
-                    </h2>
-                  </div>
-
-)}
-
-                  {enrollmentType === "INDIVIDUAL" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1 sm:col-span-2">
-                      <label className="font-bold text-slate-700 block">
-                        {dict.formLabels.fullName}{" "}
-                        <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="fullName"
-                        required
-                        value={formData.fullName}
-                        disabled={!!session?.user}
-                        onChange={handleInputChange}
-                        onBlur={(e) => validateField("fullName", e.target.value)}
-                        placeholder={dict.formLabels.fullNamePlaceholder}
-                        className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.fullName ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                        } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
-                      />
-                      {session?.user && (
-                        <p className="text-[10px] text-slate-400">{dict.formLabels.lockedToAccount}</p>
-                      )}
-                      {fieldErrors.fullName && (
-                        <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{fieldErrors.fullName}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="font-bold text-slate-700 block">
-                        {dict.formLabels.email} <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        disabled={!!session?.user}
-                        onChange={handleInputChange}
-                        onBlur={(e) => validateField("email", e.target.value)}
-                        placeholder={dict.formLabels.emailPlaceholder}
-                        className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.email ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                        } ${session?.user ? "opacity-60 cursor-not-allowed" : ""}`}
-                      />
-                      {session?.user && (
-                        <p className="text-[10px] text-slate-400">{dict.formLabels.lockedToAccount}</p>
-                      )}
-                      {fieldErrors.email && (
-                        <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{fieldErrors.email}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="font-bold text-slate-700 block">
-                        {dict.formLabels.phone} <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        required
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        onBlur={(e) => validateField("phone", e.target.value)}
-                        placeholder={dict.formLabels.phonePlaceholder}
-                        className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.phone ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                        }`}
-                      />
-                      {fieldErrors.phone && (
-                        <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{fieldErrors.phone}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="font-bold text-slate-700 block">
-                        {dict.formLabels.company}
-                      </label>
-                      <input
-                        type="text"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleInputChange}
-                        placeholder={dict.formLabels.companyPlaceholder}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:border-primary focus:bg-white"
-                      />
-                    </div>
-
-<div className="space-y-1">
-                      <label className="font-bold text-slate-700 block">
-                        {dict.formLabels.iaLicense}{" "}
-                        <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="iaLicenseNo"
-                        required
-                        value={formData.iaLicenseNo}
-                        onChange={handleInputChange}
-                        onBlur={(e) => validateField("iaLicenseNo", e.target.value)}
-                        placeholder={dict.formLabels.iaLicensePlaceholder}
-                        className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                          fieldErrors.iaLicenseNo ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                        }`}
-                      />
-                      {fieldErrors.iaLicenseNo && (
-                        <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{fieldErrors.iaLicenseNo}</span>
-                        </p>
-                      )}
-                    </div>
-
-                  {/* Identity Document Section — inside the grid, spans 2 cols */}
-                  <div className="sm:col-span-2 pt-2 border-t border-slate-200">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5 mb-2">
-                      <FileCheck className="w-3.5 h-3.5" />
-                      <span>{dict.formLabels.idDocType}</span>
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-                      <button
-                        type="button"
-                        onClick={() => { setIdDocType("HKID"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
-                        className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          idDocType === "HKID"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <User className="w-3 h-3 inline mr-1" />
-                        {dict.formLabels.hkid}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setIdDocType("PASSPORT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
-                        className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          idDocType === "PASSPORT"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <FileCheck className="w-3 h-3 inline mr-1" />
-                        {dict.formLabels.passport}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setIdDocType("PERMIT"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
-                        className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          idDocType === "PERMIT"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <FileCheck className="w-3 h-3 inline mr-1" />
-                        {dict.formLabels.permit}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setIdDocType("OTHER"); setFieldErrors((prev) => { const n = { ...prev }; delete n.hkidNumber; delete n.passportNumber; delete n.permitNumber; delete n.otherIdDocVal; return n; }); }}
-                        className={`py-1.5 text-xs font-bold uppercase tracking-wider rounded-xs border transition-colors ${
-                          idDocType === "OTHER"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
-                        }`}
-                      >
-                        <FileCheck className="w-3 h-3 inline mr-1" />
-                        {dict.formLabels.otherId}
-                      </button>
-                    </div>
-
-                    {idDocType === "HKID" && (
-                      <div className="space-y-1">
-                        <label className="font-bold text-slate-700 block text-xs">
-                          {dict.formLabels.hkidNumber} <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={hkidNumber}
-                          onChange={(e) => {
-                            // Strip non-alphanumerics and cap length (prefix + check digit)
-                            const val = e.target.value.replace(/[^0-9A-Za-z]/g, "").toUpperCase().slice(0, 9);
-                            setHkidNumber(val);
-                            validateField("hkidNumber", val);
-                          }}
-                          onBlur={(e) => validateField("hkidNumber", e.target.value)}
-                          placeholder={dict.formLabels.hkidPlaceholder}
-                          maxLength={9}
-                          className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono focus:outline-none focus:bg-white ${
-                            fieldErrors.hkidNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                          }`}
-                        />
-                        {fieldErrors.hkidNumber && (
-                          <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                            <AlertCircle className="w-3 h-3 shrink-0" />
-                            <span>{fieldErrors.hkidNumber}</span>
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {idDocType === "PASSPORT" && (
-                      <div className="space-y-1">
-                        <label className="font-bold text-slate-700 block text-xs">
-                          {dict.formLabels.passportNumber} <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={passportNumber}
-                          onChange={(e) => {
-                            setPassportNumber(e.target.value);
-                            validateField("passportNumber", e.target.value);
-                          }}
-                          onBlur={(e) => validateField("passportNumber", e.target.value)}
-                          placeholder={dict.formLabels.passportPlaceholder}
-                          className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                            fieldErrors.passportNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                          }`}
-                        />
-                        {fieldErrors.passportNumber && (
-                          <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                            <AlertCircle className="w-3 h-3 shrink-0" />
-                            <span>{fieldErrors.passportNumber}</span>
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {idDocType === "PERMIT" && (
-                      <div className="space-y-1">
-                        <label className="font-bold text-slate-700 block text-xs">
-                          {dict.formLabels.permitNumber} <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={permitNumber}
-                          onChange={(e) => {
-                            setPermitNumber(e.target.value);
-                            validateField("permitNumber", e.target.value);
-                          }}
-                          onBlur={(e) => validateField("permitNumber", e.target.value)}
-                          placeholder={dict.formLabels.permitPlaceholder}
-                          className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 font-mono focus:outline-none focus:bg-white ${
-                            fieldErrors.permitNumber ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                          }`}
-                        />
-                        {fieldErrors.permitNumber && (
-                          <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                            <AlertCircle className="w-3 h-3 shrink-0" />
-                            <span>{fieldErrors.permitNumber}</span>
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {idDocType === "OTHER" && (
-                      <div className="space-y-1">
-                        <label className="font-bold text-slate-700 block text-xs">
-                          {dict.formLabels.otherIdNumber} <span className="text-red-600">*</span>
-                        </label>
-                        <div className="flex items-stretch">
-                          <span className="inline-flex items-center bg-slate-200 text-slate-700 font-bold text-[10px] uppercase tracking-wider px-2.5 rounded-l-xs border border-r-0 border-slate-300 shrink-0">
-                            {dict.formLabels.otherPrefix}
-                          </span>
-                          <input
-                            type="text"
-                            value={otherIdDocVal}
-                            onChange={(e) => {
-                              setOtherIdDocVal(e.target.value);
-                              validateField("otherIdDocVal", e.target.value);
-                            }}
-                            onBlur={(e) => validateField("otherIdDocVal", e.target.value)}
-                            placeholder={dict.formLabels.otherIdPlaceholder}
-                            className={`flex-1 min-w-0 bg-slate-50 border rounded-r-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
-                              fieldErrors.otherIdDocVal ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-primary"
-                            }`}
-                          />
-                        </div>
-                        {fieldErrors.otherIdDocVal && (
-                          <p className="flex items-center space-x-1 text-[10px] text-rose-600 mt-0.5">
-                            <AlertCircle className="w-3 h-3 shrink-0" />
-                            <span>{fieldErrors.otherIdDocVal}</span>
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  </div>
-                  )}
-
-                  {/* Dynamic Group Member Rows (only for ORGANIZATION) */}
-                  {enrollmentType === "ORGANIZATION" && (
-                    <div className="pt-2 border-t border-slate-200">
-                      <div className="bg-amber-50 border border-amber-200 rounded-xs p-4 space-y-3">
-                        <div className="flex items-start gap-2">
-                          <Building2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                          <div>
-                            <h3 className="text-sm font-bold text-amber-900">{dict.formLabels.orgBlockedTitle}</h3>
-                          </div>
-                        </div>
-                        <div className="text-xs text-amber-800 space-y-1">
-                          <p><span className="font-bold">{dict.formLabels.orgContactLabel}:</span> Mr. Anthony Yuen{locale === "en" ? "" : " 阮德添"}</p>
-                          <p><span className="font-bold">{dict.formLabels.orgContactEmail}:</span> <a href="mailto:yuentaktim@outlook.com" className="underline hover:text-amber-900">yuentaktim@outlook.com</a></p>
-                          <p><span className="font-bold">{dict.formLabels.orgContactMobile}:</span> <a href="https://wa.me/85260302488" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-900">(852) 60302488</a></p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="pt-4 flex justify-end">
-                    <button
-                      type="button"
-                      disabled={!step1Valid}
-                      onClick={() => setStep(2)}
-                      className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
-                    >
-                      <span>{dict.navigation.proceedToSchedule}</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
+                <AttendeeDetailsStep
+                  formData={formData}
+                  fieldErrors={fieldErrors}
+                  enrollmentType={enrollmentType}
+                  session={session}
+                  dict={dict}
+                  locale={locale}
+                  step1Valid={step1Valid}
+                  idDocType={idDocType}
+                  hkidNumber={hkidNumber}
+                  passportNumber={passportNumber}
+                  permitNumber={permitNumber}
+                  otherIdDocVal={otherIdDocVal}
+                  onInputChange={handleInputChange}
+                  onValidateField={validateField}
+                  onEnrollmentTypeChange={(type) => {
+                    setEnrollmentType(type);
+                    if (type === "INDIVIDUAL") {
+                      // Clear registrantMembers when switching back to INDIVIDUAL
+                      // This is handled by the parent state
+                    }
+                  }}
+                  onIdDocTypeChange={handleIdDocTypeChange}
+                  onHkidChange={setHkidNumber}
+                  onPassportChange={setPassportNumber}
+                  onPermitChange={setPermitNumber}
+                  onOtherIdChange={setOtherIdDocVal}
+                  onProceed={() => setStep(2)}
+                />
               )}
 
-              {/* STEP 2: SCHEDULE SELECTION (NEW) */}
+              {/* STEP 2: SCHEDULE SELECTION */}
               {step === 2 && (
-                <div className="space-y-4">
-                  <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>{dict.step2.title}</span>
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">{dict.step2.subtitle}</p>
-                  </div>
-
-                  {course.schedules.length === 0 && (
-                    <div className="bg-slate-50 border border-slate-300 p-4 rounded-xs text-center text-xs text-slate-500">
-                      <Calendar className="w-5 h-5 mx-auto mb-1 text-slate-400" />
-                      <p>{dict.step2.noSessions}</p>
-                    </div>
-                  )}
-
-                  <div className="space-y-2.5">
-                    {course.schedules.map((sch, idx) => {
-                      // Track date changes from the previous schedule to render date-group separators
-                      const datePrefix = sch.dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? "";
-                      const prevDatePrefix = idx > 0
-                        ? course.schedules[idx - 1].dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? ""
-                        : "";
-                      const isNewDateGroup = idx === 0 || datePrefix !== prevDatePrefix;
-                      const isSelected = selectedScheduleIds.includes(sch.id);
-                      const isFull = sch.quotaRemaining <= 0;
-                      // Use the first linked syllabus item as the primary topic
-                      const syllabusItem = sch.topics[0]?.syllabusItem;
-                      const moduleTitle = syllabusItem
-                        ? (locale === "en"
-                            ? syllabusItem.titleEn
-                            : syllabusItem.titleZh)
-                        : "";
-                      const moduleTopics = syllabusItem
-                        ? (locale === "en" ? syllabusItem.topicsEn : syllabusItem.topicsZh)
-                        : [];
-                      return (
-                        <React.Fragment key={sch.id}>
-                          {isNewDateGroup && (
-                            <div className="flex items-center gap-3 pt-1 pb-0.5">
-                              <div className="h-px flex-1 bg-slate-200" />
-                              <span className="text-xs font-bold text-slate-500 font-mono tracking-wider uppercase">{datePrefix}</span>
-                              <div className="h-px flex-1 bg-slate-200" />
-                            </div>
-                          )}
-                          <button
-                            type="button"
-                            disabled={isFull}
-                            onClick={() => toggleSchedule(sch.id)}
-                            className={`w-full text-left p-3 rounded-xs border transition-colors ${
-                            isSelected
-                              ? "bg-primary/5 border-primary"
-                              : isFull
-                                ? "bg-slate-50 border-slate-200 opacity-50 cursor-not-allowed"
-                                : "bg-white border-slate-300 hover:bg-slate-50"
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            <input
-                              type="checkbox"
-                              checked={isSelected}
-                              disabled={isFull}
-                              readOnly
-                              className="accent-primary shrink-0 mt-1 pointer-events-none"
-                            />
-                            <div className="min-w-0 flex-1 space-y-2">
-                              {/* Topic header */}
-                              {syllabusItem && (
-                                <div className="space-y-1">
-                                  <div className="flex items-center gap-1.5 text-sm font-bold text-slate-800">
-                                    <BookOpen className="w-4 h-4 text-primary shrink-0" />
-                                    <span className="leading-snug">{moduleTitle}</span>
-                                  </div>
-                                  {/* Duration (i18n) + sub-topics */}
-                                  <div className="space-y-1">
-                                    <span className="text-[14px] font-mono text-slate-500 no-scale pb-0.5">
-                                      {syllabusItem.duration} {dict.step2.durationUnit}
-                                    </span>
-                                    <ul className="space-y-0.5">
-                                      {moduleTopics.map((topic, i) => (
-                                        <li key={i} className="text-xs text-slate-600 flex items-start gap-1">
-                                          <span className="text-primary select-none shrink-0 leading-tight">•</span>
-                                          <span className="leading-tight">{topic}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </div>
-                              )}
-                              {/* Schedule info */}
-                              <div className="pt-2 border-t border-slate-200 space-y-0.5">
-                                <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                                  <Clock className="w-4 h-4 text-slate-500 shrink-0" />
-                                  <span>{sch.dateAndTime}</span>
-                                </div>
-                                {/* Instructor info — visible when API provides it */}
-                                {sch.instructor && (
-                                  <div className="flex items-start gap-1.5 text-xs text-slate-600 pt-0.5">
-                                    <User className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-                                    <div className="leading-snug">
-                                      <span className="font-semibold text-slate-700">{sch.instructor.name}</span>
-                                      {sch.instructor.title && <> — {sch.instructor.title}</>}
-                                      {sch.instructor.bio && (
-                                        <p className="text-[11px] text-slate-500 mt-0.5">{sch.instructor.bio}</p>
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            {/* Full badge */}
-                            <div className="shrink-0 text-right">
-                              {isFull && (
-                                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs border bg-rose-50 text-rose-800 border-rose-300">
-                                  Full
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </button>
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-
-                  {/* Selection feedback */}
-                  {selectedCount > 0 && (
-                    <div className={`text-xs font-semibold flex items-center gap-1.5 ${
-                      isAllSelected ? "text-emerald-700" : "text-slate-600"
-                    }`}>
-                      {isAllSelected ? (
-                        <Tag className="w-3.5 h-3.5 text-emerald-600" />
-                      ) : (
-                        <Calendar className="w-3.5 h-3.5" />
-                      )}
-                      <span>
-                        {selectedCount} / {totalSessions} {dict.step2.sessionsSelected}
-                        {isAllSelected && ` — ${dict.step2.allSessionsSelected}`}
-                      </span>
-                    </div>
-                  )}
-
-                  {selectedCount === 0 && (
-                    <p className="text-xs text-rose-600 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {dict.step2.selectAtLeastOne}
-                    </p>
-                  )}
-
-                  <div className="pt-4 flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setStep(1)}
-                      className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
-                    >
-                      {dict.step2.backButton}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={selectedCount === 0}
-                      onClick={() => setStep(3)}
-                      className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
-                    >
-                      <span>{dict.step2.proceedButton}</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
+                <ScheduleSelectionStep
+                  schedules={course.schedules}
+                  selectedScheduleIds={selectedScheduleIds}
+                  dict={dict}
+                  locale={locale}
+                  onToggle={toggleSchedule}
+                  onBack={() => setStep(1)}
+                  onProceed={() => setStep(3)}
+                />
               )}
 
-{/* STEP 3: REGULATORY DECLARATION (was old Step 2) */}
+              {/* STEP 3: REGULATORY DECLARATION */}
               {step === 3 && (
-                <div className="space-y-4">
-                  <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
-                      <FileCheck className="w-4 h-4" />
-                      <span>{dict.step3.title}</span>
-                    </h2>
-                  </div>
-
-                  <div className="bg-amber-50/80 border border-amber-200 p-3 text-xs text-amber-900 space-y-1 rounded-xs">
-                    <div className="flex items-center space-x-1.5 font-bold">
-                      <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
-                      <span>{dict.step3.cpdNoticeTitle}</span>
-                    </div>
-                    <p className="text-[11px] leading-relaxed">
-                      {dict.step3.cpdNoticeText}
-                    </p>
-                  </div>
-
-                  {/* Personal Data Collection Notice */}
-                  <div className="bg-slate-50 border border-slate-200 p-3 text-xs text-slate-700 space-y-1 rounded-xs">
-                    <p className="text-[11px] leading-relaxed">
-                      {dict.step3.personalDataNotice}
-                    </p>
-                  </div>
-
-                  <div className="space-y-3 pt-2 text-xs text-slate-700">
-                    <label className="flex items-start space-x-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="declaredEligible"
-                        checked={formData.declaredEligible}
-                        onChange={handleInputChange}
-                        className="mt-0.5 border-slate-400 text-primary focus:ring-0 accent-primary"
-                      />
-                      <span className="leading-relaxed">
-                        {dict.step3.declarationLabel}
-                      </span>
-                    </label>
-
-                    <label className="flex items-start space-x-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="agreedToTerms"
-                        checked={formData.agreedToTerms}
-                        onChange={handleInputChange}
-                        className="mt-0.5 border-slate-400 text-primary focus:ring-0 accent-primary"
-                      />
-                      <span className="leading-relaxed">
-                        {dict.step3.termsLabel}{" "}
-                        {dict.step3.termsLinkText && (
-                          <Link
-                            href={`/${locale}/terms`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-primary underline hover:text-emerald-900 font-semibold"
-                          >
-                            {dict.step3.termsLinkText}
-                          </Link>
-                        )}
-                        {dict.step3.termsLinkText && " "}
-                        {dict.step3.termsSuffix}
-                      </span>
-                    </label>
-                  </div>
-
-                  <div className="pt-4 flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setStep(2)}
-                      className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
-                    >
-                      {dict.step3.backButton}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={
-                        !formData.declaredEligible || !formData.agreedToTerms
-                      }
-                      onClick={() => setStep(4)}
-                      className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
-                    >
-                      <span>{dict.navigation.proceedToPayment}</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
+                <RegulatoryDeclarationStep
+                  declaredEligible={formData.declaredEligible}
+                  agreedToTerms={formData.agreedToTerms}
+                  dict={dict}
+                  locale={locale}
+                  onInputChange={handleInputChange}
+                  onBack={() => setStep(2)}
+                  onProceed={() => setStep(4)}
+                />
               )}
 
-              {/* STEP 4: PAYMENT METHOD & SUBMIT (was old Step 3) */}
+              {/* STEP 4: PAYMENT METHOD & SUBMIT */}
               {step === 4 && (
-                <div className="space-y-4">
-                  <div className="pb-2 border-b border-slate-200">
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center space-x-2">
-                      <Wallet className="w-4 h-4" />
-                      <span>{dict.step4.title}</span>
-                    </h2>
-                  </div>
-
-                  {/* Refund policy notice */}
-                  <div className="bg-amber-50/80 border border-amber-200 p-3 text-xs text-amber-900 space-y-1 rounded-xs">
-                    <div className="flex items-center space-x-1.5 font-bold">
-                      <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
-                      <span>{dict.step4.refundNotice}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6 text-xs">
-                    <div className="space-y-3">
-                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="fps"
-                          checked={formData.paymentMethod === "fps"}
-                          onChange={handleInputChange}
-                          className="text-primary accent-primary"
-                        />
-                        <span className="font-bold text-slate-800">
-                          {dict.step4.fps}
-                        </span>
-                      </label>
-                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
-                        <Image
-                          src="/company/payments/fps-code.jpeg"
-                          alt={dict.step4.fps}
-                          width={240}
-                          height={240}
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="alipay"
-                          checked={formData.paymentMethod === "alipay"}
-                          onChange={handleInputChange}
-                          className="text-primary accent-primary"
-                        />
-                        <span className="font-bold text-slate-800">
-                          {dict.step4.alipay}
-                        </span>
-                      </label>
-                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
-                        <Image
-                          src="/company/payments/alipay-qr-code.jpeg"
-                          alt={dict.step4.alipay}
-                          width={240}
-                          height={240}
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="flex items-center space-x-2 p-3 border border-slate-300 rounded-xs cursor-pointer hover:bg-slate-50">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="direct_transfer"
-                          checked={
-                            formData.paymentMethod === "direct_transfer"
-                          }
-                          onChange={handleInputChange}
-                          className="text-primary accent-primary"
-                        />
-                        <span className="font-bold text-slate-800">
-                          {dict.step4.directTransfer}
-                        </span>
-                      </label>
-                      <div className="flex justify-center p-2 border border-slate-200 rounded-xs bg-white">
-                        <Image
-                          src="/company/payments/bank-transfer.jpeg"
-                          alt={dict.step4.directTransfer}
-                          width={480}
-                          height={320}
-                          className="object-contain w-full max-w-[480px]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Inline error display when the API returns 4xx/5xx */}
-                  {submitError && (
-                    <div
-                      className="flex items-start space-x-2 bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xs text-xs"
-                      role="alert"
-                    >
-                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                      <span>{submitError}</span>
-                    </div>
-                  )}
-
-                  <div className="pt-4 flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setStep(3)}
-                      className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
-                    >
-                      {dict.step4.backButton}
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-6 py-2.5 text-xs uppercase tracking-wider rounded-xs transition-all shadow-md"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          <span>{dict.step4.processing}</span>
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-4 h-4" />
-                          <span>{dict.step4.submitButton}</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
+                <PaymentMethodStep
+                  paymentMethod={formData.paymentMethod}
+                  submitError={submitError}
+                  isSubmitting={isSubmitting}
+                  dict={dict}
+                  onInputChange={handleInputChange}
+                  onBack={() => setStep(3)}
+                />
               )}
             </form>
           </div>
 
-          {/* Right Summary Sidebar — populated from real API data */}
-          <aside className="lg:col-span-1 bg-white border border-slate-300 p-4 shadow-2xs space-y-4">
-            <div className="pb-2 border-b border-slate-200">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                {dict.summary.title}
-              </h3>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                  {dict.summary.course}
-                </span>
-                <p className="font-serif font-bold text-slate-900 leading-snug mt-0.5">
-                  {locale === "en" ? course.nameEn : (locale === "zh-cn" ? (course.nameCn || course.nameZh) : course.nameZh)}
-                </p>
-              </div>
-
-              {/* Selected schedules list */}
-              {selectedCount > 0 && (
-                <div className="border-t border-slate-100 pt-2 space-y-1.5">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                    {dict.summary.sessionsLabel} {selectedCount}/{totalSessions}
-                  </span>
-                {course.schedules
-                .filter((s) => selectedScheduleIds.includes(s.id))
-                .map((s) => {
-                  const si = s.topics[0]?.syllabusItem;
-                  const topicAbbr = si
-                    ? (locale === "en"
-                      ? si.titleEn
-                      : si.titleZh)
-                    : "";
-                  return (
-                    <div
-                      key={s.id}
-                      className="flex flex-col text-[11px] text-slate-600"
-                    >
-                      <span className="font-semibold text-slate-700">
-                        {topicAbbr}
-                      </span>
-                      <span className="truncate">{s.dateAndTime}</span>
-                    </div>
-                  );
-                })}
-                </div>
-              )}
-
-              {enrollmentType === "ORGANIZATION" && (
-                <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
-                  <span>{dict.summary.registrants}</span>
-                  <span className="font-mono font-bold text-slate-800">{totalRegistrants}</span>
-                </div>
-              )}
-
-              {/* Fee breakdown */}
-              {selectedCount > 0 && (
-                <>
-                  <div className="flex justify-between py-1.5 border-t border-slate-100 text-slate-600">
-                    <span>{dict.summary.subtotal}</span>
-                    <span className="font-mono font-bold text-slate-800">
-                      HK$ {(parseFloat(String(unitPrice)) * selectedCount * registrantMultiplier).toLocaleString()}
-                    </span>
-                  </div>
-                  {isAllSelected && (
-                    <div className="flex justify-between py-1.5 text-emerald-700">
-                      <span className="font-bold">{dict.summary.discount}</span>
-                      <span className="font-mono font-bold">
-                        -HK$ {(parseFloat(String(unitPrice)) * selectedCount * 0.1 * registrantMultiplier).toLocaleString()}
-                      </span>
-                    </div>
-                  )}
-                </>
-              )}
-
-              <div className="pt-3 border-t-2 border-slate-900 flex justify-between items-baseline">
-                <span className="font-bold text-slate-900 uppercase">
-                  {dict.summary.totalFee}
-                </span>
-                <span className="text-lg font-serif font-bold text-primary">
-                  HK$ {(selectedCount > 0
-                    ? (parseFloat(String(unitPrice)) * selectedCount * (isAllSelected ? 0.9 : 1) * registrantMultiplier)
-                    : 0
-                  ).toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-200 text-[10px] text-slate-500 space-y-1.5">
-              <div className="flex items-start space-x-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                <span>
-                  {dict.summary.invoiceNotice}
-                </span>
-              </div>
-            </div>
-          </aside>
+          {/* Right Summary Sidebar */}
+          <SummarySidebar
+            course={course}
+            selectedScheduleIds={selectedScheduleIds}
+            selectedCount={selectedCount}
+            totalSessions={totalSessions}
+            unitPrice={unitPrice}
+            isAllSelected={isAllSelected}
+            enrollmentType={enrollmentType}
+            totalRegistrants={totalRegistrants}
+            registrantMultiplier={registrantMultiplier}
+            dict={dict}
+            locale={locale}
+          />
         </div>
       </div>
     </div>
