@@ -1,0 +1,65 @@
+{
+  "id": "UI-010-A",
+  "title": "Viewport Meta Tag + Touch/Scroll CSS Optimizations",
+  "content": "Two independent CSS/meta fixes:\n\n**A1 — Viewport meta tag (Critical)**\nRoot layout `src/app/layout.tsx` is missing Next.js 14+ `viewport` export. Without it, mobile browsers may render at incorrect zoom levels.\n- Add `export const viewport = { width: 'device-width', initialScale: 1 }` to root layout\n\n**A2 — Touch/scroll CSS (Moderate)**\nMissing mobile scroll optimization properties in `src/app/globals.css`:\n- `* { -webkit-overflow-scrolling: touch }`\n- `body { touch-action: manipulation; overscroll-behavior: none }`\n- Scroll containers: `overscroll-behavior: contain`\n\nFiles:\n- src/app/layout.tsx\n- src/app/globals.css",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
+  "agent": "opencode",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "Mobile Responsiveness Audit",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/layout.tsx",
+    "src/app/globals.css"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Root layout exports viewport config with width=device-width, initial-scale=1",
+    "globals.css includes touch-action: manipulation on body",
+    "globals.css includes overscroll-behavior: none on body",
+    "Scroll containers (admin tables, course lists) use overscroll-behavior: contain",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/layout.tsx (add viewport export)",
+    "src/app/globals.css (add touch/scroll properties)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && open /en/courses in Chrome mobile emulation — page renders at correct zoom, scrolling is smooth"
+}

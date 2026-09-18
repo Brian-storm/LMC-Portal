@@ -83,7 +83,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
         {/* Poster URL sourced from dictionary rather than DB seed            */}
         {/* ------------------------------------------------------------------ */}
         {course.imageUrl && (
-        <div className="w-1/3 shrink-0">
+        <div className="w-full md:w-1/3 shrink-0">
           <div className="relative w-full aspect-[2205/3305] bg-slate-200 overflow-hidden rounded-xs">
             <Image
               src={course.imageUrl}
@@ -97,7 +97,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
       )}
 
         {/* Course Core Details Column — 2/3 width */}
-        <div className="w-2/3 space-y-1.5">
+        <div className="w-full md:w-2/3 space-y-1.5">
           {/* IA Scheme Label — "保險中介人持續專業培訓計劃" badge */}
           <div className="flex items-center space-x-2">
             <span className="px-1.5 py-0.2 bg-slate-100 text-slate-800 text-[10px] font-mono font-bold uppercase tracking-wider rounded-xs border border-slate-300">

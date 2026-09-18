@@ -1,8 +1,8 @@
 {
   "id": "UI-010",
   "title": "Mobile Responsiveness Audit — Viewport, Admin Layout, Touch Optimization",
-  "content": "Mobile responsiveness audit identified 3 critical and 2 moderate issues across the codebase. Viewport meta tag is entirely missing from the root layout, causing potential incorrect zoom on mobile browsers. The admin layout sidebar is fixed-width with no collapse/drawer pattern, making it unusable below ~768px. No JS-based breakpoint hooks exist for auto-dismissing mobile menus on resize. Touch/scroll optimization CSS (`-webkit-overflow-scrolling`, `touch-action`, `overscroll-behavior`) is absent. The Navbar logo's clipPath polygon can protrude horizontally on small screens.",
-  "stage": "backlog",
+  "content": "Mobile responsiveness audit identified 3 critical and 2 moderate issues across the codebase.\n\n**Sub-tasks**:\n- UI-010-A: Viewport meta tag + Touch/scroll CSS (low risk, independent)\n- UI-010-B: Admin sidebar responsive drawer + enrolments table scroll (medium risk, depends on D)\n- UI-010-C: Navbar logo + CourseCard mobile fixes (low risk, independent)\n- UI-010-D: useBreakpoint shared hook (low risk, foundation for B)\n\nOrder: D → A + C (parallel) → B",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",
@@ -15,12 +15,12 @@
   "order": 60,
   "readiness": {
     "problem_clear": true,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
     "files_known": true,
-    "scope_defined": false,
-    "verification_contract": false,
-    "human_approval_recorded": false
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
   },
   "gates": {
     "product": false,

@@ -41,7 +41,7 @@ export function Navbar({ dict, accessDict, currentLocale }: NavbarProps) {
           className="shrink-0 flex items-center group focus:outline-none"
         >
           <div
-            className="flex items-center px-8 py-3"
+            className="flex items-center px-4 md:px-8 py-3 max-w-[180px] md:max-w-none"
             style={{
               clipPath: "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)",
             }}

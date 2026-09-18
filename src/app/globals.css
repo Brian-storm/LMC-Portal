@@ -233,3 +233,17 @@
 .animate-indeterminate {
   animation: indeterminate 1.6s infinite ease-in-out;
 }
+
+/* ── Mobile touch/scroll optimizations ── */
+body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+/* Scroll containers — prevent pull-to-refresh / overscroll chrome */
+.overflow-x-auto,
+.overflow-y-auto,
+[data-scroll-container] {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}

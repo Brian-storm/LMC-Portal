@@ -1,0 +1,69 @@
+{
+  "id": "UI-010-B",
+  "title": "Admin Sidebar Responsive Drawer + Enrolments Table Scroll",
+  "content": "**B1 — Admin sidebar responsive drawer (Critical)**\nAdmin layout `AdminLayoutClient.tsx` currently renders a fixed `w-56` sidebar that is unusable below ~768px.\n\nPattern:\n- Import `useBreakpoint()` hook from UI-010-D\n- Below `md` breakpoint: sidebar hidden by default, shown via hamburger toggle\n- Overlay backdrop (`bg-black/50`) when drawer is open\n- Sidebar slides in from left with CSS transition (`translate-x`)\n- Close on backdrop click + close on navigation (link click)\n- State managed with `useState` (no external library)\n\n**B2 — Enrolments table horizontal scroll (Minor)**\n10-column admin enrolments table overflows on mobile. Wrap table in a horizontally-scrollable container with `overflow-x-auto` and `overscroll-behavior: contain`.\n- src/app/[locale]/admin/enrolments/page.tsx\n\nRisk: medium\nDepends: UI-010-D (useBreakpoint hook)",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
+  "agent": "opencode",
+  "approvalRequired": true,
+  "createdAt": "2026-09-18",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "Mobile Responsiveness Audit",
+  "track": "frontend",
+  "dependsOn": ["UI-010-D"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/app/[locale]/admin/enrolments/page.tsx",
+    "src/hooks/use-breakpoint.ts"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Admin sidebar collapses to hidden below md breakpoint (768px)",
+    "Hamburger button appears in top bar on mobile to open drawer",
+    "Sidebar slides in from left with smooth CSS transition",
+    "Backdrop overlay (bg-black/50) covers content when drawer open",
+    "Clicking backdrop or a nav link closes the drawer",
+    "Sidebar remains visible and unchanged on desktop (md+)",
+    "Enrolments table wraps in overflow-x-auto container on mobile",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/AdminLayoutClient.tsx (drawer pattern)",
+    "src/app/[locale]/admin/enrolments/page.tsx (scroll container)"
+  ],
+  "dependencies": "UI-010-D: useBreakpoint hook must exist first",
+  "verification": "npm run typecheck && npm run lint && Chrome DevTools 375px viewport → /en/admin → sidebar hidden, hamburger visible, click to open/close. 1024px viewport → sidebar always visible."
+}

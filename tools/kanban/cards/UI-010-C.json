@@ -1,0 +1,64 @@
+{
+  "id": "UI-010-C",
+  "title": "Navbar Logo + CourseCard Mobile Layout Fixes",
+  "content": "Two minor mobile fixes:\n\n**C1 — Navbar logo (Minor)**\nThe Navbar logo's clipPath polygon may protrude horizontally on small screens (< 375px). Fix: use responsive clipPath or switch to `overflow-hidden` container with max-width on the SVG.\n- src/components/Navbar.tsx\n\n**C2 — CourseCard flex-col mobile layout (Minor)**\nAfter CC-001 refactor, CourseCard uses `flex-col md:flex-row`. On mobile, the poster `w-1/3` should become full-width, and text sizing should remain readable.\n- Verify: poster is `w-full` on mobile (`md:w-1/3`)\n- No text overflow on narrow viewports\n- src/components/courses/CourseCard.tsx\n\nRisk: low\nDepends: none",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
+  "agent": "opencode",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "Mobile Responsiveness Audit",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/Navbar.tsx",
+    "src/components/courses/CourseCard.tsx"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Navbar logo does not protrude horizontally at 320px viewport width",
+    "CourseCard poster is full-width on mobile (w-full), 1/3 on md+",
+    "CourseCard text does not overflow or truncate oddly on mobile",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/Navbar.tsx (clipPath fix)",
+    "src/components/courses/CourseCard.tsx (mobile layout verification)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && Chrome DevTools 375px viewport — Navbar logo fits, CourseCard poster is full-width"
+}

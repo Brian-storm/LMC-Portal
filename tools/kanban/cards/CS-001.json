@@ -1,7 +1,7 @@
 {
   "id": "CS-001",
   "title": "資安基礎檢查 — Security Scan & Audit",
-  "content": "Run initial security scan across the entire platform: npm audit for dependency vulnerabilities, review for hardcoded secrets/keys, map auth boundaries, check CSP headers, rate limiting, S3 bucket permissions, SSL/TLS config. \n\nReminder: watch debug tuboshu for the AI vibe coding cybersecurity video for a overall attack test",
+  "content": "Run initial security scan across the entire platform: npm audit for dependency vulnerabilities, review for hardcoded secrets/keys, map auth boundaries, check CSP headers, rate limiting, S3 bucket permissions, SSL/TLS config. \n\n## Shannon AI Pentester — Test Plan\n\nTool: https://github.com/KeygraphHQ/shannon (Shannon is an autonomous AI pentester that analyzes source code + executes real exploits against running apps)\n\n### CRITICAL WARNING — DO NOT POINT AT PRODUCTION\nShannon's exploitation agents actively mutate application state (create users, submit forms, trigger outbound requests, modify data). The README explicitly states: \"Do not run Shannon against production systems.\" Running against lmc-portal production (Amplify) could corrupt real enrolments, payment records, and user data.\n\n### Safe Testing Approach (Recommended)\n1. **Set up a local staging mirror first** — spin up a local instance (`npm run dev`) with a separate local DB (`npm run db:start` + `npm run db:migrate`). Seed with disposable test data.\n2. **Ensure Docker is running** — Shannon requires Docker for its worker container.\n3. **Get AI provider credentials** — Shannon supports Anthropic, OpenAI, xAI, AWS Bedrock, or any Pi-harness provider via BYOK. Claude Opus 5 or DeepSeek v4 Flash recommended.\n4. **Clear cyber safeguards** — If using Anthropic/OpenAI, complete their legitimate-security-tester clearance process first (otherwise they interrupt scans mid-run).\n5. **Run against local instance**:\n   ```\n   npx @keygraph/shannon@latest setup\n   npx @keygraph/shannon@latest start -u http://localhost:3000 -r /path/to/lmc-portal\n   ```\n6. **Review results locally** — Shannon outputs PDF + Markdown + SARIF reports. Findings still require human review (LLM reports can contain false positives).\n\n### Alternative: GitHub Action (Staging Only)\nIf you have a staging deployment, use the Shannon GitHub Action at https://github.com/KeygraphHQ/shannon-action. Never wire it to production.\n\n### What Shannon Can Test\n- OWASP Top 10: Injection, XSS, SSRF, broken auth, broken authorization\n- Authenticated testing with credentials/login flows/TOTP\n- Source code analysis + live exploitation\n- \"No exploit, no report\" — only confirmed vulnerabilities with PoC\n\n### Limitations\n- Full run takes ~1-1.5 hours, incurs LLM API costs\n- Not a replacement for human pentesters (expert chaining + business logic understanding)\n- Models that don't follow instructions reliably produce weaker results\n- Requires Docker + Node 18+\n- Do not scan untrusted/adversarial codebases (prompt injection risk)",
   "stage": "implementing",
   "risk": "high",
   "owner": "",
@@ -39,6 +39,7 @@
     "pr": ""
   },
   "refs": [
+    "https://github.com/KeygraphHQ/shannon",
     "package.json",
     "src/auth.ts",
     "src/middleware.ts",

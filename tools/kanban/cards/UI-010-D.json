@@ -1,0 +1,65 @@
+{
+  "id": "UI-010-D",
+  "title": "useBreakpoint Hook — window.matchMedia shared hook",
+  "content": "Create a reusable `useBreakpoint` hook that listens to CSS breakpoint changes via `window.matchMedia`. Exposes `isMd` boolean for >= 768px. The Admin Sidebar Drawer (UI-010-B) depends on this hook.\n\nImplementation:\n1. Create `src/hooks/use-breakpoint.ts`\n2. Define breakpoints map: sm=640, md=768, lg=1024, xl=1280\n3. Return `{ isSm, isMd, isLg, isXl }` — each a boolean\n4. Use `useState` + `useEffect` with `matchMedia` listener\n5. SSR-safe: default to `false` (mobile-first assumption)\n\nAcceptance:\n- Hook returns correct boolean values across viewport widths\n- SSR does not crash (no `window` reference outside useEffect)\n- Multiple consumers share the same MediaQueryList efficiently\n- npm run typecheck && npm run lint pass\n\nRisk: low\nDepends: none",
+  "stage": "done",
+  "risk": "low",
+  "owner": "Brian",
+  "agent": "opencode",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "UI-Consistency-Fixes",
+  "userStory": "Mobile Responsiveness Audit",
+  "track": "frontend",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/hooks/use-breakpoint.ts",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx"
+  ],
+  "evidence": {
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "src/hooks/use-breakpoint.ts created with useBreakpoint() export",
+    "Returns { isSm, isMd, isLg, isXl } booleans from matchMedia queries",
+    "SSR-safe: no window reference outside useEffect, defaults false",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/hooks/use-breakpoint.ts (new file)"
+  ],
+  "dependencies": "",
+  "verification": "npm run typecheck && npm run lint && import hook in a test component — verify toggles correctly in devtools responsive mode"
+}

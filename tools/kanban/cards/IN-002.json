@@ -1,0 +1,52 @@
+{
+  "id": "IN-002",
+  "title": "安裝瀏覽器視覺化工具 (Playwright) 供 AI 驗證 UI",
+  "content": "Add Playwright (headless browser) so the AI agent can visually verify rendered UI output — screenshots, responsive layout checks, status badge rendering, locale switching, accessibility toggles. Without this tool, UI verification is limited to code inspection + lint/typecheck/build only.",
+  "stage": "blocked",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-18",
+  "epic": "基礎設施",
+  "userStory": "Amplify 正式環境佈署",
+  "track": "infrastructure",
+  "dependsOn": [],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "tools/kanban/cards/IN-002.json",
+    "AGENTS.md",
+    "package.json"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": []
+}
