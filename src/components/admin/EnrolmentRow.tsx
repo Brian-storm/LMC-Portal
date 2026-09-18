@@ -6,9 +6,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Enrolment } from "./types";
 import { STATUS_BADGE, PAYMENT_METHOD_LABELS, ID_DOC_TYPE_LABELS } from "./constants";
+import type { AdminDict } from "@/dictionaries/types";
 import EnrolmentMemberRow from "./EnrolmentMemberRow";
 
 // ── Helpers ──
+
+const STATUS_DICT_KEY: Record<string, keyof AdminDict> = {
+  PENDING_VERIFICATION: "pending",
+  VERIFIED: "verified",
+  REJECTED: "rejected",
+  REFUNDED: "refunded",
+};
 
 const formatDate = (iso: string) => {
   const d = new Date(iso);
@@ -48,6 +56,7 @@ interface EnrolmentRowProps {
   onApprove: (id: string, groupId?: string | null) => void;
   onRejectClick: (enrolment: Enrolment) => void;
   onPreviewClick: (enrolment: Enrolment) => void;
+  dict: AdminDict;
 }
 
 export default function EnrolmentRow({
@@ -58,6 +67,7 @@ export default function EnrolmentRow({
   onApprove,
   onRejectClick,
   onPreviewClick,
+  dict,
 }: EnrolmentRowProps) {
   const isGroup = enrolment.enrollmentType === "ORGANIZATION";
   const totalFee = getTotalFee(enrolment);
@@ -75,7 +85,7 @@ export default function EnrolmentRow({
                 {enrolment.user.organization || getName(enrolment.user, locale)}
               </div>
               <div className="text-[10px] text-slate-500">
-                Enroller: {enrolment.user.email}
+                { dict.enroller } {enrolment.user.email}
               </div>
             </>
           ) : (
@@ -89,7 +99,7 @@ export default function EnrolmentRow({
                     title={`Duplicate credential: ${enrolment.user.idDocNumber}`}
                   >
                     <Copy className="w-2.5 h-2.5" />
-                    Duplicate
+{ dict.duplicate }
                   </span>
                 )}
               </div>
@@ -136,7 +146,7 @@ export default function EnrolmentRow({
           </div>
           <div className="font-mono text-[10px] text-slate-500">
             {enrolment.course.iaRefNumber ?? enrolment.course.slug}
-            <span className="ml-1.5">{enrolment.course.cpdHours} CPD hrs</span>
+            <span className="ml-1.5">{enrolment.course.cpdHours} { dict.cpdHrs }</span>
           </div>
         </td>
 
@@ -151,7 +161,7 @@ export default function EnrolmentRow({
               ))}
             </div>
           ) : isGroup ? (
-            <span className="text-[10px] text-slate-400">See members</span>
+            <span className="text-[10px] text-slate-400">{ dict.seeMembers }</span>
           ) : (
             <span className="text-slate-400">—</span>
           )}
@@ -181,7 +191,7 @@ export default function EnrolmentRow({
           {isGroup && enrolment.registrantCount != null ? (
             <>
               <span className="font-bold text-slate-900">{enrolment.registrantCount}</span>
-              <div className="text-[10px] text-slate-400">(excl. enroller)</div>
+              <div className="text-[10px] text-slate-400">{ dict.exclEnroller }</div>
             </>
           ) : (
             <span className="text-slate-400">—</span>
@@ -199,13 +209,13 @@ export default function EnrolmentRow({
           )}
           {enrolment.receiptNumber && (
             <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700">
-              <span>RCPT: {enrolment.receiptNumber}</span>
+              <span>{ dict.rcpt } {enrolment.receiptNumber}</span>
               <a
                 href={`/api/admin/enrolments/${enrolment.id}/receipt`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-medium text-emerald-700 hover:bg-emerald-50 transition-colors"
-                title="Download receipt PDF"
+                title={ dict.downloadReceipt }
               >
                 <FileText className="w-3.5 h-3.5" />
               </a>
@@ -227,7 +237,7 @@ export default function EnrolmentRow({
         {/* Status */}
         <td className="py-2 px-2">
           <Badge variant={STATUS_BADGE[enrolment.paymentStatus]?.variant ?? "outline"}>
-            {STATUS_BADGE[enrolment.paymentStatus]?.label ?? enrolment.paymentStatus}
+            {dict[STATUS_DICT_KEY[enrolment.paymentStatus] as keyof AdminDict] as string ?? enrolment.paymentStatus}
           </Badge>
           {enrolment.paymentStatus === "REJECTED" && enrolment.payerFullName && (
             <div className="text-[10px] text-destructive mt-0.5 max-w-32 truncate" title={enrolment.payerFullName}>
@@ -251,7 +261,7 @@ export default function EnrolmentRow({
               variant="outline"
               size="xs"
               onClick={() => onPreviewClick(enrolment)}
-              title="View payment proof"
+              title={ dict.viewProof }
             >
               <Eye className="w-3.5 h-3.5" />
             </Button>
@@ -266,7 +276,7 @@ export default function EnrolmentRow({
               onClick={() => onApprove(enrolment.id, isGroup ? enrolment.groupId : null)}
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
-              Approve
+{ dict.approve }
             </Button>
           )}
 
@@ -278,7 +288,7 @@ export default function EnrolmentRow({
               className="border-rose-300 text-rose-700 hover:bg-rose-50"
             >
               <XCircle className="w-3.5 h-3.5" />
-              Reject
+{ dict.reject }
             </Button>
           )}
         </td>

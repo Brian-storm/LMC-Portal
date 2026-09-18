@@ -2,14 +2,23 @@
 
 import type { PaymentStatus, Pagination } from "./types";
 import { STATUS_TABS } from "./constants";
+import type { AdminDict } from "@/dictionaries/types";
 
 interface EnrolmentFiltersProps {
   statusFilter: PaymentStatus | "ALL";
   pagination: Pagination | null;
   onTabClick: (value: PaymentStatus | "ALL") => void;
+  dict: AdminDict;
 }
 
-export default function EnrolmentFilters({ statusFilter, pagination, onTabClick }: EnrolmentFiltersProps) {
+const FILTER_DICT_KEY: Record<string, keyof AdminDict> = {
+  ALL: "filterAll",
+  PENDING_VERIFICATION: "filterPending",
+  VERIFIED: "filterVerified",
+  REJECTED: "filterRejected",
+};
+
+export default function EnrolmentFilters({ statusFilter, pagination, onTabClick, dict }: EnrolmentFiltersProps) {
   return (
     <div className="flex items-center gap-1 flex-wrap">
       {STATUS_TABS.map((tab) => (
@@ -22,7 +31,7 @@ export default function EnrolmentFilters({ statusFilter, pagination, onTabClick 
               : "bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
           }`}
         >
-          {tab.label}
+          {dict[FILTER_DICT_KEY[tab.value] as keyof AdminDict] as string}
           {tab.value !== "ALL" && pagination && statusFilter === tab.value && (
             <span className="ml-1.5 text-[10px] opacity-70">({pagination.total})</span>
           )}

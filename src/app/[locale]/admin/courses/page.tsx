@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useAdminDict } from "@/components/admin/AdminDictContext";
 
 interface AdminCourse {
   id: string;
@@ -26,6 +27,7 @@ interface AdminCourse {
 }
 
 export default function AdminCoursesPage() {
+  const dict = useAdminDict();
   const params = useParams();
   const locale = (params.locale as string) || "en";
   const [courses, setCourses] = useState<AdminCourse[]>([]);
@@ -84,15 +86,15 @@ export default function AdminCoursesPage() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-serif font-bold text-primary">Course Management</h1>
-          <p className="text-xs text-slate-500 mt-0.5">{courses.length} courses</p>
+          <h1 className="text-xl font-serif font-bold text-primary">{ dict.courses }</h1>
+          <p className="text-xs text-slate-500 mt-0.5">{courses.length} { dict.courses }</p>
         </div>
         <Link
           href={`/${locale}/admin/courses/new`}
           className="inline-flex items-center space-x-1 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold px-3 py-2 rounded-xs transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
-          <span>New Course</span>
+          <span>{ dict.newCourse }</span>
         </Link>
       </div>
 
@@ -101,20 +103,20 @@ export default function AdminCoursesPage() {
         {courses.length === 0 ? (
           <div className="py-12 text-center space-y-2">
             <BookOpen className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="text-sm text-slate-500">No courses yet</p>
+            <p className="text-sm text-slate-500">{ dict.noData }</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
-                  <th className="py-2.5 px-3">Course Name</th>
-                  <th className="py-2.5 px-3">IA Ref</th>
-                  <th className="py-2.5 px-3">CPD</th>
-                  <th className="py-2.5 px-3">Price</th>
-                  <th className="py-2.5 px-3">Enrolled</th>
-                  <th className="py-2.5 px-3">Instructor</th>
-                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3">{ dict.courseName }</th>
+                  <th className="py-2.5 px-3">{ dict.iaRef }</th>
+                  <th className="py-2.5 px-3">{ dict.cpdHours }</th>
+                  <th className="py-2.5 px-3">{ dict.price }</th>
+                  <th className="py-2.5 px-3">{ dict.enrolments }</th>
+                  <th className="py-2.5 px-3">{ dict.instructors }</th>
+                  <th className="py-2.5 px-3">{ dict.status }</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">

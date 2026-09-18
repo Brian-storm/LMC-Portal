@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import type { AdminDict } from "@/dictionaries/types";
+import { AdminDictProvider } from "@/components/admin/AdminDictContext";
 
 interface AdminLayoutClientProps {
   children: React.ReactNode;
@@ -129,7 +130,9 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
             LMC Admin
           </span>
         </div>
-        {children}
+        <AdminDictProvider dict={dict}>
+          {children}
+        </AdminDictProvider>
       </main>
     </div>
   );

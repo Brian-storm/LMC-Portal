@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Loader2,
 } from "lucide-react";
+import { useAdminDict } from "@/components/admin/AdminDictContext";
 
 interface DashboardStats {
   totalEnrolments: number;
@@ -27,6 +28,7 @@ interface DashboardStats {
 }
 
 export default function AdminDashboardPage() {
+  const dict = useAdminDict();
   const params = useParams();
   const locale = (params.locale as string) || "en";
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -64,25 +66,25 @@ export default function AdminDashboardPage() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-2">
           <AlertCircle className="w-8 h-8 text-red-500 mx-auto" />
-          <p className="text-sm text-slate-700">{error ?? "Failed to load dashboard"}</p>
+          <p className="text-xs text-slate-700">{error ?? dict.error}</p>
         </div>
       </div>
     );
   }
 
   const statCards = [
-    { label: "Total Enrolments", value: stats.totalEnrolments, color: "text-slate-900" },
-    { label: "Pending", value: stats.pendingCount, color: "text-amber-700" },
-    { label: "Verified", value: stats.verifiedCount, color: "text-emerald-700" },
-    { label: "Active Courses", value: stats.courseCount, color: "text-primary" },
+    { label: dict.totalEnrolments, value: stats.totalEnrolments, color: "text-slate-900" },
+    { label: dict.pending, value: stats.pendingCount, color: "text-amber-700" },
+    { label: dict.verified, value: stats.verifiedCount, color: "text-emerald-700" },
+    { label: dict.activeCourses, value: stats.courseCount, color: "text-primary" },
   ];
 
   return (
     <div className="p-6 space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-xl font-serif font-bold text-primary">Admin Dashboard</h1>
-        <p className="text-xs text-slate-500 mt-0.5">CPD Compliance & Administration Portal</p>
+<h1 className="text-xl font-serif font-bold text-primary">{ dict.dashboard }</h1>
+          <p className="text-xs text-slate-500 mt-0.5">{ dict.portalTitle }</p>
       </div>
 
       {/* Stat cards */}
@@ -98,22 +100,22 @@ export default function AdminDashboardPage() {
       {/* Recent submissions */}
       <section className="bg-white border border-slate-200">
         <div className="border-b border-slate-200 px-4 py-3 flex items-center justify-between">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">Recent Submissions</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">{ dict.recentSubmissions }</h2>
           <Link
             href={`/${locale}/admin/enrolments`}
             className="text-[10px] font-bold text-primary hover:underline flex items-center"
           >
-            View All <ArrowRight className="w-3 h-3 ml-0.5" />
+            { dict.viewAll } <ArrowRight className="w-3 h-3 ml-0.5" />
           </Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase font-bold text-[10px]">
-                <th className="py-2 px-3">Name</th>
-                <th className="py-2 px-3">Course</th>
-                <th className="py-2 px-3">Status</th>
-                <th className="py-2 px-3">Date</th>
+                <th className="py-2 px-3">{ dict.name }</th>
+                <th className="py-2 px-3">{ dict.courseName }</th>
+                <th className="py-2 px-3">{ dict.status }</th>
+                <th className="py-2 px-3">{ dict.date }</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -133,7 +135,7 @@ export default function AdminDashboardPage() {
                       e.paymentStatus === "REJECTED" ? "bg-rose-50 text-rose-800 border border-rose-200" :
                       "bg-amber-50 text-amber-800 border border-amber-200"
                     }`}>
-                      {e.paymentStatus === "PENDING_VERIFICATION" ? "Pending" : e.paymentStatus}
+                      {e.paymentStatus === "PENDING_VERIFICATION" ? dict.pendingVerification : e.paymentStatus}
                     </span>
                   </td>
                   <td className="py-2 px-3 text-slate-500">
@@ -144,7 +146,7 @@ export default function AdminDashboardPage() {
               {stats.recentEnrolments.length === 0 && (
                 <tr>
                   <td colSpan={4} className="py-8 text-center text-slate-400 text-xs">
-                    No enrolments yet
+                    { dict.noData }
                   </td>
                 </tr>
               )}

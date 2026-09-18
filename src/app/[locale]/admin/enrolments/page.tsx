@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
 import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign } from "lucide-react";
+import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { Button } from "@/components/ui/button";
 import type { Enrolment, Pagination, EnrolmentUser, PaymentStatus } from "@/components/admin/types";
 import EnrolmentFilters from "@/components/admin/EnrolmentFilters";
@@ -13,6 +14,7 @@ import PaymentProofPreview from "@/components/admin/PaymentProofPreview";
 import EnrolmentPagination from "@/components/admin/EnrolmentPagination";
 
 export default function AdminEnrolmentsPage() {
+  const dict = useAdminDict();
   const params = useParams();
   const locale = (params.locale as string) || "en";
   const { addToast } = useToast();
@@ -190,13 +192,13 @@ export default function AdminEnrolmentsPage() {
           <div className="space-y-1">
             <div className="flex items-center space-x-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
               <ShieldAlert className="w-3.5 h-3.5 text-primary" />
-              <span>CPD Compliance & Administration Portal</span>
+              <span>{ dict.portalTitle }</span>
             </div>
             <h1 className="text-2xl font-serif font-bold text-primary">
-              Enrolment Review Queue
+              { dict.reviewQueue }
             </h1>
             <p className="text-xs text-slate-500">
-              Verify payment proofs and approve or reject enrolments
+              { dict.reviewDescription }
             </p>
           </div>
         </header>
@@ -206,6 +208,7 @@ export default function AdminEnrolmentsPage() {
           statusFilter={statusFilter}
           pagination={pagination}
           onTabClick={handleStatusTabClick}
+          dict={dict}
         />
 
         {/* ── Main content area ── */}
@@ -227,7 +230,7 @@ export default function AdminEnrolmentsPage() {
               ))}
               <div className="text-center pt-2 text-slate-400">
                 <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-1.5" />
-                Loading enrolments...
+                { dict.loading }
               </div>
             </div>
           )}
@@ -236,10 +239,10 @@ export default function AdminEnrolmentsPage() {
           {!loading && error && (
             <div className="p-12 text-center space-y-3">
               <AlertTriangle className="w-8 h-8 text-destructive mx-auto" />
-              <p className="font-bold text-destructive">Failed to load enrolments</p>
+              <p className="font-bold text-destructive">{ dict.error }</p>
               <p className="text-slate-500">{error}</p>
               <Button variant="outline" size="sm" onClick={() => fetchEnrolments(statusFilter, page)}>
-                Retry
+                { dict.retry }
               </Button>
             </div>
           )}
@@ -250,13 +253,19 @@ export default function AdminEnrolmentsPage() {
               <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
               <p className="font-bold text-slate-700">
                 {statusFilter === "ALL"
-                  ? "No enrolments yet"
-                  : `No ${statusFilter?.toLowerCase().replace("_", " ")} enrolments`}
+                  ? dict.noData
+                  : `${
+                      statusFilter === "PENDING_VERIFICATION"
+                        ? dict.pendingVerification
+                        : statusFilter === "VERIFIED"
+                          ? dict.verified
+                          : dict.rejected
+                    }`}
               </p>
               <p className="text-slate-500">
                 {statusFilter === "ALL"
-                  ? "Enrolments will appear here once learners submit their registration."
-                  : "Try switching to a different status tab to see more results."}
+                  ? dict.emptyAllHint
+                  : dict.emptyFilteredHint}
               </p>
             </div>
           )}
@@ -267,17 +276,17 @@ export default function AdminEnrolmentsPage() {
               <table className="w-full text-left text-xs border-collapse table-fixed">
                 <thead>
                   <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold tracking-wider">
-                    <th className="py-2 px-2 w-[160px]">Enrollee</th>
-                    <th className="py-2 px-2 w-[120px]">ID Doc</th>
-                    <th className="py-2 px-2 w-[180px]">Course</th>
-                    <th className="py-2 px-2 w-[200px]">Schedules</th>
-                    <th className="py-2 px-2 w-[80px]">Type</th>
-                    <th className="py-2 px-2 w-[80px]">Registrants</th>
-                    <th className="py-2 px-2 w-[100px]">Payment</th>
-                    <th className="py-2 px-2 w-[90px]"><DollarSign className="w-3.5 h-3.5 inline mr-0.5" />Fee</th>
-                    <th className="py-2 px-2 w-[80px]">Status</th>
-                    <th className="py-2 px-2 w-[90px]">Submitted</th>
-                    <th className="py-2 px-2 w-[140px] text-right">Actions</th>
+                    <th className="py-2 px-2 w-[160px]">{ dict.enrollee }</th>
+                    <th className="py-2 px-2 w-[120px]">{ dict.idDoc }</th>
+                    <th className="py-2 px-2 w-[180px]">{ dict.course }</th>
+                    <th className="py-2 px-2 w-[200px]">{ dict.schedules }</th>
+                    <th className="py-2 px-2 w-[80px]">{ dict.type }</th>
+                    <th className="py-2 px-2 w-[80px]">{ dict.registrants }</th>
+                    <th className="py-2 px-2 w-[100px]">{ dict.payment }</th>
+                    <th className="py-2 px-2 w-[90px]"><DollarSign className="w-3.5 h-3.5 inline mr-0.5" />{ dict.fee }</th>
+                    <th className="py-2 px-2 w-[80px]">{ dict.status }</th>
+                    <th className="py-2 px-2 w-[90px]">{ dict.submitted }</th>
+                    <th className="py-2 px-2 w-[140px] text-right">{ dict.actions }</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
@@ -291,6 +300,7 @@ export default function AdminEnrolmentsPage() {
                       onApprove={handleApprove}
                       onRejectClick={(e) => { setRejectTarget(e); setRejectReason(""); }}
                       onPreviewClick={setPreviewTarget}
+                      dict={dict}
                     />
                   ))}
                 </tbody>
