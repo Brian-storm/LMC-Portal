@@ -8,9 +8,21 @@ import {
   Loader2,
   Plus,
   Users,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
+import { useToast } from "@/components/ui/toast";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import type { AdminDict } from "@/dictionaries/types";
 
 interface AdminCourse {
@@ -31,26 +43,37 @@ export default function AdminCoursesPage() {
   const dict = useAdminDict();
   const params = useParams();
   const locale = (params.locale as string) || "en";
+  const { addToast } = useToast();
+
   const [courses, setCourses] = useState<AdminCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    async function fetchCourses() {
-      try {
-        const res = await fetch("/api/admin/courses");
-        if (!res.ok) throw new Error("Failed to load courses");
-        const data = await res.json();
-        if (!cancelled) setCourses(data.courses);
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+  // Delete dialog state
+  const [deleteTarget, setDeleteTarget] = useState<AdminCourse | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  // Toggle state
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  const fetchCourses = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/courses");
+      if (!res.ok) throw new Error("Failed to load courses");
+      const data = await res.json();
+      setCourses(data.courses);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCourses();
-    return () => { cancelled = true; };
   }, []);
 
   const statusBadge = (status: string) => {
@@ -68,6 +91,58 @@ export default function AdminCoursesPage() {
     FEW_SEATS: "fewSeats",
     FULL: "full",
     CLOSED: "closed",
+  };
+
+  const handleToggleStatus = async (course: AdminCourse) => {
+    const newStatus = course.registrationStatus === "OPEN" ? "CLOSED" : "OPEN";
+    setTogglingId(course.id);
+    try {
+      const res = await fetch(`/api/admin/courses/${course.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ registrationStatus: newStatus }),
+      });
+      if (!res.ok) throw new Error(`Failed to toggle: ${res.status}`);
+      setCourses((prev) =>
+        prev.map((c) => (c.id === course.id ? { ...c, registrationStatus: newStatus } : c)),
+      );
+      addToast({ title: dict.toastStatusUpdated, variant: "success" });
+    } catch (err) {
+      addToast({
+        title: dict.error,
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "danger",
+      });
+    } finally {
+      setTogglingId(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/courses/${deleteTarget.id}`, {
+        method: "DELETE",
+      });
+      if (res.status === 409) {
+        addToast({ title: dict.toastCourseDeleteBlocked, variant: "warning" });
+        setDeleteTarget(null);
+        return;
+      }
+      if (!res.ok) throw new Error(`Failed to delete: ${res.status}`);
+      setCourses((prev) => prev.filter((c) => c.id !== deleteTarget.id));
+      addToast({ title: dict.toastCourseDeleted, variant: "success" });
+      setDeleteTarget(null);
+    } catch (err) {
+      addToast({
+        title: dict.error,
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "danger",
+      });
+    } finally {
+      setDeleting(false);
+    }
   };
 
   if (loading) {
@@ -125,6 +200,7 @@ export default function AdminCoursesPage() {
                   <th className="py-2.5 px-3">{ dict.enrolments }</th>
                   <th className="py-2.5 px-3">{ dict.instructors }</th>
                   <th className="py-2.5 px-3">{ dict.status }</th>
+                  <th className="py-2.5 px-3 text-right">{ dict.actions }</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -153,9 +229,34 @@ export default function AdminCoursesPage() {
                         : "—"}
                     </td>
                     <td className="py-3 px-3">
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 ${statusBadge(course.registrationStatus)}`}>
-                        {dict[STATUS_LABEL_KEY[course.registrationStatus] as keyof AdminDict] as string ?? course.registrationStatus}
-                      </span>
+                      <button
+                        onClick={() => handleToggleStatus(course)}
+                        disabled={togglingId === course.id}
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-xs border transition-colors cursor-pointer hover:opacity-80 disabled:opacity-50 ${statusBadge(course.registrationStatus)}`}
+                        title={dict.formStatus}
+                      >
+                        {togglingId === course.id ? (
+                          <Loader2 className="w-2.5 h-2.5 animate-spin inline" />
+                        ) : (
+                          dict[STATUS_LABEL_KEY[course.registrationStatus] as keyof AdminDict] as string ?? course.registrationStatus
+                        )}
+                      </button>
+                    </td>
+                    <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
+                      <Link
+                        href={`/${locale}/admin/courses/${course.id}/edit`}
+                        className="inline-flex items-center p-1.5 text-slate-500 hover:text-primary hover:bg-slate-100 rounded-xs transition-colors"
+                        title={dict.update}
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </Link>
+                      <button
+                        onClick={() => setDeleteTarget(course)}
+                        className="inline-flex items-center p-1.5 text-slate-500 hover:text-destructive hover:bg-rose-50 rounded-xs transition-colors"
+                        title={dict.delete}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -164,6 +265,48 @@ export default function AdminCoursesPage() {
           </div>
         )}
       </section>
+
+      {/* Delete confirmation dialog */}
+      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{ dict.confirmDelete }</DialogTitle>
+            <DialogDescription>
+              { dict.deleteWarning }
+            </DialogDescription>
+          </DialogHeader>
+
+          {deleteTarget && (
+            <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
+              <div className="flex justify-between">
+                <span className="text-slate-500">{ dict.courseName }:</span>
+                <span className="font-bold text-slate-800">
+                  {locale === "en" ? deleteTarget.nameEn : (locale === "zh-cn" ? (deleteTarget.nameCn || deleteTarget.nameZh) : deleteTarget.nameZh)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">{ dict.enrolments }:</span>
+                <span className="font-bold text-slate-800">{deleteTarget._count.registrants}</span>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+              { dict.cancel }
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              loading={deleting}
+              disabled={deleting}
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              { dict.delete }
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
