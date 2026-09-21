@@ -17,6 +17,7 @@ import { Prisma } from "@prisma/client";
  *
  * Query params:
  *  - status  : filter by PaymentStatus
+ *  - search  : search by name, email, ID doc number, or IA license
  *  - page    : page number (1-based, default 1)
  *  - limit   : items per page (1-100, default 10)
  */
@@ -32,12 +33,25 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = request.nextUrl;
     const status = searchParams.get("status") as Prisma.EnumPaymentStatusFilter["equals"] | null;
+    const search = searchParams.get("search")?.trim() || null;
     const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "10", 10)));
 
     const whereBase: Prisma.RegistrantWhereInput = {};
     if (status) {
       whereBase.paymentStatus = status;
+    }
+    if (search) {
+      // Search across user fields: name (all locales), email, ID doc number, IA license
+      whereBase.user = {
+        OR: [
+          { nameEn: { contains: search, mode: "insensitive" } },
+          { nameZh: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+          { idDocNumber: { contains: search, mode: "insensitive" } },
+          { iaLicense: { contains: search, mode: "insensitive" } },
+        ],
+      };
     }
 
     // Step 1: Count total parent-level rows

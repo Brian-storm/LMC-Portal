@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
-import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign } from "lucide-react";
+import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign, Search, X } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { Enrolment, Pagination, EnrolmentUser, PaymentStatus } from "@/components/admin/types";
 import EnrolmentFilters from "@/components/admin/EnrolmentFilters";
 import EnrolmentRow from "@/components/admin/EnrolmentRow";
@@ -16,6 +17,8 @@ import EnrolmentPagination from "@/components/admin/EnrolmentPagination";
 export default function AdminEnrolmentsPage() {
   const dict = useAdminDict();
   const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const locale = (params.locale as string) || "en";
   const { addToast } = useToast();
 
@@ -31,7 +34,23 @@ export default function AdminEnrolmentsPage() {
   // ── Filters ──
   const [statusFilter, setStatusFilter] = useState<PaymentStatus | "ALL">("ALL");
   const [page, setPage] = useState(1);
+  // Read search from URL params on mount (useSearchParams is synchronous)
+  const urlSearchTerm = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearchTerm);
+  const [debouncedSearch, setDebouncedSearch] = useState(urlSearchTerm);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const limit = 15;
+
+  // Debounce search input (300ms)
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchTerm]);
 
   // ── Action dialogs ──
   const [approvingId, setApprovingId] = useState<string | null>(null);
@@ -42,12 +61,17 @@ export default function AdminEnrolmentsPage() {
 
   // ── Fetch enrolments from the API ──
 
-  const fetchEnrolments = useCallback(async (fetchStatus: PaymentStatus | "ALL", fetchPage: number) => {
+  const fetchEnrolments = useCallback(async (
+    fetchStatus: PaymentStatus | "ALL",
+    fetchPage: number,
+    fetchSearch: string,
+  ) => {
     setLoading(true);
     setError(null);
     try {
       const statusParam = fetchStatus === "ALL" ? "" : `&status=${fetchStatus}`;
-      const res = await fetch(`/api/admin/enrolments?page=${fetchPage}&limit=${limit}${statusParam}`);
+      const searchParam = fetchSearch ? `&search=${encodeURIComponent(fetchSearch)}` : "";
+      const res = await fetch(`/api/admin/enrolments?page=${fetchPage}&limit=${limit}${statusParam}${searchParam}`);
       if (!res.ok) {
         if (res.status === 403) throw new Error("Admin access required");
         throw new Error(`Failed to fetch: ${res.status}`);
@@ -93,24 +117,36 @@ export default function AdminEnrolmentsPage() {
     }
   }, [limit]);
 
-  // Fetch on mount only
+  // When debounced search changes, reset to page 1, update URL, and refetch
   useEffect(() => {
+    const sp = new URLSearchParams(searchParams.toString());
+    if (debouncedSearch) {
+      sp.set("search", debouncedSearch);
+    } else {
+      sp.delete("search");
+    }
+    router.replace(`/${locale}/admin/enrolments?${sp.toString()}`, { scroll: false });
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchEnrolments(statusFilter, page);
+    setPage(1);
+    fetchEnrolments(statusFilter, 1, debouncedSearch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [debouncedSearch]);
 
   // ── Handlers ──
 
   const handleStatusTabClick = (value: PaymentStatus | "ALL") => {
     setStatusFilter(value);
     setPage(1);
-    fetchEnrolments(value, 1);
+    fetchEnrolments(value, 1, debouncedSearch);
   };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    fetchEnrolments(statusFilter, newPage);
+    fetchEnrolments(statusFilter, newPage, debouncedSearch);
+  };
+
+  const handleSearchClear = () => {
+    setSearchTerm("");
   };
 
   const handleApprove = async (id: string, groupId?: string | null) => {
@@ -203,6 +239,28 @@ export default function AdminEnrolmentsPage() {
           </div>
         </header>
 
+        {/* ── Search input ── */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Input
+            type="text"
+            placeholder={dict.searchPlaceholder}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-10 h-10 text-sm bg-white border-slate-300 focus-visible:ring-emerald-600"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={handleSearchClear}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+              aria-label={dict.search}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
         {/* ── Status filter tabs ── */}
         <EnrolmentFilters
           statusFilter={statusFilter}
@@ -241,7 +299,7 @@ export default function AdminEnrolmentsPage() {
               <AlertTriangle className="w-8 h-8 text-destructive mx-auto" />
               <p className="font-bold text-destructive">{ dict.error }</p>
               <p className="text-slate-500">{error}</p>
-              <Button variant="outline" size="sm" onClick={() => fetchEnrolments(statusFilter, page)}>
+              <Button variant="outline" size="sm" onClick={() => fetchEnrolments(statusFilter, page, debouncedSearch)}>
                 { dict.retry }
               </Button>
             </div>
