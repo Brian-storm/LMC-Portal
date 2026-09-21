@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { courseId, scheduleIds, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, phone, company, iaLicenseNo, idDocNumber } =
+    const { courseId, scheduleIds, enrollmentType, paymentMethod, registrants, isThirdPartyPay, payerFullName, email, fullName, nameZh, phone, company, iaLicenseNo, idDocNumber } =
       parsed.data;
 
     // 1: Resolve the user — from authenticated session or guest info
@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
       // Override any submitted name/email with the profile's values
       // so the receipt and email always use the verified identity.
       parsed.data.fullName = profile.nameEn;
+      parsed.data.nameZh = profile.nameZh;
       parsed.data.email = profile.email;
 
       // Update the user's idDocNumber if provided (e.g. first-time HKID entry)
@@ -98,6 +99,13 @@ export async function POST(request: NextRequest) {
             data: { idDocNumber },
           });
         }
+        // Update the existing guest user's nameZh if provided (separate from nameEn)
+        if (nameZh && !existingUser.nameZh) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: { nameZh },
+          });
+        }
         // Update existing guest user with submitted idDocType if they don't have one
         if (parsed.data.idDocType && !existingUser.idDocType) {
           await prisma.user.update({
@@ -109,7 +117,7 @@ export async function POST(request: NextRequest) {
         const guestName = fullName || "Guest";
         const newUser = await prisma.user.create({
           data: {
-            nameZh: guestName,
+            nameZh: nameZh || guestName,
             nameEn: guestName,
             idDocNumber: idDocNumber || `guest-${crypto.randomUUID().slice(0, 8)}`,
             idDocType: parsed.data.idDocType ?? undefined,
