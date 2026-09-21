@@ -781,7 +781,12 @@
     "toastCourseUpdated": "Course updated successfully",
     "toastCourseDeleted": "Course deleted successfully",
     "toastCourseDeleteBlocked": "Cannot delete — course has registrants",
-    "toastStatusUpdated": "Registration status updated"
+    "toastStatusUpdated": "Registration status updated",
+    "sectionBasicInfo": "Basic Information",
+    "sectionDetails": "Course Details",
+    "sectionDescriptions": "Descriptions",
+    "sectionOrganization": "Organizer",
+    "sectionFeeDescription": "Fee Description"
   },
   "receipt": {
     "title": "OFFICIAL RECEIPT",

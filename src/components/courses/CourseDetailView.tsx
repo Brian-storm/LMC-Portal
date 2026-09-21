@@ -252,17 +252,19 @@ export function CourseDetailView({
             {/* ================================================================== */}
             {/* 6a. ENROLLMENT CARD — desktop: top of sidebar                      */}
             {/* ================================================================== */}
-            <div className="hidden lg:block bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
+<div className="hidden lg:block bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
               <div className="space-y-3">
-                <a
-                  href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
-                  download
-                  className="block w-full py-2 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5 text-xs"
-                >
-                  <FileText className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{dict.downloadBrochure}</span>
-                </a>
+                <div className="flex justify-center">
+                  <a
+                    href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+                    download
+                    className="inline-flex py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 items-center gap-1 text-[10px] w-auto"
+                  >
+                    <FileText className="w-3 h-3 text-slate-600" />
+                    <span>{dict.downloadBrochure}</span>
+                  </a>
+                </div>
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}
@@ -414,17 +416,19 @@ export function CourseDetailView({
             {/* ================================================================== */}
             {/* 6b. ENROLLMENT CARD — mobile: bottom of sidebar                     */}
             {/* ================================================================== */}
-            <div className="block lg:hidden bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
+<div className="block lg:hidden bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
               <div className="space-y-3">
-                <a
-                  href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
-                  download
-                  className="block w-full py-2 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 flex items-center justify-center gap-1.5 text-xs"
-                >
-                  <FileText className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{dict.downloadBrochure}</span>
-                </a>
+                <div className="flex justify-center">
+                  <a
+                    href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
+                    download
+                    className="inline-flex py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 items-center gap-1 text-[10px] w-auto"
+                  >
+                    <FileText className="w-3 h-3 text-slate-600" />
+                    <span>{dict.downloadBrochure}</span>
+                  </a>
+                </div>
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}

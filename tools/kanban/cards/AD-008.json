@@ -1,0 +1,73 @@
+{
+  "id": "AD-008",
+  "title": "Admin Users CRUD — 用戶個人資料編輯",
+  "content": "Admin Users 頁面目前唯讀，只能檢視用戶列表。新增編輯功能，讓管理員可以修改用戶的個人資料（不可修改付款相關資訊）。\n\n功能需求：\n1. 點擊用戶 row 開啟編輯側欄／對話框（或 inline edit 狀態）\n2. 可編輯欄位：\n   - nameZh（中文姓名）\n   - nameEn（英文姓名）\n   - email\n   - phone\n   - iaLicense（IA 牌照）\n   - idDocNumber（身份證明文件號碼）\n   - idDocType（身份證明文件類型：HKID/PASSPORT/PERMIT/OTHER）\n   - organization（所屬機構）\n   - isMember（是否會員）\n   - memberId（會員編號）\n3. 不可編輯（read-only 或隱藏）：\n   - 所有 registrant/payment 關聯資料（paymentStatus, receiptNumber, receiptPdfData, enrolled schedules）\n   - role（不可將 STUDENT 改為 ADMIN/INSTRUCTOR）\n   - passwordHash\n4. 表單驗證：\n   - email 格式驗證\n   - phone 格式驗證\n   - nameZh/nameEn 必填\n5. 儲存後顯示 toast 通知\n6. Loading / error states\n7. i18n 支援\n\nAPI 需求：\n- PATCH /api/admin/users/[id] — 更新用戶個人資料欄位（僅限上述可編輯欄位，拒絕 payment/registrant 相關欄位更新）\n- GET /api/admin/users/[id] — 回傳完整用戶資料（含 idDocNumber, idDocType, organization, isMember, memberId，這些欄位目前 GET list 未回傳）\n\n注意：不提供 DELETE 功能（保留用戶記錄以維持關聯資料完整性）。\n不建立獨立的「新增用戶」功能（用戶應經由前台註冊流程加入）。",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-21",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-004"],
+  "order": 8,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/users/page.tsx (refactor — add edit dialog)",
+    "src/app/api/admin/users/[id]/route.ts (new — GET single user + PATCH update)",
+    "src/components/admin/UserEditDialog.tsx (new — edit form dialog)",
+    "src/dictionaries/en.json (update — add user edit keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add user edit keys to AdminDict)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "acceptance": [
+    "GET /api/admin/users/[id] returns full user profile with all editable fields",
+    "PATCH /api/admin/users/[id] updates allowed fields only (rejects payment/registrant fields)",
+    "Clicking a user row opens edit dialog with prefilled data",
+    "Edit dialog shows correct fields: nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId",
+    "Email and phone format validation works",
+    "Save button shows loading state, success toast on completion",
+    "Cannot edit role, passwordHash, or any payment/registrant-related fields",
+    "All labels use dict (i18n: en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/users/[id]/route.ts (new — GET + PATCH)",
+    "src/app/[locale]/admin/users/page.tsx (refactor — add row click handler, edit dialog integration)",
+    "src/components/admin/UserEditDialog.tsx (new)",
+    "src/dictionaries/en.json (update — add userEdit section)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add keys to AdminDict)"
+  ],
+  "dependencies": "AD-004 provides the base users list page and GET /api/admin/users route. AD-008 extends the same page with edit capabilities.",
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/users → click user row → edit dialog opens → modify fields → save → toast confirms → verify PATCH response updates DB correctly. Confirm payment fields cannot be modified."
+}

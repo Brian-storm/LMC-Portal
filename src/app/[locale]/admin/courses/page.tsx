@@ -76,16 +76,6 @@ export default function AdminCoursesPage() {
     fetchCourses();
   }, []);
 
-  const statusBadge = (status: string) => {
-    const styles: Record<string, string> = {
-      OPEN: "bg-emerald-50 text-emerald-800 border border-emerald-200",
-      FEW_SEATS: "bg-amber-50 text-amber-800 border border-amber-200",
-      FULL: "bg-rose-50 text-rose-800 border border-rose-200",
-      CLOSED: "bg-slate-100 text-slate-500 border border-slate-200",
-    };
-    return styles[status] ?? "bg-slate-100 text-slate-500";
-  };
-
   const STATUS_LABEL_KEY: Record<string, keyof AdminDict> = {
     OPEN: "open",
     FEW_SEATS: "fewSeats",
@@ -232,15 +222,26 @@ export default function AdminCoursesPage() {
                       <button
                         onClick={() => handleToggleStatus(course)}
                         disabled={togglingId === course.id}
-                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-xs border transition-colors cursor-pointer hover:opacity-80 disabled:opacity-50 ${statusBadge(course.registrationStatus)}`}
                         title={dict.formStatus}
+                        className={`relative inline-flex items-center h-5 w-9 rounded-full border transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none ${
+                          course.registrationStatus === "OPEN"
+                            ? "bg-emerald-600 border-emerald-600"
+                            : "bg-slate-300 border-slate-300"
+                        }`}
                       >
+                        <span
+                          className={`inline-block w-3.5 h-3.5 transform rounded-full bg-white shadow-xs transition-transform ${
+                            course.registrationStatus === "OPEN" ? "translate-x-[18px]" : "translate-x-[1px]"
+                          }`}
+                        />
+                      </button>
+                      <span className="ml-1.5 text-[10px] font-medium text-slate-600">
                         {togglingId === course.id ? (
                           <Loader2 className="w-2.5 h-2.5 animate-spin inline" />
                         ) : (
                           dict[STATUS_LABEL_KEY[course.registrationStatus] as keyof AdminDict] as string ?? course.registrationStatus
                         )}
-                      </button>
+                      </span>
                     </td>
                     <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
                       <Link

@@ -4,6 +4,20 @@ import { prisma } from "@/lib/prisma";
 import { courseUpdateSchema } from "@/lib/validation/course";
 import { Prisma } from "@prisma/client";
 
+// Helper: convert Prisma Decimal fields to numbers for JSON serialization
+function serializeCourse(course: Record<string, unknown>) {
+  return {
+    ...course,
+    price: Number(course.price),
+    ...(course.unitPrice !== null && course.unitPrice !== undefined
+      ? { unitPrice: Number(course.unitPrice) }
+      : { unitPrice: null }),
+    ...(course.cpdHoursIa !== null && course.cpdHoursIa !== undefined
+      ? { cpdHoursIa: Number(course.cpdHoursIa) }
+      : { cpdHoursIa: null }),
+  };
+}
+
 /**
  * GET /api/admin/courses/[id]
  *
@@ -39,7 +53,7 @@ export async function GET(
       return NextResponse.json({ error: "Course not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ course });
+    return NextResponse.json({ course: serializeCourse(course as unknown as Record<string, unknown>) });
   } catch (error) {
     console.error("GET /api/admin/courses/[id] error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -127,7 +141,7 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json({ course });
+    return NextResponse.json({ course: serializeCourse(course as unknown as Record<string, unknown>) });
   } catch (error) {
     console.error("PATCH /api/admin/courses/[id] error:", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {

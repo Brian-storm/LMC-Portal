@@ -777,7 +777,12 @@
     "toastCourseUpdated": "課程更新成功",
     "toastCourseDeleted": "課程刪除成功",
     "toastCourseDeleteBlocked": "無法刪除 — 課程已有學員報名",
-    "toastStatusUpdated": "報名狀態已更新"
+    "toastStatusUpdated": "報名狀態已更新",
+    "sectionBasicInfo": "基本資料",
+    "sectionDetails": "課程詳細",
+    "sectionDescriptions": "描述",
+    "sectionOrganization": "主辦機構",
+    "sectionFeeDescription": "費用說明"
   },
   "receipt": {
     "title": "正式收據",

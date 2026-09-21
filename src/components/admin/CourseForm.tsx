@@ -226,7 +226,7 @@ export default function CourseForm({ mode, initialData, onSuccess }: CourseFormP
     <form onSubmit={handleSubmit} className="space-y-0">
       {/* ── Section: Basic Information ── */}
       <div className={sectionClass}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.formNameZh}</h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.sectionBasicInfo}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className={fieldRow}>
             <label className={labelClass}>{dict.formNameZh} <span className="text-destructive">*</span></label>
@@ -264,7 +264,7 @@ export default function CourseForm({ mode, initialData, onSuccess }: CourseFormP
 
       {/* ── Section: Course Details ── */}
       <div className={sectionClass}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.formCpdHours}</h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.sectionDetails}</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className={fieldRow}>
             <label className={labelClass}>{dict.formCpdHours} <span className="text-destructive">*</span></label>
@@ -310,7 +310,7 @@ export default function CourseForm({ mode, initialData, onSuccess }: CourseFormP
 
       {/* ── Section: Descriptions ── */}
       <div className={sectionClass}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.formDescriptionZh}</h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.sectionDescriptions}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className={fieldRow}>
             <label className={labelClass}>{dict.formDescriptionZh}</label>
@@ -329,7 +329,7 @@ export default function CourseForm({ mode, initialData, onSuccess }: CourseFormP
 
       {/* ── Section: Organization ── */}
       <div className={sectionClass}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.formOrganizerZh}</h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.sectionOrganization}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className={fieldRow}>
             <label className={labelClass}>{dict.formGeneralInstructor}</label>
@@ -348,7 +348,7 @@ export default function CourseForm({ mode, initialData, onSuccess }: CourseFormP
 
       {/* ── Section: Fee Description ── */}
       <div className={sectionClass}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.formFeeDescriptionZh}</h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">{dict.sectionFeeDescription}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className={fieldRow}>
             <label className={labelClass}>{dict.formFeeDescriptionZh}</label>

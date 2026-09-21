@@ -777,7 +777,12 @@
     "toastCourseUpdated": "课程更新成功",
     "toastCourseDeleted": "课程删除成功",
     "toastCourseDeleteBlocked": "无法删除 — 课程已有学员报名",
-    "toastStatusUpdated": "报名状态已更新"
+    "toastStatusUpdated": "报名状态已更新",
+    "sectionBasicInfo": "基本资料",
+    "sectionDetails": "课程详细",
+    "sectionDescriptions": "描述",
+    "sectionOrganization": "主办机构",
+    "sectionFeeDescription": "费用说明"
   },
   "receipt": {
     "title": "正式收据",

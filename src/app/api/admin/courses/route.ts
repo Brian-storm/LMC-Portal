@@ -42,7 +42,15 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({ courses });
+    // Convert Decimal fields to numbers for JSON serialization
+    const serialized = courses.map((c) => ({
+      ...c,
+      price: Number(c.price),
+      ...(c.unitPrice !== null ? { unitPrice: Number(c.unitPrice) } : { unitPrice: null }),
+      ...(c.cpdHoursIa !== null ? { cpdHoursIa: Number(c.cpdHoursIa) } : { cpdHoursIa: null }),
+    }));
+
+    return NextResponse.json({ courses: serialized });
   } catch (error) {
     console.error("GET /api/admin/courses error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -107,7 +115,14 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ course }, { status: 201 });
+    return NextResponse.json({
+      course: {
+        ...course,
+        price: Number(course.price),
+        ...(course.unitPrice !== null ? { unitPrice: Number(course.unitPrice) } : { unitPrice: null }),
+        ...(course.cpdHoursIa !== null ? { cpdHoursIa: Number(course.cpdHoursIa) } : { cpdHoursIa: null }),
+      },
+    }, { status: 201 });
   } catch (error) {
     console.error("POST /api/admin/courses error:", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
