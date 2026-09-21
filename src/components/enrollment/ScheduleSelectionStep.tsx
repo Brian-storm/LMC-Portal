@@ -154,10 +154,39 @@ export function ScheduleSelectionStep({
                     )}
                     {/* Schedule info */}
                     <div className="pt-2 border-t border-slate-200 space-y-0.5">
-                      <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                        <Clock className="w-4 h-4 text-slate-500 shrink-0" />
-                        <span>{sch.dateAndTime}</span>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <span className="font-mono font-bold uppercase text-slate-600 text-xs no-scale">
+                          {dict.step2.dateLabel}:
+                        </span>
+                        <span className="font-sans text-xs text-slate-700 no-scale">
+                          {sch.sessionDate
+                            ? new Date(sch.sessionDate).toLocaleDateString(
+                                locale === "zh-hk"
+                                  ? "zh-HK"
+                                  : locale === "zh-cn"
+                                    ? "zh-CN"
+                                    : "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                },
+                              )
+                            : ""}
+                        </span>
                       </div>
+                      {sch.startTime && sch.endTime && (
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-primary shrink-0" />
+                          <span className="font-mono font-bold uppercase text-slate-600 text-xs no-scale">
+                            {dict.step2.timeLabel}:
+                          </span>
+                          <span className="font-sans text-xs text-slate-700 no-scale">
+                            {sch.startTime} – {sch.endTime}
+                          </span>
+                        </div>
+                      )}
                       {sch.instructor && (
                         <div className="flex items-start gap-1.5 text-xs text-slate-600 pt-0.5">
                           <User className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
@@ -165,7 +194,9 @@ export function ScheduleSelectionStep({
                             <span className="font-semibold text-slate-700">
                               {sch.instructor.name}
                             </span>
-                            {sch.instructor.title && <> — {sch.instructor.title}</>}
+                            {sch.instructor.title && (
+                              <> — {sch.instructor.title}</>
+                            )}
                             {sch.instructor.bio && (
                               <p className="text-[11px] text-slate-500 mt-0.5">
                                 {sch.instructor.bio}

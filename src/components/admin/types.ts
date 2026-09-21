@@ -20,6 +20,8 @@ export interface EnrolmentSchedule {
   id: string;
   dateAndTime: string;
   sessionDate: string | null;
+  startTime: string;
+  endTime: string;
   venue: string;
   venueEn: string | null;
   venueZh: string | null;

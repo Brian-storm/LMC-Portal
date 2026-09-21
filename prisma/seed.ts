@@ -241,6 +241,8 @@ async function main() {
         create: {
           dateAndTime: "2026-09-15 (Sat) 10:00 - 17:00",
           sessionDate: parseSessionDate("2026-09-15 (Sat) 10:00 - 17:00"),
+          startTime: "10:00",
+          endTime: "17:00",
           venue: "Unit 1011, Tower B, New Mandarin Plaza, Tsim Sha Tsui",
           quotaRemaining: 3,
         },
@@ -326,12 +328,12 @@ async function main() {
   const cpd26090103VenueEn = "CUHK Medical Centre, 9 Chak Cheung Street, Shatin, NT";
   const cpd26090103VenueZh = "香港新界沙田澤祥街9號 香港中文大學醫院";
   const cpd26090103Schedules = [
-    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", sessionDate: parseSessionDate("22/09/2026 (星期二) 14:15 - 15:45"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", sessionDate: parseSessionDate("22/09/2026 (星期二) 16:00 - 17:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 14:00 - 15:30", sessionDate: parseSessionDate("08/10/2026 (星期四) 14:00 - 15:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "08/10/2026 (星期四) 15:45 - 17:15", sessionDate: parseSessionDate("08/10/2026 (星期四) 15:45 - 17:15"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "14/10/2026 (星期三) 14:15 - 15:45", sessionDate: parseSessionDate("14/10/2026 (星期三) 14:15 - 15:45"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
-    { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", sessionDate: parseSessionDate("14/10/2026 (星期三) 16:00 - 17:30"), venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 14:15 - 15:45", sessionDate: parseSessionDate("22/09/2026 (星期二) 14:15 - 15:45"), startTime: "14:15", endTime: "15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "22/09/2026 (星期二) 16:00 - 17:30", sessionDate: parseSessionDate("22/09/2026 (星期二) 16:00 - 17:30"), startTime: "16:00", endTime: "17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 14:00 - 15:30", sessionDate: parseSessionDate("08/10/2026 (星期四) 14:00 - 15:30"), startTime: "14:00", endTime: "15:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "08/10/2026 (星期四) 15:45 - 17:15", sessionDate: parseSessionDate("08/10/2026 (星期四) 15:45 - 17:15"), startTime: "15:45", endTime: "17:15", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 14:15 - 15:45", sessionDate: parseSessionDate("14/10/2026 (星期三) 14:15 - 15:45"), startTime: "14:15", endTime: "15:45", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
+    { dateAndTime: "14/10/2026 (星期三) 16:00 - 17:30", sessionDate: parseSessionDate("14/10/2026 (星期三) 16:00 - 17:30"), startTime: "16:00", endTime: "17:30", venue: cpd26090103VenueZh, venueEn: cpd26090103VenueEn, venueZh: cpd26090103VenueZh, quotaRemaining: 60, isActive: true, cpdHoursIa: 1.5 },
   ];
 
   // Syllabus items for CPD26090103, used in both create and update branches of the upsert.

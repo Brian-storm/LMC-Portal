@@ -184,7 +184,8 @@
       "closed": "截止报名"
     },
     "labels": {
-      "dateAndTime": "上课时间",
+      "date": "日期",
+      "time": "时间",
       "venue": "上课地点",
       "module": "课程单元",
       "duration": "单元学时",
@@ -521,6 +522,8 @@
     "step2": {
       "title": "选择上课时间",
       "subtitle": "选择您想参加的课堂时段",
+      "dateLabel": "日期",
+      "timeLabel": "时间",
       "selectAtLeastOne": "请选择至少一个主题以继续。",
       "allSessionsSelected": "您已选择全部时段！可享 10% 批量折扣。",
       "sessionsSelected": "个时段已选",

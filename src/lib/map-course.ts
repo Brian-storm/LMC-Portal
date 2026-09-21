@@ -1,6 +1,34 @@
 import { Course } from "@/components/courses/types";
 
 /**
+ * Format an ISO date string to DD/MM/YYYY (UTC).
+ */
+function formatDateDDMMYYYY(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = d.getUTCFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+/**
+ * Build a combined dateAndTime string from separate fields.
+ */
+function buildDateAndTime(
+  dateAndTime: string,
+  sessionDate: string | null,
+  startTime: string,
+  endTime: string,
+): string {
+  if (dateAndTime?.trim()) return dateAndTime;
+  const datePart = formatDateDDMMYYYY(sessionDate);
+  if (!datePart) return "";
+  return `${datePart} ${startTime} - ${endTime}`;
+}
+
+/**
  * ApiCourse — 描述 `GET /api/courses` 回傳的清單 course 物件。
  * 欄位對應 Prisma `Course` model 的 selected fields（見
  * `src/app/api/courses/route.ts` 的 GET handler）。
@@ -27,6 +55,8 @@ export interface ApiCourse {
     id: string;
     dateAndTime: string;
     sessionDate: string | null;
+    startTime: string;
+    endTime: string;
     venue: string;
     venueEn: string | null;
     venueZh: string | null;
@@ -84,6 +114,8 @@ export function mapApiCourse(c: ApiCourse, locale: string): Course {
         : (c.schedules[0].venueEn ?? c.schedules[0].venueZh ?? c.schedules[0].venue))
       : undefined,
     seatsLeft: c.schedules?.[0]?.quotaRemaining,
-    date: c.schedules?.[0]?.dateAndTime,
+    date: c.schedules?.[0]
+      ? buildDateAndTime(c.schedules[0].dateAndTime, c.schedules[0].sessionDate, c.schedules[0].startTime, c.schedules[0].endTime)
+      : undefined,
   };
 }

@@ -23,6 +23,9 @@ export interface ScheduleTopic {
 export interface Schedule {
   id: string;
   dateAndTime: string;
+  sessionDate: string | null;
+  startTime: string;
+  endTime: string;
   venue: string;
   quotaRemaining: number;
   instructor?: ScheduleInstructor;

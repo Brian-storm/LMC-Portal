@@ -12,10 +12,37 @@ interface ApiSyllabusItem {
   sortOrder: number;
 }
 
+/** Format an ISO date string to DD/MM/YYYY */
+function formatDateDDMMYYYY(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = d.getUTCFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+/** Build a combined dateAndTime string from separate fields when the API doesn't provide one */
+function buildDateAndTime(
+  dateAndTime: string,
+  sessionDate: string | null,
+  startTime: string,
+  endTime: string,
+): string {
+  if (dateAndTime?.trim()) return dateAndTime;
+  const datePart = formatDateDDMMYYYY(sessionDate);
+  if (!datePart) return "";
+  return `${datePart} ${startTime} - ${endTime}`;
+}
+
 /** Raw API schedule */
 interface ApiSchedule {
   id: string;
   dateAndTime: string;
+  sessionDate: string | null;
+  startTime: string;
+  endTime: string;
   venue: string;
   venueEn: string | null;
   venueZh: string | null;
@@ -162,10 +189,13 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
   const uniqueVenues = [...new Set(c.schedules.map(localizedVenue))];
 
   // Derive datesText: extract date portions from schedule dateAndTime, deduplicated
+  // Fall back to sessionDate when dateAndTime is not populated
   const timeRangePattern = /\s+\d{2}:\d{2}\s*-\s*\d{2}:\d{2}$/;
   const uniqueDateSet = new Set<string>();
   for (const s of c.schedules) {
-    const datePart = s.dateAndTime.replace(timeRangePattern, "").trim();
+    const datePart = s.dateAndTime?.trim()
+      ? s.dateAndTime.replace(timeRangePattern, "").trim()
+      : formatDateDDMMYYYY(s.sessionDate);
     if (datePart) uniqueDateSet.add(datePart);
   }
   const dates = [...uniqueDateSet].sort((a, b) => {
@@ -217,7 +247,10 @@ export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): Detailed
 
 const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     id: s.id,
-    dateAndTime: s.dateAndTime,
+    dateAndTime: buildDateAndTime(s.dateAndTime, s.sessionDate, s.startTime, s.endTime),
+    sessionDate: s.sessionDate,
+    startTime: s.startTime,
+    endTime: s.endTime,
     venue: localizedVenue(s),
     quotaRemaining: s.quotaRemaining,
     cpdHoursIa: s.cpdHoursIa,

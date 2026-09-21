@@ -198,15 +198,24 @@ export function CourseDetailView({
                           )}
                         </div>
                       </div>
-                      <div className="mt-3 pt-3 border-t border-slate-200 space-y-2 ml-10">
+                      <div className="mt-3 pt-3 border-t border-slate-200 space-y-1.5 ml-10">
                         <div className="flex flex-col gap-1.5 text-slate-700 bg-white border border-slate-200 rounded-xs px-2.5 py-2 text-sm">
-                          <div className="flex items-center gap-1.5 font-semibold text-slate-900 shrink-0">
-                            <Calendar className="w-3 h-3 text-primary shrink-0" />
-                            <span className="font-mono font-bold uppercase text-slate-600 text-xs mr-1">
-                              {dict.labels?.dateAndTime}:
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-primary shrink-0" />
+                            <span className="font-mono font-bold uppercase text-slate-600 text-xs">
+                              {dict.labels?.date}:
                             </span>
-                            <span>{sch.dateAndTime}</span>
+                            <span className="font-sans text-xs text-slate-700">{sch.sessionDate ? new Date(sch.sessionDate).toLocaleDateString(currentLocale === "zh-hk" ? "zh-HK" : currentLocale === "zh-cn" ? "zh-CN" : "en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : ""}</span>
                           </div>
+                          {sch.startTime && sch.endTime && (
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="w-3.5 h-3.5 text-primary shrink-0" />
+                              <span className="font-mono font-bold uppercase text-slate-600 text-xs">
+                                {dict.labels?.time}:
+                              </span>
+                              <span className="font-sans text-xs text-slate-700">{sch.startTime} – {sch.endTime}</span>
+                            </div>
+                          )}
                           {sch.instructor && (
                             <div className="flex flex-col gap-0.5">
                               <div className="flex items-start gap-1.5">

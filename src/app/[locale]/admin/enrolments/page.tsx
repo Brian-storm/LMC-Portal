@@ -71,6 +71,7 @@ export default function AdminEnrolmentsPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [batchSubmitting, setBatchSubmitting] = useState(false);
   const [batchConfirmApprove, setBatchConfirmApprove] = useState(false);
+  const [batchRejectOpen, setBatchRejectOpen] = useState(false);
   const [batchRejectReason, setBatchRejectReason] = useState("");
 
   // ── Fetch enrolments from the API ──
@@ -255,7 +256,6 @@ export default function AdminEnrolmentsPage() {
         addToast({ title: dict.batchSuccess.replace("{count}", String(result.updatedCount)), variant: "warning" });
       }
       setSelectedIds(new Set());
-      setBatchRejectOpen(false);
       setBatchRejectReason("");
     } catch (err) {
       addToast({
@@ -575,17 +575,19 @@ export default function AdminEnrolmentsPage() {
       </Dialog>
 
       {/* ── Batch reject dialog ── */}
-      <RejectDialog
-        rejectTarget={null}
-        rejectReason={batchRejectReason}
-        rejecting={batchSubmitting}
-        locale={locale}
-        dict={dict}
-        batchCount={selectedIds.size}
-        onReasonChange={setBatchRejectReason}
-        onConfirm={handleBatchReject}
-        onClose={() => { setBatchRejectOpen(false); setBatchRejectReason(""); }}
-      />
+      {batchRejectOpen && selectedIds.size > 0 && (
+        <RejectDialog
+          rejectTarget={null}
+          rejectReason={batchRejectReason}
+          rejecting={batchSubmitting}
+          locale={locale}
+          dict={dict}
+          batchCount={selectedIds.size}
+          onReasonChange={setBatchRejectReason}
+          onConfirm={handleBatchReject}
+          onClose={() => { setBatchRejectOpen(false); setBatchRejectReason(""); }}
+        />
+      )}
 
       {/* ── Payment proof preview dialog ── */}
       <PaymentProofPreview

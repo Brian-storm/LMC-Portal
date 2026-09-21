@@ -14,6 +14,9 @@ const syllabusItemSchema = z.object({
 
 const scheduleSchema = z.object({
   dateAndTime: z.string().min(1, "dateAndTime is required"),
+  sessionDate: z.string().min(1, "sessionDate is required"),
+  startTime: z.string().min(1, "startTime is required"),
+  endTime: z.string().min(1, "endTime is required"),
   venue: z.string().min(1, "venue is required"),
   quotaRemaining: z.number().int().min(0, "quotaRemaining cannot be negative"),
   isActive: z.boolean().default(true),

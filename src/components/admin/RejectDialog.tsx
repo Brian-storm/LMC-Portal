@@ -47,7 +47,9 @@ export default function RejectDialog({
   onConfirm,
   onClose,
 }: RejectDialogProps) {
-  const open = batchCount ? batchCount > 0 : !!rejectTarget;
+  // If batchCount is set, the dialog open state is controlled externally via onClose.
+  // Otherwise it follows the rejectTarget presence.
+  const open = batchCount != null ? batchCount > 0 : !!rejectTarget;
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
       <DialogContent className="sm:max-w-md">

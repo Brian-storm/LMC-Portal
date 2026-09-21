@@ -188,7 +188,8 @@
     },
 
     "labels": {
-      "dateAndTime": "Date & Time",
+      "date": "Date",
+      "time": "Time",
       "venue": "Venue / Location",
       "module": "Module",
       "duration": "Duration",
@@ -525,6 +526,8 @@
     "step2": {
       "title": "Select Schedule",
       "subtitle": "Choose your preferred class sessions",
+      "dateLabel": "Date",
+      "timeLabel": "Time",
       "selectAtLeastOne": "Please select at least one topic to continue.",
       "allSessionsSelected": "You have selected all sessions! A 10% bulk discount applies.",
       "sessionsSelected": "sessions selected",

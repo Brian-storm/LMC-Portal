@@ -188,7 +188,9 @@ model Schedule {
   id             String  @id @default(cuid())
   courseId       String
   dateAndTime    String
-  sessionDate    DateTime?
+  sessionDate    DateTime
+  startTime      String
+  endTime        String
   venue          String
   venueEn        String?
   venueZh        String?

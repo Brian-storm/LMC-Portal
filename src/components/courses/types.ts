@@ -27,6 +27,9 @@ export interface SyllabusModule {
 export interface ScheduleSession {
   id: string;
   dateAndTime: string;
+  sessionDate: string | null;
+  startTime: string;
+  endTime: string;
   venue: string;
   quotaRemaining: number;
   cpdHoursIa: number;

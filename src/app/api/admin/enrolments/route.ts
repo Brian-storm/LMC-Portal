@@ -121,6 +121,8 @@ export async function GET(request: NextRequest) {
                 id: true,
                 dateAndTime: true,
                 sessionDate: true,
+                startTime: true,
+                endTime: true,
                 venue: true,
                 venueEn: true,
                 venueZh: true,
