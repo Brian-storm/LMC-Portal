@@ -1,0 +1,67 @@
+{
+  "id": "CD-014",
+  "title": "課程詳情頁 — 退款政策 notice（獨立，不依賴 CD-001）",
+  "content": "在 CourseDetailView 的 enrollment card 中加入退款政策 notice。\n\n**Layout 提案**（待 Brian 確認）：\n\n1. 新增 `courseView.refundNotice` 字典鍵（en / zh-hk / zh-cn）\n2. 在 enrollment card（sidebar）的「Download Syllabus」按鈕上方插入 amber notice box\n3. 樣式與既有的 CPD rules notice（CourseDetailView 第 146-161 行）一致：`bg-amber-50/80 border border-amber-200 rounded-xs p-3 text-sm text-amber-900`\n4. 同時套用在 desktop 與 mobile 兩個 enrollment card 區塊\n\n**不需要的項目**：\n- 不修改證書資訊區塊（移至 CD-011）\n- 不修改 Schedule 主題顯示（CD-009 已完成）\n- 不修改 CPD 時數顯示（CD-006 已完成）\n\n風險：low\n依賴：無（獨立前端 + 字典修改）",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-21",
+  "epic": "課程管理",
+  "userStory": "課程詳情頁",
+  "dependsOn": [],
+  "order": 14,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/courses/CourseDetailView.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "courseView.refundNotice key added to en.json, zh-hk.json, zh-cn.json with translated text",
+    "Amber notice box renders in desktop enrollment card above Download Syllabus button",
+    "Amber notice box renders in mobile enrollment card above Download Syllabus button",
+    "Notice is hidden when dict.refundNotice is empty string",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/components/courses/CourseDetailView.tsx"
+  ],
+  "dependencies": "None — independent frontend + dictionary change",
+  "verification": "npm run typecheck && npm run lint"
+}

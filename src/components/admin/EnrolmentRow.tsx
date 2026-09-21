@@ -162,16 +162,16 @@ export default function EnrolmentRow({
         </td>
 
         {/* ID Doc — empty for organization (enroller is not a registrant) */}
-        <td className="py-2 px-2 whitespace-nowrap">
+        <td className="py-2 px-2">
           {isGroup ? (
             <span className="text-slate-400">—</span>
           ) : enrolment.user.idDocNumber ? (
-            <>
-              <span className="text-[10px] text-slate-500 mr-1">
+            <div>
+              <span className="text-[10px] text-slate-500">
                 {enrolment.user.idDocType ? dict[ID_DOC_DICT_KEY[enrolment.user.idDocType] as keyof AdminDict] as string ?? enrolment.user.idDocType : ""}
               </span>
-              <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
-            </>
+              <div className="font-mono text-slate-700 break-all">{enrolment.user.idDocNumber}</div>
+            </div>
           ) : (
             <span className="text-slate-400">—</span>
           )}

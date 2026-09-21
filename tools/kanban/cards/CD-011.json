@@ -1,24 +1,25 @@
 {
   "id": "CD-011",
-  "title": "更新 CourseDetailView 顯示新欄位（我提案，你校閱）",
-  "content": "在 CourseDetailView 和 types.ts 中補上新欄位的 UI 呈現。\n\n✅ 決議：我先提案 layout，你再校閱調整。\n\n我的提案 layout 從上到下：\n\n1. **Header 區（既有的課程名稱、類別、狀態 badge）** → 不變\n2. **證書資訊區塊**（新增）\n   - 位置：放在 course 基本資訊下方，schedule 區塊上方\n   - 內容：icon + 「完成全部 6 堂可獲 [certificateIssuer] 頒發 [certificateTitle]」\n   - 使用 emerald badge 樣式\n\n3. **CPD 時數區塊**（修改）\n   - 位置：證書資訊下方\n   - 顯示：每堂 cpdHoursIa IA CPD Hours\n   - 現有 cpdHours 改為「學員總時數 = cpdHoursIa × 出席堂數」\n\n4. **課程時段（Schedules）區塊**（修改）\n   - 每個 Schedule 卡片下方顯示其 SyllabusItem 主題名稱（透過 ScheduleTopic）\n   - 例如：「14:15-15:45 | 主題2：乳癌診斷...」\n\n5. **退款政策 notice**（新增）\n   - 位置：放在「立即報名」CTA 按鈕上方\n   - 樣式：amber notice box，與 CPD notice 一致\n   - 文字：從字典讀取 dict.courseView.refundNotice\n\n需要你確認後開始實作。",
+  "title": "課程詳情頁 — 證書資訊區塊（certificateIssuer + certificateTitle）",
+  "content": "在 CourseDetailView 中新增證書資訊區塊。\n\n**範圍**：僅證書資訊區塊。退款 notice 移至 CD-014。Schedule 主題顯示已在 CD-009 完成。CPD 時數顯示已在 CD-006 完成。\n\n**Layout 提案**（待 Brian 確認）：\n\n1. 新增區塊放在 Course Topics 區塊上方（header 之後）\n2. 內容：icon（Award / GraduationCap）+ 文字「完成全部 [topicCount] 堂可獲 [certificateIssuer] 頒發 [certificateTitle]」\n3. 使用 emerald badge 樣式（bg-emerald-50 border-emerald-200）\n4. 若 certificateIssuer/certificateTitle 為空則不顯示此區塊\n\n**需要的上游資料**：\n- Prisma Course 模型需有 certificateIssuerZh/En, certificateTitleZh/En（CD-001）\n- ApiCourseDetail 需包含這些欄位\n- map-course-detail.ts 需做 locale-aware mapping\n- types.ts DetailedCourse 需新增欄位",
   "stage": "backlog",
   "risk": "low",
   "owner": "Brian",
   "agent": "",
   "approvalRequired": true,
   "createdAt": "2026-09-09",
+  "updatedAt": "2026-09-21",
   "epic": "課程管理",
   "userStory": "課程詳情頁",
-  "dependsOn": ["CD-001", "CD-006", "CD-007", "CD-009"],
+  "dependsOn": ["CD-001"],
   "order": 11,
   "readiness": {
-    "problem_clear": false,
-    "non_goals_clear": false,
-    "acceptance_testable": false,
-    "files_known": false,
-    "scope_defined": false,
-    "verification_contract": false,
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
     "human_approval_recorded": false
   },
   "gates": {
@@ -37,7 +38,7 @@
     "verificationReport": "",
     "pr": ""
   },
-  "refs": ["src/components/courses/CourseDetailView.tsx", "src/components/courses/types.ts", "src/components/courses/CourseSyllabus.tsx"],
+  "refs": ["src/components/courses/CourseDetailView.tsx", "src/components/courses/types.ts"],
   "evidence": {
     "commands": [],
     "findings": [],
@@ -45,15 +46,16 @@
   },
   "comments": [],
   "acceptance": [
-    "CourseDetailView renders certificate info, dual CPD badges, language details",
-    "Schedules show linked topic names",
-    "Refund policy section visible on detail page",
+    "Certificate info block renders between course header and topics section",
+    "Block shows certificateIssuer and certificateTitle with emerald badge styling",
+    "Block is hidden when no certificate data exists",
+    "Block disappears gracefully when CD-001 fields are null",
     "npm run typecheck && npm run lint pass"
   ],
   "files": [
     "src/components/courses/CourseDetailView.tsx",
     "src/components/courses/types.ts"
   ],
-  "dependencies": "",
+  "dependencies": "CD-001 must add certificateIssuer/certificateTitle to Prisma + API + types + mapper first",
   "verification": "npm run typecheck && npm run lint"
 }
