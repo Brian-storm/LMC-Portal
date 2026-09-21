@@ -2,7 +2,7 @@
   "id": "AD-005-API",
   "title": "Backend: Course CRUD API — POST / GET[id] / PATCH / DELETE",
   "content": "Implement 4 API routes for course management.\n\n## POST /api/admin/courses\n- Zod validation schema matching Course model (nameZh, nameEn, slug auto-generate from nameEn if empty, category, cpdHours, price, capacity, deliveryMode, language, iaRefNumber, etc.)\n- Auto-generate slug from nameEn if not provided (kebab-case, append random suffix if duplicate)\n- Set default registrationStatus to OPEN\n- Admin role guard (session.user.role === 'ADMIN')\n- Return 201 with created course\n\n## GET /api/admin/courses/[id]\n- Fetch single course with relations (generalInstructor, schedule count, registrant count)\n- Admin role guard\n- Return 404 if not found\n\n## PATCH /api/admin/courses/[id]\n- Zod validation for updatable fields\n- Admin role guard\n- Return 200 with updated course\n- Return 404 if not found\n\n## DELETE /api/admin/courses/[id]\n- Check registrant count first: if > 0, return 409 Conflict with message\n- Cascade: delete related SyllabusItems, Schedules, ScheduleInstructors, ScheduleTopics, Reviews, Faqs\n- Set registrationStatus to CLOSED before delete (soft approach) or hard delete if no registrants\n- Admin role guard\n- Return 200 on success",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "high",
   "owner": "",
   "agent": "",
