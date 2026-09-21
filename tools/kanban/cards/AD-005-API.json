@@ -1,0 +1,62 @@
+{
+  "id": "AD-005-API",
+  "title": "Backend: Course CRUD API — POST / GET[id] / PATCH / DELETE",
+  "content": "Implement 4 API routes for course management.\n\n## POST /api/admin/courses\n- Zod validation schema matching Course model (nameZh, nameEn, slug auto-generate from nameEn if empty, category, cpdHours, price, capacity, deliveryMode, language, iaRefNumber, etc.)\n- Auto-generate slug from nameEn if not provided (kebab-case, append random suffix if duplicate)\n- Set default registrationStatus to OPEN\n- Admin role guard (session.user.role === 'ADMIN')\n- Return 201 with created course\n\n## GET /api/admin/courses/[id]\n- Fetch single course with relations (generalInstructor, schedule count, registrant count)\n- Admin role guard\n- Return 404 if not found\n\n## PATCH /api/admin/courses/[id]\n- Zod validation for updatable fields\n- Admin role guard\n- Return 200 with updated course\n- Return 404 if not found\n\n## DELETE /api/admin/courses/[id]\n- Check registrant count first: if > 0, return 409 Conflict with message\n- Cascade: delete related SyllabusItems, Schedules, ScheduleInstructors, ScheduleTopics, Reviews, Faqs\n- Set registrationStatus to CLOSED before delete (soft approach) or hard delete if no registrants\n- Admin role guard\n- Return 200 on success",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-21",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["CM-001"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/courses/route.ts (add POST)",
+    "src/app/api/admin/courses/[id]/route.ts (new)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "POST creates course with auto-slug, returns 201",
+    "GET[id] returns full course object, 404 if missing",
+    "PATCH updates course fields, returns 200",
+    "DELETE returns 200 (no registrants) or 409 (has registrants)",
+    "All routes require admin role, return 401/403",
+    "Zod validation returns 400 on invalid input",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/courses/route.ts (add POST handler)",
+    "src/app/api/admin/courses/[id]/route.ts (new — GET/PATCH/DELETE)"
+  ],
+  "dependencies": "CM-001: existing GET /api/admin/courses",
+  "verification": "npm run typecheck && npm run lint && curl POST/PATCH/DELETE endpoints with valid/invalid payloads"
+}

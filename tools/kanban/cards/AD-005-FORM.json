@@ -1,0 +1,62 @@
+{
+  "id": "AD-005-FORM",
+  "title": "Frontend: CourseForm shared component — create + edit mode",
+  "content": "Build a reusable CourseForm component that handles both create and edit modes.\n\nProps: mode ('create' | 'edit'), initialData (Course | null), onSuccess callback, dict.\n\nFields (core course fields only — schedule/syllabus/instructor management deferred):\n- nameZh, nameEn, nameCn (text inputs)\n- slug (text input, auto-generated from nameEn if empty)\n- category (dropdown or text)\n- iaRefNumber (text)\n- cpdHours (number)\n- price, unitPrice (currency/decimal)\n- capacity (number)\n- deliveryMode (text)\n- language (text)\n- descriptionZh, descriptionEn, descriptionCn (textarea)\n- registrationStatus (dropdown: OPEN/CLOSED — FEW_SEATS/FULL set automatically by system)\n- generalInstructorId (dropdown — fetch from GET /api/admin/instructors if endpoint exists, otherwise plain text field)\n- organizerZh, organizerEn (text)\n- feeDescriptionZh, feeDescriptionEn, feeDescriptionCn (textarea)\n\nValidation: Zod schema matching POST/PATCH expectations, inline error display below each field.\n\nStates: idle (form visible), submitting (loading spinner on submit button), success (toast + redirect), error (toast with message).\n\ni18n: All labels, placeholders, validation messages use dict (useAdminDict).\n\nSubmit: POST /api/admin/courses in create mode, PATCH /api/admin/courses/[id] in edit mode.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-21",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-005-API"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/admin/CourseForm.tsx (new)",
+    "src/components/admin/types.ts (add CourseFormData type)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "Form renders all core course fields with labels from dict",
+    "Zod validation shows inline errors for invalid fields",
+    "Create mode submits POST and shows success toast",
+    "Edit mode pre-fills data and submits PATCH",
+    "Loading state disables submit button",
+    "Error state shows toast with server error message",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/CourseForm.tsx (new)",
+    "src/components/admin/types.ts (add CourseFormData type)"
+  ],
+  "dependencies": "AD-005-API: POST/PATCH/GET[id] endpoints must exist",
+  "verification": "npm run typecheck && npm run lint && render form in both modes, submit valid/invalid data"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "AD-005-PAGES",
+  "title": "Frontend: New + Edit course pages + list enhancements",
+  "content": "Wire CourseForm into actual pages and add edit/delete/toggle to the courses list.\n\n## 1. Rewrite new/page.tsx\nReplace the placeholder with a page that renders CourseForm in 'create' mode. On success, redirect to /[locale]/admin/courses with success toast.\n\n## 2. Create [id]/edit/page.tsx\nNew page that fetches course by ID (GET /api/admin/courses/[id]), passes initialData to CourseForm in 'edit' mode. Handle loading skeleton while fetching, error state if course not found. On success, redirect to /[locale]/admin/courses with success toast.\n\n## 3. Enhance courses/page.tsx (list)\nAdd to each table row:\n- Edit button (pencil icon) → link to /[locale]/admin/courses/[id]/edit\n- Delete button (trash icon) → confirmation dialog → DELETE /api/admin/courses/[id]\n- Inline registration status toggle (click badge to cycle OPEN/CLOSED) → PATCH with { registrationStatus }\n\nDelete confirmation dialog:\n- Title: dict.confirmDelete\n- Body: dict.deleteWarning (shows course name, warns if has registrants)\n- Confirm button: dict.delete (destructive variant)\n- Cancel button: dict.cancel\n- On confirm: call DELETE API, remove row from list, show toast on success/error",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-21",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-005-FORM", "AD-005-I18N"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/courses/new/page.tsx (rewrite)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (new)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — add actions)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "New Course page renders CourseForm in create mode, redirects on success",
+    "Edit Course page fetches course and renders CourseForm in edit mode",
+    "Courses list has Edit/Delete buttons per row",
+    "Delete confirmation dialog appears and calls DELETE API",
+    "Registration status toggle works inline",
+    "Success/error toasts for all actions",
+    "All labels use dict (i18n)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/courses/new/page.tsx (rewrite)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (new)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — add action buttons, status toggle, delete dialog)"
+  ],
+  "dependencies": "AD-005-FORM (CourseForm component) + AD-005-I18N (dict keys)",
+  "verification": "npm run typecheck && npm run lint && manual E2E: create → edit → toggle → delete"
+}
