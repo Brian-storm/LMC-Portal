@@ -1,0 +1,72 @@
+{
+  "id": "AD-006-BATCH",
+  "title": "Enrolment batch selection + toolbar + batch API endpoint",
+  "content": "Add batch selection and operations to the enrolments admin page.\n\n## Batch API: POST /api/admin/enrolments/batch (new)\n- Body: `{ action: \"APPROVE\" | \"REJECT\", ids: string[], reason?: string }`\n- Validation: check all target IDs are PENDING_VERIFICATION; skip already-processed ones with warning\n- Return `{ updatedCount: number, skippedCount: number, skippedIds: string[] }`\n- On APPROVE: trigger receipt PDF generation + email for each approved enrolment (reuse existing logic from PATCH /api/admin/enrolments/[id])\n- Admin role guard\n\n## UI changes\n### EnrolmentRow.tsx\n- Add checkbox as first cell\n- For group enrolments: selecting parent selects all child rows (or treat group as single selectable unit)\n\n### Page.tsx — batch toolbar\n- Add \"select all\" checkbox in table header (selects all on current page only)\n- Show batch toolbar when ≥1 row selected: \"{count} selected\" + Batch Approve + Batch Reject buttons\n- Batch Approve: confirmation dialog with count summary\n- Batch Reject: use existing RejectDialog (with reason), extended to show selected count\n- On success: toast with updated count, clear selection, refresh list\n\n## i18n — NEW dict keys needed (add to all 3 locales)\n- batchApprove: \"Batch Approve\"\n- batchReject: \"Batch Reject\"\n- selectedCount: \"{count} selected\"\n- selectAll: \"Select All\"\n- batchConfirmApprove: \"Approve {count} selected enrolment(s)?\"\n- batchConfirmReject: \"Reject {count} selected enrolment(s)?\"\n- batchSuccess: \"{count} enrolment(s) updated\"\n- batchPartial: \"{updated} updated, {skipped} skipped (already processed)\"\n\nStates:\n- No selection: toolbar hidden\n- Selection active: toolbar visible with count + action buttons\n- Submitting: buttons disabled with loading spinner per action\n- Success: toast + clear selection + refetch\n- Error: toast with error details",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-21",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-006-SEARCH"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — add checkboxes, batch toolbar)",
+    "src/app/api/admin/enrolments/batch/route.ts (new — POST batch approve/reject)",
+    "src/components/admin/EnrolmentRow.tsx (refactor — add checkbox column)",
+    "src/dictionaries/en.json (update — add batch keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "POST /api/admin/enrolments/batch accepts { action, ids, reason? }, returns { updatedCount, skippedCount, skippedIds }",
+    "Batch endpoint skips non-PENDING_VERIFICATION enrolments with warning",
+    "Checkbox column renders in each EnrolmentRow",
+    "Select-all checkbox in header selects/deselects all visible rows",
+    "Batch toolbar shows selection count + Approve/Reject buttons",
+    "Batch Approve triggers receipt generation for each approved enrolment",
+    "Batch Reject prompts for reason (reuses RejectDialog semantics)",
+    "All new labels use dict keys (i18n)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/enrolments/batch/route.ts (new — POST batch approve/reject)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — add checkboxes, batch toolbar)",
+    "src/components/admin/EnrolmentRow.tsx (refactor — add checkbox column)",
+    "src/dictionaries/en.json (update — add batch keys)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)"
+  ],
+  "dependencies": "AD-006-SEARCH: search input + API search param must be in place before batch toolbar (they share the same UI area).",
+  "verification": "npm run typecheck && npm run lint && select rows, batch approve/reject works, skipped enrolments handled correctly."
+}

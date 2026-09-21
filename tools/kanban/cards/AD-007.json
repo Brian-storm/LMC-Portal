@@ -1,7 +1,7 @@
 {
   "id": "AD-007",
-  "title": "Admin 共用元件重構 — 建立 src/components/admin/",
-  "content": "目前所有 admin UI 元件寫在各 page.tsx 內聯（inline），無共用元件庫。重構出可復用元件放在 src/components/admin/ 下。\n\n建議元件（根據現有頁面模式）：\n- `AdminDataTable` — 通用表格 wrapper（sortable columns, loading skeleton, empty state）\n- `AdminStatCard` — Dashboard stat card（icon, label, value, trend）\n- `AdminFilterBar` — 搜尋 + filter tabs + date range 組合\n- `AdminBatchToolbar` — 選取計數 + batch actions\n- `AdminPageHeader` — 頁面標題 + 麵包屑 + 主要 CTA\n\n注意：純重構 — 不改變行為，只抽元件。可與其他 AD cards 並行。",
+  "title": "Admin 共用元件重構 — extract shared patterns from existing pages",
+  "content": "Admin components already exist under src/components/admin/ (10 files: AdminDictContext, CourseForm, EnrolmentRow, EnrolmentMemberRow, EnrolmentFilters, EnrolmentPagination, RejectDialog, PaymentProofPreview, types, constants). This card extracts shared patterns still duplicated inline across pages.\n\n## Patterns still duplicated (targets for extraction):\n\n### 1. `AdminDataTable` — generic table shell\n- Loading skeleton, error state with retry, empty state message — duplicated in courses/page.tsx and enrolments/page.tsx and admin/page.tsx\n- Props: `loading`, `error`, `onRetry`, `emptyMessage`, `columns`, `rows`, `keyExtractor`\n- Wraps the consistent `<section>` + `<div className=\"overflow-x-auto\">` + `<table>` structure\n\n### 2. `AdminStatCard` — dashboard stat card\n- Inline card pattern in admin/page.tsx (icon, label, value, trend arrow) duplicated 4 times\n- Props: `icon`, `label`, `value`, `trend?`, `trendUp?`\n\n### 3. `AdminPageHeader` — page title + breadcrumbs + CTA\n- Page header with back button, title, and optional CTA button — duplicated across courses/new, courses/[id]/edit, enrolments, courses list\n- Props: `title`, `backHref?`, `cta?` (ReactNode for action button)\n\n### 4. `ConfirmActionDialog` — generic confirm dialog\n- Dialog with title, description, confirm/cancel buttons — duplicated as inline code in courses/page.tsx (delete dialog) and enrolments (RejectDialog.tsx is similar but specific)\n- Make RejectDialog extend a shared base confirm dialog\n\n### 5. `AdminFilterTabs` — configurable filter tab group\n- EnrolmentFilters.tsx is hardcoded to payment statuses — generalize to accept array of `{ label, value, count? }`\n\n**Note**: `AdminFilterBar` (search + filters) and `AdminBatchToolbar` proposed earlier have been moved to AD-006 scope since they are functional features, not pure refactoring.\n\nPure refactoring — no behavior change. Can work in parallel with AD-006 but should coordinate on DataTable and FilterTabs if both touch same files.",
   "stage": "backlog",
   "risk": "low",
   "owner": "",
@@ -39,25 +39,37 @@
     "pr": ""
   },
   "refs": [
-    "src/app/[locale]/admin/page.tsx (inline stat cards)",
-    "src/app/[locale]/admin/enrolments/page.tsx (inline table, filter, toolbar)",
-    "src/app/[locale]/admin/courses/page.tsx (inline table)"
+    "src/app/[locale]/admin/page.tsx (inline stat cards, header, table)",
+    "src/app/[locale]/admin/enrolments/page.tsx (inline table shell with loading/error/empty states)",
+    "src/app/[locale]/admin/courses/page.tsx (inline table shell, inline delete dialog)",
+    "src/components/admin/EnrolmentFilters.tsx (hardcoded — generalize to AdminFilterTabs)",
+    "src/components/admin/EnrolmentPagination.tsx (rename to AdminPagination, already nearly generic)",
+    "src/components/admin/RejectDialog.tsx (refactor to use shared ConfirmActionDialog base)"
   ],
-  "evidence": { "commands": [], "findings": [], "residual": "Low priority — only if other AD cards touch the same code and benefit from shared components." },
-  "comments": [],
+  "evidence": { "commands": [], "findings": [], "residual": "AD-006 will also add search/batch UI — coordinate on DataTable shell and FilterTabs if both touch same files." },
+  "comments": [
+    { "name": "Agent", "time": "2026-09-21T12:00:00Z", "text": "Card updated to reflect AD-005 completion. src/components/admin/ already has 10 components. Scope narrowed to patterns still duplicated inline. AdminFilterBar and AdminBatchToolbar removed from scope — belong to AD-006 as feature work, not pure refactoring." }
+  ],
   "acceptance": [
-    "src/components/admin/ directory exists",
-    "At least AdminDataTable, AdminStatCard, AdminPageHeader extracted",
-    "Existing pages use the new components with identical behavior",
+    "AdminDataTable component extracted — used by courses, enrolments, and dashboard pages with identical rendering",
+    "AdminStatCard component extracted — dashboard uses it for all 4 stat cards",
+    "AdminPageHeader component extracted — courses/new, courses/[id]/edit, and enrolments pages use it",
+    "ConfirmActionDialog component extracted — used by delete dialog in courses and extends RejectDialog",
+    "AdminFilterTabs component generalized from EnrolmentFilters — accepts configurable tab definitions",
+    "AdminPagination renamed from EnrolmentPagination — reusable by any admin list",
+    "No behavior change in any page",
     "npm run typecheck && npm run lint pass"
   ],
   "files": [
     "src/components/admin/AdminDataTable.tsx (new)",
     "src/components/admin/AdminStatCard.tsx (new)",
     "src/components/admin/AdminPageHeader.tsx (new)",
+    "src/components/admin/ConfirmActionDialog.tsx (new)",
+    "src/components/admin/AdminFilterTabs.tsx (new — rename from EnrolmentFilters, generalize)",
+    "src/components/admin/AdminPagination.tsx (rename from EnrolmentPagination)",
     "src/app/[locale]/admin/page.tsx (refactor — use AdminStatCard, AdminPageHeader)",
-    "src/app/[locale]/admin/enrolments/page.tsx (refactor — use AdminDataTable, AdminPageHeader)",
-    "src/app/[locale]/admin/courses/page.tsx (refactor — use AdminDataTable, AdminPageHeader)"
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — use AdminDataTable, AdminPageHeader, AdminPagination)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — use AdminDataTable, AdminPageHeader, ConfirmActionDialog)"
   ],
   "dependencies": "",
   "verification": "npm run typecheck && npm run lint && all admin pages render identically before and after refactor."
