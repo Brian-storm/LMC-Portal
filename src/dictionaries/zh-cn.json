@@ -733,7 +733,14 @@
     "toastApproved": "报名已批准",
     "toastApprovalFailed": "批准失败",
     "toastRejected": "报名已拒绝",
-    "toastRejectionFailed": "拒绝失败"
+    "toastRejectionFailed": "拒绝失败",
+    "email": "电邮",
+    "phone": "电话",
+    "iaLicense": "IA 牌照",
+    "registeredDate": "注册日期",
+    "search": "搜索",
+    "searchPlaceholder": "按姓名或电邮搜索…",
+    "userCount": "{count} 位用户"
   },
   "receipt": {
     "title": "正式收据",

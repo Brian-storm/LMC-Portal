@@ -733,7 +733,14 @@
     "toastApproved": "報名已批准",
     "toastApprovalFailed": "批准失敗",
     "toastRejected": "報名已拒絕",
-    "toastRejectionFailed": "拒絕失敗"
+    "toastRejectionFailed": "拒絕失敗",
+    "email": "電郵",
+    "phone": "電話",
+    "iaLicense": "IA 牌照",
+    "registeredDate": "註冊日期",
+    "search": "搜尋",
+    "searchPlaceholder": "按姓名或電郵搜尋…",
+    "userCount": "{count} 位用戶"
   },
   "receipt": {
     "title": "正式收據",

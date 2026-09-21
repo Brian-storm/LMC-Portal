@@ -737,7 +737,14 @@
     "toastApproved": "Enrolment approved",
     "toastApprovalFailed": "Approval failed",
     "toastRejected": "Enrolment rejected",
-    "toastRejectionFailed": "Rejection failed"
+    "toastRejectionFailed": "Rejection failed",
+    "email": "Email",
+    "phone": "Phone",
+    "iaLicense": "IA License",
+    "registeredDate": "Registered Date",
+    "search": "Search",
+    "searchPlaceholder": "Search by name or email…",
+    "userCount": "{count} users"
   },
   "receipt": {
     "title": "OFFICIAL RECEIPT",
