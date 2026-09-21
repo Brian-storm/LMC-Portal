@@ -29,6 +29,9 @@ interface CourseData {
   schedules: {
     id: string;
     dateAndTime: string;
+    sessionDate: string | null;
+    startTime: string;
+    endTime: string;
     venue: string;
     quotaRemaining: number;
     instructor?: { name: string; title: string; bio: string };
@@ -385,7 +388,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           <p className="text-sm font-bold text-slate-800">{courseError || dict.courseUnavailable}</p>
           <Link
             href={`/${locale}/courses`}
-            className="inline-block bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-xs uppercase tracking-wider"
+            className="btn-primary-outline inline-block text-xs px-4 py-2"
           >
             {dict.browseCourses}
           </Link>

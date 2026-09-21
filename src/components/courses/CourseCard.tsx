@@ -4,7 +4,6 @@ import {
   Clock,
   User,
   MapPin,
-  ArrowRight,
   ExternalLink,
   ShieldAlert,
   DollarSign,
@@ -209,7 +208,6 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
               className="btn-primary-outline font-mono px-3 py-1.5 text-[13px] leading-none"
             >
               <span>{dict.viewCourse}</span>
-              <ArrowRight className="w-2.5 h-2.5 shrink-0" />
             </Link>
           </div>
         </div>

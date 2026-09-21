@@ -139,7 +139,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             </p>
             <button
               onClick={() => router.push(`/${locale}/login`)}
-              className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-wider py-2 px-6 rounded-xs transition-colors shadow-2xs"
+              className="btn-primary-outline inline-flex items-center space-x-2 px-6 py-2 text-xs shadow-2xs"
             >
               <span>{dict.successButton}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -348,7 +348,7 @@ export function RegisterForm({ locale, dict }: RegisterFormProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center space-x-2 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-wider py-2 rounded-xs transition-colors shadow-2xs disabled:opacity-50"
+              className="btn-primary-outline w-full inline-flex items-center justify-center space-x-2 py-2 text-xs shadow-2xs"
             >
               {isLoading ? (
                 <span>{dict.submittingButton}</span>

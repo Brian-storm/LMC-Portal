@@ -93,7 +93,7 @@ export function RegulatoryDeclarationStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
+          className="btn-primary-outline text-xs px-4 py-2"
         >
           {dict.step3.backButton}
         </button>
@@ -101,7 +101,7 @@ export function RegulatoryDeclarationStep({
           type="button"
           disabled={!canProceed}
           onClick={onProceed}
-          className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
+          className="btn-primary-outline inline-flex items-center space-x-1.5 px-4 py-2 text-xs"
         >
           <span>{dict.navigation.proceedToPayment}</span>
           <ChevronRight className="w-3.5 h-3.5" />

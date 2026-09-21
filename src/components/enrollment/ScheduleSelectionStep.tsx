@@ -57,10 +57,26 @@ export function ScheduleSelectionStep({
       {/* Schedule list */}
       <div className="space-y-2.5">
         {schedules.map((sch, idx) => {
-          const datePrefix = sch.dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? "";
+          const datePrefix = sch.sessionDate
+            ? (() => {
+                const d = new Date(sch.sessionDate);
+                const dd = String(d.getUTCDate()).padStart(2, "0");
+                const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+                const yyyy = d.getUTCFullYear();
+                return `${dd}/${mm}/${yyyy}`;
+              })()
+            : sch.dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? "";
           const prevDatePrefix =
             idx > 0
-              ? schedules[idx - 1].dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? ""
+              ? schedules[idx - 1].sessionDate
+                ? (() => {
+                    const d = new Date(schedules[idx - 1].sessionDate!);
+                    const dd = String(d.getUTCDate()).padStart(2, "0");
+                    const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+                    const yyyy = d.getUTCFullYear();
+                    return `${dd}/${mm}/${yyyy}`;
+                  })()
+                : schedules[idx - 1].dateAndTime.match(/^(\d{2}\/\d{2}\/\d{4})/)?.[1] ?? ""
               : "";
           const isNewDateGroup = idx === 0 || datePrefix !== prevDatePrefix;
           const isSelected = selectedScheduleIds.includes(sch.id);
@@ -206,7 +222,7 @@ export function ScheduleSelectionStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
+          className="btn-primary-outline text-xs px-4 py-2"
         >
           {dict.step2.backButton}
         </button>
@@ -214,7 +230,7 @@ export function ScheduleSelectionStep({
           type="button"
           disabled={selectedCount === 0}
           onClick={onProceed}
-          className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
+          className="btn-primary-outline inline-flex items-center space-x-1.5 px-4 py-2 text-xs"
         >
           <span>{dict.step2.proceedButton}</span>
           <ChevronRight className="w-3.5 h-3.5" />

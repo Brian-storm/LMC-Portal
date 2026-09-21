@@ -93,14 +93,14 @@ export function PaymentMethodStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-100 text-xs uppercase font-bold tracking-wider rounded-xs"
+          className="btn-primary-outline text-xs px-4 py-2"
         >
           {dict.step4.backButton}
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-6 py-2.5 text-xs uppercase tracking-wider rounded-xs transition-all shadow-md"
+          className="btn-primary-outline inline-flex items-center space-x-2 px-6 py-2.5 text-xs shadow-md"
         >
           {isSubmitting ? (
             <>

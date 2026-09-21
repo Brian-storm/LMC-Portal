@@ -293,7 +293,7 @@ export function AttendeeDetailsStep({
           type="button"
           disabled={!step1Valid}
           onClick={onProceed}
-          className="inline-flex items-center space-x-1.5 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground font-bold px-4 py-2 text-xs uppercase tracking-wider rounded-xs transition-colors"
+          className="btn-primary-outline inline-flex items-center space-x-1.5 px-4 py-2 text-xs"
         >
           <span>{dict.navigation.proceedToSchedule}</span>
           <ChevronRight className="w-3.5 h-3.5" />

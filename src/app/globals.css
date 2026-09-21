@@ -247,3 +247,47 @@ body {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ── Primary outline button (green border, white bg, fills on hover) ── */
+@layer components {
+  .btn-primary-outline {
+    @apply font-bold uppercase tracking-wider transition-colors rounded-xs shadow-2xs border bg-white cursor-pointer select-none;
+    color: var(--primary);
+    border-color: color-mix(in oklch, var(--primary) 20%, transparent);
+  }
+  .btn-primary-outline:hover {
+    background-color: var(--primary-hover);
+    color: white;
+    border-color: var(--primary-hover);
+  }
+  .btn-primary-outline:active {
+    background-color: color-mix(in oklch, var(--primary-hover) 90%, black);
+    border-color: color-mix(in oklch, var(--primary-hover) 90%, black);
+  }
+  .btn-primary-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── 2nd version: Primary filled button (green bg, white text) ── */
+  .btn-primary {
+    @apply font-bold uppercase tracking-wider rounded-xs transition-colors shadow-2xs;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+  .btn-primary:hover {
+    background-color: var(--primary-hover);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── Ghost/back button (grey border, subtle hover) ── */
+  .btn-ghost {
+    @apply font-bold uppercase tracking-wider rounded-xs border border-slate-300 text-slate-600 text-xs px-4 py-2;
+  }
+  .btn-ghost:hover {
+    @apply bg-slate-100;
+  }
+}

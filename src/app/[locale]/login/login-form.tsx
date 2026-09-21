@@ -49,9 +49,11 @@ export function LoginForm({ locale, dict }: LoginFormProps) {
         window.location.href = redirectPath;
       } else if (isAdmin) {
         // Hard refresh intentional after login to ensure fresh server component render with new session
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = `/${locale}/admin`;
       } else {
         // Hard refresh intentional after login to ensure fresh server component render with new session
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = `/${locale}/dashboard`;
       }
     } catch {
@@ -120,7 +122,7 @@ export function LoginForm({ locale, dict }: LoginFormProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center space-x-2 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold uppercase tracking-wider py-2 rounded-xs transition-colors shadow-2xs disabled:opacity-50"
+              className="btn-primary w-full inline-flex items-center justify-center space-x-2 py-2 text-xs"
             >
               {isLoading ? (
                 <span>{dict.authenticatingButton}</span>
