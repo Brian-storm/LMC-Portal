@@ -76,6 +76,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
   // Form Data
   const [formData, setFormData] = useState({
     fullName: "",
+    nameZh: "",
     email: "",
     phone: "",
     company: "",
@@ -300,6 +301,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
         // paths is safe and avoids the "Email is required for guest enrolment" 400.
         email: session?.user?.email || formData.email || undefined,
         fullName: session?.user?.name || formData.fullName || undefined,
+        nameZh: formData.nameZh || undefined,
         phone: formData.phone || undefined,
         company: formData.company || undefined,
         iaLicenseNo: formData.iaLicenseNo || undefined,
@@ -427,7 +429,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
           {/* Left Form Panel */}
           <div className="lg:col-span-2 bg-white border border-slate-300 p-6 shadow-2xs space-y-6">
             <form onSubmit={handleSubmit}>
-              {/* STEP 1: ATTENDEE DETAILS */}
+{/* STEP 1: ATTENDEE DETAILS */}
               {step === 1 && (
                 <AttendeeDetailsStep
                   formData={formData}
@@ -444,13 +446,7 @@ export default function EnrollmentWizard({ dict, currentLocale: locale, slug }: 
                   otherIdDocVal={otherIdDocVal}
                   onInputChange={handleInputChange}
                   onValidateField={validateField}
-                  onEnrollmentTypeChange={(type) => {
-                    setEnrollmentType(type);
-                    if (type === "INDIVIDUAL") {
-                      // Clear registrantMembers when switching back to INDIVIDUAL
-                      // This is handled by the parent state
-                    }
-                  }}
+                  onEnrollmentTypeChange={(type) => setEnrollmentType(type)}
                   onIdDocTypeChange={handleIdDocTypeChange}
                   onHkidChange={setHkidNumber}
                   onPassportChange={setPassportNumber}

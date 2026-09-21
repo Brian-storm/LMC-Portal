@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { User, Users, Copy, Clock, FileText, Eye, CheckCircle2, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,18 @@ const formatDate = (iso: string) => {
   return d.toLocaleDateString("en-CA");
 };
 
-const getName = (user: { nameZh: string; nameEn: string }, locale: string) => {
-  const name = locale === "zh-hk" || locale === "zh-cn" ? user.nameZh : user.nameEn;
-  return name || user.nameEn;
+// Renders both Chinese and English names stacked, but only when they differ.
+// Enrollment form only collects English name, so nameZh/nameEn are often identical for guest enrollees.
+const BilingualName = ({ user }: { user: { nameZh: string; nameEn: string } }): ReactNode => {
+  const same = user.nameZh === user.nameEn || !user.nameZh;
+  return same ? (
+    <div className="text-slate-900">{user.nameEn}</div>
+  ) : (
+    <div>
+      <div className="text-slate-900">{user.nameZh}</div>
+      <div className="text-[10px] text-slate-500 leading-tight">{user.nameEn}</div>
+    </div>
+  );
 };
 
 const getCourseName = (e: Enrolment, locale: string) => {
@@ -82,17 +91,24 @@ export default function EnrolmentRow({
             <>
               <div className="font-bold text-slate-900 flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                {enrolment.user.organization || getName(enrolment.user, locale)}
+                {enrolment.user.organization || <BilingualName user={enrolment.user} />}
               </div>
               <div className="text-[10px] text-slate-500">
                 { dict.enroller } {enrolment.user.email}
               </div>
+              {enrolment.user.organization && (
+                <div className="text-[10px] text-slate-400 mt-1">
+                  <BilingualName user={enrolment.user} />
+                </div>
+              )}
             </>
           ) : (
             <>
-              <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                {getName(enrolment.user, locale)}
+              <div className="font-bold text-slate-900 flex items-start gap-1.5">
+                <User className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <BilingualName user={enrolment.user} />
+                </div>
                 {duplicateIds.has(enrolment.id) && (
                   <span
                     className="inline-flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-xs"
@@ -301,7 +317,6 @@ export default function EnrolmentRow({
           member={member}
           idx={idx}
           totalMembers={enrolment.members!.length}
-          locale={locale}
         />
       ))}
     </Fragment>

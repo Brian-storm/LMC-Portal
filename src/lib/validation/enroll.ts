@@ -34,6 +34,7 @@ export const enrollSchema = z
     // Guest enrollee fields — used when no authenticated session exists
     email: z.string().email("Invalid email format").optional(),
     fullName: z.string().optional(),
+    nameZh: z.string().optional(),
     phone: z.string().optional(),
     company: z.string().optional(),
     iaLicenseNo: z.string().optional(),

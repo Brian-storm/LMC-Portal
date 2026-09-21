@@ -8,6 +8,7 @@ import { IdentityDocumentSection } from "./IdentityDocumentSection";
 interface AttendeeDetailsStepProps {
   formData: {
     fullName: string;
+    nameZh: string;
     email: string;
     phone: string;
     company: string;
@@ -136,6 +137,26 @@ export function AttendeeDetailsStep({
                   <AlertCircle className="w-3 h-3 shrink-0" />
                   <span>{fieldErrors.fullName}</span>
                 </p>
+              )}
+            </div>
+
+            <div className="space-y-1 sm:col-span-2">
+              <label className="font-bold text-slate-700 block">
+                {dict.formLabels.chineseName}
+              </label>
+              <input
+                type="text"
+                name="nameZh"
+                value={formData.nameZh}
+                disabled={!!session?.user}
+                onChange={onInputChange}
+                placeholder={dict.formLabels.chineseNamePlaceholder}
+                className={`w-full bg-slate-50 border rounded-xs px-3 py-2 text-slate-900 focus:outline-none focus:bg-white ${
+                  session?.user ? "opacity-60 cursor-not-allowed" : "border-slate-300 focus:border-primary"
+                }`}
+              />
+              {session?.user && (
+                <p className="text-[10px] text-slate-400">{dict.formLabels.lockedToAccount}</p>
               )}
             </div>
 

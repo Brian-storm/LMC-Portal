@@ -1,5 +1,6 @@
 "use client";
 
+import { type ReactNode } from "react";
 import { User } from "lucide-react";
 import type { EnrolmentMember } from "./types";
 import { ID_DOC_TYPE_LABELS } from "./constants";
@@ -8,12 +9,20 @@ interface EnrolmentMemberRowProps {
   member: EnrolmentMember;
   idx: number;
   totalMembers: number;
-  locale: string;
 }
 
-const getName = (user: { nameZh: string; nameEn: string }, locale: string) => {
-  const name = locale === "zh-hk" || locale === "zh-cn" ? user.nameZh : user.nameEn;
-  return name || user.nameEn;
+// Renders both Chinese and English names stacked, but only when they differ.
+// Enrollment form only collects English name, so nameZh/nameEn are often identical for guest enrollees.
+const BilingualName = ({ user }: { user: { nameZh: string; nameEn: string } }): ReactNode => {
+  const same = user.nameZh === user.nameEn || !user.nameZh;
+  return same ? (
+    <div className="text-slate-800">{user.nameEn}</div>
+  ) : (
+    <div>
+      <div className="text-slate-800">{user.nameZh}</div>
+      <div className="text-[10px] text-slate-500 leading-tight">{user.nameEn}</div>
+    </div>
+  );
 };
 
 const formatFee = (fee: number | null): string => {
@@ -21,7 +30,7 @@ const formatFee = (fee: number | null): string => {
   return `HK$${fee.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
-export default function EnrolmentMemberRow({ member, idx, totalMembers, locale }: EnrolmentMemberRowProps) {
+export default function EnrolmentMemberRow({ member, idx, totalMembers }: EnrolmentMemberRowProps) {
   const isLast = idx === totalMembers - 1;
 
   return (
@@ -32,7 +41,7 @@ export default function EnrolmentMemberRow({ member, idx, totalMembers, locale }
             {isLast ? "└─" : "├─"}
           </span>
           <User className="w-3 h-3 text-slate-300 shrink-0" />
-          <span className="font-medium text-slate-800">{getName(member.user, locale)}</span>
+          <BilingualName user={member.user} />
         </div>
         <div className="ml-4 text-[10px] text-slate-500 space-y-0.5 mt-0.5">
           {member.user.idDocNumber && (
