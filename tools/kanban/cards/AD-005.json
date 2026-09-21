@@ -2,7 +2,7 @@
   "id": "AD-005",
   "title": "Admin Course CRUD — decomposed into 4 sub-cards",
   "content": "⚠️ DECOMPOSED — this card has been split into 4 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AD-005-I18N: Add course form dict keys (low risk, no deps, can start first)\n- AD-005-API: Backend CRUD API (high risk, depends on CM-001)\n- AD-005-FORM: CourseForm component (medium risk, depends on AD-005-API)\n- AD-005-PAGES: New/Edit pages + list enhancements (medium risk, depends on AD-005-FORM + AD-005-I18N)\n\nOriginal scope:\n- New Course form (full create form)\n- Edit Course (from list click into edit)\n- Delete Course (confirmation dialog)\n- Toggle registration status inline\n- i18n support\n- Zod form validation",
-  "stage": "blocked",
+  "stage": "done",
   "risk": "high",
   "owner": "",
   "agent": "",
