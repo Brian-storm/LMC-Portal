@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
+import type { AdminDict } from "@/dictionaries/types";
 
 interface AdminCourse {
   id: string;
@@ -60,6 +61,13 @@ export default function AdminCoursesPage() {
       CLOSED: "bg-slate-100 text-slate-500 border border-slate-200",
     };
     return styles[status] ?? "bg-slate-100 text-slate-500";
+  };
+
+  const STATUS_LABEL_KEY: Record<string, keyof AdminDict> = {
+    OPEN: "open",
+    FEW_SEATS: "fewSeats",
+    FULL: "full",
+    CLOSED: "closed",
   };
 
   if (loading) {
@@ -146,7 +154,7 @@ export default function AdminCoursesPage() {
                     </td>
                     <td className="py-3 px-3">
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 ${statusBadge(course.registrationStatus)}`}>
-                        {course.registrationStatus}
+                        {dict[STATUS_LABEL_KEY[course.registrationStatus] as keyof AdminDict] as string ?? course.registrationStatus}
                       </span>
                     </td>
                   </tr>

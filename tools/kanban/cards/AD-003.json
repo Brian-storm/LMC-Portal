@@ -2,7 +2,7 @@
   "id": "AD-003",
   "title": "Admin i18n 遷移 — 三頁面引入 AdminDict",
   "content": "Dashboard（admin/page.tsx）、Enrolments（admin/enrolments/page.tsx）、Courses（admin/courses/page.tsx）目前使用硬編碼英文。AdminDict keys 已定義於所有三語字典檔，Layout 已正確使用 dict，但這三頁面未導入。\n\n任務：\n1. Dashboard 頁面：所有 static label 改為 dict.admin.* 引用\n2. Enrolments 頁面：表格標頭、filter tabs 標籤、status badges、action buttons 改為 dict\n3. Courses 頁面：表格標頭、按鈕文字、status 文字改為 dict\n4. 確認三語（en/zh-hk/zh-cn）顯示正確",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

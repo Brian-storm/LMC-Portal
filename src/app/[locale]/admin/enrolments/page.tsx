@@ -133,10 +133,10 @@ export default function AdminEnrolmentsPage() {
           return e.id === id ? { ...e, paymentStatus: "VERIFIED" as PaymentStatus } : e;
         }),
       );
-      addToast({ title: "Enrolment approved", variant: "success" });
+      addToast({ title: dict.toastApproved, variant: "success" });
     } catch (err) {
       addToast({
-        title: "Approval failed",
+        title: dict.toastApprovalFailed,
         description: err instanceof Error ? err.message : "Unknown error",
         variant: "danger",
       });
@@ -168,12 +168,12 @@ export default function AdminEnrolmentsPage() {
             : e;
         }),
       );
-      addToast({ title: "Enrolment rejected", variant: "warning" });
+      addToast({ title: dict.toastRejected, variant: "warning" });
       setRejectTarget(null);
       setRejectReason("");
     } catch (err) {
       addToast({
-        title: "Rejection failed",
+        title: dict.toastRejectionFailed,
         description: err instanceof Error ? err.message : "Unknown error",
         variant: "danger",
       });
@@ -313,6 +313,7 @@ export default function AdminEnrolmentsPage() {
             <EnrolmentPagination
               pagination={pagination}
               page={page}
+              dict={dict}
               onPageChange={handlePageChange}
             />
           )}
@@ -325,6 +326,7 @@ export default function AdminEnrolmentsPage() {
         rejectReason={rejectReason}
         rejecting={rejecting}
         locale={locale}
+        dict={dict}
         onReasonChange={setRejectReason}
         onConfirm={handleReject}
         onClose={() => { setRejectTarget(null); setRejectReason(""); }}
@@ -334,6 +336,7 @@ export default function AdminEnrolmentsPage() {
       <PaymentProofPreview
         previewTarget={previewTarget}
         locale={locale}
+        dict={dict}
         onClose={() => setPreviewTarget(null)}
       />
     </div>

@@ -5,7 +5,6 @@ import { User, Users, Copy, Clock, FileText, Eye, CheckCircle2, XCircle } from "
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Enrolment } from "./types";
-import { STATUS_BADGE, PAYMENT_METHOD_LABELS, ID_DOC_TYPE_LABELS } from "./constants";
 import type { AdminDict } from "@/dictionaries/types";
 import EnrolmentMemberRow from "./EnrolmentMemberRow";
 
@@ -16,6 +15,29 @@ const STATUS_DICT_KEY: Record<string, keyof AdminDict> = {
   VERIFIED: "verified",
   REJECTED: "rejected",
   REFUNDED: "refunded",
+};
+
+const PAYMENT_DICT_KEY: Record<string, keyof AdminDict> = {
+  FPS: "paymentFps",
+  ALIPAY: "paymentAlipay",
+  E_BANKING: "paymentEBanking",
+  CHEQUE: "paymentCheque",
+  CASH: "paymentCash",
+  CORPORATE_INVOICE: "paymentCorporateInvoice",
+};
+
+const ID_DOC_DICT_KEY: Record<string, keyof AdminDict> = {
+  HKID: "idDocHkid",
+  PASSPORT: "idDocPassport",
+  PERMIT: "idDocPermit",
+  OTHER: "idDocOther",
+};
+
+const BADGE_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+  PENDING_VERIFICATION: "outline",
+  VERIFIED: "default",
+  REJECTED: "destructive",
+  REFUNDED: "secondary",
 };
 
 const formatDate = (iso: string) => {
@@ -146,7 +168,7 @@ export default function EnrolmentRow({
           ) : enrolment.user.idDocNumber ? (
             <>
               <span className="text-[10px] text-slate-500 mr-1">
-                {enrolment.user.idDocType ? ID_DOC_TYPE_LABELS[enrolment.user.idDocType] ?? enrolment.user.idDocType : ""}
+                {enrolment.user.idDocType ? dict[ID_DOC_DICT_KEY[enrolment.user.idDocType] as keyof AdminDict] as string ?? enrolment.user.idDocType : ""}
               </span>
               <span className="font-mono text-slate-700">{enrolment.user.idDocNumber}</span>
             </>
@@ -192,12 +214,12 @@ export default function EnrolmentRow({
               <User className="w-3.5 h-3.5 text-slate-400" />
             )}
             <span className="text-slate-700">
-              {isGroup ? "Group" : "Individual"}
+              {isGroup ? dict.group : dict.individual}
             </span>
           </div>
           {enrolment.isThirdPartyPay && (
             <div className="text-[10px] text-amber-700">
-              3rd-party: {enrolment.payerFullName}
+              { dict.thirdParty } {enrolment.payerFullName}
             </div>
           )}
         </td>
@@ -218,7 +240,7 @@ export default function EnrolmentRow({
         <td className="py-2 px-2">
           {enrolment.paymentMethod ? (
             <span className="font-mono text-slate-700">
-              {PAYMENT_METHOD_LABELS[enrolment.paymentMethod] ?? enrolment.paymentMethod}
+              {dict[PAYMENT_DICT_KEY[enrolment.paymentMethod] as keyof AdminDict] as string ?? enrolment.paymentMethod}
             </span>
           ) : (
             <span className="text-slate-400">—</span>
@@ -252,7 +274,7 @@ export default function EnrolmentRow({
 
         {/* Status */}
         <td className="py-2 px-2">
-          <Badge variant={STATUS_BADGE[enrolment.paymentStatus]?.variant ?? "outline"}>
+          <Badge variant={BADGE_VARIANT[enrolment.paymentStatus] ?? "outline"}>
             {dict[STATUS_DICT_KEY[enrolment.paymentStatus] as keyof AdminDict] as string ?? enrolment.paymentStatus}
           </Badge>
           {enrolment.paymentStatus === "REJECTED" && enrolment.payerFullName && (

@@ -11,6 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import type { Enrolment } from "./types";
+import type { AdminDict } from "@/dictionaries/types";
 import { REJECTION_REASONS } from "./constants";
 
 const getName = (user: { nameZh: string; nameEn: string }, locale: string) => {
@@ -28,6 +29,7 @@ interface RejectDialogProps {
   rejectReason: string;
   rejecting: boolean;
   locale: string;
+  dict: AdminDict;
   onReasonChange: (reason: string) => void;
   onConfirm: () => void;
   onClose: () => void;
@@ -38,6 +40,7 @@ export default function RejectDialog({
   rejectReason,
   rejecting,
   locale,
+  dict,
   onReasonChange,
   onConfirm,
   onClose,
@@ -46,9 +49,9 @@ export default function RejectDialog({
     <Dialog open={!!rejectTarget} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Reject Enrolment</DialogTitle>
+          <DialogTitle>{ dict.rejectTitle }</DialogTitle>
           <DialogDescription>
-            This will mark the enrolment as rejected. The learner will be notified.
+            { dict.rejectDesc }
           </DialogDescription>
         </DialogHeader>
 
@@ -56,11 +59,11 @@ export default function RejectDialog({
           {rejectTarget && (
             <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-500">Enrollee:</span>
+                <span className="text-slate-500">{ dict.enrollee }:</span>
                 <span className="font-bold text-slate-800">{getName(rejectTarget.user, locale)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Course:</span>
+                <span className="text-slate-500">{ dict.course }:</span>
                 <span className="font-bold text-slate-800">{getCourseName(rejectTarget, locale)}</span>
               </div>
             </div>
@@ -68,7 +71,7 @@ export default function RejectDialog({
 
           <div className="space-y-1">
             <label className="text-xs font-bold text-slate-700 block">
-              Rejection reason <span className="text-destructive">*</span>
+              { dict.rejectReasonLabel } <span className="text-destructive">*</span>
             </label>
             <div className="flex flex-wrap gap-1.5 pb-2">
               {REJECTION_REASONS.map(({ value, label }) => (
@@ -89,7 +92,7 @@ export default function RejectDialog({
             <textarea
               value={rejectReason}
               onChange={(e) => onReasonChange(e.target.value)}
-              placeholder="e.g. Payment proof is illegible, please re-upload a clear copy."
+              placeholder={ dict.rejectPlaceholder }
               rows={3}
               className="w-full text-xs border border-slate-300 bg-white px-2.5 py-1.5 rounded-xs focus:outline-none focus:border-primary resize-none"
             />
@@ -98,7 +101,7 @@ export default function RejectDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            { dict.cancel }
           </Button>
           <Button
             variant="destructive"
@@ -107,7 +110,7 @@ export default function RejectDialog({
             disabled={!rejectReason.trim() || rejecting}
           >
             <Ban className="w-3.5 h-3.5" />
-            Confirm Rejection
+            { dict.confirmRejection }
           </Button>
         </DialogFooter>
       </DialogContent>

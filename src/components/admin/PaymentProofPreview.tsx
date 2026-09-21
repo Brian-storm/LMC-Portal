@@ -11,6 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import type { Enrolment } from "./types";
+import type { AdminDict } from "@/dictionaries/types";
 
 const getName = (user: { nameZh: string; nameEn: string }, locale: string) => {
   const name = locale === "zh-hk" || locale === "zh-cn" ? user.nameZh : user.nameEn;
@@ -25,15 +26,16 @@ const getCourseName = (e: Enrolment, locale: string) => {
 interface PaymentProofPreviewProps {
   previewTarget: Enrolment | null;
   locale: string;
+  dict: AdminDict;
   onClose: () => void;
 }
 
-export default function PaymentProofPreview({ previewTarget, locale, onClose }: PaymentProofPreviewProps) {
+export default function PaymentProofPreview({ previewTarget, locale, dict, onClose }: PaymentProofPreviewProps) {
   return (
     <Dialog open={!!previewTarget} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Payment Proof</DialogTitle>
+          <DialogTitle>{ dict.paymentProofTitle }</DialogTitle>
           <DialogDescription>
             {previewTarget && `${getName(previewTarget.user, locale)} — ${getCourseName(previewTarget, locale)}`}
           </DialogDescription>
@@ -55,7 +57,7 @@ export default function PaymentProofPreview({ previewTarget, locale, onClose }: 
                 }}
               />
               <p className="text-xs text-slate-500 hidden">
-                Payment proof image could not be loaded.
+                { dict.paymentProofLoadError }
               </p>
               <p className="font-mono text-slate-400 truncate max-w-full">
                 {previewTarget.paymentProofUrl}
@@ -64,7 +66,7 @@ export default function PaymentProofPreview({ previewTarget, locale, onClose }: 
           ) : (
             <div className="text-center p-4">
               <FileText className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-              <p className="text-xs text-slate-500">No payment proof uploaded.</p>
+              <p className="text-xs text-slate-500">{ dict.noPaymentProof }</p>
             </div>
           )}
         </div>
