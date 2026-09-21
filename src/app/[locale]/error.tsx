@@ -1,7 +1,8 @@
 "use client"; // Error boundary must be a client component
 
+import { useCallback } from "react";
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -51,6 +52,15 @@ export default function Error({
   }
   // Guard against unsupported locales
   const dict = ERROR_DICT[locale] ?? ERROR_DICT.en;
+  const router = useRouter();
+
+  // Force a fresh server render (router.refresh) before resetting the error boundary,
+  // so that transient server errors (e.g. network timeouts) have a chance to recover.
+  const handleRetry = useCallback(() => {
+    router.refresh();
+    // Small delay to let the server re-render propagate before clearing error state
+    setTimeout(() => reset(), 100);
+  }, [router, reset]);
 
   useEffect(() => {
     // Log the error to an error reporting service if needed
@@ -81,7 +91,7 @@ export default function Error({
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
           <Button
-            onClick={() => reset()}
+            onClick={handleRetry}
             variant="default"
             className="flex-1"
           >

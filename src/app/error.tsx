@@ -1,6 +1,6 @@
 "use client"; // Root error boundary — no i18n available (outside [locale])
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -15,6 +15,15 @@ export default function Error({
     // Log the error to an error reporting service if needed
     console.error(error);
   }, [error]);
+
+  // Hard-reload the page after resetting the boundary, because the root error boundary
+  // (outside [locale]) has no access to next/navigation router.
+  const handleRetry = useCallback(() => {
+    reset();
+    // Give React a tick to clear the error boundary state, then hard-reload so
+    // server components get a fresh execution context.
+    setTimeout(() => window.location.reload(), 50);
+  }, [reset]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background text-foreground transition-colors duration-300">
@@ -40,7 +49,7 @@ export default function Error({
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
           <Button
-            onClick={() => reset()}
+            onClick={handleRetry}
             variant="default"
             className="flex-1"
           >
