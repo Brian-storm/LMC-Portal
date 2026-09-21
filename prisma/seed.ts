@@ -425,6 +425,12 @@ async function main() {
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
       generalInstructorId: cuhkSpecialist.id,
+      cpdRulesZh:
+        "必須通過身份驗證並全程出席方可獲得相應CPD時數",
+      cpdRulesEn:
+        "Full attendance and identity verification are required to earn accredited CPD hours.",
+      cpdRulesCn:
+        "必须通过身份验证并全程出席方可获得相应CPD学时",
       syllabusItems: {
         deleteMany: {},
         create: cpd26090103SyllabusItems,
@@ -453,11 +459,11 @@ async function main() {
       cpdHours: 9,
       cpdHoursIa: 9,
       cpdRulesZh:
-        "出席記錄將直接提交至相關認證機構。必須全程出席並通過身份驗證方可獲得認可 CPD 時數。",
+        "必須通過身份驗證並全程出席方可獲得相應CPD時數",
       cpdRulesEn:
-        "Attendance records will be submitted directly to relevant accreditation bodies. Full attendance and identity verification are required to earn accredited CPD hours.",
+        "Full attendance and identity verification are required to earn accredited CPD hours.",
       cpdRulesCn:
-        "出席记录将直接提交至相关认证机构。必须全程出席并通过身份验证方可获得认可 CPD 学时。",
+        "必须通过身份验证并全程出席方可获得相应CPD学时",
       price: 1500.0,
       unitPrice: 250.0,
       capacity: 50,

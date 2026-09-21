@@ -76,8 +76,6 @@ export function CourseDetailView({
                         className="h-12 sm:h-16 w-auto object-contain"
                       />
                     )}
-                    <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">{dict.organizerLabel}</span>
-                    <span className="text-sm text-slate-800 text-center font-bold">{organizer}</span>
                   </div>
                 )}
                 {coOrganizer && (
@@ -91,8 +89,6 @@ export function CourseDetailView({
                         className="h-12 sm:h-16 w-auto object-contain"
                       />
                     )}
-                    <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">{dict.coOrganizerLabel}</span>
-                    <span className="text-sm text-slate-800 text-center font-bold">{coOrganizer}</span>
                   </div>
                 )}
               </div>
@@ -195,12 +191,12 @@ export function CourseDetailView({
                               </span>
                             </>
                           )}
+                          {sch.cpdHoursIa && (
+                            <span className="inline-block font-mono text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded-xs mt-1 text-[10px] leading-tight">
+                              {sch.cpdHoursIa} {dict.cpdHoursLabel}
+                            </span>
+                          )}
                         </div>
-                        {syllabusItem && (
-                          <span className="font-mono text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded-xs shrink-0 text-xs">
-                            {dict.labels?.duration}: {syllabusItem.duration} {dict.labels?.durationUnit}
-                          </span>
-                        )}
                       </div>
                       <div className="mt-3 pt-3 border-t border-slate-200 space-y-2 ml-10">
                         <div className="flex flex-col gap-1.5 text-slate-700 bg-white border border-slate-200 rounded-xs px-2.5 py-2 text-sm">
@@ -252,23 +248,23 @@ export function CourseDetailView({
             {/* ================================================================== */}
             {/* 6a. ENROLLMENT CARD — desktop: top of sidebar                      */}
             {/* ================================================================== */}
-<div className="hidden lg:block bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
+            <div className="hidden lg:block bg-white border border-slate-300 rounded-xs p-5 shadow-2xs relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
               <div className="space-y-3">
                 <div className="flex justify-center">
                   <a
                     href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
                     download
-                    className="inline-flex py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 items-center gap-1 text-[10px] w-auto"
+                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold transition-colors rounded-xs shadow-2xs border bg-slate-50 hover:bg-slate-100 text-slate-800 hover:text-slate-900 active:bg-slate-200 border-slate-300 text-center text-[17px] inline-flex items-center gap-1 justify-center no-scale"
                   >
-                    <FileText className="w-3 h-3 text-slate-600" />
-                    <span>{dict.downloadBrochure}</span>
+                    <FileText className="w-4 h-4 text-slate-600" />
+                    <span className="no-scale">{dict.downloadBrochure}</span>
                   </a>
                 </div>
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}
-                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-[#5e923c] transition-colors rounded-xs shadow-2xs border bg-white hover:bg-[#5e923c] hover:text-white active:bg-[#5e923c]/90 border-[#5e923c]/40 text-center text-sm"
+                    className="btn-primary-outline block w-full py-2.5 px-4 text-center text-sm"
                   >
                     {dict.enrollCta}
                   </Link>
@@ -423,16 +419,16 @@ export function CourseDetailView({
                   <a
                     href={`/api/courses/${targetSlug}/brochure?locale=${currentLocale}`}
                     download
-                    className="inline-flex py-1.5 px-3 border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold uppercase tracking-wider transition-colors rounded-xs bg-slate-50 items-center gap-1 text-[10px] w-auto"
+                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold transition-colors rounded-xs shadow-2xs border bg-slate-50 hover:bg-slate-100 text-slate-800 hover:text-slate-900 active:bg-slate-200 border-slate-300 text-center text-[10px] inline-flex items-center gap-1 justify-center no-scale"
                   >
-                    <FileText className="w-3 h-3 text-slate-600" />
-                    <span>{dict.downloadBrochure}</span>
+                    <FileText className="w-4 h-4 text-slate-600" />
+                    <span className="no-scale">{dict.downloadBrochure}</span>
                   </a>
                 </div>
                 {isEnrollable ? (
                   <Link
                     href={enrollUrl}
-                    className="block w-full py-2.5 px-4 uppercase tracking-wider font-bold text-[#5e923c] transition-colors rounded-xs shadow-2xs border bg-white hover:bg-[#5e923c] hover:text-white active:bg-[#5e923c]/90 border-[#5e923c]/40 text-center text-sm"
+                    className="btn-primary-outline block w-full py-2.5 px-4 text-center text-sm"
                   >
                     {dict.enrollCta}
                   </Link>

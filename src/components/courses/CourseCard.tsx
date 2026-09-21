@@ -206,7 +206,7 @@ export function CourseCard({ course, dict, currentLocale }: CourseCardProps) {
           <div className="flex items-center gap-1 pt-1">
             <Link
               href={`/${currentLocale}/courses/${targetSlug}`}
-              className="inline-flex items-center justify-center space-x-1 bg-white hover:bg-[#5e923c] hover:text-white active:bg-[#5e923c]/90 text-[#5e923c] font-mono font-bold px-3 py-1.5 uppercase tracking-wider transition-colors rounded-xs shadow-2xs border border-[#5e923c]/30 text-[13px] leading-none"
+              className="btn-primary-outline font-mono px-3 py-1.5 text-[13px] leading-none"
             >
               <span>{dict.viewCourse}</span>
               <ArrowRight className="w-2.5 h-2.5 shrink-0" />
