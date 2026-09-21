@@ -782,7 +782,16 @@
     "sectionDetails": "課程詳細",
     "sectionDescriptions": "描述",
     "sectionOrganization": "主辦機構",
-    "sectionFeeDescription": "費用說明"
+    "sectionFeeDescription": "費用說明",
+    "batchApprove": "批次核准",
+    "batchReject": "批次拒絕",
+    "selectedCount": "已選取 {count} 項",
+    "selectAll": "全選",
+    "batchConfirmApprove": "核准已選取的 {count} 項報名？",
+    "batchConfirmReject": "拒絕已選取的 {count} 項報名？",
+    "batchSuccess": "{count} 項報名已更新",
+    "batchPartial": "{updated} 項更新，{skipped} 項跳過（已處理）",
+    "batchSelectHint": "選取報名以進行批次核准或拒絕"
   },
   "receipt": {
     "title": "正式收據",

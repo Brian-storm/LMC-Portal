@@ -2,7 +2,7 @@
   "id": "AD-006",
   "title": "Enrolment 搜尋 + 批次工具列 — decomposed into 2 sub-cards",
   "content": "⚠️ DECOMPOSED — this card has been split into 2 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AD-006-SEARCH: Text search input + API search param (low risk, can start first)\n- AD-006-BATCH: Batch selection UI + toolbar + batch API endpoint (medium risk, depends on AD-006-SEARCH)\n\nOriginal scope:\n- Search bar by name/email/idDocNumber\n- Checkbox column + select-all per page\n- Batch toolbar (approve, reject) with selection count\n- Batch API endpoint\n- i18n support",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",

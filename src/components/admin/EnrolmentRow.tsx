@@ -84,6 +84,8 @@ interface EnrolmentRowProps {
   locale: string;
   duplicateIds: Set<string>;
   approvingId: string | null;
+  selected?: boolean;
+  onToggle?: (id: string) => void;
   onApprove: (id: string, groupId?: string | null) => void;
   onRejectClick: (enrolment: Enrolment) => void;
   onPreviewClick: (enrolment: Enrolment) => void;
@@ -95,6 +97,8 @@ export default function EnrolmentRow({
   locale,
   duplicateIds,
   approvingId,
+  selected = false,
+  onToggle,
   onApprove,
   onRejectClick,
   onPreviewClick,
@@ -107,6 +111,15 @@ export default function EnrolmentRow({
     <Fragment>
       {/* Parent row: enroller or individual */}
       <tr className="hover:bg-slate-50/80">
+        {/* Selection checkbox */}
+        <td className="py-2 px-2 w-[30px]">
+          <input
+            type="checkbox"
+            checked={selected}
+            onChange={() => onToggle?.(enrolment.id)}
+            className="w-3.5 h-3.5 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600 cursor-pointer"
+          />
+        </td>
         {/* Enrollee */}
         <td className="py-2 px-2">
           {isGroup ? (

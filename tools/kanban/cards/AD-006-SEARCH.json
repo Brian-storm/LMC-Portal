@@ -2,7 +2,7 @@
   "id": "AD-006-SEARCH",
   "title": "Enrolment search input + API search support",
   "content": "Add text search to the enrolments admin page.\n\n## API change: GET /api/admin/enrolments\n- Add optional `search` query param\n- Query against user.nameEn, user.nameZh, user.email, user.idDocNumber, user.iaLicense using Prisma `contains` + `mode: 'insensitive'`\n- Keep existing `status`, `page`, `limit` params\n\n## UI change: src/app/[locale]/admin/enrolments/page.tsx\n- Add search input above the table, alongside status filter tabs\n- Debounce input (300ms) to reduce API calls\n- Show a clear (×) button when search is active\n- Persist search term in URL query param so pagination preserves search\n- Visual: search icon + placeholder from dict (keys already exist: search, searchPlaceholder)\n\nStates:\n- Empty: show search placeholder\n- Loading: spinner while search is debounced/fetching\n- No results: show empty message with hint to adjust search term\n- Results: filtered list with pagination\n\nNo batch keys needed — those go in AD-006-BATCH.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

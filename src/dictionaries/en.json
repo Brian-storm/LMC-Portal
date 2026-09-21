@@ -786,7 +786,16 @@
     "sectionDetails": "Course Details",
     "sectionDescriptions": "Descriptions",
     "sectionOrganization": "Organizer",
-    "sectionFeeDescription": "Fee Description"
+    "sectionFeeDescription": "Fee Description",
+    "batchApprove": "Batch Approve",
+    "batchReject": "Batch Reject",
+    "selectedCount": "{count} selected",
+    "selectAll": "Select All",
+    "batchConfirmApprove": "Approve {count} selected enrolment(s)?",
+    "batchConfirmReject": "Reject {count} selected enrolment(s)?",
+    "batchSuccess": "{count} enrolment(s) updated",
+    "batchPartial": "{updated} updated, {skipped} skipped (already processed)",
+    "batchSelectHint": "Select enrolments to batch approve or reject"
   },
   "receipt": {
     "title": "OFFICIAL RECEIPT",

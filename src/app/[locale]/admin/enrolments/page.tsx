@@ -7,6 +7,14 @@ import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign, Search, 
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import type { Enrolment, Pagination, EnrolmentUser, PaymentStatus } from "@/components/admin/types";
 import EnrolmentFilters from "@/components/admin/EnrolmentFilters";
 import EnrolmentRow from "@/components/admin/EnrolmentRow";
@@ -58,6 +66,12 @@ export default function AdminEnrolmentsPage() {
   const [rejectReason, setRejectReason] = useState("");
   const [rejecting, setRejecting] = useState(false);
   const [previewTarget, setPreviewTarget] = useState<Enrolment | null>(null);
+
+  // ── Batch selection ──
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [batchSubmitting, setBatchSubmitting] = useState(false);
+  const [batchConfirmApprove, setBatchConfirmApprove] = useState(false);
+  const [batchRejectReason, setBatchRejectReason] = useState("");
 
   // ── Fetch enrolments from the API ──
 
@@ -147,6 +161,111 @@ export default function AdminEnrolmentsPage() {
 
   const handleSearchClear = () => {
     setSearchTerm("");
+  };
+
+  // ── Batch selection handlers ──
+
+  const handleToggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedIds.size === enrolments.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(enrolments.map((e) => e.id)));
+    }
+  };
+
+  const handleBatchApprove = async () => {
+    setBatchSubmitting(true);
+    const ids = Array.from(selectedIds);
+    try {
+      const res = await fetch("/api/admin/enrolments/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "APPROVE", ids }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Request failed: ${res.status}`);
+      }
+      const result = await res.json();
+      setEnrolments((prev) =>
+        prev.map((e) =>
+          ids.includes(e.id) ? { ...e, paymentStatus: "VERIFIED" as PaymentStatus } : e,
+        ),
+      );
+      if (result.skippedCount > 0) {
+        addToast({
+          title: dict.batchPartial.replace("{updated}", String(result.updatedCount)).replace("{skipped}", String(result.skippedCount)),
+          variant: "warning",
+        });
+      } else {
+        addToast({ title: dict.batchSuccess.replace("{count}", String(result.updatedCount)), variant: "success" });
+      }
+      setSelectedIds(new Set());
+      setBatchConfirmApprove(false);
+    } catch (err) {
+      addToast({
+        title: dict.toastApprovalFailed,
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "danger",
+      });
+    } finally {
+      setBatchSubmitting(false);
+    }
+  };
+
+  const handleBatchReject = async () => {
+    setBatchSubmitting(true);
+    const ids = Array.from(selectedIds);
+    try {
+      const res = await fetch("/api/admin/enrolments/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "REJECT", ids, reason: batchRejectReason || undefined }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Request failed: ${res.status}`);
+      }
+      const result = await res.json();
+      setEnrolments((prev) =>
+        prev.map((e) =>
+          ids.includes(e.id)
+            ? { ...e, paymentStatus: "REJECTED" as PaymentStatus, payerFullName: batchRejectReason }
+            : e,
+        ),
+      );
+      if (result.skippedCount > 0) {
+        addToast({
+          title: dict.batchPartial.replace("{updated}", String(result.updatedCount)).replace("{skipped}", String(result.skippedCount)),
+          variant: "warning",
+        });
+      } else {
+        addToast({ title: dict.batchSuccess.replace("{count}", String(result.updatedCount)), variant: "warning" });
+      }
+      setSelectedIds(new Set());
+      setBatchRejectOpen(false);
+      setBatchRejectReason("");
+    } catch (err) {
+      addToast({
+        title: dict.toastRejectionFailed,
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "danger",
+      });
+    } finally {
+      setBatchSubmitting(false);
+    }
   };
 
   const handleApprove = async (id: string, groupId?: string | null) => {
@@ -269,6 +388,36 @@ export default function AdminEnrolmentsPage() {
           dict={dict}
         />
 
+        {/* ── Batch toolbar ── */}
+        {selectedIds.size > 0 && (
+          <div className="bg-emerald-50 border border-emerald-200 px-4 py-2.5 flex items-center justify-between rounded-xs shadow-2xs">
+            <span className="text-sm font-medium text-emerald-800">
+              {dict.selectedCount.replace("{count}", String(selectedIds.size))}
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="default"
+                size="xs"
+                loading={batchSubmitting}
+                disabled={batchSubmitting}
+                onClick={() => setBatchConfirmApprove(true)}
+              >
+                {dict.batchApprove}
+              </Button>
+              <Button
+                variant="outline"
+                size="xs"
+                loading={batchSubmitting}
+                disabled={batchSubmitting}
+                onClick={() => setBatchRejectOpen(true)}
+                className="border-rose-300 text-rose-700 hover:bg-rose-50"
+              >
+                {dict.batchReject}
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* ── Main content area ── */}
         <section className="bg-white border border-slate-300 shadow-2xs">
           {/* ── Loading state ── */}
@@ -333,8 +482,16 @@ export default function AdminEnrolmentsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse table-fixed">
                 <thead>
-                  <tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold tracking-wider">
-                    <th className="py-2 px-2 w-[160px]">{ dict.enrollee }</th>
+<tr className="border-b-2 border-slate-900 bg-slate-50 text-slate-700 uppercase font-bold tracking-wider">
+                      <th className="py-2 px-2 w-[30px]">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.size === enrolments.length && enrolments.length > 0}
+                          onChange={handleSelectAll}
+                          className="w-3.5 h-3.5 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600 cursor-pointer"
+                        />
+                      </th>
+                      <th className="py-2 px-2 w-[160px]">{ dict.enrollee }</th>
                     <th className="py-2 px-2 w-[120px]">{ dict.idDoc }</th>
                     <th className="py-2 px-2 w-[180px]">{ dict.course }</th>
                     <th className="py-2 px-2 w-[200px]">{ dict.schedules }</th>
@@ -355,6 +512,8 @@ export default function AdminEnrolmentsPage() {
                       locale={locale}
                       duplicateIds={duplicateIds}
                       approvingId={approvingId}
+                      selected={selectedIds.has(enrolment.id)}
+                      onToggle={handleToggleSelect}
                       onApprove={handleApprove}
                       onRejectClick={(e) => { setRejectTarget(e); setRejectReason(""); }}
                       onPreviewClick={setPreviewTarget}
@@ -388,6 +547,44 @@ export default function AdminEnrolmentsPage() {
         onReasonChange={setRejectReason}
         onConfirm={handleReject}
         onClose={() => { setRejectTarget(null); setRejectReason(""); }}
+      />
+
+      {/* ── Batch approve confirmation dialog ── */}
+      <Dialog open={batchConfirmApprove} onOpenChange={(o) => { if (!o) setBatchConfirmApprove(false); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{dict.batchConfirmApprove.replace("{count}", String(selectedIds.size))}</DialogTitle>
+            <DialogDescription>
+              {dict.selectedCount.replace("{count}", String(selectedIds.size))}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBatchConfirmApprove(false)}>
+              {dict.cancel}
+            </Button>
+            <Button
+              variant="default"
+              onClick={handleBatchApprove}
+              loading={batchSubmitting}
+              disabled={batchSubmitting}
+            >
+              {dict.batchApprove}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Batch reject dialog ── */}
+      <RejectDialog
+        rejectTarget={null}
+        rejectReason={batchRejectReason}
+        rejecting={batchSubmitting}
+        locale={locale}
+        dict={dict}
+        batchCount={selectedIds.size}
+        onReasonChange={setBatchRejectReason}
+        onConfirm={handleBatchReject}
+        onClose={() => { setBatchRejectOpen(false); setBatchRejectReason(""); }}
       />
 
       {/* ── Payment proof preview dialog ── */}

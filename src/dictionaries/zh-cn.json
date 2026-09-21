@@ -782,7 +782,16 @@
     "sectionDetails": "课程详细",
     "sectionDescriptions": "描述",
     "sectionOrganization": "主办机构",
-    "sectionFeeDescription": "费用说明"
+    "sectionFeeDescription": "费用说明",
+    "batchApprove": "批量核准",
+    "batchReject": "批量拒绝",
+    "selectedCount": "已选择 {count} 项",
+    "selectAll": "全选",
+    "batchConfirmApprove": "核准已选择的 {count} 项报名？",
+    "batchConfirmReject": "拒绝已选择的 {count} 项报名？",
+    "batchSuccess": "{count} 项报名已更新",
+    "batchPartial": "{updated} 项更新，{skipped} 项跳过（已处理）",
+    "batchSelectHint": "选择报名以进行批量核准或拒绝"
   },
   "receipt": {
     "title": "正式收据",

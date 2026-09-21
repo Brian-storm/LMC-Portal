@@ -30,6 +30,7 @@ interface RejectDialogProps {
   rejecting: boolean;
   locale: string;
   dict: AdminDict;
+  batchCount?: number;
   onReasonChange: (reason: string) => void;
   onConfirm: () => void;
   onClose: () => void;
@@ -41,22 +42,28 @@ export default function RejectDialog({
   rejecting,
   locale,
   dict,
+  batchCount,
   onReasonChange,
   onConfirm,
   onClose,
 }: RejectDialogProps) {
+  const open = batchCount ? batchCount > 0 : !!rejectTarget;
   return (
-    <Dialog open={!!rejectTarget} onOpenChange={(open) => { if (!open) onClose(); }}>
+    <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{ dict.rejectTitle }</DialogTitle>
+          <DialogTitle>{ batchCount ? dict.batchConfirmReject.replace("{count}", String(batchCount)) : dict.rejectTitle }</DialogTitle>
           <DialogDescription>
             { dict.rejectDesc }
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 py-2">
-          {rejectTarget && (
+          {batchCount ? (
+            <div className="bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600">
+              {dict.selectedCount.replace("{count}", String(batchCount))}
+            </div>
+          ) : rejectTarget && (
             <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-slate-500">{ dict.enrollee }:</span>
