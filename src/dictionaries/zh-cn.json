@@ -38,7 +38,16 @@
     "about": "关于我们",
     "contact": "联系我们",
     "privacy": "隐私政策",
-    "terms": "服务条款"
+    "terms": "服务条款",
+    "faq": "常见问题"
+  },
+  "faqPage": {
+    "pageTitle": "常见问题 (FAQ)",
+    "pageDescription": "查阅关于我们 CPD 课程、报名及服务的常见问题解答。",
+    "searchPlaceholder": "搜索问题...",
+    "noResults": "没有符合搜索条件的问题。",
+    "emptyState": "目前暂无常见问题。",
+    "loadingMessage": "正在加载常见问题..."
   },
   "heroCarousel": {
     "badge": "德智管理顾问",

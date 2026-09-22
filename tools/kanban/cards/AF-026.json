@@ -1,0 +1,70 @@
+{
+  "id": "AF-026",
+  "title": "FAQ 系統整合 — 加入 Navbar + Footer 連結",
+  "content": "將 FAQ 公開頁面整合至網站導航，使訪客可以從 Navbar 和 Footer 進入 /[locale]/faq。\n\n變更項目：\n1. Navbar — 在現有導航項目中加入 FAQ 連結\n   - 更新 nav dict：新增 \"faq\" key（三語）\n   - 更新 Navbar.tsx 元件，將 FAQ 加入導航項目列表\n2. Footer — 在「課程」或「服務」欄位中加入 FAQ 連結\n   - 更新 footer dict：新增 faq 項目\n   - 更新 Footer.tsx 元件\n3. 所有三語字典同步更新\n\n⚠️ 依賴 AF-003-C（FAQ 頁面已存在於 /[locale]/faq）。\n\n非目標：不調整 Navbar 版面設計、不更改 Navbar 的 active-link 邏輯。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-003-C"],
+  "order": 26,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/Navbar.tsx",
+    "src/components/Footer.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Navbar shows FAQ link pointing to /[locale]/faq in all 3 locales",
+    "Footer shows FAQ link pointing to /[locale]/faq in all 3 locales",
+    "FAQ link uses dict key for label text (i18n)",
+    "Navbar dict has nav.faq key in all 3 dictionaries",
+    "Footer dict has footer.faq key in all 3 dictionaries",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/dictionaries/en.json (update — add nav.faq and footer.faq)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/components/Navbar.tsx (update — add FAQ link to nav items)",
+    "src/components/Footer.tsx (update — add FAQ link)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/ — FAQ link visible in navbar and footer, click navigates to /en/faq"
+}

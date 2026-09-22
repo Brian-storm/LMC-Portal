@@ -38,7 +38,16 @@
     "about": "關於我們",
     "contact": "聯絡我們",
     "privacy": "私隱政策",
-    "terms": "服務條款"
+    "terms": "服務條款",
+    "faq": "常見問題"
+  },
+  "faqPage": {
+    "pageTitle": "常見問題 (FAQ)",
+    "pageDescription": "查閱關於我們 CPD 課程、報名及服務的常見問題解答。",
+    "searchPlaceholder": "搜尋問題...",
+    "noResults": "沒有符合搜尋條件的問題。",
+    "emptyState": "目前暫無常見問題。",
+    "loadingMessage": "正在載入常見問題..."
   },
   "heroCarousel": {
     "badge": "德智管理顧問",

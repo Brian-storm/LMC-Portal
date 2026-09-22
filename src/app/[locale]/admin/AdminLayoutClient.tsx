@@ -69,9 +69,9 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
 
       {/* Sidebar — drawer on mobile, persistent on desktop */}
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-50 w-56 bg-primary-deep text-emerald-100 flex flex-col transform transition-transform duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:shrink-0`}
+        className={`max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-50 max-md:transform max-md:transition-transform max-md:duration-200 max-md:ease-in-out md:static md:shrink-0 w-56 bg-primary-deep text-emerald-100 flex flex-col ${
+          sidebarOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"
+        }`}
       >
         {/* Brand */}
         <div className="px-4 py-5 border-b border-emerald-800">
@@ -122,8 +122,8 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
 
       {/* Main content */}
       <main className="flex-1 overflow-auto min-h-screen">
-        {/* Mobile hamburger toggle */}
-        <div className="md:hidden flex items-center p-3 border-b border-slate-200 bg-white sticky top-0 z-30">
+        {/* Mobile hamburger toggle — always on top so close button stays accessible */}
+        <div className="md:hidden flex items-center p-3 border-b border-slate-200 bg-white sticky top-0 z-50">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-1.5 text-slate-700 hover:text-primary transition-colors rounded-xs hover:bg-slate-100"

@@ -38,7 +38,16 @@
     "about": "About Us",
     "contact": "Contact Us",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "faq": "FAQ"
+  },
+  "faqPage": {
+    "pageTitle": "Frequently Asked Questions",
+    "pageDescription": "Find answers to common questions about our CPD courses, enrollment, and services.",
+    "searchPlaceholder": "Search questions...",
+    "noResults": "No questions match your search.",
+    "emptyState": "No FAQs available at this time.",
+    "loadingMessage": "Loading FAQs..."
   },
   "heroCarousel": {
     "badge": "LMC Management Consultancy",
