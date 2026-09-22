@@ -2,7 +2,7 @@
   "id": "AF-001-D",
   "title": "Public API: GET /api/faq — published FAQs grouped by category",
   "content": "公開 API，無需登入，提供已發布的 FAQs 依分類分組回傳。\n\nRoute：\n- GET /api/faq — 回傳陣列，每項包含 category（id, nameZh, nameEn, nameZhCn）與 items（該分類下 isPublished=true 的 FAQs，依 order 排序）\n\nResponse shape：\n{\n  categories: [\n    {\n      category: { id, nameZh, nameEn, nameZhCn },\n      items: [\n        { id, questionZh, questionEn, questionZhCn, answerZh, answerEn, answerZhCn, order }\n      ]\n    }\n  ]\n}\n\n邏輯：\n1. 取出所有 GeneralFaqCategory（依 order 排序）\n2. 對每個 category，查出 isPublished=true 的 GeneralFaq（依 order 排序）\n3. 只包含有 published FAQs 的分類\n\n無 auth 檢查，純 GET 唯讀。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

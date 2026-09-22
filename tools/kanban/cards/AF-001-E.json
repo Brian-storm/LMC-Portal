@@ -2,7 +2,7 @@
   "id": "AF-001-E",
   "title": "CourseFaq standalone API routes for course edit page",
   "content": "The course edit page needs individual CRUD for course-specific FAQs (CourseFaq). Currently FAQs are only manageable via nested replace-all on the course. Add dedicated routes under /api/admin/courses/[courseId]/faqs.\n\nRoutes:\n- GET /api/admin/courses/[courseId]/faqs — list all FAQs for a course, ordered by sortOrder\n- POST /api/admin/courses/[courseId]/faqs — create a new FAQ for a course (Zod validated)\n- PATCH /api/admin/courses/[courseId]/faqs/[faqId] — update a single FAQ (Zod partial)\n- DELETE /api/admin/courses/[courseId]/faqs/[faqId] — delete a single FAQ\n\nZod schemas: append courseFaqCreateSchema/courseFaqUpdateSchema to src/lib/validation/course.ts\n\nAdmin auth (session.user.role === 'ADMIN') required on all routes.\n\nThe frontend is located at /[locale]/admin/courses/[id]/edit.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

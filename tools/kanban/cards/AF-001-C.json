@@ -2,7 +2,7 @@
   "id": "AF-001-C",
   "title": "Admin API: GeneralFaq CRUD",
   "content": "一般 FAQ 條目的管理端 CRUD API，均需 admin role 驗證。\n\nZod schemas (append to src/lib/validation/faq.ts)：\n- generalFaqCreateSchema：categoryId, questionZh, questionEn, questionZhCn?, answerZh, answerEn, answerZhCn?, order?, isPublished?\n- generalFaqUpdateSchema：partial() of create schema\n\nRoutes：\n- GET /api/admin/faq — 分頁回傳 FAQs（含 category relation），支援 page/limit query params\n- POST /api/admin/faq — 建立 FAQ，Zod 驗證，回 400 on invalid\n- PATCH /api/admin/faq/[id] — 更新 FAQ，Zod partial 驗證\n- DELETE /api/admin/faq/[id] — 刪除 FAQ\n\nPattern：與 AF-001-B 相同（auth → Zod → try/catch）。GET 支援 page (1-based, default 1) 與 limit (max 100, default 20) 參數，回傳 { generalFaqs, pagination: { page, limit, total, totalPages } }。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

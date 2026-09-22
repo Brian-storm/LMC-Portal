@@ -2,7 +2,7 @@
   "id": "AF-001-A",
   "title": "Prisma Schema — Faq→CourseFaq rename + GeneralFaqCategory + GeneralFaq models",
   "content": "Phase 2 的 FAQ 系統需要獨立的資料庫模型。同時將現有的 course-scoped Faq 更名為 CourseFaq 以釐清職責。\n\nPrisma 變更：\n1. 重新命名現有 Faq model 為 CourseFaq，@@map(\"course_faqs\")，更新 Course 上的關聯欄位名稱\n2. 新增 GeneralFaqCategory model：id, nameZh, nameEn, nameZhCn?, order, createdAt, updatedAt\n3. 新增 GeneralFaq model：id, categoryId (FK→GeneralFaqCategory, cascade), questionZh, questionEn, questionZhCn?, answerZh, answerEn, answerZhCn?, order, isPublished, createdAt, updatedAt\n\n更新所有 rename 參照（14 個檔案）：\n- prisma/seed.ts：faqs → courseFaqs\n- src/lib/validation/course.ts：faqSchema → courseFaqSchema, faqs → courseFaqs in courseCreateSchema\n- src/components/courses/types.ts：DetailedCourse.faqs → DetailedCourse.courseFaqs\n- src/lib/map-course-detail.ts：faqs → courseFaqs, ApiFaq 相關屬性\n- src/components/courses/CourseHiddenSections.tsx：course.faqs → course.courseFaqs\n- src/app/api/admin/courses/route.ts\n- src/app/api/admin/courses/[id]/route.ts\n- src/app/api/courses/route.ts\n- src/app/api/courses/[slug]/route.ts\n\nSeed data：加入示範 GeneralFaqCategory（報名、付款、證書等類別）與 GeneralFaq 條目。\n\n風險：高 — rename 會觸及 14 個檔案與資料庫 migration。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "high",
   "owner": "",
   "agent": "",
