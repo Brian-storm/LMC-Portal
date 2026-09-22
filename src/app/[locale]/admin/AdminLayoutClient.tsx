@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   DollarSign,
+  Upload,
 } from "lucide-react";
 import type { AdminDict } from "@/dictionaries/types";
 import { AdminDictProvider } from "@/components/admin/AdminDictContext";
@@ -32,6 +33,7 @@ const NAV_ITEMS = [
   { key: "payments", href: "/payments", icon: DollarSign },
   { key: "courses", href: "/courses", icon: BookOpen },
   { key: "users", href: "/users", icon: Users },
+  { key: "importNav", href: "/import/registrants", icon: Upload },
   { key: "faqNav", href: "/faq", icon: HelpCircle },
   { key: "settingsNav", href: "/settings", icon: Settings },
 ] as const;

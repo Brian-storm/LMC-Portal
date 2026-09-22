@@ -527,6 +527,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 | 11 | **Toast** | `ui/toast.tsx` | default/success/warning/danger/info, auto-dismiss, manual close | `--success`, `--warning`, `--destructive`, `--info`, `--border`, `--card` |
 | 12 | **Form** | `ui/form.tsx` | label/input/error grouping, submit handling, required indicator | `--destructive`, `--foreground` |
 | 13 | **Navbar** | `components/Navbar.tsx` | default/sticky/mobile, dropdown menus, backdrop blur | `--navbar-bg`, `--navbar-brand-*`, `--accent`, `--primary` |
+| 14 | **FileDropZone** | `components/admin/FileDropZone.tsx` | default/hover/dragging/file-selected/error/disabled | `--border`, `--primary`, `--destructive`, `--muted`, `--foreground`, `--muted-foreground` |
 
 ### Detailed Component Specifications
 
