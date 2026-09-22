@@ -14,16 +14,10 @@ import {
 import Link from "next/link";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { useToast } from "@/components/ui/toast";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import type { AdminDict } from "@/dictionaries/types";
+import AdminDataTable from "@/components/admin/AdminDataTable";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import ConfirmActionDialog from "@/components/admin/ConfirmActionDialog";
 
 interface AdminCourse {
   id: string;
@@ -156,29 +150,24 @@ export default function AdminCoursesPage() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Page header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-serif font-bold text-primary">{ dict.courses }</h1>
-          <p className="text-xs text-slate-500 mt-0.5">{courses.length} { dict.courses }</p>
-        </div>
-        <Link
-          href={`/${locale}/admin/courses/new`}
-          className="inline-flex items-center space-x-1 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold px-3 py-2 rounded-xs transition-colors"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>{ dict.newCourse }</span>
-        </Link>
-      </div>
+      {/* Page header via shared component */}
+      <AdminPageHeader
+        title={dict.courses}
+        subtitle={`${courses.length} ${dict.courses}`}
+        cta={
+          <Link
+            href={`/${locale}/admin/courses/new`}
+            className="inline-flex items-center space-x-1 bg-primary hover:bg-primary/80 text-primary-foreground text-xs font-bold px-3 py-2 rounded-xs transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>{ dict.newCourse }</span>
+          </Link>
+        }
+      />
 
-      {/* Course table */}
-      <section className="bg-white border border-slate-200">
-        {courses.length === 0 ? (
-          <div className="py-12 text-center space-y-2">
-            <BookOpen className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="text-sm text-slate-500">{ dict.noData }</p>
-          </div>
-        ) : (
+      {/* Course table via shared AdminDataTable */}
+      <AdminDataTable loading={loading} error={error} onRetry={fetchCourses} emptyMessage={dict.noData} emptyIcon={BookOpen}>
+        {courses.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
@@ -265,49 +254,37 @@ export default function AdminCoursesPage() {
             </table>
           </div>
         )}
-      </section>
+      </AdminDataTable>
 
-      {/* Delete confirmation dialog */}
-      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{ dict.confirmDelete }</DialogTitle>
-            <DialogDescription>
-              { dict.deleteWarning }
-            </DialogDescription>
-          </DialogHeader>
-
-          {deleteTarget && (
-            <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
-              <div className="flex justify-between">
-                <span className="text-slate-500">{ dict.courseName }:</span>
-                <span className="font-bold text-slate-800">
-                  {locale === "en" ? deleteTarget.nameEn : (locale === "zh-cn" ? (deleteTarget.nameCn || deleteTarget.nameZh) : deleteTarget.nameZh)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">{ dict.enrolments }:</span>
-                <span className="font-bold text-slate-800">{deleteTarget._count.registrants}</span>
-              </div>
+      {/* Delete confirmation dialog via shared component */}
+      <ConfirmActionDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}
+        title={dict.confirmDelete}
+        description={dict.deleteWarning}
+        confirmLabel={dict.delete}
+        cancelLabel={dict.cancel}
+        onConfirm={handleDelete}
+        loading={deleting}
+        variant="destructive"
+        confirmIcon={<Trash2 className="w-3.5 h-3.5" />}
+        disabled={!deleteTarget}
+      >
+        {deleteTarget && (
+          <div className="bg-slate-50 border border-slate-200 p-3 space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-slate-500">{ dict.courseName }:</span>
+              <span className="font-bold text-slate-800">
+                {locale === "en" ? deleteTarget.nameEn : (locale === "zh-cn" ? (deleteTarget.nameCn || deleteTarget.nameZh) : deleteTarget.nameZh)}
+              </span>
             </div>
-          )}
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteTarget(null)}>
-              { dict.cancel }
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              loading={deleting}
-              disabled={deleting}
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              { dict.delete }
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <div className="flex justify-between">
+              <span className="text-slate-500">{ dict.enrolments }:</span>
+              <span className="font-bold text-slate-800">{deleteTarget._count.registrants}</span>
+            </div>
+          </div>
+        )}
+      </ConfirmActionDialog>
     </div>
   );
 }

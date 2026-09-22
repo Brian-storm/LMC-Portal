@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { ArrowLeft, Loader2, AlertCircle } from "lucide-react";
-import Link from "next/link";
+import { Loader2, AlertCircle } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import CourseForm from "@/components/admin/CourseForm";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 
 interface CourseData {
   id: string;
@@ -75,15 +75,11 @@ export default function EditCoursePage() {
   if (error || !course) {
     return (
       <div className="p-6 space-y-6">
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/${locale}/admin/courses`}
-            className="inline-flex items-center space-x-1 text-slate-500 hover:text-primary transition-colors text-xs"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{dict.courses}</span>
-          </Link>
-        </div>
+        <AdminPageHeader
+          title=""
+          backHref={`/${locale}/admin/courses`}
+          backLabel={dict.courses}
+        />
         <div className="bg-white border border-slate-200 p-12 text-center space-y-3">
           <AlertCircle className="w-8 h-8 text-destructive mx-auto" />
           <p className="font-bold text-destructive">{dict.error}</p>
@@ -95,19 +91,12 @@ export default function EditCoursePage() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Page header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/${locale}/admin/courses`}
-            className="inline-flex items-center space-x-1 text-slate-500 hover:text-primary transition-colors text-xs"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{dict.courses}</span>
-          </Link>
-          <h1 className="text-xl font-serif font-bold text-primary">{dict.update}</h1>
-        </div>
-      </div>
+      {/* Page header via shared component */}
+      <AdminPageHeader
+        title={dict.update}
+        backHref={`/${locale}/admin/courses`}
+        backLabel={dict.courses}
+      />
 
       {/* Form card */}
       <section className="bg-white border border-slate-200 p-6">

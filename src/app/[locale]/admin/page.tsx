@@ -9,6 +9,8 @@ import {
   Loader2,
 } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
+import AdminStatCard from "@/components/admin/AdminStatCard";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 
 interface DashboardStats {
   totalEnrolments: number;
@@ -73,31 +75,26 @@ export default function AdminDashboardPage() {
   }
 
   const statCards = [
-    { label: dict.totalEnrolments, value: stats.totalEnrolments, color: "text-slate-900" },
-    { label: dict.pending, value: stats.pendingCount, color: "text-amber-700" },
-    { label: dict.verified, value: stats.verifiedCount, color: "text-emerald-700" },
-    { label: dict.activeCourses, value: stats.courseCount, color: "text-primary" },
+    { label: dict.totalEnrolments, value: stats.totalEnrolments },
+    { label: dict.pending, value: stats.pendingCount },
+    { label: dict.verified, value: stats.verifiedCount },
+    { label: dict.activeCourses, value: stats.courseCount },
   ];
 
   return (
     <div className="p-6 space-y-6">
-      {/* Page header */}
-      <div>
-<h1 className="text-xl font-serif font-bold text-primary">{ dict.dashboard }</h1>
-          <p className="text-xs text-slate-500 mt-0.5">{ dict.portalTitle }</p>
-      </div>
+      {/* Page header via shared component */}
+      <AdminPageHeader title={dict.dashboard} subtitle={dict.portalTitle} />
 
-      {/* Stat cards */}
+      {/* Stat cards via shared component */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((card) => (
-          <div key={card.label} className="bg-white border border-slate-200 p-4 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">{card.label}</span>
-            <span className={`text-2xl font-serif font-bold ${card.color}`}>{card.value}</span>
-          </div>
-        ))}
+        {statCards.map((card, idx) => {
+          const colors = ["text-slate-900", "text-amber-700", "text-emerald-700", "text-primary"];
+          return <AdminStatCard key={card.label} label={card.label} value={card.value} color={colors[idx] ?? "text-slate-900"} />;
+        })}
       </div>
 
-      {/* Recent submissions */}
+      {/* Recent submissions — using AdminDataTable as shell */}
       <section className="bg-white border border-slate-200">
         <div className="border-b border-slate-200 px-4 py-3 flex items-center justify-between">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">{ dict.recentSubmissions }</h2>

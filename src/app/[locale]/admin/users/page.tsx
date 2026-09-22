@@ -5,14 +5,12 @@ import { useParams } from "next/navigation";
 import {
   Users,
   Search,
-  AlertCircle,
-  Loader2,
   X,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
-import { Button } from "@/components/ui/button";
+import AdminDataTable from "@/components/admin/AdminDataTable";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPagination from "@/components/admin/AdminPagination";
 
 interface AdminUser {
   id: string;
@@ -24,12 +22,8 @@ interface AdminUser {
   createdAt: string;
 }
 
-interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-}
+// Reuse the Pagination type from shared admin types
+import type { Pagination } from "@/components/admin/types";
 
 export default function AdminUsersPage() {
   const dict = useAdminDict();
@@ -101,15 +95,11 @@ export default function AdminUsersPage() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Page header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-serif font-bold text-primary">{ dict.users }</h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            {dict.userCount.replace("{count}", String(pagination?.total ?? 0))}
-          </p>
-        </div>
-      </div>
+      {/* Page header via shared component */}
+      <AdminPageHeader
+        title={dict.users}
+        subtitle={dict.userCount.replace("{count}", String(pagination?.total ?? 0))}
+      />
 
       {/* Search */}
       <div className="relative max-w-sm">
@@ -132,54 +122,31 @@ export default function AdminUsersPage() {
         )}
       </div>
 
-      {/* Users table */}
-      <section className="bg-white border border-slate-200">
-        {/* Loading state */}
-        {loading && (
-          <div className="p-6 space-y-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 animate-pulse">
-                <div className="h-4 w-28 bg-slate-200 rounded-xs" />
-                <div className="h-4 w-36 bg-slate-200 rounded-xs" />
-                <div className="h-4 w-24 bg-slate-200 rounded-xs" />
-                <div className="h-4 w-16 bg-slate-200 rounded-xs" />
-                <div className="h-4 w-20 bg-slate-200 rounded-xs" />
-              </div>
-            ))}
-            <div className="text-center pt-2 text-slate-400">
-              <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-1.5" />
-              { dict.loading }
-            </div>
-          </div>
-        )}
-
-        {/* Error state */}
-        {!loading && error && (
-          <div className="p-12 text-center space-y-3">
-            <AlertCircle className="w-8 h-8 text-destructive mx-auto" />
-            <p className="font-bold text-destructive">{ dict.error }</p>
-            <p className="text-xs text-slate-500">{error}</p>
-            <Button variant="outline" size="sm" onClick={() => fetchUsers(debouncedSearch, page)}>
-              { dict.retry }
-            </Button>
-          </div>
-        )}
-
-        {/* Empty state */}
-        {!loading && !error && users.length === 0 && (
-          <div className="p-12 text-center space-y-3">
-            <Users className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="font-bold text-slate-700">
-              {debouncedSearch ? dict.noData : dict.noData}
-            </p>
-            <p className="text-xs text-slate-500">
-              {debouncedSearch ? dict.searchPlaceholder : dict.emptyAllHint}
-            </p>
-          </div>
-        )}
-
-        {/* Data table */}
-        {!loading && !error && users.length > 0 && (
+      {/* Users table via shared AdminDataTable */}
+      <AdminDataTable
+        loading={loading}
+        error={error}
+        onRetry={() => fetchUsers(debouncedSearch, page)}
+        emptyMessage={debouncedSearch ? dict.noData : dict.noData}
+        emptyIcon={Users}
+        emptyExtra={
+          <p className="text-xs text-slate-500">
+            {debouncedSearch ? dict.searchPlaceholder : dict.emptyAllHint}
+          </p>
+        }
+        footer={
+          pagination && pagination.totalPages > 1 && (
+            <AdminPagination
+              pagination={pagination}
+              page={page}
+              pageOf={dict.pageOf}
+              totalCountSuffix={dict.totalCountSuffix}
+              onPageChange={(p) => setPage(p)}
+            />
+          )
+        }
+      >
+        {users.length > 0 && (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
@@ -216,51 +183,7 @@ export default function AdminUsersPage() {
             </table>
           </div>
         )}
-
-        {/* Pagination */}
-        {pagination && pagination.totalPages > 1 && (
-          <div className="border-t border-slate-200 px-3 py-2 flex items-center justify-between text-xs text-slate-500">
-            <span>
-              {dict.pageOf.replace("{page}", String(pagination.page)).replace("{total}", String(pagination.totalPages))}
-              &nbsp;
-              {dict.totalCountSuffix.replace("{total}", String(pagination.total))}
-            </span>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="xs"
-                disabled={page <= 1}
-                onClick={() => setPage(Math.max(1, page - 1))}
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </Button>
-              {Array.from({ length: Math.min(pagination.totalPages, 5) }, (_, i) => {
-                const start = Math.max(1, pagination.page - 2);
-                const pageNum = start + i;
-                if (pageNum > pagination.totalPages) return null;
-                return (
-                  <Button
-                    key={pageNum}
-                    variant={pageNum === page ? "default" : "outline"}
-                    size="xs"
-                    onClick={() => setPage(pageNum)}
-                  >
-                    {pageNum}
-                  </Button>
-                );
-              })}
-              <Button
-                variant="outline"
-                size="xs"
-                disabled={page >= pagination.totalPages}
-                onClick={() => setPage(page + 1)}
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-        )}
-      </section>
+      </AdminDataTable>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
-import { ShieldAlert, AlertTriangle, Loader2, CheckCircle2, DollarSign, Search, X } from "lucide-react";
+import { ShieldAlert, Search, X, DollarSign } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,11 +16,13 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import type { Enrolment, Pagination, EnrolmentUser, PaymentStatus } from "@/components/admin/types";
-import EnrolmentFilters from "@/components/admin/EnrolmentFilters";
+import AdminDataTable from "@/components/admin/AdminDataTable";
+import AdminFilterTabs from "@/components/admin/AdminFilterTabs";
 import EnrolmentRow from "@/components/admin/EnrolmentRow";
 import RejectDialog from "@/components/admin/RejectDialog";
 import PaymentProofPreview from "@/components/admin/PaymentProofPreview";
-import EnrolmentPagination from "@/components/admin/EnrolmentPagination";
+import AdminPagination from "@/components/admin/AdminPagination";
+import { STATUS_TABS } from "@/components/admin/constants";
 
 export default function AdminEnrolmentsPage() {
   const dict = useAdminDict();
@@ -380,13 +382,26 @@ export default function AdminEnrolmentsPage() {
           )}
         </div>
 
-        {/* ── Status filter tabs ── */}
-        <EnrolmentFilters
-          statusFilter={statusFilter}
-          pagination={pagination}
-          onTabClick={handleStatusTabClick}
-          dict={dict}
-        />
+        {/* ── Status filter tabs via shared component ── */}
+        {(() => {
+          const FILTER_DICT_KEY: Record<string, keyof typeof dict> = {
+            ALL: "filterAll",
+            PENDING_VERIFICATION: "filterPending",
+            VERIFIED: "filterVerified",
+            REJECTED: "filterRejected",
+          };
+          return (
+            <AdminFilterTabs
+              tabs={STATUS_TABS.map((tab) => ({
+                value: tab.value,
+                label: dict[FILTER_DICT_KEY[tab.value] as keyof typeof dict] as string,
+                count: tab.value !== "ALL" && statusFilter === tab.value ? pagination?.total : undefined,
+              }))}
+              selected={statusFilter}
+              onChange={(v) => handleStatusTabClick(v as PaymentStatus | "ALL")}
+            />
+          );
+        })()}
 
         {/* ── Batch toolbar ── */}
         {selectedIds.size > 0 && (
@@ -418,67 +433,35 @@ export default function AdminEnrolmentsPage() {
           </div>
         )}
 
-        {/* ── Main content area ── */}
-        <section className="bg-white border border-slate-300 shadow-2xs">
-          {/* ── Loading state ── */}
-          {loading && (
-            <div className="p-6 space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4 animate-pulse">
-                  <div className="h-4 w-32 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-20 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-40 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-20 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-14 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-16 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-24 bg-slate-200 rounded-xs" />
-                  <div className="h-4 w-24 bg-slate-200 rounded-xs ml-auto" />
-                </div>
-              ))}
-              <div className="text-center pt-2 text-slate-400">
-                <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-1.5" />
-                { dict.loading }
-              </div>
-            </div>
-          )}
-
-          {/* ── Error state ── */}
-          {!loading && error && (
-            <div className="p-12 text-center space-y-3">
-              <AlertTriangle className="w-8 h-8 text-destructive mx-auto" />
-              <p className="font-bold text-destructive">{ dict.error }</p>
-              <p className="text-slate-500">{error}</p>
-              <Button variant="outline" size="sm" onClick={() => fetchEnrolments(statusFilter, page, debouncedSearch)}>
-                { dict.retry }
-              </Button>
-            </div>
-          )}
-
-          {/* ── Empty state ── */}
-          {!loading && !error && enrolments.length === 0 && (
-            <div className="p-12 text-center space-y-3">
-              <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
-              <p className="font-bold text-slate-700">
-                {statusFilter === "ALL"
-                  ? dict.noData
-                  : `${
-                      statusFilter === "PENDING_VERIFICATION"
-                        ? dict.pendingVerification
-                        : statusFilter === "VERIFIED"
-                          ? dict.verified
-                          : dict.rejected
-                    }`}
-              </p>
-              <p className="text-slate-500">
-                {statusFilter === "ALL"
-                  ? dict.emptyAllHint
-                  : dict.emptyFilteredHint}
-              </p>
-            </div>
-          )}
-
-          {/* ── Data table ── */}
-          {!loading && !error && enrolments.length > 0 && (
+        {/* ── Main content area via shared AdminDataTable ── */}
+        <AdminDataTable
+          loading={loading}
+          error={error}
+          onRetry={() => fetchEnrolments(statusFilter, page, debouncedSearch)}
+          emptyMessage={
+            statusFilter === "ALL"
+              ? dict.noData
+              : `${statusFilter === "PENDING_VERIFICATION" ? dict.pendingVerification : statusFilter === "VERIFIED" ? dict.verified : dict.rejected}`
+          }
+          emptyIcon={statusFilter === "ALL" ? undefined : undefined}
+          emptyExtra={
+            <p className="text-xs text-slate-500">
+              {statusFilter === "ALL" ? dict.emptyAllHint : dict.emptyFilteredHint}
+            </p>
+          }
+          footer={
+            pagination && pagination.totalPages > 1 && (
+              <AdminPagination
+                pagination={pagination}
+                page={page}
+                pageOf={dict.pageOf}
+                totalCountSuffix={dict.totalCountSuffix}
+                onPageChange={handlePageChange}
+              />
+            )
+          }
+        >
+          {enrolments.length > 0 && (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse table-fixed">
                 <thead>
@@ -524,17 +507,7 @@ export default function AdminEnrolmentsPage() {
               </table>
             </div>
           )}
-
-          {/* ── Pagination footer ── */}
-          {pagination && pagination.totalPages > 1 && (
-            <EnrolmentPagination
-              pagination={pagination}
-              page={page}
-              dict={dict}
-              onPageChange={handlePageChange}
-            />
-          )}
-        </section>
+        </AdminDataTable>
       </div>
 
       {/* ── Reject confirmation dialog ── */}
