@@ -2,7 +2,7 @@
   "id": "AD-007-3",
   "title": "Refactor Admin Pages — replace inline patterns with shared components",
   "content": "Refactor all admin pages to use the shared components created in AD-007-1 and AD-007-2. No behavior change — purely replace inline code with component usage.\n\n## Pages to refactor:\n\n### admin/page.tsx (dashboard)\n- Replace inline <h1> + <p> header with AdminPageHeader\n- Replace 4 inline stat cards with AdminStatCard instances\n- Replace inline table shell (loading/error/empty states + table wrapper) with AdminDataTable\n\n### admin/enrolments/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline loading/error/empty states + table wrapper with AdminDataTable\n- Replace inline pagination with AdminPagination\n- Still uses AdminFilterTabs (previously EnrolmentFilters, renamed in AD-007-2)\n\n### admin/courses/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline table shell with AdminDataTable\n- Replace inline delete dialog with ConfirmActionDialog\n\n### admin/courses/new/page.tsx\n- Replace inline header (back link + title) with AdminPageHeader\n\n### admin/courses/[id]/edit/page.tsx\n- Replace inline header with AdminPageHeader\n\n### admin/users/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline table shell with AdminDataTable\n- Replace inline pagination with AdminPagination\n\nPure refactoring — no behavior change.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

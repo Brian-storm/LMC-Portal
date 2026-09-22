@@ -794,7 +794,29 @@
     "batchConfirmReject": "拒絕已選取的 {count} 項報名？",
     "batchSuccess": "{count} 項報名已更新",
     "batchPartial": "{updated} 項更新，{skipped} 項跳過（已處理）",
-    "batchSelectHint": "選取報名以進行批次核准或拒絕"
+    "batchSelectHint": "選取報名以進行批次核准或拒絕",
+    "userEdit": {
+      "title": "編輯用戶",
+      "nameZh": { "label": "中文姓名", "error": "請填寫中文姓名" },
+      "nameEn": { "label": "英文姓名", "error": "請填寫英文姓名" },
+      "email": { "label": "電郵", "error": "電郵格式無效" },
+      "phone": { "label": "電話", "error": "電話格式無效" },
+      "iaLicense": { "label": "IA 牌照" },
+      "idDocNumber": { "label": "身份證明文件號碼" },
+      "idDocType": { "label": "身份證明文件類型" },
+      "idDocTypeOptions": { "HKID": "香港身份證", "PASSPORT": "護照", "PERMIT": "許可證", "OTHER": "其他" },
+      "organization": { "label": "所屬機構" },
+      "isMember": { "label": "會員" },
+      "memberId": { "label": "會員編號" },
+      "role": { "label": "角色" },
+      "createdAt": { "label": "註冊日期" },
+      "save": "儲存",
+      "saving": "儲存中...",
+      "saveSuccess": "用戶資料已更新",
+      "saveError": "更新用戶資料失敗",
+      "loading": "載入用戶資料中...",
+      "loadingError": "載入用戶資料失敗"
+    }
   },
   "receipt": {
     "title": "正式收據",

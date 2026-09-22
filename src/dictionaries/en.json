@@ -798,7 +798,29 @@
     "batchConfirmReject": "Reject {count} selected enrolment(s)?",
     "batchSuccess": "{count} enrolment(s) updated",
     "batchPartial": "{updated} updated, {skipped} skipped (already processed)",
-    "batchSelectHint": "Select enrolments to batch approve or reject"
+    "batchSelectHint": "Select enrolments to batch approve or reject",
+    "userEdit": {
+      "title": "Edit User",
+      "nameZh": { "label": "Chinese Name", "error": "Chinese name is required" },
+      "nameEn": { "label": "English Name", "error": "English name is required" },
+      "email": { "label": "Email", "error": "Invalid email format" },
+      "phone": { "label": "Phone", "error": "Invalid phone format" },
+      "iaLicense": { "label": "IA License" },
+      "idDocNumber": { "label": "ID Document Number" },
+      "idDocType": { "label": "ID Document Type" },
+      "idDocTypeOptions": { "HKID": "HKID", "PASSPORT": "Passport", "PERMIT": "Permit", "OTHER": "Other" },
+      "organization": { "label": "Organization" },
+      "isMember": { "label": "Member" },
+      "memberId": { "label": "Member ID" },
+      "role": { "label": "Role" },
+      "createdAt": { "label": "Registered Date" },
+      "save": "Save",
+      "saving": "Saving...",
+      "saveSuccess": "User updated successfully",
+      "saveError": "Failed to update user",
+      "loading": "Loading user data...",
+      "loadingError": "Failed to load user data"
+    }
   },
   "receipt": {
     "title": "OFFICIAL RECEIPT",

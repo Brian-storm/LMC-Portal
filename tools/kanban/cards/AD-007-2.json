@@ -2,7 +2,7 @@
   "id": "AD-007-2",
   "title": "Shared Dialog, Filter Tabs, Pagination — ConfirmActionDialog, AdminFilterTabs, AdminPagination",
   "content": "Create or refactor three shared admin components from existing patterns.\n\n## ConfirmActionDialog — generic confirm dialog\nExtracted from inline delete dialog in courses/page.tsx, and used as base for RejectDialog.\n- Dialog wrapper (shadcn Dialog) with title, description, confirm/cancel buttons\n- Shows loading state on confirm button\n- Props: { open, onOpenChange, title, description, onConfirm, confirmLabel?, cancelLabel?, loading? }\n- RejectDialog refactored to extend this base\n\n## AdminFilterTabs — generalized from EnrolmentFilters\n- EnrolmentFilters.tsx is hardcoded to payment statuses (ALL/Pending/Verified/Rejected)\n- Generalize to accept array of { label, value, count? }\n- Props: { tabs: { label, value, count? }[], selected, onChange }\n- Rename file from EnrolmentFilters.tsx to AdminFilterTabs.tsx\n\n## AdminPagination — renamed from EnrolmentPagination\n- EnrolmentPagination is already nearly generic\n- Rename to AdminPagination, update all imports\n- Props unchanged: { page, totalPages, onPageChange }\n\nPure refactoring — no behavior change.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

@@ -2,7 +2,7 @@
   "id": "AD-008-1",
   "title": "Backend API — GET + PATCH /api/admin/users/[id]",
   "content": "Create API routes for editing individual user profiles.\n\n## GET /api/admin/users/[id]\nReturn full user profile including fields not returned by the list endpoint:\n- Returns: { id, nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId, role, createdAt }\n- 404 if user not found\n- ADMIN role guard\n\n## PATCH /api/admin/users/[id]\nUpdate user profile with strict field allowlist.\n\n### Allowed fields (partial update supported):\n- nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId\n\n### Fields to reject (return 400):\n- role (cannot change user role from STUDENT)\n- passwordHash (never expose)\n- Any registrant/payment-related fields (paymentStatus, receiptNumber, receiptPdfData, etc.)\n\n### Validation:\n- Email: regex validation\n- Phone: format validation\n- nameZh/nameEn: required (if provided, must be non-empty)\n- idDocType: must be one of HKID/PASSPORT/PERMIT/OTHER if provided\n\n### Response:\n- Returns updated user object\n- 404 if user not found\n- 400 on validation failure or rejected fields\n\nADMIN role guard on both routes.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",

@@ -11,6 +11,7 @@ import { useAdminDict } from "@/components/admin/AdminDictContext";
 import AdminDataTable from "@/components/admin/AdminDataTable";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
+import UserEditDialog from "@/components/admin/UserEditDialog";
 
 interface AdminUser {
   id: string;
@@ -38,6 +39,9 @@ export default function AdminUsersPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
   const limit = 20;
+
+  // Edit dialog state
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
 
   // Debounce search input by 300ms
   useEffect(() => {
@@ -160,7 +164,7 @@ export default function AdminUsersPage() {
               </thead>
               <tbody className="divide-y divide-slate-200">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-slate-50/80">
+                  <tr key={user.id} className="hover:bg-slate-50/80 cursor-pointer" onClick={() => setEditingUserId(user.id)}>
                     <td className="py-3 px-3">
                       <div className="font-serif font-bold text-slate-900">{getName(user)}</div>
                       {user.nameZh && user.nameEn && user.nameZh !== user.nameEn && (
@@ -184,6 +188,14 @@ export default function AdminUsersPage() {
           </div>
         )}
       </AdminDataTable>
+
+      {/* User edit dialog */}
+      <UserEditDialog
+        userId={editingUserId}
+        dict={dict}
+        onClose={() => setEditingUserId(null)}
+        onSaved={() => fetchUsers(debouncedSearch, page)}
+      />
     </div>
   );
 }

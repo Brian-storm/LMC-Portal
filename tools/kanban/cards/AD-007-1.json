@@ -2,7 +2,7 @@
   "id": "AD-007-1",
   "title": "Core Admin Components — AdminDataTable, AdminStatCard, AdminPageHeader",
   "content": "Create three reusable admin components extracted from inline patterns across admin pages.\n\n## AdminDataTable — generic table shell\nExtracted from patterns in dashboard, enrolments, courses, and users pages.\n- Loading state: centered spinner skeleton\n- Error state: AlertCircle icon + error message + Retry button\n- Empty state: configurable emptyMessage\n- Normal: wraps <section> + <div className=\"overflow-x-auto\"> + <table> structure\n- Props: { loading, error, onRetry, emptyMessage, columns, rows, keyExtractor }\n\n## AdminStatCard — dashboard stat card\nExtracted from the 4 inline stat cards in admin/page.tsx.\n- Card with icon, label, value, optional trend arrow (up/down)\n- Props: { icon: LucideIcon, label: string, value: string | number, trend?: number, trendUp?: boolean }\n\n## AdminPageHeader — page title + back link + CTA\nExtracted from courses/new, courses/edit, enrolments, dashboard, users pages.\n- Consistent <header> with optional back link (<ArrowLeft>), title <h1>, optional CTA button\n- Props: { title: string, backHref?: string, cta?: ReactNode }\n\nPure refactoring — no behavior change. No page modifications in this card.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",

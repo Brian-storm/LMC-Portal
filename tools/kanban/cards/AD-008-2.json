@@ -2,7 +2,7 @@
   "id": "AD-008-2",
   "title": "UserEditDialog Component + i18n Dict Keys",
   "content": "Create the UserEditDialog component and add required dictionary keys for all three locales.\n\n## UserEditDialog\nA dialog/side-panel component for editing user profile fields.\n\n### Editable fields:\n- nameZh (text input, required)\n- nameEn (text input, required)\n- email (text input, required, email validation)\n- phone (text input, required, phone validation)\n- iaLicense (text input, optional)\n- idDocNumber (text input, optional)\n- idDocType (select: HKID/PASSPORT/PERMIT/OTHER, optional)\n- organization (text input, optional)\n- isMember (checkbox, optional)\n- memberId (text input, optional, shown only when isMember checked)\n\n### Read-only display fields:\n- role (display only, no edit)\n- createdAt (display only)\n\n### States:\n- Loading: skeleton placeholders while fetching user data\n- Saving: spinner on save button, fields disabled\n- Success: toast notification, dialog closes\n- Error: toast notification with error message\n- Validation: inline error messages on each field\n\n## i18n\nAdd a userEdit section to AdminDict with keys:\n- title (edit user)\n- nameZh.label, nameZh.error (required)\n- nameEn.label, nameEn.error\n- email.label, email.error (invalid format)\n- phone.label, phone.error (invalid format)\n- iaLicense.label\n- idDocNumber.label\n- idDocType.label, idDocType.options.HKID/PASSPORT/PERMIT/OTHER\n- organization.label\n- isMember.label\n- memberId.label\n- role.label\n- createdAt.label\n- save / saving / saveSuccess / saveError\n- loading / loadingError\n\nDoes NOT wire into users page — that is AD-008-3.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",

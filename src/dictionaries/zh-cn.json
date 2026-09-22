@@ -794,7 +794,29 @@
     "batchConfirmReject": "拒绝已选择的 {count} 项报名？",
     "batchSuccess": "{count} 项报名已更新",
     "batchPartial": "{updated} 项更新，{skipped} 项跳过（已处理）",
-    "batchSelectHint": "选择报名以进行批量核准或拒绝"
+    "batchSelectHint": "选择报名以进行批量核准或拒绝",
+    "userEdit": {
+      "title": "编辑用户",
+      "nameZh": { "label": "中文姓名", "error": "请填写中文姓名" },
+      "nameEn": { "label": "英文姓名", "error": "请填写英文姓名" },
+      "email": { "label": "电邮", "error": "电邮格式无效" },
+      "phone": { "label": "电话", "error": "电话格式无效" },
+      "iaLicense": { "label": "IA 牌照" },
+      "idDocNumber": { "label": "身份证明文件号码" },
+      "idDocType": { "label": "身份证明文件类型" },
+      "idDocTypeOptions": { "HKID": "香港身份证", "PASSPORT": "护照", "PERMIT": "许可证", "OTHER": "其他" },
+      "organization": { "label": "所属机构" },
+      "isMember": { "label": "会员" },
+      "memberId": { "label": "会员编号" },
+      "role": { "label": "角色" },
+      "createdAt": { "label": "注册日期" },
+      "save": "保存",
+      "saving": "保存中...",
+      "saveSuccess": "用户资料已更新",
+      "saveError": "更新用户资料失败",
+      "loading": "加载用户资料中...",
+      "loadingError": "加载用户资料失败"
+    }
   },
   "receipt": {
     "title": "正式收据",
