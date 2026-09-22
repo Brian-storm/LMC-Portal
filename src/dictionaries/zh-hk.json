@@ -476,7 +476,7 @@
       "individualHelperText": "請輸入與您專業牌照上一致的資料。",
       "fullName": "英文全名",
       "fullNamePlaceholder": "例如：CHAN Tai Man",
-      "chineseName": "中文姓名",
+      "chineseName": "中文姓名（如有）",
       "chineseNamePlaceholder": "例如：陳大文",
       "email": "電郵地址",
       "emailPlaceholder": "name@company.com",

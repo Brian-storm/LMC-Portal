@@ -2,7 +2,7 @@
   "id": "AD-008",
   "title": "Admin Users CRUD — 用戶個人資料編輯",
   "content": "Admin Users 頁面目前唯讀，只能檢視用戶列表。新增編輯功能，讓管理員可以修改用戶的個人資料（不可修改付款相關資訊）。\n\n功能需求：\n1. 點擊用戶 row 開啟編輯側欄／對話框（或 inline edit 狀態）\n2. 可編輯欄位：\n   - nameZh（中文姓名）\n   - nameEn（英文姓名）\n   - email\n   - phone\n   - iaLicense（IA 牌照）\n   - idDocNumber（身份證明文件號碼）\n   - idDocType（身份證明文件類型：HKID/PASSPORT/PERMIT/OTHER）\n   - organization（所屬機構）\n   - isMember（是否會員）\n   - memberId（會員編號）\n3. 不可編輯（read-only 或隱藏）：\n   - 所有 registrant/payment 關聯資料（paymentStatus, receiptNumber, receiptPdfData, enrolled schedules）\n   - role（不可將 STUDENT 改為 ADMIN/INSTRUCTOR）\n   - passwordHash\n4. 表單驗證：\n   - email 格式驗證\n   - phone 格式驗證\n   - nameZh/nameEn 必填\n5. 儲存後顯示 toast 通知\n6. Loading / error states\n7. i18n 支援\n\nAPI 需求：\n- PATCH /api/admin/users/[id] — 更新用戶個人資料欄位（僅限上述可編輯欄位，拒絕 payment/registrant 相關欄位更新）\n- GET /api/admin/users/[id] — 回傳完整用戶資料（含 idDocNumber, idDocType, organization, isMember, memberId，這些欄位目前 GET list 未回傳）\n\n注意：不提供 DELETE 功能（保留用戶記錄以維持關聯資料完整性）。\n不建立獨立的「新增用戶」功能（用戶應經由前台註冊流程加入）。",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",

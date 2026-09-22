@@ -480,7 +480,7 @@
       "individualHelperText": "Enter details as they appear on your professional license.",
       "fullName": "Full Name (English)",
       "fullNamePlaceholder": "e.g. CHAN Tai Man",
-      "chineseName": "Chinese Name",
+      "chineseName": "Chinese Name (if any)",
       "chineseNamePlaceholder": "e.g. 陳大文",
       "email": "Email Address",
       "emailPlaceholder": "name@company.com",

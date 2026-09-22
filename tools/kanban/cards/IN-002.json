@@ -1,13 +1,13 @@
 {
   "id": "IN-002",
-  "title": "安裝瀏覽器視覺化工具 (Playwright) 供 AI 驗證 UI",
-  "content": "Add Playwright (headless browser) so the AI agent can visually verify rendered UI output — screenshots, responsive layout checks, status badge rendering, locale switching, accessibility toggles. Without this tool, UI verification is limited to code inspection + lint/typecheck/build only.",
-  "stage": "blocked",
-  "risk": "low",
+  "title": "Dev 環境部署管線 — AWS RDS + Amplify Staging Branch",
+  "content": "Set up a full dev deployment environment on AWS for internal testing before merging to production.\n\nCurrently all environments (dev/staging/prod) share the same production RDS (lmc-cpd-database.chyqcssmq6u2.ap-east-1.rds.amazonaws.com) and there is no dedicated dev branch deployment. This means all code changes must be tested against production data, which is risky and prevents destructive testing.\n\nRequirements:\n1. **Dev RDS**: Provision a separate AWS RDS PostgreSQL instance (e.g. db.t4g.micro, low-cost tier) for dev/staging use\n2. **Amplify staging branch**: Configure an Amplify staging branch (e.g. `dev` branch) that auto-deploys on push, using the dev RDS\n3. **Dev env vars**: Create DATABASE_URL_DEV (or env-specific naming), set in Amplify Console for the staging branch\n4. **Security**: Dev DB security group allows access from Amplify staging branch only (not 0.0.0.0/0); no production data in dev DB — seed with test/synthetic data only\n5. **Docs**: Update AGENTS.md and .env.example with the dev environment setup instructions\n6. **URL**: Dev deployment accessible at a distinct URL (e.g. https://dev.lmc-cpd.example.com or Amplify auto-assigned domain) for internal QA team to test",
+  "stage": "backlog",
+  "risk": "medium",
   "owner": "",
   "agent": "",
-  "approvalRequired": false,
-  "createdAt": "2026-09-18",
+  "approvalRequired": true,
+  "createdAt": "2026-09-22",
   "epic": "基礎設施",
   "userStory": "Amplify 正式環境佈署",
   "track": "infrastructure",
@@ -25,8 +25,8 @@
   "gates": {
     "product": false,
     "ui": false,
-    "architecture": false,
-    "security": false,
+    "architecture": true,
+    "security": true,
     "test": false,
     "code_review": false
   },
@@ -39,9 +39,9 @@
     "pr": ""
   },
   "refs": [
-    "tools/kanban/cards/IN-002.json",
+    ".env.example",
     "AGENTS.md",
-    "package.json"
+    "amplify.yml"
   ],
   "evidence": {
     "commands": [],
