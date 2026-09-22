@@ -44,7 +44,7 @@ export async function GET(
         generalInstructor: { select: { id: true, nameEn: true, nameZh: true } },
         syllabusItems: { orderBy: { sortOrder: "asc" } },
         schedules: { orderBy: { dateAndTime: "asc" } },
-        faqs: { orderBy: { sortOrder: "asc" } },
+        courseFaqs: { orderBy: { sortOrder: "asc" } },
         _count: { select: { registrants: true } },
       },
     });
@@ -96,7 +96,7 @@ export async function PATCH(
     }
 
     const data = parsed.data;
-    const { syllabusItems, schedules, faqs, ...courseData } = data;
+    const { syllabusItems, schedules, courseFaqs, ...courseData } = data;
 
     // Build update payload with Decimal conversion for currency fields
     const updateData: Prisma.CourseUpdateInput = {
@@ -112,7 +112,7 @@ export async function PATCH(
       updateData.unitPrice = new Prisma.Decimal(courseData.unitPrice);
     }
 
-    // Handle nested updates: replace syllabusItems, schedules, faqs if provided
+    // Handle nested updates: replace syllabusItems, schedules, courseFaqs if provided
     if (syllabusItems) {
       updateData.syllabusItems = {
         deleteMany: {},
@@ -125,10 +125,10 @@ export async function PATCH(
         create: schedules,
       };
     }
-    if (faqs) {
-      updateData.faqs = {
+    if (courseFaqs) {
+      updateData.courseFaqs = {
         deleteMany: {},
-        create: faqs,
+        create: courseFaqs,
       };
     }
 
@@ -159,7 +159,7 @@ export async function PATCH(
  *
  * Deletes a course if it has no registrants. If registrants exist, returns 409.
  * On success cascades: deletes syllabusItems, schedules, scheduleInstructors,
- * scheduleTopics, reviews, faqs.
+ * scheduleTopics, reviews, courseFaqs.
  */
 export async function DELETE(
   _request: NextRequest,
@@ -199,7 +199,7 @@ export async function DELETE(
       prisma.schedule.deleteMany({ where: { courseId: id } }),
       prisma.syllabusItem.deleteMany({ where: { courseId: id } }),
       prisma.review.deleteMany({ where: { courseId: id } }),
-      prisma.faq.deleteMany({ where: { courseId: id } }),
+      prisma.courseFaq.deleteMany({ where: { courseId: id } }),
       prisma.course.delete({ where: { id } }),
     ]);
 

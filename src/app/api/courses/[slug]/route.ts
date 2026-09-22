@@ -74,7 +74,7 @@ export async function GET(
           },
         },
         reviews: { orderBy: { date: "desc" } },
-        faqs: { orderBy: { sortOrder: "asc" } },
+        courseFaqs: { orderBy: { sortOrder: "asc" } },
       },
     });
 
@@ -130,7 +130,7 @@ export async function PATCH(
     }
 
     // Separate nested relations from flat course fields
-    const { generalInstructorId, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
+    const { generalInstructorId, syllabusItems, schedules, courseFaqs, ...courseData } = parsed.data;
 
     const course = await prisma.course.update({
       where: { slug },
@@ -149,10 +149,10 @@ export async function PATCH(
               create: schedules,
             }
           : undefined,
-        faqs: faqs
+        courseFaqs: courseFaqs
           ? {
               deleteMany: {},
-              create: faqs,
+              create: courseFaqs,
             }
           : undefined,
       },
@@ -160,7 +160,7 @@ export async function PATCH(
         generalInstructor: true,
         syllabusItems: true,
         schedules: true,
-        faqs: true,
+        courseFaqs: true,
         reviews: true,
       },
     });

@@ -1,0 +1,61 @@
+{
+  "id": "AF-001-D",
+  "title": "Public API: GET /api/faq — published FAQs grouped by category",
+  "content": "公開 API，無需登入，提供已發布的 FAQs 依分類分組回傳。\n\nRoute：\n- GET /api/faq — 回傳陣列，每項包含 category（id, nameZh, nameEn, nameZhCn）與 items（該分類下 isPublished=true 的 FAQs，依 order 排序）\n\nResponse shape：\n{\n  categories: [\n    {\n      category: { id, nameZh, nameEn, nameZhCn },\n      items: [\n        { id, questionZh, questionEn, questionZhCn, answerZh, answerEn, answerZhCn, order }\n      ]\n    }\n  ]\n}\n\n邏輯：\n1. 取出所有 GeneralFaqCategory（依 order 排序）\n2. 對每個 category，查出 isPublished=true 的 GeneralFaq（依 order 排序）\n3. 只包含有 published FAQs 的分類\n\n無 auth 檢查，純 GET 唯讀。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-A"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/faq/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/faq returns { categories: [...] } with published FAQs grouped by category",
+    "Only categories with at least one published FAQ appear in response",
+    "FAQs within each category sorted by `order`",
+    "Unpublished FAQs are excluded",
+    "No auth required (anyone can access)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/faq/route.ts (new — public GET grouped by category)"
+  ],
+  "verification": "curl GET /api/faq returns expected grouped structure with only published FAQs"
+}

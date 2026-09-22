@@ -109,5 +109,5 @@ export interface DetailedCourse extends Course {
   syllabus: SyllabusModule[];
   schedules: ScheduleSession[];
   reviews: CourseReview[];
-  faqs: CourseFAQ[];
+  courseFaqs: CourseFAQ[];
 }

@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
 
     const data = parsed.data;
 
-    // Handle syllabusItems, schedules, faqs via nested create
-    const { syllabusItems, schedules, faqs, ...courseData } = data;
+    // Handle syllabusItems, schedules, courseFaqs via nested create
+    const { syllabusItems, schedules, courseFaqs, ...courseData } = data;
 
     const course = await prisma.course.create({
       data: {
@@ -105,8 +105,8 @@ export async function POST(request: NextRequest) {
         schedules: schedules
           ? { create: schedules }
           : undefined,
-        faqs: faqs
-          ? { create: faqs }
+        courseFaqs: courseFaqs
+          ? { create: courseFaqs }
           : undefined,
       },
       include: {

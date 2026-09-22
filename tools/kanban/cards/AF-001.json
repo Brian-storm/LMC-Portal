@@ -1,12 +1,12 @@
 {
   "id": "AF-001",
   "title": "FAQ 架構基礎 — Prisma 模型 + 管理端 API",
-  "content": "Phase 2 的 FAQ 系統需要資料庫模型與管理端 CRUD API。\n\nPrisma 模型：\n- FAQCategory: id, nameZh, nameEn, nameZhCn, order, createdAt, updatedAt\n- FAQ: id, categoryId (FK → FAQCategory), questionZh, questionEn, questionZhCn, answerZh, answerEn, answerZhCn, order, isPublished, createdAt, updatedAt\n\nAPI Routes (admin only, admin role required):\n- GET /api/admin/faq/categories — all categories ordered\n- POST /api/admin/faq/categories — create category\n- PATCH /api/admin/faq/categories/[id] — update category\n- DELETE /api/admin/faq/categories/[id] — delete category (cascade FAQs or block)\n- GET /api/admin/faq — all FAQs (with category), paginated\n- POST /api/admin/faq — create FAQ\n- PATCH /api/admin/faq/[id] — update FAQ\n- DELETE /api/admin/faq/[id] — delete FAQ\n\nPublic API (no auth):\n- GET /api/faq — published FAQs grouped by category, for public page\n\n⚠️ All API routes must validate with Zod and return 400 on invalid input. Admin routes must check session role === 'ADMIN'.",
-  "stage": "backlog",
+  "content": "DECOMPOSED — this card has been split into 4 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AF-001-A: Prisma Schema — Rename Faq→CourseFaq + Add GeneralFaqCategory & GeneralFaq models + seed + update all rename references\n- AF-001-B: Admin FAQ Categories CRUD API (GET/POST/PATCH/DELETE)\n- AF-001-C: Admin FAQ CRUD API (GET paginated/POST/PATCH/DELETE)\n- AF-001-D: Public FAQ API (GET published FAQs grouped by category, no auth)\n\nOriginal scope:\n- Faq → CourseFaq rename + GeneralFaqCategory + GeneralFaq models in Prisma\n- Admin CRUD routes for categories and FAQs\n- Public GET /api/faq grouped by category\n- Zod validation, admin auth checks, seed data",
+  "stage": "done",
   "risk": "medium",
   "owner": "",
   "agent": "",
-  "approvalRequired": true,
+  "approvalRequired": false,
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "FAQ 管理系統",
@@ -39,6 +39,16 @@
   },
   "refs": [
     "prisma/schema.prisma",
+    "prisma/seed.ts",
+    "src/lib/validation/course.ts",
+    "src/lib/validation/faq.ts",
+    "src/components/courses/types.ts",
+    "src/lib/map-course-detail.ts",
+    "src/components/courses/CourseHiddenSections.tsx",
+    "src/app/api/admin/courses/route.ts",
+    "src/app/api/admin/courses/[id]/route.ts",
+    "src/app/api/courses/route.ts",
+    "src/app/api/courses/[slug]/route.ts",
     "src/app/api/admin/faq/",
     "src/app/api/faq/"
   ],
@@ -47,9 +57,15 @@
     "findings": [],
     "residual": ""
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "Agent",
+      "time": "2026-09-22T00:00:00Z",
+      "text": "Decomposed into 4 sub-cards (AF-001-A through AF-001-D) after plan discussion revealed the card touches 16 files across Prisma schema rename, validation, admin API, and public API."
+    }
+  ],
   "acceptance": [
-    "Prisma migration creates FAQCategory and FAQ tables with all specified fields",
+    "Prisma migration creates GeneralFaqCategory and GeneralFaq tables with all specified fields",
     "GET /api/admin/faq/categories returns all categories ordered by `order`",
     "POST/PATCH/DELETE admin category routes work with proper auth check",
     "GET /api/admin/faq returns paginated FAQs with category relation",
@@ -58,8 +74,10 @@
     "npm run typecheck && npm run lint pass"
   ],
   "files": [
-    "prisma/schema.prisma (update — add FAQCategory + FAQ models)",
-    "prisma/seed.ts (update — add sample FAQ data)",
+    "prisma/schema.prisma (update — rename Faq→CourseFaq, add GeneralFaqCategory + GeneralFaq)",
+    "prisma/seed.ts (update — rename references, add sample general FAQ data)",
+    "src/lib/validation/course.ts (update — faqSchema→courseFaqSchema)",
+    "src/lib/validation/faq.ts (new — general FAQ Zod schemas)",
     "src/app/api/admin/faq/categories/route.ts (new — GET + POST)",
     "src/app/api/admin/faq/categories/[id]/route.ts (new — PATCH + DELETE)",
     "src/app/api/admin/faq/route.ts (new — GET + POST)",

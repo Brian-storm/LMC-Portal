@@ -1,0 +1,78 @@
+{
+  "id": "AF-001-A",
+  "title": "Prisma Schema — Faq→CourseFaq rename + GeneralFaqCategory + GeneralFaq models",
+  "content": "Phase 2 的 FAQ 系統需要獨立的資料庫模型。同時將現有的 course-scoped Faq 更名為 CourseFaq 以釐清職責。\n\nPrisma 變更：\n1. 重新命名現有 Faq model 為 CourseFaq，@@map(\"course_faqs\")，更新 Course 上的關聯欄位名稱\n2. 新增 GeneralFaqCategory model：id, nameZh, nameEn, nameZhCn?, order, createdAt, updatedAt\n3. 新增 GeneralFaq model：id, categoryId (FK→GeneralFaqCategory, cascade), questionZh, questionEn, questionZhCn?, answerZh, answerEn, answerZhCn?, order, isPublished, createdAt, updatedAt\n\n更新所有 rename 參照（14 個檔案）：\n- prisma/seed.ts：faqs → courseFaqs\n- src/lib/validation/course.ts：faqSchema → courseFaqSchema, faqs → courseFaqs in courseCreateSchema\n- src/components/courses/types.ts：DetailedCourse.faqs → DetailedCourse.courseFaqs\n- src/lib/map-course-detail.ts：faqs → courseFaqs, ApiFaq 相關屬性\n- src/components/courses/CourseHiddenSections.tsx：course.faqs → course.courseFaqs\n- src/app/api/admin/courses/route.ts\n- src/app/api/admin/courses/[id]/route.ts\n- src/app/api/courses/route.ts\n- src/app/api/courses/[slug]/route.ts\n\nSeed data：加入示範 GeneralFaqCategory（報名、付款、證書等類別）與 GeneralFaq 條目。\n\n風險：高 — rename 會觸及 14 個檔案與資料庫 migration。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["PS-002"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "prisma/schema.prisma",
+    "prisma/seed.ts",
+    "src/lib/validation/course.ts",
+    "src/components/courses/types.ts",
+    "src/lib/map-course-detail.ts",
+    "src/components/courses/CourseHiddenSections.tsx",
+    "src/app/api/admin/courses/route.ts",
+    "src/app/api/admin/courses/[id]/route.ts",
+    "src/app/api/courses/route.ts",
+    "src/app/api/courses/[slug]/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Prisma migration creates CourseFaq, GeneralFaqCategory, GeneralFaq tables with correct fields and relations",
+    "Existing Faq model renamed to CourseFaq with @@map(\"course_faqs\")",
+    "All 14 files updated to use courseFaqs instead of faqs for course-scoped FAQ references",
+    "Seed creates sample GeneralFaqCategory + GeneralFaq entries",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "prisma/schema.prisma (update — rename Faq→CourseFaq, add GeneralFaqCategory + GeneralFaq)",
+    "prisma/seed.ts (update — rename references, add general FAQ seed data)",
+    "src/lib/validation/course.ts (update — faqSchema→courseFaqSchema)",
+    "src/components/courses/types.ts (update — faqs → courseFaqs)",
+    "src/lib/map-course-detail.ts (update — faqs → courseFaqs)",
+    "src/components/courses/CourseHiddenSections.tsx (update — course.faqs → course.courseFaqs)",
+    "src/app/api/admin/courses/route.ts (update — faqs → courseFaqs)",
+    "src/app/api/admin/courses/[id]/route.ts (update — faqs → courseFaqs)",
+    "src/app/api/courses/route.ts (update — faqs → courseFaqs)",
+    "src/app/api/courses/[slug]/route.ts (update — faqs → courseFaqs)"
+  ],
+  "verification": "npx prisma migrate dev --name add_general_faq && npm run typecheck && npm run lint"
+}

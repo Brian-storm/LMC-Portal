@@ -84,8 +84,8 @@ interface ApiReview {
   date: string;
 }
 
-/** Raw API FAQ with locale-aware fields */
-interface ApiFaq {
+/** Raw API course FAQ with locale-aware fields */
+interface ApiCourseFaq {
   id: string;
   questionZh: string;
   questionEn: string;
@@ -145,7 +145,7 @@ export interface ApiCourseDetail {
   syllabusItems: ApiSyllabusItem[];
   schedules: ApiSchedule[];
   reviews: ApiReview[];
-  faqs: ApiFaq[];
+  courseFaqs: ApiCourseFaq[];
 }
 
 export function mapApiCourseDetail(c: ApiCourseDetail, locale: string): DetailedCourse {
@@ -279,7 +279,7 @@ const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     date: typeof r.date === "string" ? r.date : new Date(r.date).toISOString().slice(0, 10),
   }));
 
-  const faqs: CourseFAQ[] = c.faqs.map((f) => ({
+  const courseFaqs: CourseFAQ[] = c.courseFaqs.map((f) => ({
     id: f.id,
     question: localized(f.questionZh, f.questionEn),
     answer: localized(f.answerZh, f.answerEn),
@@ -324,6 +324,6 @@ const schedules: ScheduleSession[] = c.schedules.map((s) => ({
     syllabus,
     schedules,
     reviews,
-    faqs,
+    courseFaqs,
   };
 }

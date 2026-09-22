@@ -1,0 +1,65 @@
+{
+  "id": "AF-001-C",
+  "title": "Admin API: GeneralFaq CRUD",
+  "content": "一般 FAQ 條目的管理端 CRUD API，均需 admin role 驗證。\n\nZod schemas (append to src/lib/validation/faq.ts)：\n- generalFaqCreateSchema：categoryId, questionZh, questionEn, questionZhCn?, answerZh, answerEn, answerZhCn?, order?, isPublished?\n- generalFaqUpdateSchema：partial() of create schema\n\nRoutes：\n- GET /api/admin/faq — 分頁回傳 FAQs（含 category relation），支援 page/limit query params\n- POST /api/admin/faq — 建立 FAQ，Zod 驗證，回 400 on invalid\n- PATCH /api/admin/faq/[id] — 更新 FAQ，Zod partial 驗證\n- DELETE /api/admin/faq/[id] — 刪除 FAQ\n\nPattern：與 AF-001-B 相同（auth → Zod → try/catch）。GET 支援 page (1-based, default 1) 與 limit (max 100, default 20) 參數，回傳 { generalFaqs, pagination: { page, limit, total, totalPages } }。",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-A"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/validation/faq.ts",
+    "src/app/api/admin/faq/route.ts",
+    "src/app/api/admin/faq/[id]/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/faq returns paginated FAQs with category relation, supports page/limit params",
+    "POST /api/admin/faq creates FAQ with Zod validation, returns 400 on invalid input",
+    "PATCH /api/admin/faq/[id] updates FAQ, returns 404 if not found",
+    "DELETE /api/admin/faq/[id] deletes FAQ",
+    "All routes return 401 without auth, 403 for non-admin users",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/validation/faq.ts (update — add FAQ Zod schemas)",
+    "src/app/api/admin/faq/route.ts (new — GET + POST)",
+    "src/app/api/admin/faq/[id]/route.ts (new — PATCH + DELETE)"
+  ],
+  "verification": "npm run typecheck && curl with valid admin token: GET/POST/PATCH/DELETE FAQs"
+}

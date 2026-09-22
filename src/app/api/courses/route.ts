@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Separate nested relations from flat course fields
-    const { generalInstructorId, syllabusItems, schedules, faqs, ...courseData } = parsed.data;
+    const { generalInstructorId, syllabusItems, schedules, courseFaqs, ...courseData } = parsed.data;
 
     const existing = await prisma.course.findUnique({ where: { slug: courseData.slug } });
     if (existing) {
@@ -169,15 +169,15 @@ export async function POST(request: NextRequest) {
         schedules: schedules?.length
           ? { create: schedules }
           : undefined,
-        faqs: faqs?.length
-          ? { create: faqs }
+        courseFaqs: courseFaqs?.length
+          ? { create: courseFaqs }
           : undefined,
       },
       include: {
         generalInstructor: true,
         syllabusItems: true,
         schedules: true,
-        faqs: true,
+        courseFaqs: true,
       },
     });
 

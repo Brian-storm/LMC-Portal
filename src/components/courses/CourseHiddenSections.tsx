@@ -39,7 +39,7 @@ export function CourseInstructors({ dict, course }: CourseHiddenSectionsProps) {
 }
 
 export function CourseFaqs({ dict, course }: CourseHiddenSectionsProps) {
-  if (!course.faqs || course.faqs.length === 0) return null;
+  if (!course.courseFaqs || course.courseFaqs.length === 0) return null;
 
   return (
     <section id="faqs" className="bg-white border border-slate-300 rounded-xs p-4 sm:p-5 shadow-2xs">
@@ -48,7 +48,7 @@ export function CourseFaqs({ dict, course }: CourseHiddenSectionsProps) {
         <span>{dict.sections?.faqs}</span>
       </h2>
       <div className="space-y-2">
-        {course.faqs.map((faq) => (
+        {course.courseFaqs.map((faq) => (
           <details key={faq.id} className="group border border-slate-300 rounded-xs bg-slate-50 p-3">
             <summary className="cursor-pointer font-semibold text-slate-800 list-none flex justify-between items-center text-sm">
               <span>{faq.question}</span>

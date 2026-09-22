@@ -22,7 +22,7 @@ const scheduleSchema = z.object({
   isActive: z.boolean().default(true),
 });
 
-const faqSchema = z.object({
+const courseFaqSchema = z.object({
   questionZh: z.string().min(1, "questionZh is required"),
   questionEn: z.string().min(1, "questionEn is required"),
   answerZh: z.string().min(1, "answerZh is required"),
@@ -66,7 +66,7 @@ export const courseCreateSchema = z.object({
   feeDescriptionCn: z.string().optional(),
   syllabusItems: z.array(syllabusItemSchema).optional(),
   schedules: z.array(scheduleSchema).optional(),
-  faqs: z.array(faqSchema).optional(),
+  courseFaqs: z.array(courseFaqSchema).optional(),
 });
 
 export type CourseCreateInput = z.infer<typeof courseCreateSchema>;

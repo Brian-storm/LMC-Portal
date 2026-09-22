@@ -135,7 +135,7 @@ model Course {
   syllabusItems     SyllabusItem[]
   schedules         Schedule[]
   reviews           Review[]
-  faqs              Faq[]
+  courseFaqs          CourseFaq[]
   registrants       Registrant[]
 
   @@map("courses")
@@ -220,18 +220,51 @@ model Review {
   @@map("reviews")
 }
 
-model Faq {
-  id        String @id @default(cuid())
-  courseId  String
+model CourseFaq {
+  id         String @id @default(cuid())
+  courseId   String
   questionZh String
   questionEn String
-  answerZh  String
-  answerEn  String
-  sortOrder Int    @default(0)
+  answerZh   String
+  answerEn   String
+  sortOrder  Int    @default(0)
 
   course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@map("faqs")
+}
+
+model GeneralFaqCategory {
+  id        String   @id @default(cuid())
+  nameZh    String
+  nameEn    String
+  nameZhCn  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  generalFaqs GeneralFaq[]
+
+  @@map("general_faq_categories")
+}
+
+model GeneralFaq {
+  id         String             @id @default(cuid())
+  categoryId String
+  questionZh String
+  questionEn String
+  questionZhCn String?
+  answerZh   String
+  answerEn   String
+  answerZhCn String?
+  order      Int                @default(0)
+  isPublished Boolean           @default(false)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  category   GeneralFaqCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("general_faqs")
 }
 
 model Registrant {

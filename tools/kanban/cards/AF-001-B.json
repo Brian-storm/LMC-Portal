@@ -1,0 +1,65 @@
+{
+  "id": "AF-001-B",
+  "title": "Admin API: GeneralFaqCategory CRUD",
+  "content": "一般 FAQ 分類的管理端 CRUD API，均需 admin role 驗證。\n\nZod schemas (在 src/lib/validation/faq.ts)：\n- generalFaqCategoryCreateSchema：nameZh, nameEn, nameZhCn?, order?\n- generalFaqCategoryUpdateSchema：partial() of create schema\n\nRoutes：\n- GET /api/admin/faq/categories — 回傳所有分類，依 order 排序\n- POST /api/admin/faq/categories — 建立分類，Zod 驗證，回 400 on invalid\n- PATCH /api/admin/faq/categories/[id] — 更新分類，Zod partial 驗證\n- DELETE /api/admin/faq/categories/[id] — 刪除分類，cascade 刪除旗下 FAQs（onDelete: Cascade）\n\nPattern（依既有慣例）：\n- auth() 檢查 session.user.role === 'ADMIN'，否則 403\n- Zod safeParse → 400 with flatten().fieldErrors\n- try/catch → console.error → 500\n- Next.js 16 params: Promise pattern",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-A"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/validation/faq.ts",
+    "src/app/api/admin/faq/categories/route.ts",
+    "src/app/api/admin/faq/categories/[id]/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/faq/categories returns all categories ordered by `order`",
+    "POST /api/admin/faq/categories creates category with Zod validation, returns 400 on invalid input",
+    "PATCH /api/admin/faq/categories/[id] updates category, returns 404 if not found",
+    "DELETE /api/admin/faq/categories/[id] deletes category and cascades FAQs",
+    "All routes return 401 without auth, 403 for non-admin users",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/validation/faq.ts (new — category Zod schemas)",
+    "src/app/api/admin/faq/categories/route.ts (new — GET + POST)",
+    "src/app/api/admin/faq/categories/[id]/route.ts (new — PATCH + DELETE)"
+  ],
+  "verification": "npm run typecheck && curl with valid admin token: GET/POST/PATCH/DELETE categories"
+}

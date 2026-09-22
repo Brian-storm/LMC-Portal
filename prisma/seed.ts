@@ -257,7 +257,7 @@ async function main() {
           date: new Date("2026-07-10"),
         },
       },
-      faqs: {
+      courseFaqs: {
         create: [
           {
             questionZh: "此課程可否申報CPD時數？",
@@ -496,7 +496,7 @@ async function main() {
           date: new Date("2026-08-01"),
         },
       },
-      faqs: {
+      courseFaqs: {
         create: [
           {
             questionZh: "此課程如何申報CPD時數？",
@@ -709,7 +709,108 @@ async function main() {
   }
   console.log("Feature flags seeded");
 
-  console.log("Seed completed successfully");
+  // ─── General FAQ categories & entries ──────────────────────────
+  const faqCategory1 = await prisma.generalFaqCategory.upsert({
+    where: { id: "gen-faq-cat-registration" },
+    update: {},
+    create: {
+      id: "gen-faq-cat-registration",
+      nameZh: "報名與註冊",
+      nameEn: "Registration & Enrollment",
+      nameZhCn: "报名与注册",
+      order: 1,
+    },
+  });
+  const faqCategory2 = await prisma.generalFaqCategory.upsert({
+    where: { id: "gen-faq-cat-payment" },
+    update: {},
+    create: {
+      id: "gen-faq-cat-payment",
+      nameZh: "付款方式",
+      nameEn: "Payment Methods",
+      nameZhCn: "付款方式",
+      order: 2,
+    },
+  });
+  const faqCategory3 = await prisma.generalFaqCategory.upsert({
+    where: { id: "gen-faq-cat-certificate" },
+    update: {},
+    create: {
+      id: "gen-faq-cat-certificate",
+      nameZh: "證書與CPD時數",
+      nameEn: "Certificates & CPD Hours",
+      nameZhCn: "证书与CPD学时",
+      order: 3,
+    },
+  });
+
+  // Create sample FAQs for each category
+  await prisma.generalFaq.upsert({
+    where: { id: "gen-faq-reg-1" },
+    update: {},
+    create: {
+      id: "gen-faq-reg-1",
+      categoryId: faqCategory1.id,
+      questionZh: "如何報名課程？",
+      questionEn: "How do I enroll in a course?",
+      questionZhCn: "如何报名课程？",
+      answerZh: "您可以瀏覽課程列表，選擇心儀課程後點擊「立即報名」按鈕，填寫所需資料即可完成報名。",
+      answerEn: "Browse the course catalog, select your desired course, click 'Enroll Now', and fill in the required information.",
+      answerZhCn: "您可以浏览课程列表，选择心仪课程后点击「立即报名」按钮，填写所需资料即可完成报名。",
+      order: 1,
+      isPublished: true,
+    },
+  });
+  await prisma.generalFaq.upsert({
+    where: { id: "gen-faq-reg-2" },
+    update: {},
+    create: {
+      id: "gen-faq-reg-2",
+      categoryId: faqCategory1.id,
+      questionZh: "報名後可以取消嗎？",
+      questionEn: "Can I cancel my enrollment?",
+      questionZhCn: "报名后可以取消吗？",
+      answerZh: "請聯繫我們的客服團隊處理取消事宜。取消政策可能因課程而異，詳情請參閱個別課程頁面。",
+      answerEn: "Please contact our support team to process cancellations. Cancellation policies may vary by course; see the specific course page for details.",
+      answerZhCn: "请联系我们的客服团队处理取消事宜。取消政策可能因课程而异，详情请参阅个别课程页面。",
+      order: 2,
+      isPublished: true,
+    },
+  });
+  await prisma.generalFaq.upsert({
+    where: { id: "gen-faq-pay-1" },
+    update: {},
+    create: {
+      id: "gen-faq-pay-1",
+      categoryId: faqCategory2.id,
+      questionZh: "接受哪些付款方式？",
+      questionEn: "What payment methods are accepted?",
+      questionZhCn: "接受哪些付款方式？",
+      answerZh: "我們接受轉數快(FPS)、銀行轉賬、支票及公司賬單等多種付款方式。",
+      answerEn: "We accept FPS (Fast Payment System), bank transfer, cheque, and corporate invoice among other payment methods.",
+      answerZhCn: "我们接受转数快(FPS)、银行转账、支票及公司账单等多种付款方式。",
+      order: 1,
+      isPublished: true,
+    },
+  });
+  await prisma.generalFaq.upsert({
+    where: { id: "gen-faq-cert-1" },
+    update: {},
+    create: {
+      id: "gen-faq-cert-1",
+      categoryId: faqCategory3.id,
+      questionZh: "如何獲得CPD證書？",
+      questionEn: "How do I obtain a CPD certificate?",
+      questionZhCn: "如何获得CPD证书？",
+      answerZh: "完成課程並達到100%出席率後，電子證書(PDF)將於3至5個工作天內透過電郵發出。",
+      answerEn: "Upon completing the course with 100% attendance, an electronic certificate (PDF) will be issued via email within 3-5 business days.",
+      answerZhCn: "完成课程并达到100%出席率后，电子证书(PDF)将于3至5个工作天内通过电邮发出。",
+      order: 1,
+      isPublished: true,
+    },
+  });
+
+  console.log("General FAQ seed data created");
 }
 
 main()
