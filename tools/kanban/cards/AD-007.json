@@ -48,7 +48,8 @@
   ],
   "evidence": { "commands": [], "findings": [], "residual": "AD-006 will also add search/batch UI — coordinate on DataTable shell and FilterTabs if both touch same files." },
   "comments": [
-    { "name": "Agent", "time": "2026-09-21T12:00:00Z", "text": "Card updated to reflect AD-005 completion. src/components/admin/ already has 10 components. Scope narrowed to patterns still duplicated inline. AdminFilterBar and AdminBatchToolbar removed from scope — belong to AD-006 as feature work, not pure refactoring." }
+    { "name": "Agent", "time": "2026-09-21T12:00:00Z", "text": "Card updated to reflect AD-005 completion. src/components/admin/ already has 10 components. Scope narrowed to patterns still duplicated inline. AdminFilterBar and AdminBatchToolbar removed from scope — belong to AD-006 as feature work, not pure refactoring." },
+    { "name": "Agent", "time": "2026-09-22T12:00:00Z", "text": "Decomposed into 3 sub-cards per implementation plan: AD-007-1 (core components), AD-007-2 (dialog/filter/pagination), AD-007-3 (page refactoring). This card remains as the parent planning card." }
   ],
   "acceptance": [
     "AdminDataTable component extracted — used by courses, enrolments, and dashboard pages with identical rendering",
@@ -71,6 +72,6 @@
     "src/app/[locale]/admin/enrolments/page.tsx (refactor — use AdminDataTable, AdminPageHeader, AdminPagination)",
     "src/app/[locale]/admin/courses/page.tsx (refactor — use AdminDataTable, AdminPageHeader, ConfirmActionDialog)"
   ],
-  "dependencies": "",
+  "dependencies": "Decomposed into sub-cards: AD-007-1 (core components), AD-007-2 (dialog/filter/pagination), AD-007-3 (page refactoring). Execute in order 1 → 2 → 3.",
   "verification": "npm run typecheck && npm run lint && all admin pages render identically before and after refactor."
 }

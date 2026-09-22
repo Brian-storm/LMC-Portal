@@ -48,6 +48,9 @@
     "src/dictionaries/types.ts (update — add user edit keys to AdminDict)"
   ],
   "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [
+    { "name": "Agent", "time": "2026-09-22T12:00:00Z", "text": "Decomposed into 3 sub-cards per implementation plan: AD-008-1 (backend API), AD-008-2 (UserEditDialog + i18n), AD-008-3 (integration). This card remains as the parent planning card. Medium risk — requires human approval before implementation." }
+  ],
   "acceptance": [
     "GET /api/admin/users/[id] returns full user profile with all editable fields",
     "PATCH /api/admin/users/[id] updates allowed fields only (rejects payment/registrant fields)",

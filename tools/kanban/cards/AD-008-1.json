@@ -1,0 +1,64 @@
+{
+  "id": "AD-008-1",
+  "title": "Backend API — GET + PATCH /api/admin/users/[id]",
+  "content": "Create API routes for editing individual user profiles.\n\n## GET /api/admin/users/[id]\nReturn full user profile including fields not returned by the list endpoint:\n- Returns: { id, nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId, role, createdAt }\n- 404 if user not found\n- ADMIN role guard\n\n## PATCH /api/admin/users/[id]\nUpdate user profile with strict field allowlist.\n\n### Allowed fields (partial update supported):\n- nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId\n\n### Fields to reject (return 400):\n- role (cannot change user role from STUDENT)\n- passwordHash (never expose)\n- Any registrant/payment-related fields (paymentStatus, receiptNumber, receiptPdfData, etc.)\n\n### Validation:\n- Email: regex validation\n- Phone: format validation\n- nameZh/nameEn: required (if provided, must be non-empty)\n- idDocType: must be one of HKID/PASSPORT/PERMIT/OTHER if provided\n\n### Response:\n- Returns updated user object\n- 404 if user not found\n- 400 on validation failure or rejected fields\n\nADMIN role guard on both routes.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-004", "AD-007-3"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/api/admin/users/[id]/route.ts (new — GET + PATCH)",
+    "prisma/schema.prisma — User model fields for reference"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Frontend UserEditDialog created in AD-008-2. Integration in AD-008-3." },
+  "comments": [
+    { "name": "Agent", "time": "2026-09-22T12:00:00Z", "text": "Server-side field allowlist is critical. Must explicitly reject role, passwordHash, and all registrant/payment fields regardless of what the client sends." }
+  ],
+  "acceptance": [
+    "GET /api/admin/users/[id] returns full profile with all editable fields",
+    "GET /api/admin/users/[id] returns 404 for nonexistent user",
+    "PATCH /api/admin/users/[id] updates allowed fields only (nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId)",
+    "PATCH /api/admin/users/[id] rejects role, passwordHash, and any registrant/payment fields with 400",
+    "PATCH validates email format, phone format, required nameZh/nameEn",
+    "PATCH returns 404 for nonexistent user",
+    "Both routes require ADMIN role",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/api/admin/users/[id]/route.ts (new — GET single user + PATCH update)"
+  ],
+  "dependencies": "AD-004 provides the base users list page. AD-007-3 refactors users/page.tsx to avoid merge conflicts.",
+  "verification": "npm run typecheck && npm run lint && use curl/Postman to test GET returns full profile, PATCH updates allowed fields, verifies rejected fields return 400."
+}

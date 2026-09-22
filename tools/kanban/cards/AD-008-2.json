@@ -1,0 +1,74 @@
+{
+  "id": "AD-008-2",
+  "title": "UserEditDialog Component + i18n Dict Keys",
+  "content": "Create the UserEditDialog component and add required dictionary keys for all three locales.\n\n## UserEditDialog\nA dialog/side-panel component for editing user profile fields.\n\n### Editable fields:\n- nameZh (text input, required)\n- nameEn (text input, required)\n- email (text input, required, email validation)\n- phone (text input, required, phone validation)\n- iaLicense (text input, optional)\n- idDocNumber (text input, optional)\n- idDocType (select: HKID/PASSPORT/PERMIT/OTHER, optional)\n- organization (text input, optional)\n- isMember (checkbox, optional)\n- memberId (text input, optional, shown only when isMember checked)\n\n### Read-only display fields:\n- role (display only, no edit)\n- createdAt (display only)\n\n### States:\n- Loading: skeleton placeholders while fetching user data\n- Saving: spinner on save button, fields disabled\n- Success: toast notification, dialog closes\n- Error: toast notification with error message\n- Validation: inline error messages on each field\n\n## i18n\nAdd a userEdit section to AdminDict with keys:\n- title (edit user)\n- nameZh.label, nameZh.error (required)\n- nameEn.label, nameEn.error\n- email.label, email.error (invalid format)\n- phone.label, phone.error (invalid format)\n- iaLicense.label\n- idDocNumber.label\n- idDocType.label, idDocType.options.HKID/PASSPORT/PERMIT/OTHER\n- organization.label\n- isMember.label\n- memberId.label\n- role.label\n- createdAt.label\n- save / saving / saveSuccess / saveError\n- loading / loadingError\n\nDoes NOT wire into users page — that is AD-008-3.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-008-1"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/admin/UserEditDialog.tsx (new)",
+    "src/dictionaries/en.json (update — add userEdit section)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add keys to AdminDict)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Integration into users page happens in AD-008-3." },
+  "comments": [],
+  "acceptance": [
+    "UserEditDialog renders all editable fields (nameZh, nameEn, email, phone, iaLicense, idDocNumber, idDocType, organization, isMember, memberId)",
+    "UserEditDialog shows role and createdAt as read-only",
+    "Email validation works with inline error message",
+    "Phone validation works with inline error message",
+    "nameZh/nameEn show required validation error when empty",
+    "idDocType is a select with HKID/PASSPORT/PERMIT/OTHER options",
+    "memberId input appears/disappears based on isMember checkbox",
+    "Loading state shows skeleton while fetching",
+    "Saving state shows spinner on save button",
+    "Success shows toast",
+    "Error shows toast",
+    "All labels use dict keys (en, zh-hk, zh-cn)",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/UserEditDialog.tsx (new)",
+    "src/dictionaries/en.json (update — add userEdit section)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add keys to AdminDict)"
+  ],
+  "dependencies": "AD-008-1 provides the API routes (GET + PATCH) that this component calls.",
+  "verification": "npm run typecheck && npm run lint && render component in isolation with mock API, verify all states (loading/saving/success/error/validation)."
+}

@@ -1,0 +1,70 @@
+{
+  "id": "AD-007-3",
+  "title": "Refactor Admin Pages — replace inline patterns with shared components",
+  "content": "Refactor all admin pages to use the shared components created in AD-007-1 and AD-007-2. No behavior change — purely replace inline code with component usage.\n\n## Pages to refactor:\n\n### admin/page.tsx (dashboard)\n- Replace inline <h1> + <p> header with AdminPageHeader\n- Replace 4 inline stat cards with AdminStatCard instances\n- Replace inline table shell (loading/error/empty states + table wrapper) with AdminDataTable\n\n### admin/enrolments/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline loading/error/empty states + table wrapper with AdminDataTable\n- Replace inline pagination with AdminPagination\n- Still uses AdminFilterTabs (previously EnrolmentFilters, renamed in AD-007-2)\n\n### admin/courses/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline table shell with AdminDataTable\n- Replace inline delete dialog with ConfirmActionDialog\n\n### admin/courses/new/page.tsx\n- Replace inline header (back link + title) with AdminPageHeader\n\n### admin/courses/[id]/edit/page.tsx\n- Replace inline header with AdminPageHeader\n\n### admin/users/page.tsx\n- Replace inline page header with AdminPageHeader\n- Replace inline table shell with AdminDataTable\n- Replace inline pagination with AdminPagination\n\nPure refactoring — no behavior change.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "refactor",
+  "dependsOn": ["AD-007-1", "AD-007-2"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/page.tsx (refactor)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor)",
+    "src/app/[locale]/admin/courses/new/page.tsx (refactor)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (refactor)",
+    "src/app/[locale]/admin/users/page.tsx (refactor)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "AD-008 will further modify users/page.tsx to add edit functionality." },
+  "comments": [],
+  "acceptance": [
+    "Dashboard uses AdminPageHeader, AdminStatCard (x4), AdminDataTable",
+    "Enrolments page uses AdminPageHeader, AdminDataTable, AdminPagination",
+    "Courses list page uses AdminPageHeader, AdminDataTable, ConfirmActionDialog",
+    "Courses new/edit pages use AdminPageHeader",
+    "Users page uses AdminPageHeader, AdminDataTable, AdminPagination",
+    "All pages render identically before and after refactor",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/page.tsx (refactor — use AdminStatCard, AdminPageHeader, AdminDataTable)",
+    "src/app/[locale]/admin/enrolments/page.tsx (refactor — use AdminDataTable, AdminPageHeader, AdminPagination)",
+    "src/app/[locale]/admin/courses/page.tsx (refactor — use AdminDataTable, AdminPageHeader, ConfirmActionDialog)",
+    "src/app/[locale]/admin/courses/new/page.tsx (refactor — use AdminPageHeader)",
+    "src/app/[locale]/admin/courses/[id]/edit/page.tsx (refactor — use AdminPageHeader)",
+    "src/app/[locale]/admin/users/page.tsx (refactor — use AdminDataTable, AdminPageHeader, AdminPagination)"
+  ],
+  "dependencies": "AD-007-1 provides AdminDataTable, AdminStatCard, AdminPageHeader. AD-007-2 provides ConfirmActionDialog, AdminFilterTabs, AdminPagination.",
+  "verification": "npm run typecheck && npm run lint && manually verify each admin page renders identically in browser."
+}

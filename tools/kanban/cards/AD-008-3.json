@@ -1,0 +1,58 @@
+{
+  "id": "AD-008-3",
+  "title": "Integration — Wire UserEditDialog into Users Page",
+  "content": "Integrate the UserEditDialog into the admin users page. Adds row-click handler to open the edit dialog, and handles save/refresh cycle.\n\n## Changes to users/page.tsx\n1. Add row click handler — clicking a user row opens UserEditDialog\n2. Add UserEditDialog component import and state management\n3. On successful save: close dialog, refresh user list, show toast\n4. On error: show toast, keep dialog open\n\n## Key integration points:\n- Use AdminDataTable's row click capability (or add an action column with edit button)\n- Manage dialog open/close state and selected user ID\n- After successful PATCH, refetch the users list to reflect changes\n- Coordinate with shared components from AD-007 (AdminPageHeader, AdminPagination, AdminDataTable)\n\nNo new components — only wiring existing pieces together.",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "track": "feature",
+  "dependsOn": ["AD-007-3", "AD-008-2"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/users/page.tsx (refactor — add edit dialog integration)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "" },
+  "comments": [],
+  "acceptance": [
+    "Clicking a user row opens UserEditDialog with prefilled data",
+    "Dialog displays correct user data fetched from GET /api/admin/users/[id]",
+    "Successful save closes dialog and refreshes the users list",
+    "Failed save shows error toast, dialog stays open",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/users/page.tsx (refactor — add row click handler, edit dialog integration)"
+  ],
+  "dependencies": "AD-007-3 refactors users/page.tsx to use AdminDataTable, AdminPageHeader, AdminPagination. AD-008-2 provides UserEditDialog component.",
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/users → click user row → edit dialog opens → modify fields → save → toast confirms → list refreshes."
+}

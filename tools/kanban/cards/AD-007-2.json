@@ -1,0 +1,66 @@
+{
+  "id": "AD-007-2",
+  "title": "Shared Dialog, Filter Tabs, Pagination — ConfirmActionDialog, AdminFilterTabs, AdminPagination",
+  "content": "Create or refactor three shared admin components from existing patterns.\n\n## ConfirmActionDialog — generic confirm dialog\nExtracted from inline delete dialog in courses/page.tsx, and used as base for RejectDialog.\n- Dialog wrapper (shadcn Dialog) with title, description, confirm/cancel buttons\n- Shows loading state on confirm button\n- Props: { open, onOpenChange, title, description, onConfirm, confirmLabel?, cancelLabel?, loading? }\n- RejectDialog refactored to extend this base\n\n## AdminFilterTabs — generalized from EnrolmentFilters\n- EnrolmentFilters.tsx is hardcoded to payment statuses (ALL/Pending/Verified/Rejected)\n- Generalize to accept array of { label, value, count? }\n- Props: { tabs: { label, value, count? }[], selected, onChange }\n- Rename file from EnrolmentFilters.tsx to AdminFilterTabs.tsx\n\n## AdminPagination — renamed from EnrolmentPagination\n- EnrolmentPagination is already nearly generic\n- Rename to AdminPagination, update all imports\n- Props unchanged: { page, totalPages, onPageChange }\n\nPure refactoring — no behavior change.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "refactor",
+  "dependsOn": ["AD-007", "AD-007-1"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/admin/ConfirmActionDialog.tsx (new)",
+    "src/components/admin/AdminFilterTabs.tsx (rename from EnrolmentFilters, generalize)",
+    "src/components/admin/AdminPagination.tsx (rename from EnrolmentPagination)",
+    "src/components/admin/RejectDialog.tsx (refactor — use ConfirmActionDialog base)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Existing pages (enrolments) still reference EnrolmentFilters and EnrolmentPagination — will be updated in AD-007-3." },
+  "comments": [],
+  "acceptance": [
+    "ConfirmActionDialog renders with title, description, confirm/cancel buttons",
+    "ConfirmActionDialog shows loading spinner on confirm button when loading=true",
+    "AdminFilterTabs accepts configurable tab definitions (label, value, count)",
+    "AdminFilterTabs highlights selected tab and calls onChange",
+    "AdminPagination renders prev/next buttons with page info, triggers onPageChange",
+    "RejectDialog uses shared ConfirmActionDialog base",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/ConfirmActionDialog.tsx (new)",
+    "src/components/admin/AdminFilterTabs.tsx (rename + generalize EnrolmentFilters)",
+    "src/components/admin/AdminPagination.tsx (rename from EnrolmentPagination)",
+    "src/components/admin/RejectDialog.tsx (refactor — use ConfirmActionDialog)"
+  ],
+  "dependencies": "AD-007 is the parent. AD-007-1 provides AdminDataTable pattern conventions.",
+  "verification": "npm run typecheck && npm run lint && verify each component renders correctly in isolation."
+}

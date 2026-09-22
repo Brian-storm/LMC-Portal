@@ -1,0 +1,64 @@
+{
+  "id": "AD-007-1",
+  "title": "Core Admin Components — AdminDataTable, AdminStatCard, AdminPageHeader",
+  "content": "Create three reusable admin components extracted from inline patterns across admin pages.\n\n## AdminDataTable — generic table shell\nExtracted from patterns in dashboard, enrolments, courses, and users pages.\n- Loading state: centered spinner skeleton\n- Error state: AlertCircle icon + error message + Retry button\n- Empty state: configurable emptyMessage\n- Normal: wraps <section> + <div className=\"overflow-x-auto\"> + <table> structure\n- Props: { loading, error, onRetry, emptyMessage, columns, rows, keyExtractor }\n\n## AdminStatCard — dashboard stat card\nExtracted from the 4 inline stat cards in admin/page.tsx.\n- Card with icon, label, value, optional trend arrow (up/down)\n- Props: { icon: LucideIcon, label: string, value: string | number, trend?: number, trendUp?: boolean }\n\n## AdminPageHeader — page title + back link + CTA\nExtracted from courses/new, courses/edit, enrolments, dashboard, users pages.\n- Consistent <header> with optional back link (<ArrowLeft>), title <h1>, optional CTA button\n- Props: { title: string, backHref?: string, cta?: ReactNode }\n\nPure refactoring — no behavior change. No page modifications in this card.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin UI 重新設計",
+  "track": "refactor",
+  "dependsOn": ["AD-007"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/admin/AdminDataTable.tsx (new)",
+    "src/components/admin/AdminStatCard.tsx (new)",
+    "src/components/admin/AdminPageHeader.tsx (new)"
+  ],
+  "evidence": { "commands": [], "findings": [], "residual": "Pages will be refactored in AD-007-3 to use these components." },
+  "comments": [],
+  "acceptance": [
+    "AdminDataTable renders loading skeleton when loading=true",
+    "AdminDataTable shows error message + retry button when error prop is set",
+    "AdminDataTable displays emptyMessage when rows is empty",
+    "AdminDataTable renders table rows with provided columns and keyExtractor",
+    "AdminStatCard renders icon, label, value, and optional trend indicator",
+    "AdminPageHeader renders title, optional back link, and optional CTA",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/AdminDataTable.tsx (new)",
+    "src/components/admin/AdminStatCard.tsx (new)",
+    "src/components/admin/AdminPageHeader.tsx (new)"
+  ],
+  "dependencies": "AD-007 is the parent planning card.",
+  "verification": "npm run typecheck && npm run lint && import and render each component in isolation to verify visual correctness."
+}
