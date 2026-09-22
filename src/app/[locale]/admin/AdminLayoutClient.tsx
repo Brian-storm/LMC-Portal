@@ -10,6 +10,7 @@ import {
   BookOpen,
   Users,
   Settings,
+  HelpCircle,
   LogOut,
   Menu,
   X,
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
   { key: "enrolments", href: "/enrolments", icon: ClipboardList },
   { key: "courses", href: "/courses", icon: BookOpen },
   { key: "users", href: "/users", icon: Users },
+  { key: "faqNav", href: "/faq", icon: HelpCircle },
   { key: "settingsNav", href: "/settings", icon: Settings },
 ] as const;
 
