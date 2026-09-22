@@ -650,6 +650,7 @@
     "enrolments": "報名記錄",
     "courses": "課程管理",
     "users": "用戶管理",
+    "settingsNav": "設定",
     "totalEnrolments": "總報名人數",
     "pendingVerification": "待審核",
     "verified": "已核實",
@@ -816,6 +817,12 @@
       "saveError": "更新用戶資料失敗",
       "loading": "載入用戶資料中...",
       "loadingError": "載入用戶資料失敗"
+    },
+    "settings": {
+      "title": "系統設定",
+      "loading": "正在載入功能開關...",
+      "noFlags": "暫無功能開關。",
+      "sectionTitle": "功能開關"
     }
   },
   "receipt": {

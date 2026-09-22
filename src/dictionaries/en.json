@@ -654,6 +654,7 @@
     "enrolments": "Enrolments",
     "courses": "Courses",
     "users": "Users",
+    "settingsNav": "Settings",
     "totalEnrolments": "Total Enrolments",
     "pendingVerification": "Pending Verification",
     "verified": "Verified",
@@ -820,6 +821,12 @@
       "saveError": "Failed to update user",
       "loading": "Loading user data...",
       "loadingError": "Failed to load user data"
+    },
+    "settings": {
+      "title": "Settings",
+      "loading": "Loading feature flags...",
+      "noFlags": "No feature flags found.",
+      "sectionTitle": "Feature Flags"
     }
   },
   "receipt": {

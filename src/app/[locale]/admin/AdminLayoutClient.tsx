@@ -9,12 +9,14 @@ import {
   ClipboardList,
   BookOpen,
   Users,
+  Settings,
   LogOut,
   Menu,
   X,
 } from "lucide-react";
 import type { AdminDict } from "@/dictionaries/types";
 import { AdminDictProvider } from "@/components/admin/AdminDictContext";
+import { FeatureFlagsProvider } from "@/components/admin/FeatureFlagsContext";
 
 interface AdminLayoutClientProps {
   children: React.ReactNode;
@@ -27,6 +29,7 @@ const NAV_ITEMS = [
   { key: "enrolments", href: "/enrolments", icon: ClipboardList },
   { key: "courses", href: "/courses", icon: BookOpen },
   { key: "users", href: "/users", icon: Users },
+  { key: "settingsNav", href: "/settings", icon: Settings },
 ] as const;
 
 export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientProps) {
@@ -131,7 +134,9 @@ export function AdminLayoutClient({ children, locale, dict }: AdminLayoutClientP
           </span>
         </div>
         <AdminDictProvider dict={dict}>
-          {children}
+          <FeatureFlagsProvider>
+            {children}
+          </FeatureFlagsProvider>
         </AdminDictProvider>
       </main>
     </div>

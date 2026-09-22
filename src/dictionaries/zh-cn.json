@@ -650,6 +650,7 @@
     "enrolments": "报名记录",
     "courses": "课程管理",
     "users": "用户管理",
+    "settingsNav": "设置",
     "totalEnrolments": "总报名人数",
     "pendingVerification": "待审核",
     "verified": "已核实",
@@ -816,6 +817,12 @@
       "saveError": "更新用户资料失败",
       "loading": "加载用户资料中...",
       "loadingError": "加载用户资料失败"
+    },
+    "settings": {
+      "title": "系统设置",
+      "loading": "正在加载功能开关...",
+      "noFlags": "暂无功能开关。",
+      "sectionTitle": "功能开关"
     }
   },
   "receipt": {

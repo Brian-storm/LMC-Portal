@@ -686,6 +686,29 @@ async function main() {
     },
   });
 
+  console.log("Admin user seeded");
+
+  // Feature flags — default all Phase 2 flags to false
+  const featureFlags = [
+    { key: "ff_faq", description: "FAQ 系統（AF-001 ~ AF-004）" },
+    { key: "ff_chatbot", description: "網站聊天機器人（AF-005 ~ AF-007）" },
+    { key: "ff_whatsapp", description: "WhatsApp Business 整合（AF-008 ~ AF-009）" },
+    { key: "ff_certificates", description: "自動化證書系統（AF-010 ~ AF-012）" },
+    { key: "ff_alipay", description: "Alipay 金流整合（AF-013 ~ AF-015）" },
+    { key: "ff_email_system", description: "SES 郵件系統正式化（AF-016 ~ AF-018）" },
+    { key: "ff_data_import_export", description: "資料匯入匯出（AF-019 ~ AF-022）" },
+    { key: "ff_analytics_dashboard", description: "進階分析儀表板（AF-023）" },
+    { key: "ff_bulk_email", description: "批量電郵活動（AF-024 ~ AF-025）" },
+  ];
+  for (const ff of featureFlags) {
+    await prisma.featureFlag.upsert({
+      where: { key: ff.key },
+      update: {},
+      create: { key: ff.key, enabled: false, description: ff.description },
+    });
+  }
+  console.log("Feature flags seeded");
+
   console.log("Seed completed successfully");
 }
 

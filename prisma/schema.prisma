@@ -295,3 +295,12 @@ model Admin {
 
   @@map("admins")
 }
+
+model FeatureFlag {
+  key         String   @id
+  enabled     Boolean  @default(false)
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_flags")
+}
