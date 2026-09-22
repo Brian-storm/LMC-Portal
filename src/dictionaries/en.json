@@ -661,6 +661,7 @@
   "admin": {
     "dashboard": "Dashboard",
     "enrolments": "Enrolments",
+    "payments": "Payments",
     "courses": "Courses",
     "users": "Users",
     "settingsNav": "Settings",
@@ -809,6 +810,13 @@
     "batchSuccess": "{count} enrolment(s) updated",
     "batchPartial": "{updated} updated, {skipped} skipped (already processed)",
     "batchSelectHint": "Select enrolments to batch approve or reject",
+    "exportCsv": "Export CSV",
+    "exportExcel": "Export Excel",
+    "exportSuccess": "Export completed",
+    "exportFailed": "Export failed",
+    "exportTooLarge": "Data exceeds 10,000 rows. Please narrow your search criteria.",
+    "paymentsDescription": "View and export payment records",
+    "paymentsExportHint": "Use the export buttons above to download payment records in CSV or Excel format.",
     "userEdit": {
       "title": "Edit User",
       "nameZh": { "label": "Chinese Name", "error": "Chinese name is required" },

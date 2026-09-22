@@ -30,7 +30,7 @@
     "code_review": true
   },
   "links": {
-    "featureSpec": "",
+    "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af020.md",
     "screenSpec": "",
     "mockupDecision": "",
     "taskCard": "",
@@ -41,12 +41,26 @@
     "src/app/api/admin/enrolments/export/route.ts",
     "src/app/api/admin/payments/export/route.ts",
     "src/app/[locale]/admin/enrolments/page.tsx",
-    "src/app/[locale]/admin/payments/page.tsx"
+    "src/app/[locale]/admin/payments/page.tsx",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm run typecheck",
+      "npm run lint"
+    ],
+    "findings": [
+      "GET /api/admin/enrolments/export?format=csv|xlsx — supports status, courseId, startDate, endDate, search filters",
+      "GET /api/admin/payments/export?format=csv|xlsx — supports status, paymentMethod, startDate, endDate filters",
+      "Enrolments page has Export CSV + Export Excel buttons in header",
+      "Payments page created with Export CSV + Export Excel buttons",
+      "Admin sidebar nav updated with Payments link (DollarSign icon)",
+      "Large dataset (>10000 rows) returns 413 with error message",
+      "File naming: lmc-enrolments-{date}.csv / lmc-payments-{date}.xlsx",
+      "Dictionary keys added to en, zh-hk, zh-cn",
+      "typecheck passes (0 errors), lint passes (0 new warnings)"
+    ],
+    "residual": "Payments page is minimal (info + export only). Full payment listing table is deferred — export is the primary action. Background email delivery for >10K rows is not implemented (MVP returns error message instead)."
   },
   "comments": [],
   "acceptance": [
@@ -64,11 +78,11 @@
     "src/app/api/admin/enrolments/export/route.ts (new — export enrolments to CSV/Excel)",
     "src/app/api/admin/payments/export/route.ts (new — export payments to CSV/Excel)",
     "src/app/[locale]/admin/enrolments/page.tsx (update — add export buttons)",
-    "src/app/[locale]/admin/payments/page.tsx (update — add export buttons)",
+    "src/app/[locale]/admin/payments/page.tsx (new — payments page with export buttons)",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx (update — add Payments nav item)",
     "src/dictionaries/en.json (update — add export UI keys)",
     "src/dictionaries/zh-hk.json (update)",
-    "src/dictionaries/zh-cn.json (update)",
-    "src/dictionaries/types.ts (update — add export dict keys)"
+    "src/dictionaries/zh-cn.json (update)"
   ],
   "verification": "npm run typecheck && npm run lint && visit /en/admin/enrolments → click Export CSV → file downloads and opens correctly in Excel."
 }

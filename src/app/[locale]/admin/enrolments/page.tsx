@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
-import { ShieldAlert, Search, X, DollarSign } from "lucide-react";
+import { ShieldAlert, Search, X, DollarSign, Download } from "lucide-react";
 import { useAdminDict } from "@/components/admin/AdminDictContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,6 +75,9 @@ export default function AdminEnrolmentsPage() {
   const [batchConfirmApprove, setBatchConfirmApprove] = useState(false);
   const [batchRejectOpen, setBatchRejectOpen] = useState(false);
   const [batchRejectReason, setBatchRejectReason] = useState("");
+
+  // ── Export state ──
+  const [exporting, setExporting] = useState<"csv" | "xlsx" | null>(null);
 
   // ── Fetch enrolments from the API ──
 
@@ -270,6 +273,46 @@ export default function AdminEnrolmentsPage() {
     }
   };
 
+  // ── Export handler ──
+  const handleExport = async (format: "csv" | "xlsx") => {
+    setExporting(format);
+    try {
+      const params = new URLSearchParams();
+      params.set("format", format);
+      if (statusFilter !== "ALL") params.set("status", statusFilter);
+      if (debouncedSearch) params.set("search", debouncedSearch);
+
+      const res = await fetch(`/api/admin/enrolments/export?${params.toString()}`);
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        if (res.status === 413) {
+          addToast({ title: dict.exportTooLarge ?? "Data exceeds 10,000 rows. Please narrow your filters.", variant: "warning" });
+          return;
+        }
+        throw new Error(errData.error || `Export failed: ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `lmc-enrolments-${new Date().toISOString().split("T")[0]}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      addToast({ title: dict.exportSuccess ?? "Export completed", variant: "success" });
+    } catch (err) {
+      console.error("Export failed:", err);
+      addToast({
+        title: dict.exportFailed ?? "Export failed",
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "danger",
+      });
+    } finally {
+      setExporting(null);
+    }
+  };
+
   const handleApprove = async (id: string, groupId?: string | null) => {
     setApprovingId(id);
     try {
@@ -357,6 +400,30 @@ export default function AdminEnrolmentsPage() {
             <p className="text-xs text-slate-500">
               { dict.reviewDescription }
             </p>
+          </div>
+          {/* Export buttons */}
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              loading={exporting === "csv"}
+              disabled={exporting !== null}
+              onClick={() => handleExport("csv")}
+              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+            >
+              <Download className="w-4 h-4 mr-1.5" />
+              {dict.exportCsv ?? "Export CSV"}
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              loading={exporting === "xlsx"}
+              disabled={exporting !== null}
+              onClick={() => handleExport("xlsx")}
+            >
+              <Download className="w-4 h-4 mr-1.5" />
+              {dict.exportExcel ?? "Export Excel"}
+            </Button>
           </div>
         </header>
 

@@ -657,6 +657,7 @@
   "admin": {
     "dashboard": "仪表板",
     "enrolments": "报名记录",
+    "payments": "付款记录",
     "courses": "课程管理",
     "users": "用户管理",
     "settingsNav": "设置",
@@ -805,6 +806,13 @@
     "batchSuccess": "{count} 项报名已更新",
     "batchPartial": "{updated} 项更新，{skipped} 项跳过（已处理）",
     "batchSelectHint": "选择报名以进行批量核准或拒绝",
+    "exportCsv": "导出 CSV",
+    "exportExcel": "导出 Excel",
+    "exportSuccess": "导出完成",
+    "exportFailed": "导出失败",
+    "exportTooLarge": "数据超过 10,000 行，请缩小查询范围。",
+    "paymentsDescription": "查看及导出付款记录",
+    "paymentsExportHint": "使用上方导出按钮下载 CSV 或 Excel 格式的付款记录。",
     "userEdit": {
       "title": "编辑用户",
       "nameZh": { "label": "中文姓名", "error": "请填写中文姓名" },

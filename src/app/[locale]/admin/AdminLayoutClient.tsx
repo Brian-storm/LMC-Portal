@@ -14,6 +14,7 @@ import {
   LogOut,
   Menu,
   X,
+  DollarSign,
 } from "lucide-react";
 import type { AdminDict } from "@/dictionaries/types";
 import { AdminDictProvider } from "@/components/admin/AdminDictContext";
@@ -28,6 +29,7 @@ interface AdminLayoutClientProps {
 const NAV_ITEMS = [
   { key: "dashboard", href: "", icon: LayoutDashboard },
   { key: "enrolments", href: "/enrolments", icon: ClipboardList },
+  { key: "payments", href: "/payments", icon: DollarSign },
   { key: "courses", href: "/courses", icon: BookOpen },
   { key: "users", href: "/users", icon: Users },
   { key: "faqNav", href: "/faq", icon: HelpCircle },
