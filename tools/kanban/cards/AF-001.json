@@ -1,7 +1,7 @@
 {
   "id": "AF-001",
   "title": "FAQ 架構基礎 — Prisma 模型 + 管理端 API",
-  "content": "DECOMPOSED — this card has been split into 4 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AF-001-A: Prisma Schema — Rename Faq→CourseFaq + Add GeneralFaqCategory & GeneralFaq models + seed + update all rename references\n- AF-001-B: Admin FAQ Categories CRUD API (GET/POST/PATCH/DELETE)\n- AF-001-C: Admin FAQ CRUD API (GET paginated/POST/PATCH/DELETE)\n- AF-001-D: Public FAQ API (GET published FAQs grouped by category, no auth)\n\nOriginal scope:\n- Faq → CourseFaq rename + GeneralFaqCategory + GeneralFaq models in Prisma\n- Admin CRUD routes for categories and FAQs\n- Public GET /api/faq grouped by category\n- Zod validation, admin auth checks, seed data",
+  "content": "DECOMPOSED — this card has been split into 5 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AF-001-A: Prisma Schema — Rename Faq→CourseFaq + Add GeneralFaqCategory & GeneralFaq models + seed + update all rename references\n- AF-001-B: Admin FAQ Categories CRUD API (GET/POST/PATCH/DELETE)\n- AF-001-C: Admin FAQ CRUD API (GET paginated/POST/PATCH/DELETE)\n- AF-001-D: Public FAQ API (GET published FAQs grouped by category, no auth)\n- AF-001-E: CourseFaq standalone API routes for course edit page (GET/POST/PATCH/DELETE under /api/admin/courses/[courseId]/faqs)\n\nOriginal scope:\n- Faq → CourseFaq rename + GeneralFaqCategory + GeneralFaq models in Prisma\n- Admin CRUD routes for categories and FAQs\n- Public GET /api/faq grouped by category\n- Zod validation, admin auth checks, seed data",
   "stage": "done",
   "risk": "medium",
   "owner": "",

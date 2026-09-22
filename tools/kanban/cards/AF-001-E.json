@@ -1,0 +1,66 @@
+{
+  "id": "AF-001-E",
+  "title": "CourseFaq standalone API routes for course edit page",
+  "content": "The course edit page needs individual CRUD for course-specific FAQs (CourseFaq). Currently FAQs are only manageable via nested replace-all on the course. Add dedicated routes under /api/admin/courses/[courseId]/faqs.\n\nRoutes:\n- GET /api/admin/courses/[courseId]/faqs — list all FAQs for a course, ordered by sortOrder\n- POST /api/admin/courses/[courseId]/faqs — create a new FAQ for a course (Zod validated)\n- PATCH /api/admin/courses/[courseId]/faqs/[faqId] — update a single FAQ (Zod partial)\n- DELETE /api/admin/courses/[courseId]/faqs/[faqId] — delete a single FAQ\n\nZod schemas: append courseFaqCreateSchema/courseFaqUpdateSchema to src/lib/validation/course.ts\n\nAdmin auth (session.user.role === 'ADMIN') required on all routes.\n\nThe frontend is located at /[locale]/admin/courses/[id]/edit.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-A"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": true,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/validation/course.ts",
+    "src/app/api/admin/courses/[id]/faqs/route.ts",
+    "src/app/api/admin/courses/[id]/faqs/[faqId]/route.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /api/admin/courses/[courseId]/faqs returns all FAQs for a course ordered by sortOrder",
+    "POST /api/admin/courses/[courseId]/faqs creates a FAQ, returns 201",
+    "PATCH /api/admin/courses/[courseId]/faqs/[faqId] updates a FAQ, returns 404 if not found",
+    "DELETE /api/admin/courses/[courseId]/faqs/[faqId] deletes a FAQ, returns 404 if not found",
+    "All routes require admin auth (401/403)",
+    "Zod validation returns 400 with fieldErrors on invalid input",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/validation/course.ts (update — add courseFaqCreateSchema/courseFaqUpdateSchema)",
+    "src/app/api/admin/courses/[id]/faqs/route.ts (new — GET + POST)",
+    "src/app/api/admin/courses/[id]/faqs/[faqId]/route.ts (new — PATCH + DELETE)"
+  ],
+  "verification": "npm run typecheck && curl GET/POST/PATCH/DELETE with valid admin token"
+}

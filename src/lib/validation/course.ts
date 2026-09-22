@@ -30,6 +30,22 @@ const courseFaqSchema = z.object({
   sortOrder: z.number().int().min(0).default(0),
 });
 
+// ── CourseFaq standalone CRUD schemas ──
+
+export const courseFaqCreateSchema = z.object({
+  questionZh: z.string().min(1, "questionZh is required"),
+  questionEn: z.string().min(1, "questionEn is required"),
+  answerZh: z.string().min(1, "answerZh is required"),
+  answerEn: z.string().min(1, "answerEn is required"),
+  sortOrder: z.number().int().min(0).default(0),
+});
+
+export type CourseFaqCreateInput = z.infer<typeof courseFaqCreateSchema>;
+
+export const courseFaqUpdateSchema = courseFaqCreateSchema.partial();
+
+export type CourseFaqUpdateInput = z.infer<typeof courseFaqUpdateSchema>;
+
 // Reference to an existing instructor — optional direct ID on the course
 export const courseCreateSchema = z.object({
   slug: z
