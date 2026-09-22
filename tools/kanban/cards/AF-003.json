@@ -10,7 +10,7 @@
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "FAQ 管理系統",
-  "dependsOn": ["AF-001"],
+  "dependsOn": ["AF-001-D"],
   "order": 3,
   "readiness": {
     "problem_clear": true,

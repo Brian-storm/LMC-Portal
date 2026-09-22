@@ -1,7 +1,7 @@
 {
   "id": "AF-002",
   "title": "FAQ 管理端 UI — 類別 + 問題 CRUD 頁面",
-  "content": "在 Admin 後台建立 FAQ 管理介面：\n\n頁面：\n- /admin/faq — 主頁，顯示 FAQ 類別列表（可展開）及每個類別下的問題列表\n- /admin/faq/categories/new — 新增類別表單\n- /admin/faq/categories/[id]/edit — 編輯類別\n- /admin/faq/new — 新增問題（可選類別、輸入三語 Q&A）\n- /admin/faq/[id]/edit — 編輯問題\n- 刪除操作：類別刪除需確認對話框（提示將影響底下問題），問題刪除需確認\n\n功能需求：\n- 類別可拖曳排序 (order field)\n- 問題在列表可拖曳排序\n- 問題可切換發布/隱藏狀態 (isPublished toggle)\n- Loading / error / empty states\n- i18n 支援（使用 AdminDict 現有模式）\n- 表單驗證（Zod schema 對應 API）\n- Toasty 通知（成功/錯誤）\n\n⚠️ 依賴 AF-001 的 API routes。",
+  "content": "在 Admin 後台建立 FAQ 管理介面，使用已實作的 API 路由：\n\n後端 API 已就緒（AF-001-A/B/C/E）：\n- GET/POST/PATCH/DELETE /api/admin/faq/categories — GeneralFaqCategory CRUD\n- GET/POST/PATCH/DELETE /api/admin/faq — GeneralFaq CRUD（GET 支援分頁）\n- GET/POST /api/admin/courses/[courseId]/faqs + PATCH/DELETE [faqId] — CourseFaq CRUD（位於課程編輯頁）\n\n頁面：\n- /admin/faq — 主頁，顯示 GeneralFaqCategory 列表（可展開）及每個類別下的 GeneralFaq 問題列表\n- /admin/faq/categories/new — 新增類別表單（三語 nameZh/En/ZhCn, order）\n- /admin/faq/categories/[id]/edit — 編輯類別\n- /admin/faq/new — 新增問題（可選類別、輸入三語 Q&A、發布狀態開關）\n- /admin/faq/[id]/edit — 編輯問題\n- 刪除操作：類別刪除需確認對話框（提示將 cascade 刪除旗下問題），問題刪除需確認\n\n功能需求：\n- 類別可拖曳排序 (order field)\n- 問題在列表可拖曳排序\n- 問題可切換發布/隱藏狀態 (isPublished toggle)\n- Loading / error / empty states\n- i18n 支援（使用 AdminDict 現有模式）\n- 表單驗證（Zod schema 來自 src/lib/validation/faq.ts）\n- Toasty 通知（成功/錯誤）\n\n⚠️ CourseFaq 管理位於課程編輯頁（/admin/courses/[id]/edit），非獨立 FAQ 頁面。",
   "stage": "backlog",
   "risk": "medium",
   "owner": "",
@@ -10,7 +10,7 @@
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "FAQ 管理系統",
-  "dependsOn": ["AF-001"],
+  "dependsOn": ["AF-001-B", "AF-001-C"],
   "order": 2,
   "readiness": {
     "problem_clear": true,
@@ -40,6 +40,7 @@
   "refs": [
     "src/app/[locale]/admin/faq/",
     "src/app/api/admin/faq/",
+    "src/lib/validation/faq.ts",
     "src/dictionaries/en.json (admin.faq section)",
     "src/dictionaries/zh-hk.json",
     "src/dictionaries/zh-cn.json",

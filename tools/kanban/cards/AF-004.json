@@ -1,7 +1,7 @@
 {
   "id": "AF-004",
   "title": "FAQ 端到端串接驗證",
-  "content": "將 FAQ 系統所有部分（管理端 API → 管理端 UI → 公開 API → 公開頁面）串接並驗證完整流程。\n\n驗證項目：\n1. Admin 建立類別（三語）→ 類別出現在列表\n2. Admin 建立問題（三語，選擇類別）→ 問題出現在類別下\n3. Admin 切換發布狀態 → 公開頁面顯示/隱藏對應\n4. Admin 編輯類別/問題 → 更新正確反映\n5. Admin 刪除類別/問題 → 正確移除\n6. 公開頁面手風琴展開/收起正常\n7. 公開頁面搜尋過濾正常\n8. 公開頁面 URL hash 導航正常\n9. 三語切換正確\n10. Loading / error / empty states 正確顯示\n\n此卡為純驗證，不包含程式碼變更（除修復發現的 bug 外）。",
+  "content": "將 FAQ 系統所有部分（管理端 API → 管理端 UI → 公開 API → 公開頁面）串接並驗證完整流程。\n\n後端已實作完成（AF-001-A~E）：\n- GeneralFaqCategory + GeneralFaq Prisma models + migration\n- GeneralFaqCategory CRUD /api/admin/faq/categories\n- GeneralFaq CRUD /api/admin/faq（分頁）\n- CourseFaq CRUD /api/admin/courses/[courseId]/faqs\n- 公開 GET /api/faq（已發布 FAQ 依分類分組）\n- Zod validation in src/lib/validation/faq.ts\n\n驗證項目：\n1. Admin 建立類別（三語 nameZh/En/ZhCn）→ 類別出現在列表\n2. Admin 建立問題（三語 Q&A，選擇類別）→ 問題出現在類別下\n3. Admin 切換發布狀態 → 公開頁面顯示/隱藏對應\n4. Admin 編輯類別/問題 → 更新正確反映\n5. Admin 刪除類別 → cascade 刪除旗下問題\n6. Admin 刪除問題 → 正確移除\n7. 公開頁面手風琴展開/收起正常\n8. 公開頁面搜尋過濾正常\n9. 公開頁面 URL hash 導航正常\n10. 三語切換正確\n11. Loading / error / empty states 正確顯示\n12. CourseFaq 在課程編輯頁可獨立新增/編輯/刪除\n\n此卡為純驗證，不包含程式碼變更（除修復發現的 bug 外）。",
   "stage": "backlog",
   "risk": "low",
   "owner": "",
