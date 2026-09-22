@@ -1,8 +1,8 @@
 {
   "id": "AF-003",
   "title": "FAQ 公開頁面 — 分類手風琴式 FAQ",
-  "content": "建立公開 FAQ 頁面，從 GET /api/faq 取得已發布的 FAQ 資料，以分類手風琴（accordion）樣式呈現。\n\n位置：/[locale]/faq\n\n功能需求：\n- 頁面標題、metadata (generateMetadata) 可設定\n- 類別作為區段標題顯示\n- 每個問題可點擊展開/收起答案（手風琴互動）\n- 支援 URL hash 直接展開特定問題（如 /faq#faq-{id}）\n- 搜尋框可過濾問題（前端即時過濾）\n- i18n 支援（dict 提供頁面標籤文字，FAQ 內容已三語儲存）\n- Loading skeleton\n- Error state（API 失敗時顯示 retry 按鈕）\n- Empty state（無 FAQ 時顯示提示）\n- RWD 支援（電腦 + 手機）\n- Breadcrumbs\n\n⚠️ 依賴 AF-001 的 GET /api/faq。",
-  "stage": "backlog",
+  "content": "DECOMPOSED — this card has been split into 3 sub-cards. Do not implement from this card.\n\nSub-cards:\n- AF-003-A: FAQ Dictionary & Types — i18n keys + FaqPageDict type + breadcrumbs.faq\n- AF-003-B: FAQ Accordion Client Component — accordion, search, URL hash, loading/error/empty states\n- AF-003-C: FAQ Public Page — server component page.tsx, metadata, API fetch, breadcrumbs assembly\n\nOriginal scope:\nPublic FAQ page at /[locale]/faq with categorized accordion, search, URL hash navigation, loading/error/empty states, i18n, breadcrumbs, RWD.",
+  "stage": "done",
   "risk": "low",
   "owner": "",
   "agent": "",
@@ -47,7 +47,13 @@
     "findings": [],
     "residual": ""
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "Agent",
+      "time": "2026-09-22T00:00:00Z",
+      "text": "Decomposed into 3 sub-cards (AF-003-A, AF-003-B, AF-003-C) as pure frontend split: dict/types → accordion component → page assembly."
+    }
+  ],
   "acceptance": [
     "GET /[locale]/faq renders published FAQs grouped by category",
     "Accordion interaction: click question → expand answer, click again → collapse",

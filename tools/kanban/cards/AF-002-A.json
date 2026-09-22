@@ -1,0 +1,72 @@
+{
+  "id": "AF-002-A",
+  "title": "FAQ Admin 基礎建設：字典 + 導航 + 共用表單元件",
+  "content": "建立 FAQ 管理系統所需的基礎設施，供後續子卡片使用。\n\n範圍：\n1. 字典檔：在 en.json / zh-hk.json / zh-cn.json 新增 admin.faq.* 區段（~30 個 key）\n   - faq, faqList, newCategory, editCategory, newQuestion, editQuestion\n   - categoryNameZh/En/ZhCn, categoryOrder\n   - questionCategory, questionZh/En/ZhCn, answerZh/En/ZhCn\n   - isPublished, unpublished\n   - noCategories, noQuestions, deleteCategoryWarning, deleteQuestionWarning\n   - toastCategoryCreated/Updated/Deleted, toastQuestionCreated/Updated/Deleted, toastTogglePublished\n   - saveCategory, saveQuestion, createCategory, createQuestion\n   - confirmDeleteCategory, confirmDeleteQuestion, questionsCount\n2. types.ts：將 admin.faq 的 keys 納入 AdminDict（不需新 slice 型別，AdminDict 已是 Dictionary['admin']）\n3. AdminLayoutClient.tsx：在 NAV_ITEMS 新增 FAQ 導航項目\n   - { key: \"faq\", href: \"/faq\", icon: HelpCircle }\n   - 需 import HelpCircle from lucide-react\n4. FaqCategoryForm.tsx：共用類別表單元件（src/components/admin/）\n   - Props: mode: \"create\" | \"edit\", initialData?, onSuccess?\n   - 欄位：nameZh, nameEn, nameZhCn, order (number)\n   - Zod 驗證：generalFaqCategoryCreateSchema\n   - POST /api/admin/faq/categories 或 PATCH /api/admin/faq/categories/[id]\n   - 遵循 CourseForm 模式：useState, handleChange, useAdminDict, useToast, useRouter\n   - 三欄 grid 布局（nameZh/En/ZhCn）+ order input\n5. FaqQuestionForm.tsx：共用問題表單元件（src/components/admin/）\n   - Props: mode: \"create\" | \"edit\", categories: Category[] (for selector), initialData?, onSuccess?\n   - 欄位：categoryId (select), questionZh/En/ZhCn, answerZh/En/ZhCn, isPublished (toggle)\n   - Zod 驗證：generalFaqCreateSchema\n   - POST /api/admin/faq 或 PATCH /api/admin/faq/[id]\n   - 跟 CourseForm 完全一致的 input/label/error/section styling class\n\n依賴：AF-001-B, AF-001-C（API routes 已就緒）",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-B", "AF-001-C"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx",
+    "src/components/admin/FaqCategoryForm.tsx (new)",
+    "src/components/admin/FaqQuestionForm.tsx (new)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "en.json / zh-hk.json / zh-cn.json 皆有完整的 admin.faq 區段",
+    "FAQ 導航項出現在 Admin 側邊欄，點擊到 /en/admin/faq (或 zh-hk/zh-cn)",
+    "FaqCategoryForm 可獨立渲染，支援 create/edit mode，表單檢核正確",
+    "FaqQuestionForm 可獨立渲染，category selector 列出所有類別，表單檢核正確",
+    "兩個 form 元件都會發出正確的 POST/PATCH API 呼叫",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/dictionaries/en.json (update — add admin.faq keys)",
+    "src/dictionaries/zh-hk.json (update — add admin.faq keys)",
+    "src/dictionaries/zh-cn.json (update — add admin.faq keys)",
+    "src/app/[locale]/admin/AdminLayoutClient.tsx (update — add FAQ nav item)",
+    "src/components/admin/FaqCategoryForm.tsx (new — shared category form)",
+    "src/components/admin/FaqQuestionForm.tsx (new — shared question form)"
+  ],
+  "verification": "npm run typecheck && npm run lint && check sidebar has FAQ link, forms mount without crash"
+}

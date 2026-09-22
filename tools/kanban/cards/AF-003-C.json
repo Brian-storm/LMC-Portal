@@ -1,0 +1,63 @@
+{
+  "id": "AF-003-C",
+  "title": "FAQ Public Page — server component page.tsx with metadata",
+  "content": "Create the public FAQ page at `/[locale]/faq`.\n\nServer component that:\n1. `generateMetadata`: uses `dict.faqPage.pageTitle` + `dict.faqPage.pageDescription` per locale\n2. Page component:\n   - Resolves `locale` from `params`\n   - Gets `dict` via `getDictionary(locale)`\n   - Fetches data from `GET ${baseUrl}/api/faq` with `fetch(..., { cache: \"no-store\" })`\n   - Renders `<Breadcrumbs currentLocale={locale} items={[faq]} dict={dict.breadcrumbs} />`\n   - Renders `<FAQAccordion categories={data.categories} dict={dict.faqPage} locale={locale} />`\n   - Each category item uses locale-aware field selection (e.g., `question${localeSuffix}`)\n3. Follows existing public page patterns (About, Contact, Terms pages)\n\nAPI response shape (from AF-001-D):\n```\n{ categories: [{ category: { id, nameZh, nameEn, nameZhCn }, items: [{ id, questionZh, questionEn, questionZhCn, answerZh, answerEn, answerZhCn, order }] }] }\n```\n\nLocale suffix mapping:\n- `en` → use `*En` fields\n- `zh-hk` → use `*Zh` fields\n- `zh-cn` → use `*ZhCn` fields\n\nNo inline error/loading/empty handling — those are delegated to FAQAccordion (AF-003-B).",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-D", "AF-003-B"],
+  "order": 3,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/faq/page.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /[locale]/faq loads and shows categorized FAQs",
+    "Page title and meta description set per locale (dict.faqPage)",
+    "Breadcrumbs show Home > FAQ",
+    "FAQAccordion receives correctly locale-mapped data",
+    "Locale-aware field selection works for en, zh-hk, zh-cn",
+    "API fetch uses no-store (fresh data every request)",
+    "npm run typecheck && npm run lint pass",
+    "Visit /en/faq, /zh-hk/faq, /zh-cn/faq — all render with correct locale text"
+  ],
+  "files": [
+    "src/app/[locale]/faq/page.tsx (new — public FAQ page server component)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/faq — renders with breadcrumbs + accordion"
+}

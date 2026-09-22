@@ -1,0 +1,68 @@
+{
+  "id": "AF-002-D",
+  "title": "FAQ Admin 主頁：類別展開 + 問題列表 + 狀態切換 + 刪除",
+  "content": "建立 FAQ 管理主頁，顯示所有類別的可展開區段，每個區段內列出該類別的問題。\n\n頁面：/admin/faq/page.tsx\n\n功能需求：\n1. 資料載入\n   - GET /api/admin/faq/categories → 所有類別（依 order 排序）\n   - GET /api/admin/faq?limit=500 → 所有問題（附 category.id）\n   - 前端以 category.id 分組，每個類別下顯示其問題\n\n2. 頁面結構\n   - AdminPageHeader: title={dict.faq}, cta = 兩個按鈕（新增類別 + 新增問題）\n   - 類別列表：每個類別為一個可點擊展開/收合的區段\n   - 展開的類別下顯示問題表格\n\n3. 類別區段（accordion-style）\n   - 類別名稱（依 locale 顯示對應 nameZh/En/ZhCn）\n   - 問題數量 badge（{count} questions）\n   - 展開/收合箭頭圖示\n   - 右側操作區：編輯（Pencil icon, link to /categories/[id]/edit）、刪除（Trash2）\n\n4. 問題列表（在展開的類別區段內）\n   - 每個問題一行：questionZh（截斷）+ isPublished toggle\n   - 右側操作：編輯（Pencil, link to /faq/[id]/edit）、刪除（Trash2）\n\n5. isPublished toggle\n   - 切換開關按鈕（同 course list page 的 toggle pattern）\n   - PATCH /api/admin/faq/[id] with { isPublished: !current }\n   - 即時更新本地狀態 + toast 通知\n\n6. 刪除操作\n   - 類別刪除：ConfirmActionDialog，warning 提示「將 cascade 刪除旗下所有問題」\n   - DELETE /api/admin/faq/categories/[id] → 移除本地類別及其所有問題\n   - 問題刪除：ConfirmActionDialog，確認訊息\n   - DELETE /api/admin/faq/[id] → 移除本地問題\n   - 成功後 toast\n\n7. States\n   - Loading: Loader2 spinner (min-h-[60vh])\n   - Error: AlertCircle + error message + Retry button\n   - Empty（無類別）: HelpCircle icon + {dict.noCategories} + CTA create category\n   - Empty（類別無問題）: 在類別區段內顯示 {dict.noQuestions}\n\n模式：完全遵循 admin/courses/page.tsx 的 pattern（useState, useEffect, fetch, ConfirmActionDialog, AdminPageHeader, locale display logic）\n\n依賴 AF-002-A（dict/nav 已就緒）, AF-002-B（類別 CRUD 頁面存在）, AF-002-C（問題 CRUD 頁面存在）",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-002-A", "AF-002-B", "AF-002-C"],
+  "order": 4,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/faq/page.tsx",
+    "src/components/admin/ConfirmActionDialog.tsx",
+    "src/components/admin/AdminPageHeader.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "/en/admin/faq 顯示所有類別，每個類別可點擊展開顯示其問題",
+    "問題列表中有 isPublished toggle，切換即更新",
+    "類別刪除對話框含 cascade 警告文字",
+    "問題刪除對話框含確認文字",
+    "Loading spinner 在 API 載入期間顯示",
+    "Error state 顯示訊息 + Retry 按鈕",
+    "Empty state（無類別）顯示提示 + 新增類別 CTA",
+    "類別無問題時顯示 'no questions' 提示",
+    "所有標籤使用 dict（支援 en, zh-hk, zh-cn）",
+    "問題文字依 locale 顯示對應語言",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/faq/page.tsx (new — main FAQ management page)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/faq — create categories + questions first, then verify expand/collapse, toggle, delete all work."
+}

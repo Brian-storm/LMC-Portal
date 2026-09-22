@@ -1,0 +1,67 @@
+{
+  "id": "AF-003-A",
+  "title": "FAQ Dictionary & Types — i18n keys for public FAQ page",
+  "content": "Add the `faqPage` dictionary keys and `FaqPageDict` type for the public FAQ page, plus `breadcrumbs.faq` key.\n\nNew keys in all 3 dictionary JSON files (en, zh-hk, zh-cn):\n```\nfaqPage: {\n  pageTitle: \"Frequently Asked Questions\",\n  pageDescription: \"Find answers to common questions...\",\n  searchPlaceholder: \"Search questions...\",\n  noResults: \"No questions match your search.\",\n  emptyState: \"No FAQs available at this time.\",\n  loadingMessage: \"Loading FAQs...\"\n}\n\nbreadcrumbs: {\n  ...existing,\n  faq: \"FAQ\"\n}\n```\n\nTypes update: add `FaqPageDict = Dictionary[\"faqPage\"]` to types.ts\n\nNo UI code. Only dictionary JSON files + types.ts.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-D"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "en.json has `faqPage` object with all required keys",
+    "zh-hk.json has `faqPage` with translated Chinese values",
+    "zh-cn.json has `faqPage` with simplified Chinese values",
+    "All 3 dictionaries have `breadcrumbs.faq` key",
+    "types.ts exports `FaqPageDict` type",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/dictionaries/en.json (update — add faqPage + breadcrumbs.faq)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — add FaqPageDict export)"
+  ],
+  "verification": "npm run typecheck && npm run lint"
+}

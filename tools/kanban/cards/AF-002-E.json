@@ -1,0 +1,63 @@
+{
+  "id": "AF-002-E",
+  "title": "FAQ Admin 拖曳排序（@dnd-kit 整合）",
+  "content": "為 FAQ 管理主頁的類別列表與問題列表加入拖曳排序功能，使用 @dnd-kit 系列套件。\n\n工作範圍：\n1. 安裝依賴\n   npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities\n\n2. 類別拖曳排序\n   - 用 DndContext + SortableContext + useSortable 包住類別區段\n   - 拖曳完成後，計算新的 order 值\n   - 逐個 PATCH /api/admin/faq/categories/[id] 更新每個類別的 order\n   - 或者批次更新（目前 API 不支援 batch，需逐個 PATCH）\n\n3. 問題拖曳排序（同類別內）\n   - 每個類別區段內的問題列表使用獨立的 DndContext / SortableContext\n   - 拖曳完成後，更新受影響問題的 order 值\n   - 逐個 PATCH /api/admin/faq/[id] 更新 order\n\n4. 視覺回饋\n   - 拖曳時項目顯示 DragOverlay 或半透明 ghost\n   - 拖曳手柄（GripVertical 或 GripHorizontal icon from lucide-react）\n   - 排序後即時更新 UI 順序\n\n5. 限制\n   - 只在主頁面（/admin/faq）啟用拖曳\n   - 類別拖曳垂直排列\n   - 問題只在所屬類別內拖曳（不跨類別移動）\n\n依賴 AF-002-D（需主頁面結構已存在才能加入 DnD）",
+  "stage": "backlog",
+  "risk": "medium",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-002-D"],
+  "order": 5,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "package.json (update — add @dnd-kit dependencies)",
+    "src/app/[locale]/admin/faq/page.tsx (update — add DnD to main page)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "類別可用拖曳變更順序，拖曳完成後 order 值更新到 API",
+    "問題在所屬類別內可用拖曳變更順序",
+    "拖曳時有視覺回饋（ghost/overlay）",
+    "類別無法拖出所屬列表區",
+    "問題無法跨類別拖曳",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "package.json (update — add @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities)",
+    "src/app/[locale]/admin/faq/page.tsx (update — integrate DnD)"
+  ],
+  "verification": "npm run typecheck && npm run lint && drag category to reorder, drag questions within category to reorder — order persists after page reload."
+}

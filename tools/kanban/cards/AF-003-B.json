@@ -1,0 +1,68 @@
+{
+  "id": "AF-003-B",
+  "title": "FAQ Accordion Client Component — search + accordion + states",
+  "content": "Build the core client component for the FAQ page. A single `FAQAccordion` component that:\n\n1. Receives `categories` data + `dict: FaqPageDict` + `locale` as props\n2. Renders each category as a section with category name heading\n3. Within each category, renders FAQ items as accordion rows:\n   - Click question → expand answer (only ONE open at a time)\n   - Click again or open another → collapse\n4. Search input at top: real-time frontend filtering by question text (match current locale's question field)\n5. URL hash support: on mount, check `window.location.hash` for `#faq-{id}`, auto-expand that question\n6. Loading skeleton: show `animate-pulse` placeholders while data is null/undefined\n7. Error state: show message + retry button if error prop is truthy\n8. Empty state: show `dict.emptyState` when categories array is empty\n9. Responsive: works on mobile (full-width, touch-friendly) and desktop\n\nSub-components:\n- `FAQCategorySection` — category heading + its items\n- Inline within FAQAccordion for accordion item rows\n\nNo data fetching here — data and fetch logic lives in the server page component (AF-003-C).\n\nUse `\"use client\"` at top.",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-001-D", "AF-003-A"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/faq/FAQAccordion.tsx",
+    "src/components/faq/FAQCategorySection.tsx",
+    "src/dictionaries/types.ts (FaqPageDict)"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Accordion shows categories as sections with category name",
+    "Click question → expand answer; click again → collapse",
+    "Only one question expanded at a time",
+    "Search input filters questions in real-time by current locale text",
+    "URL hash #faq-{id} auto-expands matching question on mount",
+    "Loading skeleton shows when data is null",
+    "Error state shows message with retry button",
+    "Empty state shows dict.emptyState when no categories",
+    "Responsive on mobile and desktop",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/components/faq/FAQAccordion.tsx (new — main accordion client component with search)",
+    "src/components/faq/FAQCategorySection.tsx (new — category section wrapper)"
+  ],
+  "verification": "npm run typecheck && npm run lint"
+}

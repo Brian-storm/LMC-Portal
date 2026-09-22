@@ -1,0 +1,65 @@
+{
+  "id": "AF-002-B",
+  "title": "FAQ Admin 類別 CRUD 頁面（新增 + 編輯）",
+  "content": "建立 FAQ 類別的建立與編輯頁面，使用 AF-002-A 提供的 FaqCategoryForm 元件。\n\n頁面：\n1. /admin/faq/categories/new/page.tsx\n   - \"use client\"\n   - AdminPageHeader: title={dict.newCategory}, backHref=/{locale}/admin/faq\n   - 使用 FaqCategoryForm mode=\"create\"\n   - onSuccess: router.push(`/${locale}/admin/faq`) + toast\n\n2. /admin/faq/categories/[id]/edit/page.tsx\n   - \"use client\"\n   - 從 params 取得 id\n   - 載入邏輯：GET /api/admin/faq/categories → 找到 matched category → setInitialData\n   - Loading state: Loader2 spinner (min-h-[60vh])\n   - Error state: AlertCircle + error message\n   - AdminPageHeader: title={dict.editCategory}, backHref=/{locale}/admin/faq\n   - 使用 FaqCategoryForm mode=\"edit\", initialData={...}\n   - onSuccess: router.push(`/${locale}/admin/faq`) + toast\n\n依賴 AF-002-A（需 FaqCategoryForm 元件已存在）",
+  "stage": "backlog",
+  "risk": "low",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": false,
+  "createdAt": "2026-09-22",
+  "epic": "第二階段：進階功能",
+  "userStory": "FAQ 管理系統",
+  "dependsOn": ["AF-002-A"],
+  "order": 2,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": true,
+    "architecture": false,
+    "security": false,
+    "test": false,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/app/[locale]/admin/faq/categories/new/page.tsx",
+    "src/app/[locale]/admin/faq/categories/[id]/edit/page.tsx",
+    "src/components/admin/FaqCategoryForm.tsx"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "GET /en/admin/faq/categories/new 顯示新增類別表單，所有欄位對應 dict 標籤",
+    "提交成功後 toast 出現並跳轉回 /en/admin/faq",
+    "GET /en/admin/faq/categories/{id}/edit 載入該類別資料到表單",
+    "編輯成功後 toast 出現並跳轉回 /en/admin/faq",
+    "編輯頁有 loading spinner 和 error state",
+    "Zod 驗證失敗顯示 inline 錯誤訊息",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/app/[locale]/admin/faq/categories/new/page.tsx (new)",
+    "src/app/[locale]/admin/faq/categories/[id]/edit/page.tsx (new)"
+  ],
+  "verification": "npm run typecheck && npm run lint && visit /en/admin/faq/categories/new — create category. Then edit it."
+}
