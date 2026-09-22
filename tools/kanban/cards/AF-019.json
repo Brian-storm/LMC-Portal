@@ -30,7 +30,7 @@
     "code_review": true
   },
   "links": {
-    "featureSpec": "",
+    "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec.md",
     "screenSpec": "",
     "mockupDecision": "",
     "taskCard": "",
@@ -43,9 +43,20 @@
     "src/lib/data/types.ts"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npm install exceljs",
+      "npm run typecheck",
+      "npm run lint",
+      "npx tsx src/lib/data/_verify.mts"
+    ],
+    "findings": [
+      "CSV export produces UTF-8 BOM + correct double-quote escaping",
+      "CSV import correctly parses 3 rows with commas and double-quotes in values",
+      "Excel export produces valid .xlsx buffer (6631 bytes)",
+      "Download response helper sets correct Content-Disposition header",
+      "typecheck passes (0 errors), lint passes (0 new warnings)"
+    ],
+    "residual": "Excel import (parseExcel) and Excel exporter/importer stubs (excelExporter, excelImporter) are provided but not runtime-tested in this card — they are for downstream consumers (AF-020, AF-021)."
   },
   "comments": [],
   "acceptance": [
