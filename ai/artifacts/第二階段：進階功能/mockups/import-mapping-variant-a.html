@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AF-021 Header Mapping — Variant A</title>
+  <link rel="stylesheet" href="./import-mapping.css">
+</head>
+<body>
+  <main class="shell">
+    <div class="crumbs">Admin / Users / <span>Import profiles</span></div>
+    <header class="page-head">
+      <div>
+        <div class="variant-label">Variant A · Destination-first mapping table</div>
+        <h1>Map your file columns</h1>
+        <p>Match columns from the uploaded file to the student profile fields.</p>
+      </div>
+      <div class="file-pill">roster-q2.xlsx&nbsp; · &nbsp;186 rows&nbsp; · &nbsp;94 KB</div>
+    </header>
+
+    <nav class="stepper" aria-label="Import progress">
+      <div class="step done"><span class="number">✓</span> Upload</div>
+      <div class="step active"><span class="number">2</span> Map columns</div>
+      <div class="step"><span class="number">3</span> Review data</div>
+      <div class="step"><span class="number">4</span> Result</div>
+    </nav>
+
+    <section class="panel" aria-labelledby="mapping-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="mapping-title">Student profile fields</h2>
+          <p>Auto-matched by an exact header when there is one clear match. Choose a source column for each required field.</p>
+        </div>
+        <span class="chip success">5 / 5 required mapped</span>
+      </div>
+      <div class="panel-body">
+        <div class="summary">
+          <span class="chip">8 destination fields</span>
+          <span class="chip">3 auto-matched</span>
+          <span class="chip">4 manually mapped</span>
+          <span class="chip warning">1 optional field left blank</span>
+        </div>
+        <div class="notice"><strong>Review each match.</strong> Sample values help identify unfamiliar column names. Identity document samples are masked.</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Student profile field</th><th>Requirement</th><th>Column in your file</th><th>Sample values</th><th>Match</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="target">Chinese name<span class="sub"><span class="zh" lang="zh-Hant">中文姓名</span> · nameZh</span></td>
+                <td><span class="required">Required</span></td>
+                <td><select class="select" aria-label="Source column for Chinese name"><option>Full Chinese Name</option><option lang="zh-Hant">Column A — 姓名</option></select></td>
+                <td class="sample"><span class="zh" lang="zh-Hant">陳嘉明 · 李美玲</span></td><td class="status needs">Manual match</td>
+              </tr>
+              <tr>
+                <td class="target">English name<span class="sub">nameEn</span></td>
+                <td><span class="required">Required</span></td>
+                <td><select class="select" aria-label="Source column for English name"><option>Member Name</option></select></td>
+                <td class="sample">Ming Chan · May Lee</td><td class="status needs">Manual match</td>
+              </tr>
+              <tr>
+                <td class="target">Email<span class="sub">email</span></td>
+                <td><span class="required">Required</span></td>
+                <td><select class="select" aria-label="Source column for email"><option>Email Address</option></select></td>
+                <td class="sample">m•••@example.com · m•••@example.com</td><td class="status">Auto-matched</td>
+              </tr>
+              <tr>
+                <td class="target">Phone<span class="sub">phone</span></td>
+                <td><span class="required">Required</span></td>
+                <td><select class="select" aria-label="Source column for phone"><option>Mobile No.</option></select></td>
+                <td class="sample">•••• 7812 · •••• 0351</td><td class="status needs">Manual match</td>
+              </tr>
+              <tr>
+                <td class="target">ID document number<span class="sub">idDocNumber</span></td>
+                <td><span class="required">Required</span></td>
+                <td><select class="select" aria-label="Source column for ID document number"><option>Identity / Passport No.</option></select></td>
+                <td class="sample">•••• 4821 · •••• 1038</td><td class="status needs">Manual match</td>
+              </tr>
+              <tr>
+                <td class="target">ID document type<span class="sub">idDocType</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td><select class="select" aria-label="Source column for ID document type"><option>Document Type</option></select></td>
+                <td class="sample">HKID · Passport</td><td class="status">Auto-matched</td>
+              </tr>
+              <tr>
+                <td class="target">IA license<span class="sub">iaLicense</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td><select class="select" aria-label="Source column for IA license"><option>IA License No.</option></select></td>
+                <td class="sample">A123456 · B654321</td><td class="status">Auto-matched</td>
+              </tr>
+              <tr>
+                <td class="target">Organization<span class="sub">organization</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td><select class="select" aria-label="Source column for organization"><option>Leave unmapped</option><option>Company Name</option></select></td>
+                <td class="sample">No sample selected</td><td class="optional">Not mapped</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="footer-note">Unmapped optional fields are treated as blank. Extra file columns are ignored.</p>
+        <div class="actions">
+          <button class="button secondary" type="button">‹ Back to upload</button>
+          <button class="button primary" type="button">Review 186 rows&nbsp; →</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

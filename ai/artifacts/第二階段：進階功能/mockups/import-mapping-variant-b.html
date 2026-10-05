@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AF-021 Header Mapping — Variant B</title>
+  <link rel="stylesheet" href="./import-mapping.css">
+</head>
+<body>
+  <main class="shell">
+    <div class="crumbs">Admin / Users / <span>Import profiles</span></div>
+    <header class="page-head">
+      <div>
+        <div class="variant-label">Variant B · Source-column cards</div>
+        <h1>Match columns from your file</h1>
+        <p>Each file column shows sample values beside its destination field.</p>
+      </div>
+      <div class="file-pill">roster-q2.xlsx&nbsp; · &nbsp;186 rows&nbsp; · &nbsp;94 KB</div>
+    </header>
+
+    <nav class="stepper" aria-label="Import progress">
+      <div class="step done"><span class="number">✓</span> Upload</div>
+      <div class="step active"><span class="number">2</span> Map columns</div>
+      <div class="step"><span class="number">3</span> Review data</div>
+      <div class="step"><span class="number">4</span> Result</div>
+    </nav>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Columns found in roster-q2.xlsx</h2>
+          <p>Map each source column once, or leave extra columns unused.</p>
+        </div>
+        <span class="chip success">5 / 5 required fields covered</span>
+      </div>
+      <div class="panel-body">
+        <div class="summary">
+          <span class="chip">9 source columns</span>
+          <span class="chip">7 mapped</span>
+          <span class="chip">2 unused</span>
+        </div>
+        <div class="notice"><strong>Auto matches are suggestions.</strong> Confirm the destination for each column before reviewing the import.</div>
+
+        <div class="card-grid">
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column A · <span class="zh" lang="zh-Hant">姓名(中文)</span></h3><p>Source header</p></div><span class="chip warning">Manual</span></div>
+            <div class="source-samples"><span class="zh" lang="zh-Hant">陳嘉明</span><span class="zh" lang="zh-Hant">李美玲</span></div>
+            <label class="sub" for="source-a">Destination field</label>
+            <select class="select is-focus" id="source-a"><option>Chinese name · Required</option></select>
+          </article>
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column B · Member Name</h3><p>Source header</p></div><span class="chip warning">Manual</span></div>
+            <div class="source-samples"><span>Ming Chan</span><span>May Lee</span></div>
+            <label class="sub" for="source-b">Destination field</label>
+            <select class="select" id="source-b"><option>English name · Required</option></select>
+          </article>
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column C · Email Address</h3><p>Source header</p></div><span class="chip success">Auto</span></div>
+            <div class="source-samples"><span>m•••@example.com</span><span>m•••@example.com</span></div>
+            <label class="sub" for="source-c">Destination field</label>
+            <select class="select" id="source-c"><option>Email · Required</option></select>
+          </article>
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column D · Mobile No.</h3><p>Source header</p></div><span class="chip warning">Manual</span></div>
+            <div class="source-samples"><span>•••• 7812</span><span>•••• 0351</span></div>
+            <label class="sub" for="source-d">Destination field</label>
+            <select class="select" id="source-d"><option>Phone · Required</option></select>
+          </article>
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column E · Passport / ID</h3><p>Source header</p></div><span class="chip warning">Manual</span></div>
+            <div class="source-samples"><span>•••• 4821</span><span>•••• 1038</span></div>
+            <label class="sub" for="source-e">Destination field</label>
+            <select class="select" id="source-e"><option>ID document number · Required</option></select>
+          </article>
+          <article class="source-card">
+            <div class="source-card-head"><div><h3>Column F · Branch code</h3><p>Source header</p></div><span class="chip">Unused</span></div>
+            <div class="source-samples"><span>HK-02</span><span>HK-07</span></div>
+            <label class="sub" for="source-f">Destination field</label>
+            <select class="select" id="source-f"><option>Ignore this column</option></select>
+          </article>
+        </div>
+
+        <div class="actions">
+          <button class="button secondary" type="button">‹ Back to upload</button>
+          <button class="button primary" type="button">Review 186 rows&nbsp; →</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

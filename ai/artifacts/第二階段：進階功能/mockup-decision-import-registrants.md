@@ -42,3 +42,4 @@
 - The preview step must block confirmation if there is any structural or row-level error.
 - Confirmation re-uploads the selected file and commits the complete batch atomically; the UI must not imply partial success.
 - The User confirmed these import-flow decisions during planning. The selected visual layout remains Variant A.
+- Header-mapping layout variants are tracked separately in `mockup-decision-import-mapping.md`; this earlier Variant A records only the single-page wizard shell decision.

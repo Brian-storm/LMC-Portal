@@ -1,0 +1,83 @@
+{
+  "id": "AF-027",
+  "title": "學員匯入 — Variant C 欄位對映 UI",
+  "content": "建立 AF-021 Variant C 的 Presentational `RegistrantColumnMapper`：左側顯示 User 目標欄位與 mapping selector，右側顯示來源欄及少量樣本值。以 source index 區分重複標題；元件不處理 upload/fetch/API 或業務驗證。新增三語 dictionary labels，並登記新元件到 design-system inventory。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-10-06",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": ["AF-019"],
+  "order": 27,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": true,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
+    "screenSpec": "ai/artifacts/第二階段：進階功能/screen-spec-import-registrants.md",
+    "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-mapping.md",
+    "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-027.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/components/admin/AdminDictContext.tsx",
+    "src/components/admin/FileDropZone.tsx",
+    "src/components/admin/AdminDataTable.tsx",
+    "src/components/ui/select.tsx",
+    "src/components/ui/table.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json",
+    "src/dictionaries/types.ts",
+    "ai/context/design-system.md"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Selected Variant C — split mapping workspace."
+    }
+  ],
+  "acceptance": [
+    "Variant C shows target fields and source samples side by side; narrow layouts stack panels and keep the table scrollable",
+    "Source options use stable indices and duplicate labels are distinguished by index/column letter",
+    "Each source index can map to at most one target; required/optional targets are visually clear",
+    "After mapping a source to idDocNumber, mask its displayed sample values",
+    "Loading, empty, unresolved, duplicate, disabled, focus, and mobile states are covered",
+    "All copy uses en, zh-hk, and zh-cn dictionaries",
+    "New mapping component is added to design-system inventory",
+    "npm run typecheck and npm run lint pass"
+  ],
+  "files": [
+    "src/components/admin/RegistrantColumnMapper.tsx (new — Variant C presentational mapping workspace)",
+    "src/dictionaries/en.json (update — mapping UI copy)",
+    "src/dictionaries/zh-hk.json (update)",
+    "src/dictionaries/zh-cn.json (update)",
+    "src/dictionaries/types.ts (update — use existing AdminDict slice)",
+    "ai/context/design-system.md (update — component inventory)"
+  ],
+  "verification": "Review Variant C at desktop and mobile viewports; verify duplicate headers, mapping status, required/optional targets, ID masking after mapping, keyboard/focus/disabled/loading states, and all three locale dictionaries. Run npm run lint, npm run typecheck, and npm run build."
+}

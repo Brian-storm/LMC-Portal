@@ -1,7 +1,7 @@
 {
   "id": "AF-021",
-  "title": "匯入學員資料 — Admin Preview-then-Confirm",
-  "content": "實作管理員由 CSV / XLSX 匯入學員 User profile 的 preview → confirm 流程。User 是姓名、聯絡方式及身份證件資料的唯一來源；此流程不建立課程 Registrant 或付款資料。\n\nAF-019 擁有共用 parser 的標題辨識責任：略過開頭全空白列，第一個非空白列必須包含所有範本標題（大小寫不敏感、順序可變）；缺欄或結構不符即回傳結構錯誤及零資料列。AF-021 消費此契約，不在業務層重複實作 header parsing。\n\nPreview 與 confirm 都接受 multipart/form-data 的 file。伺服器不保存檔案或預覽 session；confirm 由瀏覽器重新上傳同一檔案，伺服器重新解析與驗證。全檔案原子性：只有所有列均通過解析、格式、資料庫重複及檔案內重複檢查才可確認；任何無效列都阻止整批。確認時在單一 Prisma transaction 中建立所有 User，不逐列捕捉並吞掉 DB 錯誤；任一寫入失敗即回滾整批。超過 10MB、未授權或格式不符均回傳明確錯誤。",
+  "title": "匯入學員資料 — Variant C Integration and E2E",
+  "content": "AF-021 整合任務：將 AF-027 Variant C mapping component 與 AF-028 stateless API 串接成 Upload → Map columns → Review → Result 流程，完成 UI state 與端到端驗證。\n\nAF-019 先提供來源欄位 index、原始標題、資料列及列號；AF-027 owns the mapping UI component/dictionaries; AF-028 owns raw mapping validation, stateless inspect/mapped-preview/confirm APIs, and atomic User creation. AF-021 owns only the wizard page orchestration, API calls, visible loading/error/disabled states, and end-to-end screenshots.\n\nBrowser retains File and mapping state; every API stage re-uploads the file. No importId, server-side preview session, or client-trusted mapped records. Final confirm remains disabled until server validation succeeds for the complete file. The confirmed UI layout is Variant C, with a split target-field/sample-table workspace and a stacked mobile layout.",
   "stage": "backlog",
   "risk": "high",
   "owner": "",
@@ -10,7 +10,7 @@
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "資料匯入匯出",
-  "dependsOn": ["AF-019"],
+  "dependsOn": ["AF-019", "AF-027", "AF-028"],
   "order": 21,
   "readiness": {
     "problem_clear": true,
@@ -26,25 +26,21 @@
     "ui": true,
     "architecture": true,
     "security": true,
-    "test": false,
-    "code_review": true
+    "test": true,
+    "code_review": false
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
     "screenSpec": "ai/artifacts/第二階段：進階功能/screen-spec-import-registrants.md",
-    "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-registrants.md",
+    "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-mapping.md",
     "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-021.md",
     "verificationReport": "",
     "pr": ""
   },
   "refs": [
-    "src/app/api/admin/import/registrants/",
     "src/app/[locale]/admin/import/registrants/",
-    "src/lib/data/csv.ts",
-    "src/lib/data/excel.ts",
-    "src/lib/data/import/registrants.ts",
-    "src/lib/data/import/temp-store.ts",
-    "prisma/schema.prisma"
+    "src/app/api/admin/import/registrants/preview/route.ts",
+    "src/app/api/admin/import/registrants/confirm/route.ts"
   ],
   "evidence": {
     "commands": [],
@@ -56,11 +52,20 @@
       "name": "User",
       "time": "2026-10-05",
       "text": "Approved design decisions: User owns canonical identity data; no server-side preview store; imports are all-or-nothing."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Approved adding flexible source-header mapping; exact unique matches may auto-map, unmatched fields are resolved by the admin. Selected Variant C on 2026-10-06."
     }
   ],
   "acceptance": [
-    "CSV/XLSX leading fully blank rows are skipped; first nonblank row must contain every expected template header (case-insensitive; column order may vary)",
-    "Missing/mismatched headers return a structural error and cannot be confirmed",
+    "CSV/XLSX leading fully blank rows are skipped; first nonblank row is exposed as the source header candidate without guessing past it",
+    "Unique normalized exact matches are auto-mapped; unfamiliar and duplicate labels can be manually mapped by source index",
+    "Every required target is mapped once; a source column cannot map to multiple targets; optional targets may remain blank",
+    "Invalid mappings return clear errors and cannot be confirmed",
+    "Variant C keeps target mappings beside the source sample table and stacks both panels on mobile",
+    "After a source column is mapped to idDocNumber, its displayed sample values are masked",
     "Preview shows first 20 rows with row-level validation errors; any invalid row blocks the entire import",
     "Validation catches invalid email/phone, missing required fields, invalid ID data, database duplicates, and duplicates within the uploaded file",
     "Confirm multipart request re-uploads the file; no importId or server-side preview store is used",
@@ -68,7 +73,7 @@
     "User is the canonical source for ID document data; import does not create Registrant rows or overwrite existing users",
     "Preview offers a CSV download of validation errors with source row, field, and message",
     "Template download produces CSV + Excel with correct column headers",
-    "Admin UI has 3-step wizard: Upload → Preview → Result",
+    "Admin UI has 4-step flow: Upload → Map columns → Review → Result, wired to AF-028's stateless API contract",
     "Validation/structural errors are visible before confirm and can be exported as error details",
     "File type validation (.csv, .xlsx only), max file size limit (10MB)",
     "All UI labels use dict (i18n: en, zh-hk, zh-cn)",
@@ -77,16 +82,8 @@
     "npm run typecheck && npm run lint pass"
   ],
   "files": [
-    "src/app/api/admin/import/registrants/preview/route.ts (update — stateless preview; reject structural errors)",
-    "src/app/api/admin/import/registrants/confirm/route.ts (update — multipart file, revalidate, atomic transaction)",
-    "src/app/api/admin/import/registrants/template/route.ts (retain — GET template download)",
-    "src/lib/data/import/registrants.ts (update — User mapping and complete duplicate checks)",
-    "src/lib/data/import/temp-store.ts (remove — no server-side preview session)",
-    "src/app/[locale]/admin/import/registrants/page.tsx (update — re-upload file, disable confirm unless all rows valid)",
-    "src/dictionaries/en.json (update — add import UI keys)",
-    "src/dictionaries/zh-hk.json (update)",
-    "src/dictionaries/zh-cn.json (update)",
-    "src/dictionaries/types.ts (update — add import dict keys)"
+    "src/app/[locale]/admin/import/registrants/page.tsx (integrate Variant C component and stateless API calls)",
+    "ai/artifacts/第二階段：進階功能/verification/AF-021.md (new — E2E and visual evidence)"
   ],
-  "verification": "Test CSV and XLSX with leading blank rows, valid/reordered headers, missing headers, row errors, and duplicate values. Confirm valid file creates all User records; a forced DB failure rolls the entire transaction back. Run npm run typecheck and npm run lint."
+  "verification": "After AF-019/027/028 are done, run the admin E2E flow with CSV and XLSX files using unfamiliar and duplicate header labels: upload → map → review → confirm. Verify inspect and mapped preview are read-only, confirm reuploads file+mapping, invalid mappings/rows cannot confirm, success creates all Users, and failure leaves no partial writes. Capture Variant C desktop/mobile and error-state screenshots; run npm run typecheck, npm run lint, and npm run build."
 }

@@ -1,0 +1,79 @@
+{
+  "id": "AF-028",
+  "title": "學員匯入 — Stateless Mapping API 與原子寫入",
+  "content": "為 AF-021 實作檔案檢視、mapping preview 與 confirm API。使用 AF-019 raw-table parser，依 zero-based source index 驗證管理員 mapping；preview/confirm 每次重新上傳與重驗，無 importId/server preview store。確認只建立新 User，整批單一 transaction，任一錯誤完整 rollback。移除 temp-store/importId 流程並保留 ADMIN、10MB、檔案類型檢查。",
+  "stage": "implementing",
+  "risk": "high",
+  "owner": "",
+  "agent": "OpenCode",
+  "approvalRequired": true,
+  "createdAt": "2026-10-06",
+  "epic": "第二階段：進階功能",
+  "userStory": "資料匯入匯出",
+  "dependsOn": ["AF-019"],
+  "order": 28,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": true
+  },
+  "gates": {
+    "product": true,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": false
+  },
+  "links": {
+    "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-028.md",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/data/csv.ts",
+    "src/lib/data/excel.ts",
+    "src/lib/data/import/registrants.ts",
+    "src/lib/data/import/temp-store.ts",
+    "src/app/api/admin/import/registrants/preview/route.ts",
+    "src/app/api/admin/import/registrants/confirm/route.ts",
+    "prisma/schema.prisma"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Approved flexible source-header mapping direction; Variant C is the selected UI."
+    }
+  ],
+  "acceptance": [
+    "Inspect request returns source indices/labels and at most 3 sample rows without persisting files, rows, mappings, or sessions",
+    "Mapped preview and confirm accept file plus source-index mapping; server validates source bounds, allowlisted targets, uniqueness, and required targets",
+    "Every request rechecks ADMIN, .csv/.xlsx, and 10MB constraints",
+    "Preview is read-only; row, mapping, and structural errors block confirmation",
+    "Confirm reparses/revalidates, rejects existing and intra-file duplicates, creates only new Users in one transaction, and rolls back all writes on failure",
+    "No importId or temp-store references remain after migration",
+    "Unit/API/database tests cover mapping edge cases, authorization, statelessness, and atomic rollback",
+    "npm run typecheck, npm run lint, and npm run build pass"
+  ],
+  "files": [
+    "src/lib/data/import/registrants.ts (update — apply source-index mapping and validate all rows)",
+    "src/app/api/admin/import/registrants/preview/route.ts (update — inspect and mapped-preview modes)",
+    "src/app/api/admin/import/registrants/confirm/route.ts (update — multipart file+mapping; atomic create-only transaction)",
+    "src/lib/data/import/temp-store.ts (remove after all importId consumers are gone)",
+    "src/lib/data/import/registrants.test.mts (new/extend — mapping rules and API/service cases)"
+  ],
+  "verification": "Test raw inspection, mapping valid/invalid indices and targets, required/optional fields, duplicate source/target assignments, auth and upload limits, no-write preview, confirm revalidation, duplicate rejection, all-row commit, and forced transaction rollback against a dedicated local test database. Run npm run lint, npm run typecheck, npm run build, and focused Node tests."
+}

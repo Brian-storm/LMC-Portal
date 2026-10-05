@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AF-021 Header Mapping — Variant C</title>
+  <link rel="stylesheet" href="./import-mapping.css">
+</head>
+<body>
+  <main class="shell">
+    <div class="crumbs">Admin / Users / <span>Import profiles</span></div>
+    <header class="page-head">
+      <div>
+        <div class="variant-label">Variant C · Split mapping workspace</div>
+        <h1>Match your roster to student fields</h1>
+        <p>Keep the target fields and a spreadsheet sample visible together.</p>
+      </div>
+      <div class="file-pill">roster-q2.xlsx&nbsp; · &nbsp;186 rows&nbsp; · &nbsp;94 KB</div>
+    </header>
+
+    <nav class="stepper" aria-label="Import progress">
+      <div class="step done"><span class="number">✓</span> Upload</div>
+      <div class="step active"><span class="number">2</span> Map columns</div>
+      <div class="step"><span class="number">3</span> Review data</div>
+      <div class="step"><span class="number">4</span> Result</div>
+    </nav>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Connect file columns to student fields</h2>
+          <p>Source values appear on the right. Identity document values are masked.</p>
+        </div>
+        <span class="chip success">5 / 5 required mapped</span>
+      </div>
+      <div class="split">
+        <div class="split-side">
+          <div class="summary"><span class="chip">Student fields</span><span class="chip">5 required</span></div>
+          <div class="mapping-row"><div class="target">Chinese name<span class="sub">Required</span></div><select class="select" aria-label="Chinese name source"><option lang="zh-Hant">A · 姓名(中文)</option></select></div>
+          <div class="mapping-row"><div class="target">English name<span class="sub">Required</span></div><select class="select" aria-label="English name source"><option>B · Member Name</option></select></div>
+          <div class="mapping-row"><div class="target">Email<span class="sub">Required</span></div><select class="select" aria-label="Email source"><option>C · Email Address</option></select></div>
+          <div class="mapping-row"><div class="target">Phone<span class="sub">Required</span></div><select class="select" aria-label="Phone source"><option>D · Mobile No.</option></select></div>
+          <div class="mapping-row"><div class="target">ID number<span class="sub">Required</span></div><select class="select" aria-label="ID number source"><option>E · Passport / ID</option></select></div>
+          <div class="mapping-row"><div class="target">ID type<span class="sub">Optional</span></div><select class="select" aria-label="ID type source"><option>F · Document type</option></select></div>
+          <div class="mapping-row"><div class="target">IA license<span class="sub">Optional</span></div><select class="select" aria-label="IA license source"><option>G · Registration no.</option></select></div>
+          <div class="mapping-row"><div class="target">Organization<span class="sub">Optional</span></div><select class="select" aria-label="Organization source"><option>Not mapped</option></select></div>
+        </div>
+        <div class="split-side">
+          <div class="summary"><span class="chip">Sample rows</span><span class="chip">Source columns A–E</span></div>
+          <div class="table-wrap">
+            <table class="source-table">
+              <thead><tr><th>Row</th><th lang="zh-Hant">A · 姓名(中文)</th><th>B · Member Name</th><th>C · Email Address</th><th>D · Mobile No.</th><th>E · Passport / ID</th></tr></thead>
+              <tbody>
+                <tr><td>2</td><td lang="zh-Hant">陳嘉明</td><td>Ming Chan</td><td>m•••@example.com</td><td>•••• 7812</td><td>•••• 4821</td></tr>
+                <tr><td>3</td><td lang="zh-Hant">李美玲</td><td>May Lee</td><td>m•••@example.com</td><td>•••• 0351</td><td>•••• 1038</td></tr>
+                <tr><td>4</td><td lang="zh-Hant">周志強</td><td>Joe Chow</td><td>j•••@example.com</td><td>•••• 6690</td><td>•••• 7720</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="footer-note">Column positions distinguish duplicate source labels. Review all matches before continuing.</p>
+        </div>
+      </div>
+      <div class="actions-body">
+        <div class="actions">
+          <button class="button secondary" type="button">‹ Back to upload</button>
+          <button class="button primary" type="button">Review 186 rows&nbsp; →</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
