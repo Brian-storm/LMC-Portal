@@ -32,6 +32,35 @@ export interface ImportResult<T extends Record<string, unknown>> {
   data?: T[];
 }
 
+/** One source column from an uploaded CSV/XLSX table. */
+export interface ImportTableColumn {
+  /** Stable zero-based source-column position. */
+  index: number;
+  /** Original displayed header text; duplicates remain separate by index. */
+  header: string;
+}
+
+/** One source row from an uploaded CSV/XLSX table. */
+export interface ImportTableRow {
+  /** Original one-based row number in the file. */
+  rowNumber: number;
+  /** Raw cell values ordered by zero-based source-column index. */
+  values: unknown[];
+}
+
+/** Raw source table shape for callers that perform their own business-field mapping. */
+export interface ImportTable {
+  columns: ImportTableColumn[];
+  rows: ImportTableRow[];
+}
+
+/** Result of parsing a raw source table before any business-field mapping is applied. */
+export interface ImportTableResult {
+  success: boolean;
+  table: ImportTable | null;
+  errors: ImportError[];
+}
+
 /**
  * Interface for data export implementations.
  */

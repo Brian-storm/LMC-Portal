@@ -1,11 +1,11 @@
 {
   "id": "AF-019",
-  "title": "資料匯入匯出共用函式庫 — CSV + Excel 工具",
-  "content": "建立並維護所有資料匯入匯出功能共用的 CSV / Excel 工具庫。此卡的 parser contract 包含一致的標題辨識：忽略開頭全空白列；第一個非空白列必須含有所有 ExportColumn.header（大小寫不敏感，欄位順序可變）；標題缺漏、錯誤或檔案無標題時回傳結構錯誤且不回傳可匯入資料列。不得越過非空白標題候選列猜測後面的列是 header。\n\nCSV 匯出使用 UTF-8 BOM 與正確的引號跳脫；Excel 匯出/匯入使用 exceljs。共用型別為 ExportColumn、ImportResult、ImportError、DataExporter、DataImporter；下載 helper 設定 Content-Type 與 Content-Disposition。此卡只維護格式工具，不處理業務欄位或 Prisma 存取；AF-021 消費此 parser contract。",
-  "stage": "backlog",
+  "title": "資料匯入匯出共用函式庫 — Raw CSV + Excel Table Parsing",
+  "content": "建立並維護所有資料匯入匯出功能共用的 CSV / Excel 工具庫。此次 AF-021 header mapping scope 更新後，AF-019 提供原始來源欄位 index、標題、資料列值與來源列號；跳過全空白列，只使用第一個非空白列作為來源標題候選，不要求符合特定 ExportColumn.header，也不得猜測後續標題。重複及空白標題依來源 index 保留。\n\nCSV 匯出使用 UTF-8 BOM 與正確的引號跳脫；Excel 匯出/匯入使用 exceljs。既有 typed convenience importer 可保留給標題已知的呼叫方；AF-021 使用原始表格契約並在業務層套用管理員 mapping。此卡只維護格式工具，不處理業務欄位或 Prisma 存取。Raw-table parser implementation and focused verification are complete; awaiting human acceptance.",
+  "stage": "done",
   "risk": "high",
   "owner": "",
-  "agent": "",
+  "agent": "OpenCode",
   "approvalRequired": true,
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
@@ -24,63 +24,85 @@
   "gates": {
     "product": true,
     "ui": false,
-    "architecture": false,
-    "security": false,
-    "test": false,
-    "code_review": false
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec.md",
     "screenSpec": "",
     "mockupDecision": "",
     "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-019.md",
-    "verificationReport": "",
+    "verificationReport": "ai/artifacts/第二階段：進階功能/verification/AF-019.md",
     "pr": ""
   },
   "refs": [
     "src/lib/data/csv.ts",
     "src/lib/data/excel.ts",
-    "src/lib/data/types.ts"
+    "src/lib/data/types.ts",
+    "src/lib/data/parser-utils.ts",
+    "src/lib/data/parser.test.mts"
   ],
   "evidence": {
     "commands": [
-      "npm install exceljs",
+      "npx --yes tsx --test src/lib/data/parser.test.mts",
       "npm run typecheck",
       "npm run lint",
-      "npx tsx src/lib/data/_verify.mts"
+      "npm run build",
+      "git diff --check"
     ],
     "findings": [
-      "CSV export produces UTF-8 BOM + correct double-quote escaping",
-      "CSV import correctly parses 3 rows with commas and double-quotes in values",
-      "Excel export produces valid .xlsx buffer (6631 bytes)",
-      "Download response helper sets correct Content-Disposition header",
-      "typecheck passes (0 errors), lint passes (0 new warnings)"
+      "13 focused parser tests passed, covering raw CSV/XLSX source columns, duplicate/blank labels, row numbers, empty/unreadable files, and typed/export regressions",
+      "npm run typecheck passes",
+      "npm run lint exits successfully with 2 warnings in unrelated FAQ edit pages",
+      "npm run build passes; Next.js reports the existing middleware convention deprecation",
+      "git diff --check passes"
     ],
-    "residual": "Excel import (parseExcel) was not runtime-tested in the original implementation. The approved follow-up header-detection contract is pending implementation and parser verification."
+    "residual": "CSV multiline quoted-field parsing remains outside scope. The typed convenience importer still maps by declared labels; AF-021 must use the raw-table API for manual mapping. ExcelJS materializes workbooks in memory; the preview API limits files to 10 MB, but highly compressed XLSX expansion remains a resource-risk consideration."
   },
   "comments": [
     {
       "name": "User",
       "time": "2026-10-05",
       "text": "Approved parser contract: skip leading blank rows, require all expected headers on the first nonblank row, and fail closed on structural mismatch."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Requested flexible admin header mapping; revise AF-019 raw parsing so AF-021 can map source columns by index."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Approved the AF-019 raw-table extension and AF-021 implementation plan after selecting Variant C."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Accepted the verified AF-019 raw-table parser checkpoint; AF-027 and AF-028 may proceed."
     }
   ],
   "acceptance": [
     "CSV export produces valid UTF-8 BOM CSV with correct escaping",
-    "CSV import skips leading blank rows and rejects missing/mismatched headers without returning data rows",
+    "CSV import exposes source column indices, raw labels/values, and original row numbers after skipping leading blank rows",
     "Excel export produces valid .xlsx file that opens in Excel",
-    "Excel import skips leading blank rows and rejects missing/mismatched headers without returning data rows",
-    "Both parsers match all expected headers case-insensitively and support reordered columns",
-    "Files with only blank rows or a non-header first nonblank row return an explicit structural error",
+    "Excel import exposes source column indices, raw labels/values, and original row numbers after skipping leading blank rows",
+    "Unreadable XLSX bytes return an explicit file-level ImportError instead of throwing",
+    "Arbitrary and duplicate source labels remain distinguishable by source index in both formats",
+    "A nonblank first row is never bypassed to guess a later header; all-blank/unreadable files return structural errors",
+    "Fully blank data rows are omitted while later source row numbers remain unchanged",
     "ExportColumn[] → CSV string and Excel buffer both work",
     "ImportResult returns correct counts and error details",
     "npm run typecheck && npm run lint pass",
-    "Parser tests cover leading blanks, reordered/missing headers, non-header first row, and empty files"
+    "Parser tests cover leading/data blanks, arbitrary/duplicate headers, source indices and row numbers, non-header first row, and empty files"
   ],
   "files": [
-    "src/lib/data/csv.ts (update — skip leading blank rows and fail closed on invalid headers)",
-    "src/lib/data/excel.ts (update — match CSV header behavior)",
-    "src/lib/data/types.ts (review ImportResult structural-error behavior if required)"
+    "src/lib/data/csv.ts (extend — expose raw source-table parsing)",
+    "src/lib/data/excel.ts (extend — expose matching raw source-table parsing)",
+    "src/lib/data/parser-utils.ts (extend — shared source-column/index contract)",
+    "src/lib/data/parser.test.mts (extend — duplicate/arbitrary source labels and row-number cases)",
+    "src/lib/data/types.ts (new raw-table source/result interfaces)"
   ],
-  "verification": "Test CSV and XLSX with leading blank rows, valid and reordered headers, missing headers, a non-header first nonblank row, and all-blank files. Structural failures return errors with zero data rows. Run npm run typecheck and npm run lint."
+  "verification": "Run npx --yes tsx --test src/lib/data/parser.test.mts for CSV/XLSX raw source columns, duplicate/arbitrary labels, leading/data blanks, non-header first row, source indices/row numbers, empty/unreadable files, and export compatibility; then run npm run lint, npm run typecheck, npm run build, and git diff --check."
 }

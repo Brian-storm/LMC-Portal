@@ -10,13 +10,14 @@ import ExcelJS from "exceljs";
 import {
   type ExportColumn,
   type ImportResult,
-  type ImportError,
+  type ImportTableResult,
   type DataExporter,
   type DataImporter,
   createDownloadResponse,
   EXCEL_MIME_TYPE,
   DEFAULT_COLUMN_WIDTH,
 } from "./types";
+import { isBlankRow, mapHeaders } from "./parser-utils";
 
 // ─── Export ────────────────────────────────────────────────────────────────────
 
@@ -86,6 +87,97 @@ export async function exportExcel<T extends Record<string, unknown>>(
 // ─── Import ────────────────────────────────────────────────────────────────────
 
 /**
+ * Parse an Excel worksheet into a raw source table without applying business-field mapping.
+ *
+ * @param buffer - Uploaded .xlsx bytes.
+ * @param sheetIndex - Worksheet index (0-based, default 0).
+ * @returns Source columns and rows with original row numbers, or a structural error.
+ */
+export async function parseExcelTable(
+  buffer: Uint8Array,
+  sheetIndex = 0,
+): Promise<ImportTableResult> {
+  // 1: Load the workbook and convert ExcelJS failures into a file-level parser result.
+  const workbook = new ExcelJS.Workbook();
+  try {
+    await workbook.xlsx.load(buffer as never);
+  } catch {
+    return {
+      success: false,
+      table: null,
+      errors: [
+        {
+          row: 1,
+          field: "_file",
+          message: "Excel file could not be read as a valid .xlsx workbook",
+        },
+      ],
+    };
+  }
+
+  // 2: Select the requested worksheet and report an explicit error if it is missing.
+  const sheet = workbook.worksheets[sheetIndex];
+  if (!sheet) {
+    return {
+      success: false,
+      table: null,
+      errors: [
+        {
+          row: 1,
+          field: "_sheet",
+          message: `Sheet at index ${sheetIndex} not found (total sheets: ${workbook.worksheets.length})`,
+        },
+      ],
+    };
+  }
+
+  // 3: Locate the first nonblank physical row without guessing past non-string values.
+  const rowCount = sheet.rowCount;
+  const columnCount = sheet.columnCount;
+  let headerRowNumber = 0;
+  for (let rowNumber = 1; rowNumber <= rowCount; rowNumber++) {
+    const row = sheet.getRow(rowNumber);
+    const values = Array.from({ length: columnCount }, (_, index) =>
+      row.getCell(index + 1).value,
+    );
+    if (isBlankRow(values)) continue;
+
+    headerRowNumber = rowNumber;
+    break;
+  }
+
+  // 4: Fail structurally when the selected sheet contains no nonblank header candidate.
+  if (headerRowNumber === 0) {
+    return {
+      success: false,
+      table: null,
+      errors: [{ row: 1, field: "_header", message: "Excel sheet contains no nonblank header row" }],
+    };
+  }
+
+  // 5: Preserve each displayed header and its source-column index, including duplicates.
+  const headerRow = sheet.getRow(headerRowNumber);
+  const columns = Array.from({ length: columnCount }, (_, index) => ({
+    index,
+    header: headerRow.getCell(index + 1).text,
+  }));
+
+  // 6: Collect nonblank data rows while keeping their physical source row numbers.
+  const rows: Array<{ rowNumber: number; values: unknown[] }> = [];
+  for (let rowNumber = headerRowNumber + 1; rowNumber <= rowCount; rowNumber++) {
+    const row = sheet.getRow(rowNumber);
+    const values = Array.from({ length: columnCount }, (_, index) =>
+      row.getCell(index + 1).value ?? "",
+    );
+    if (isBlankRow(values)) continue;
+
+    rows.push({ rowNumber, values });
+  }
+
+  return { success: true, table: { columns, rows }, errors: [] };
+}
+
+/**
  * Parse an Excel .xlsx Buffer into an array of objects.
  *
  * @param buffer      - .xlsx file buffer.
@@ -98,21 +190,38 @@ export async function parseExcel<T extends Record<string, unknown>>(
   columns: ExportColumn<T>[],
   sheetIndex = 0,
 ): Promise<ImportResult<T>> {
-  const errors: ImportError[] = [];
   const data: T[] = [];
 
   // 1: Load workbook
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(buffer as never);
-
-  const sheet = workbook.worksheets[sheetIndex];
-  if (!sheet) {
+  try {
+    await workbook.xlsx.load(buffer as never);
+  } catch {
+    // 2: Return a safe file-level error without leaking library details or file contents.
     return {
       success: false,
       imported: 0,
       errors: [
         {
-          row: 0,
+          row: 1,
+          field: "_file",
+          message: "Excel file could not be read as a valid .xlsx workbook",
+        },
+      ],
+      data: [],
+    };
+  }
+
+  // 2: Select the requested worksheet, keeping the existing index-based public API.
+  const sheet = workbook.worksheets[sheetIndex];
+  if (!sheet) {
+    // 3: Report a worksheet-level structural error instead of returning an empty success.
+    return {
+      success: false,
+      imported: 0,
+      errors: [
+        {
+          row: 1,
           field: "_sheet",
           message: `Sheet at index ${sheetIndex} not found (total sheets: ${workbook.worksheets.length})`,
         },
@@ -121,60 +230,52 @@ export async function parseExcel<T extends Record<string, unknown>>(
     };
   }
 
-  // 2: Read rows
-  const rows = sheet.getSheetValues() as unknown[][];
-  if (rows.length < 2) {
-    // Header only or empty
-    return { success: true, imported: 0, errors: [], data: [] };
-  }
-
-  // rows[1] is typically the header row (1-based in exceljs)
-  // rows[0] may be empty or contain pre-header data
-  const headerIndex = new Map<string, number>();
-
-  // Find the actual header row — first row with meaningful string content
-  let headerStartRow = 0;
-  for (let i = 0; i < rows.length; i++) {
-    const r = rows[i] ?? [];
-    const hasHeader = r.some(
-      (cell) => typeof cell === "string" && cell.trim().length > 0,
+  // 4: Locate the first nonblank physical row without scanning past non-string content.
+  let headerRowNumber = 0;
+  let headerValues: unknown[] = [];
+  const rowCount = sheet.rowCount;
+  const columnCount = sheet.columnCount;
+  for (let rowNumber = 1; rowNumber <= rowCount; rowNumber++) {
+    const row = sheet.getRow(rowNumber);
+    const values = Array.from({ length: columnCount }, (_, index) =>
+      row.getCell(index + 1).value,
     );
-    if (hasHeader) {
-      headerStartRow = i;
-      break;
-    }
+    if (isBlankRow(values)) continue;
+
+    headerRowNumber = rowNumber;
+    headerValues = values;
+    break;
   }
 
-  const actualHeaderRow = rows[headerStartRow] ?? [];
-  actualHeaderRow.forEach((cell: unknown, idx: number) => {
-    if (typeof cell === "string" || typeof cell === "number") {
-      headerIndex.set(String(cell).trim().toLowerCase(), idx);
-    }
-  });
-
-  // Build column → source column index mapping
-  const colIndexMap = new Map<keyof T & string, number>();
-  for (const col of columns) {
-    const idx = headerIndex.get(col.header.toLowerCase());
-    if (idx !== undefined) {
-      colIndexMap.set(col.key, idx);
-    } else {
-      errors.push({
-        row: headerStartRow + 1,
-        field: col.key,
-        message: `Column "${col.header}" not found in Excel header`,
-      });
-    }
+  // 5: Return an explicit structural error when no row contains a header candidate.
+  if (headerRowNumber === 0) {
+    return {
+      success: false,
+      imported: 0,
+      errors: [{ row: 1, field: "_header", message: "Excel sheet contains no nonblank header row" }],
+      data: [],
+    };
   }
 
-  // 3: Parse data rows (skip header row)
-  for (let i = headerStartRow + 1; i < rows.length; i++) {
-    const rowValues = rows[i] ?? [];
+  // 6: Match every requested field and fail closed before parsing any data rows.
+  const { indexByKey: colIndexMap, missingColumns } = mapHeaders(headerValues, columns);
+  if (missingColumns.length > 0) {
+    const headerErrors = missingColumns.map((column) => ({
+      row: headerRowNumber,
+      field: column.key,
+      message: `Column "${column.header}" not found in Excel header`,
+    }));
+    return { success: false, imported: 0, errors: headerErrors, data: [] };
+  }
+
+  // 7: Parse following rows using zero-based column mappings and physical source rows.
+  for (let rowNumber = headerRowNumber + 1; rowNumber <= rowCount; rowNumber++) {
+    const row = sheet.getRow(rowNumber);
     const record: Record<string, unknown> = {};
 
     for (const [key, colIdx] of colIndexMap) {
-      const rawValue = rowValues[colIdx];
-      // exceljs returns undefined for empty cells in sparse arrays
+      const rawValue = row.getCell(colIdx + 1).value;
+      // ExcelJS returns null for empty cells and undefined for uninitialized cells.
       record[key] = rawValue ?? "";
     }
 
@@ -182,9 +283,9 @@ export async function parseExcel<T extends Record<string, unknown>>(
   }
 
   return {
-    success: errors.length === 0,
+    success: true,
     imported: data.length,
-    errors,
+    errors: [],
     data,
   };
 }

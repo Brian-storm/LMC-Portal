@@ -4,7 +4,7 @@
 
 - 功能：資料匯入匯出共用函式庫 — CSV + Excel 工具（AF-019）
 - 負責人：待補
-- 狀態：草稿
+- 狀態：已實作（AF-019 raw-table parser；AF-021 mapping flow continues in its own task cards）
 - 風險等級：高（parser 接受外部 CSV/XLSX 檔案）
 
 ## 問題
@@ -19,6 +19,7 @@
 ## 目標
 
 - 提供一套共用的 CSV 與 Excel 工具函式，供所有匯入匯出功能使用
+- 提供原始表格解析結果，讓呼叫方依其業務 schema 對映來源欄位，不要求上傳標題必須等於匯出範本標題
 - CSV 工具支援 UTF-8 BOM、雙引號跳脫，相容 Excel 中文
 - Excel 工具使用 exceljs，支援樣式、合併儲存格、多工作表
 - 提供統一的型別定義與介面契約（DataExporter / DataImporter）
@@ -37,9 +38,9 @@
 | 故事 | 身為／我想要／以便 | 驗收標準 |
 |---|---|---|
 | CSV 匯出 | 開發者想將資料陣列轉為 CSV 字串，以便使用者下載 | 產生的 CSV 含 UTF-8 BOM，值內含逗號/換行/雙引號時正確跳脫 |
-| CSV 匯入 | 開發者想將 CSV 字串解析為物件陣列，以便批次處理 | 正確解析標準 CSV，回傳成功筆數與錯誤細節 |
+| CSV 匯入 | 開發者想取得 CSV 的來源標題、來源列與原始列號，以便呼叫方對映欄位並批次處理 | 正確解析標準 CSV，保留來源欄位位置與列號，回傳格式錯誤 |
 | Excel 匯出 | 開發者想將資料陣列寫入 .xlsx buffer，以便使用者下載 | 產生的 .xlsx 可在 Excel 中開啟，欄位寬度與格式正確 |
-| Excel 匯入 | 開發者想將 .xlsx buffer 解析為物件陣列，以便批次處理 | 正確解析多工作表、合併儲存格，回傳成功筆數與錯誤細節 |
+| Excel 匯入 | 開發者想取得 .xlsx buffer 的來源標題、來源列與原始列號，以便呼叫方對映欄位並批次處理 | 正確解析指定工作表，保留來源欄位位置與列號，回傳格式錯誤 |
 
 ## 使用者旅程
 
@@ -51,20 +52,21 @@
 
 ```text
 身為開發者（實作 AF-021）
-我想要呼叫 parseCsv(fileContent, columns) 取得 ImportResult
-以便在管理員上傳學員 CSV 後進行預覽與確認匯入
+我想要取得學員檔案的原始來源欄與資料列
+以便在 AF-021 中讓管理員將不同來源標題對映到學員欄位
 ```
 
 ## 功能需求
 
 - WHEN 呼叫 `exportCsv(items, columns)` THE SYSTEM SHALL 回傳含 UTF-8 BOM 的 CSV 字串
 - WHEN CSV 值包含逗號、雙引號或換行 THE SYSTEM SHALL 以雙引號包裹並跳脫內部雙引號
-- WHEN 呼叫 `parseCsv(csv, columns)` THE SYSTEM SHALL 回傳 `ImportResult` 含成功/失敗/錯誤行號
+- WHEN 呼叫 CSV 匯入解析 THE SYSTEM SHALL 回傳來源欄位位置、原始標題、資料列值及來源列號，不自行推測業務欄位
 - WHEN 呼叫 `exportExcel(items, columns)` THE SYSTEM SHALL 回傳 Buffer（.xlsx）
-- WHEN 呼叫 `parseExcel(buffer, columns)` THE SYSTEM SHALL 回傳 `ImportResult`
-- WHEN CSV 或 Excel 檔案開頭有全空白列 THE SYSTEM SHALL 略過這些列，並將第一個非空白列視為標題候選列
-- WHEN 第一個非空白列含有所有預期欄名（不區分大小寫、欄位次序可變）THE SYSTEM SHALL 依欄名對映資料
-- WHEN 第一個非空白列缺少任何預期欄名 THE SYSTEM SHALL 回傳結構錯誤且不回傳可匯入資料列
+- WHEN 呼叫 Excel 匯入解析 THE SYSTEM SHALL 回傳來源欄位位置、原始標題、資料列值及來源列號，不自行推測業務欄位
+- WHEN CSV 或 Excel 檔案開頭有全空白列 THE SYSTEM SHALL 略過這些列，並將第一個非空白列作為來源標題列
+- WHEN 標題列之後的資料列全空白 THE SYSTEM SHALL 不回傳該列，並保留後續資料列的原始列號
+- WHEN 來源標題有重複文字 THE SYSTEM SHALL 依來源欄位位置保留各欄，不能只以標題文字作為識別
+- WHEN 第一個非空白列是標題候選列 THE SYSTEM SHALL 保留其原始欄名與欄位位置，不要求它符合任何呼叫方的 expected header
 - WHEN CSV 或 Excel 檔案只有空白列或沒有標題列 THE SYSTEM SHALL 回傳明確的標題錯誤
 - WHEN 指定 `sheetName` THE SYSTEM SHALL 使用該名稱建立工作表，否則使用預設名稱
 - WHEN 指定 `ExportColumn.format` THE SYSTEM SHALL 在 Excel 中套用對應的格式字串（如 `yyyy-mm-dd`）
@@ -93,6 +95,16 @@ interface DataImporter<T extends Record<string, unknown>> {
 }
 ```
 
+`DataImporter` remains a convenience for callers whose input headers already match their declared columns. Callers that need administrator-controlled mapping use the raw-table contract below and map by source-column index.
+
+### 原始匯入表格
+
+- 每個來源欄位至少包含 0-based 欄位位置與原始標題文字；相同標題文字仍是不同來源欄位。
+- 每個來源資料列包含 1-based 原始列號與依欄位位置排列的原始值。
+- 標題後的全空白資料列不回傳；後續列號仍反映原始檔案位置。
+- 標題偵測只跳過開頭全空白列，不掃描後續列猜測標題。
+- 業務呼叫方負責將來源欄位位置對映到業務欄位，並驗證該對映。
+
 ### ExportColumn
 
 | 屬性 | 型別 | 必填 | 說明 |
@@ -120,7 +132,7 @@ interface DataImporter<T extends Record<string, unknown>> {
 
 - 輸入：CSV 字串 或 .xlsx Buffer
 - 輸出：CSV 字串 或 .xlsx Buffer、ImportResult
-- 驗證：AF-019 parser 負責標題列結構辨識；AF-021 等業務呼叫方負責欄位商業規則與型別驗證
+- 驗證：AF-019 parser 負責原始表格與來源列結構；AF-021 等業務呼叫方負責來源欄位對映、欄位商業規則與型別驗證
 - 錯誤：回傳 ImportResult.errors，不拋例外（呼叫方可自行決定是否拋出）
 
 ## 安全性與隱私
@@ -133,17 +145,17 @@ interface DataImporter<T extends Record<string, unknown>> {
 ## 驗收標準
 
 1. CSV export produces valid UTF-8 BOM CSV with correct escaping
-2. CSV import parses standard CSV files, skips leading blank rows, and rejects missing/mismatched headers without returning data rows
+2. CSV import returns source column indices/labels, raw row values and source row numbers; only leading fully blank rows are skipped
 3. Excel export produces valid .xlsx file that opens in Excel
-4. Excel import parses .xlsx files, skips leading blank rows, and rejects missing/mismatched headers without returning data rows
+4. Excel import returns source column indices/labels, raw row values and source row numbers; only leading fully blank rows are skipped
 5. ExportColumn[] → CSV string and Excel buffer both work
 6. ImportResult returns correct counts and error details
-7. Header matching is case-insensitive and supports reordered columns in both formats
+7. Repeated source header labels remain distinguishable by their source indices in both formats
 8. npm run typecheck && npm run lint pass
 
 ## 驗證計畫
 
-- 單元測試：CSV/XLSX fixtures cover leading blank rows, correct/reordered headers, first-nonblank non-header rows, missing headers, and all-blank files
+- 單元測試：CSV/XLSX fixtures cover leading/data blank rows, arbitrary and duplicate labels, source indices, original row numbers, first-nonblank candidate behavior, and all-blank files
 - 整合測試：不適用（純工具函式）
 - E2E：不適用
 - 視覺：不適用
