@@ -1,0 +1,82 @@
+{
+  "id": "AWS-001",
+  "title": "移除 Resend 遷移後的 SES 遺留程式與設定",
+  "content": "在 Resend 郵件傳送已由 AF-016 完成並驗證後，獨立清理此應用不再使用的 SES 程式碼與設定。此卡是 SES 遷移後的清理工作，不得先於 Resend 發信路徑驗收。\n\n任務：\n1. 移除程式碼與依賴\n   - 移除 src/lib/aws.ts 中 SESClient、sesClient、sesRegion、sesFromAddress、sesConfigurationSet 等 SES 專用項目，保留 S3 client、區域與 bucket 設定\n   - 清除 src/lib/email/send.ts 中殘留的 SES transport、X-SES 標頭或設定；保留 Resend/Nodemailer 發信、雙語內容、BCC 與 PDF 附件\n   - 從 package.json / package-lock.json 移除不再使用的 @aws-sdk/client-ses；保留 @aws-sdk/client-s3、S3 presigner、nodemailer 與其型別\n\n2. 清理環境與狀態顯示\n   - 從 .env.example 移除 APP_SES_* 變數，保留 APP_AWS_REGION 與所有 S3 變數\n   - 在本機與 Amplify 環境移除僅供此應用 SES 使用的 APP_SES_* 設定；不得修改或提交 .env 機密檔案\n   - 從 GET /api/health 移除 SES 專屬欄位；如需郵件狀態，只回報不含憑證的 Resend 設定狀態\n   - 更新 README、AGENTS、feature flag 與 seed 描述中的 SES 標籤；保留 ff_email_system key 與既有 enabled 狀態\n\n3. AWS 權限盤點\n   - 確認 Amplify 執行角色是否有此應用專用的 SES 權限；僅在確認不供其他寄件流程使用時移除該權限\n   - 保留 S3 權限與共用 AWS credentials；不刪除 SES 帳戶、identity 或 DNS 記錄。本卡以外的共用 SES/DNS 資源須另行確認後處理\n\n⚠️ 必須依賴 AF-016 完成 Resend 寄件驗證；PR-004 的 staging 驗收依賴本卡完成。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-10-05",
+  "epic": "AWS 整合與遺留清理",
+  "userStory": "SES 遺留程式與設定清理",
+  "dependsOn": ["AF-016"],
+  "order": 1,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    "src/lib/aws.ts",
+    "src/lib/email/send.ts",
+    "src/app/api/health/route.ts",
+    "src/lib/feature-flags.ts",
+    "prisma/seed.ts",
+    ".env.example",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "AGENTS.md",
+    "Amplify environment and execution-role configuration"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Resend receipt sending continues to pass end-to-end verification, including bilingual content, attachment, and intended BCC recipient",
+    "No active application source or configuration depends on SES client, SES transport, X-SES headers, or APP_SES_* variables",
+    "@aws-sdk/client-ses is absent from package.json and package-lock.json; Nodemailer and AWS S3 dependencies remain",
+    "GET /api/health no longer returns SES-specific fields or any Resend secret",
+    "ff_email_system key and enabled state are preserved while its description no longer identifies SES",
+    "AWS S3 upload, download, and presigned URL flows still work with the same bucket and permissions",
+    "Only confirmed application-specific SES permissions/configuration are removed; shared SES/DNS resources are documented and left intact",
+    "Historical PR-003, PS-001, and session records remain unchanged",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    "src/lib/aws.ts (remove SES-only client and exports; retain S3)",
+    "src/lib/email/send.ts (remove any residual SES transport/configuration)",
+    "src/app/api/health/route.ts (remove SES health fields)",
+    "src/lib/feature-flags.ts (update provider description; preserve key)",
+    "prisma/seed.ts (update description without resetting enabled state)",
+    ".env.example (remove APP_SES_* vars only)",
+    "package.json + package-lock.json (remove @aws-sdk/client-ses)",
+    "README.md and AGENTS.md (remove stale SES setup references)",
+    "Amplify environment and execution-role configuration (manual cleanup after dependency review)"
+  ],
+  "verification": "After AF-016 completes, run npm run typecheck && npm run lint; search active source/config for SES-only identifiers; verify package dependency removal; smoke-test Resend receipt delivery and S3 upload/download/presigned URLs; inspect Amplify env and IAM changes to confirm S3 remains unaffected."
+}

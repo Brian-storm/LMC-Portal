@@ -5,7 +5,7 @@
 - 功能：資料匯入匯出共用函式庫 — CSV + Excel 工具（AF-019）
 - 負責人：待補
 - 狀態：草稿
-- 風險等級：低
+- 風險等級：高（parser 接受外部 CSV/XLSX 檔案）
 
 ## 問題
 
@@ -62,6 +62,10 @@
 - WHEN 呼叫 `parseCsv(csv, columns)` THE SYSTEM SHALL 回傳 `ImportResult` 含成功/失敗/錯誤行號
 - WHEN 呼叫 `exportExcel(items, columns)` THE SYSTEM SHALL 回傳 Buffer（.xlsx）
 - WHEN 呼叫 `parseExcel(buffer, columns)` THE SYSTEM SHALL 回傳 `ImportResult`
+- WHEN CSV 或 Excel 檔案開頭有全空白列 THE SYSTEM SHALL 略過這些列，並將第一個非空白列視為標題候選列
+- WHEN 第一個非空白列含有所有預期欄名（不區分大小寫、欄位次序可變）THE SYSTEM SHALL 依欄名對映資料
+- WHEN 第一個非空白列缺少任何預期欄名 THE SYSTEM SHALL 回傳結構錯誤且不回傳可匯入資料列
+- WHEN CSV 或 Excel 檔案只有空白列或沒有標題列 THE SYSTEM SHALL 回傳明確的標題錯誤
 - WHEN 指定 `sheetName` THE SYSTEM SHALL 使用該名稱建立工作表，否則使用預設名稱
 - WHEN 指定 `ExportColumn.format` THE SYSTEM SHALL 在 Excel 中套用對應的格式字串（如 `yyyy-mm-dd`）
 - WHEN 呼叫 `downloadCsvResponse(csv, filename)` THE SYSTEM SHALL 回傳含正確 `Content-Disposition` 的 Response
@@ -116,7 +120,7 @@ interface DataImporter<T extends Record<string, unknown>> {
 
 - 輸入：CSV 字串 或 .xlsx Buffer
 - 輸出：CSV 字串 或 .xlsx Buffer、ImportResult
-- 驗證：欄位對映、型別轉換錯誤回報
+- 驗證：AF-019 parser 負責標題列結構辨識；AF-021 等業務呼叫方負責欄位商業規則與型別驗證
 - 錯誤：回傳 ImportResult.errors，不拋例外（呼叫方可自行決定是否拋出）
 
 ## 安全性與隱私
@@ -129,16 +133,17 @@ interface DataImporter<T extends Record<string, unknown>> {
 ## 驗收標準
 
 1. CSV export produces valid UTF-8 BOM CSV with correct escaping
-2. CSV import parses standard CSV files correctly
+2. CSV import parses standard CSV files, skips leading blank rows, and rejects missing/mismatched headers without returning data rows
 3. Excel export produces valid .xlsx file that opens in Excel
-4. Excel import parses .xlsx files correctly
+4. Excel import parses .xlsx files, skips leading blank rows, and rejects missing/mismatched headers without returning data rows
 5. ExportColumn[] → CSV string and Excel buffer both work
 6. ImportResult returns correct counts and error details
-7. npm run typecheck && npm run lint pass
+7. Header matching is case-insensitive and supports reordered columns in both formats
+8. npm run typecheck && npm run lint pass
 
 ## 驗證計畫
 
-- 單元測試：手動測試 CSV/Excel 匯出匯入正確性
+- 單元測試：CSV/XLSX fixtures cover leading blank rows, correct/reordered headers, first-nonblank non-header rows, missing headers, and all-blank files
 - 整合測試：不適用（純工具函式）
 - E2E：不適用
 - 視覺：不適用

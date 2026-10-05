@@ -1,7 +1,7 @@
 {
   "id": "AF-021",
   "title": "匯入學員資料 — Admin Preview-then-Confirm",
-  "content": "實作管理員從 CSV/Excel 匯入學員（registrants）資料的功能，採用預覽→確認流程。\n\n任務：\n1. 匯入 API (POST /api/admin/import/registrants/preview)\n   - Accept: multipart/form-data (CSV 或 Excel 檔案)\n   - 解析檔案 → 驗證欄位格式\n   - 回傳：preview data + 錯誤資訊\n   - 不回寫資料庫\n\n2. 確認 API (POST /api/admin/import/registrants/confirm)\n   - Body: { importId: string }（preview 階段回傳的暫存 ID）\n   - 批次寫入資料庫\n   - 回傳：成功筆數、失敗筆數、錯誤明細\n   - 使用 transaction 確保一致性\n\n3. Admin UI (/admin/import/registrants)\n   - Step 1: 上傳頁面\n     - 拖曳上傳或選擇檔案\n     - 支援格式：.csv, .xlsx\n     - 顯示預計匯入欄位說明\n   - Step 2: 預覽頁面\n     - 表格顯示前 20 筆資料\n     - 紅色標記有錯誤的行\n     - 顯示錯誤原因（email 格式錯誤、IA 牌照已存在等）\n     - 「繼續」或「取消」按鈕\n   - Step 3: 結果頁面\n     - 顯示成功/失敗筆數\n     - 錯誤明細可下載\n\n4. 匯入模板下載\n   - /admin/import/registrants/template\n   - 下載 CSV + Excel 範本檔案（含欄位說明 header）\n\n⚠️ 高安全性需求：匯入資料需嚴謹驗證，避免 SQL injection 或資料毀損。\n⚠️ 依賴 AF-019 的工具庫。",
+  "content": "實作管理員由 CSV / XLSX 匯入學員 User profile 的 preview → confirm 流程。User 是姓名、聯絡方式及身份證件資料的唯一來源；此流程不建立課程 Registrant 或付款資料。\n\nAF-019 擁有共用 parser 的標題辨識責任：略過開頭全空白列，第一個非空白列必須包含所有範本標題（大小寫不敏感、順序可變）；缺欄或結構不符即回傳結構錯誤及零資料列。AF-021 消費此契約，不在業務層重複實作 header parsing。\n\nPreview 與 confirm 都接受 multipart/form-data 的 file。伺服器不保存檔案或預覽 session；confirm 由瀏覽器重新上傳同一檔案，伺服器重新解析與驗證。全檔案原子性：只有所有列均通過解析、格式、資料庫重複及檔案內重複檢查才可確認；任何無效列都阻止整批。確認時在單一 Prisma transaction 中建立所有 User，不逐列捕捉並吞掉 DB 錯誤；任一寫入失敗即回滾整批。超過 10MB、未授權或格式不符均回傳明確錯誤。",
   "stage": "backlog",
   "risk": "high",
   "owner": "",
@@ -19,7 +19,7 @@
     "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
-    "human_approval_recorded": false
+    "human_approval_recorded": true
   },
   "gates": {
     "product": true,
@@ -30,46 +30,63 @@
     "code_review": true
   },
   "links": {
-    "featureSpec": "",
-    "screenSpec": "",
-    "mockupDecision": "",
-    "taskCard": "",
+    "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
+    "screenSpec": "ai/artifacts/第二階段：進階功能/screen-spec-import-registrants.md",
+    "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-registrants.md",
+    "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-021.md",
     "verificationReport": "",
     "pr": ""
   },
   "refs": [
     "src/app/api/admin/import/registrants/",
     "src/app/[locale]/admin/import/registrants/",
-    "src/lib/data/"
+    "src/lib/data/csv.ts",
+    "src/lib/data/excel.ts",
+    "src/lib/data/import/registrants.ts",
+    "src/lib/data/import/temp-store.ts",
+    "prisma/schema.prisma"
   ],
   "evidence": {
     "commands": [],
     "findings": [],
     "residual": ""
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "User",
+      "time": "2026-10-05",
+      "text": "Approved design decisions: User owns canonical identity data; no server-side preview store; imports are all-or-nothing."
+    }
+  ],
   "acceptance": [
-    "Upload CSV/Excel → preview shows first 20 rows with error highlights",
-    "Validation catches: invalid email, missing required fields, duplicate IA license",
-    "Confirm import writes valid rows to DB, reports errors for invalid rows",
-    "Import uses transaction: all-or-nothing per batch",
+    "CSV/XLSX leading fully blank rows are skipped; first nonblank row must contain every expected template header (case-insensitive; column order may vary)",
+    "Missing/mismatched headers return a structural error and cannot be confirmed",
+    "Preview shows first 20 rows with row-level validation errors; any invalid row blocks the entire import",
+    "Validation catches invalid email/phone, missing required fields, invalid ID data, database duplicates, and duplicates within the uploaded file",
+    "Confirm multipart request re-uploads the file; no importId or server-side preview store is used",
+    "Confirm reparses and revalidates, then creates all User records in one Prisma transaction; any DB failure rolls back all rows",
+    "User is the canonical source for ID document data; import does not create Registrant rows or overwrite existing users",
+    "Preview offers a CSV download of validation errors with source row, field, and message",
     "Template download produces CSV + Excel with correct column headers",
     "Admin UI has 3-step wizard: Upload → Preview → Result",
-    "Error detail file downloadable after partial success",
+    "Validation/structural errors are visible before confirm and can be exported as error details",
     "File type validation (.csv, .xlsx only), max file size limit (10MB)",
     "All UI labels use dict (i18n: en, zh-hk, zh-cn)",
+    "Integration test proves a failed database write leaves no rows from the batch",
+    "All changed UI copy is dictionary-driven for en, zh-hk, and zh-cn",
     "npm run typecheck && npm run lint pass"
   ],
   "files": [
-    "src/app/api/admin/import/registrants/preview/route.ts (new — POST preview import)",
-    "src/app/api/admin/import/registrants/confirm/route.ts (new — POST confirm import)",
-    "src/app/api/admin/import/registrants/template/route.ts (new — GET template download)",
-    "src/lib/data/import/registrants.ts (new — registrant import validation + mapping)",
-    "src/app/[locale]/admin/import/registrants/page.tsx (new — 3-step import wizard)",
+    "src/app/api/admin/import/registrants/preview/route.ts (update — stateless preview; reject structural errors)",
+    "src/app/api/admin/import/registrants/confirm/route.ts (update — multipart file, revalidate, atomic transaction)",
+    "src/app/api/admin/import/registrants/template/route.ts (retain — GET template download)",
+    "src/lib/data/import/registrants.ts (update — User mapping and complete duplicate checks)",
+    "src/lib/data/import/temp-store.ts (remove — no server-side preview session)",
+    "src/app/[locale]/admin/import/registrants/page.tsx (update — re-upload file, disable confirm unless all rows valid)",
     "src/dictionaries/en.json (update — add import UI keys)",
     "src/dictionaries/zh-hk.json (update)",
     "src/dictionaries/zh-cn.json (update)",
     "src/dictionaries/types.ts (update — add import dict keys)"
   ],
-  "verification": "npm run typecheck && npm run lint && Upload test CSV → preview shows data → confirm → registrants created in DB. Invalid rows show errors."
+  "verification": "Test CSV and XLSX with leading blank rows, valid/reordered headers, missing headers, row errors, and duplicate values. Confirm valid file creates all User records; a forced DB failure rolls the entire transaction back. Run npm run typecheck and npm run lint."
 }

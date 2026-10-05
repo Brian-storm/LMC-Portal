@@ -1,7 +1,7 @@
 {
   "id": "PR-004",
-  "title": "金流端到端整合驗收 (AWS 全線串接)",
-  "content": "End-to-end verification of the complete payment-to-receipt flow. Receipt PDFs are generated on-the-fly (no S3), password-protected with the registrant's idDocNumber, and delivered via SES. This card is verification-only against staging with real AWS services.",
+  "title": "金流端到端整合驗收 (AWS + Resend 串接)",
+  "content": "End-to-end verification of the complete payment-to-receipt flow. Receipt PDFs are generated on-the-fly (no S3), password-protected with the registrant's idDocNumber, and delivered via Resend. This card is verification-only against staging with real AWS infrastructure and the configured Resend account. The SES wiring in PR-003 is historical; AF-016 migrates sending to Resend and AWS-001 removes SES-only leftovers before final verification.",
   "stage": "blocked",
   "risk": "high",
   "owner": "Brian",
@@ -15,6 +15,8 @@
     "PR-001",
     "PR-002",
     "PR-003",
+    "AF-016",
+    "AWS-001",
     "EN-004",
     "PR-005"
   ],
@@ -64,7 +66,7 @@
       "trustHost: true added to NextAuth config for Amplify host header compatibility",
       "SSR fetch fixed: courses pages use NEXT_PUBLIC_SITE_URL instead of unreliable host header"
     ],
-    "residual": "Receipt PDFs now generated on-the-fly from DB (no S3 storage). Password protection via pdf-lib-encrypt AES-256. SES sender email still needs AWS verification. PR-004 requires deploy to staging with real AWS services to fully verify."
+    "residual": "Receipt PDFs are generated on-the-fly from DB (no S3 storage) and password-protected via pdf-lib-encrypt AES-256. Resend migration/domain verification (AF-016), SES legacy cleanup (AWS-001), and staging verification (PR-004) remain pending."
   },
   "comments": [
     {
@@ -78,7 +80,7 @@
     "2. Admin review list: visit /en/admin/enrolments → table loads all enrolments with real user/course data from RDS",
     "3. Payment proof preview: click an enrolment row → modal loads image via S3 presigned GET URL (existing flow, unchanged)",
     "4. Approve flow: click Approve → paymentStatus=VERIFIED, receiptNumber=RCPT-{YYYY}-{NNNNN} generated, PDF generated on-the-fly from DB data (no S3 storage)",
-    "5. Email delivery: after approval, SES delivers email with PDF attachment to registrant's email",
+    "5. Email delivery: after approval, Resend delivers the bilingual email with PDF attachment to the registrant and BCCs the admin",
     "6. PDF password: downloaded receipt opens with registrant's idDocNumber as password (AES-256 via pdf-lib-encrypt)",
     "7. Reject flow: click Reject with reason → paymentStatus=REJECTED, reason stored, no PDF/email generated",
     "8. Receipt re-download: registrant visits /{locale}/receipt/{enrolmentId} → can download receipt PDF (on-the-fly generation, no S3)",
@@ -88,5 +90,5 @@
   "files": [
     "No new files — verification only against deployed infra"
   ],
-  "verification": "Run all 10 acceptance criteria against staging environment with real RDS, S3, SES. Collect screenshots for each step. Log any failures as follow-up cards. Do not mark PR-004 done until all 10 pass."
+  "verification": "After AF-016 and AWS-001 are done, run all 10 acceptance criteria against staging with real RDS, S3, and Resend. Confirm the receipt arrives with the PDF attachment and admin BCC. Collect screenshots for each step, log failures as follow-up cards, and do not mark PR-004 done until all criteria pass."
 }

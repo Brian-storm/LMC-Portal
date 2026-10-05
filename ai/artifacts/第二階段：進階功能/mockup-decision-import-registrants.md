@@ -36,6 +36,9 @@
 | File validation | Client-side: `.csv`, `.xlsx` only, max 10MB |
 | Accessibility | Hidden `<input type="file">` triggered by click on drop zone; aria-label on zone |
 
-## Human Approval Needed
+## Decision Update — 2026-10-05
 
-Please select **Variant A** (recommended), **B**, or **C** to proceed with implementation.
+- Keep **Variant A — Single Page Tab Switch**; this update changes the import interaction contract, not the page layout.
+- The preview step must block confirmation if there is any structural or row-level error.
+- Confirmation re-uploads the selected file and commits the complete batch atomically; the UI must not imply partial success.
+- The User confirmed these import-flow decisions during planning. The selected visual layout remains Variant A.

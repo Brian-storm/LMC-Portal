@@ -1,7 +1,7 @@
 {
   "id": "AF-016",
-  "title": "SES 郵件系統正式化 — 寄件者驗證 + 錯誤處理 + 監控",
-  "content": "將現有的 SES 郵件程式碼（PR-003）正式化為生產品質。\n\n任務：\n1. SES Sender 驗證與設定\n   - 在 AWS SES 主控台驗證寄件者 email/domain\n   - 移出生產環境沙箱模式（提交 SES 限制提升請求）\n   - 設定 DKIM、SPF、DMARC 記錄\n\n2. 錯誤處理強化 (src/lib/email/send.ts)\n   - Rate limiting（SES 有每秒/每日配額）\n   - 退信處理（bounce notification → webhook 或 SNS）\n   - 投訴處理（complaint → 標記使用者不發信）\n   - 重試機制（失敗後指數退避重試 3 次）\n   - 降級策略（SES 完全失敗時 log 錯誤但不阻斷主要流程）\n\n3. 郵件記錄 (EmailLog 模型)\n   - 新增 Prisma model: EmailLog\n   - 欄位：id, to, subject, templateName, status (SENT/FAILED/BOUNCED/COMPLAINT), sentAt, errorMessage\n   - 管理端可檢視郵件發送記錄\n\n4. 環境變數\n   - SES_REGION, SES_ACCESS_KEY, SES_SECRET_KEY (或使用 IAM role)\n   - EMAIL_FROM (寄件者地址)\n   - EMAIL_FROM_NAME\n   - EMAIL_REPLY_TO\n\n⚠️ 需 AWS Console 操作（SES sender verification, quota increase request, SNS setup for bounces）。\n⚠️ 依賴 PR-003 的現有 src/lib/email/ 程式碼，在此基礎上強化。",
+  "title": "Resend 郵件服務正式化 — 網域驗證 + 錯誤處理 + 監控",
+  "content": "將 PR-003 建立的 SES 郵件發送改為 Resend，並將寄件流程正式化為可監控、可復原的生產品質。AD-009 先完成 Resend 帳戶、寄件網域與 repo 環境設定；本卡負責之後的程式整合。閒置 SES 設定與 AWS 元件保留至 AWS-001 清理。\n\n任務：\n1. Resend 發送整合 (src/lib/email/send.ts)\n   - 使用 AD-009 準備好的已驗證網域、API key 與寄件設定，接上 Nodemailer Resend SMTP transport（smtp.resend.com）\n   - 沿用現有 HTML、雙語內容、核准流程、BCC 與 PDF Buffer 附件；若 AD-009 確認審計副本使用獨立信箱，讀取 APP_EMAIL_AUDIT_BCC\n   - 確認單筆及批次核准流程均透過 Resend 發送；寄件失敗不回滾已完成的核准／收據流程\n\n2. 錯誤處理強化\n   - 依 Resend 帳戶方案實作速率限制；Free 方案需遵守每月 3,000 封及每日 100 封上限\n   - 建立經簽章驗證的 Resend webhook，接收送達、退信及投訴事件\n   - 退信／投訴地址標記為不可寄送，避免後續重複寄信\n   - 重試暫時性失敗（最多 3 次、指數退避），永久性錯誤不重試\n   - APP_RESEND_WEBHOOK_SECRET 只存於 server-side 環境；不得提交、回傳或記錄憑證\n\n3. 郵件記錄 (EmailLog 模型)\n   - 新增 Prisma model: EmailLog\n   - 欄位：id, to, subject, templateName, status (SENT/FAILED/DELIVERED/BOUNCED/COMPLAINT), sentAt, errorMessage, providerMessageId\n   - 管理端可檢視郵件發送與 webhook 狀態記錄\n\n4. 前置設定與舊設定界線\n   - 讀取 AD-009 定義的 APP_RESEND_API_KEY、APP_EMAIL_FROM_ADDRESS、APP_EMAIL_FROM_NAME、APP_EMAIL_REPLY_TO 與（如已確認）APP_EMAIL_AUDIT_BCC\n   - Resend webhook 建立後，將 APP_RESEND_WEBHOOK_SECRET 設入 server-side 環境\n   - 本卡不再修改 .env.example、README 或 Amplify 基礎設定；保留 APP_SES_* 設定，待 AWS-001 在本卡驗收後清理\n\n⚠️ 依賴 AD-009 的 Resend 帳戶、寄件網域與環境設定，以及 PR-003 的現有 src/lib/email/ 程式碼。",
   "stage": "backlog",
   "risk": "high",
   "owner": "",
@@ -10,7 +10,7 @@
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "自動電郵與收據強化",
-  "dependsOn": ["PR-003"],
+  "dependsOn": ["PR-003", "AD-009"],
   "order": 16,
   "readiness": {
     "problem_clear": true,
@@ -41,7 +41,7 @@
     "src/lib/email/send.ts",
     "src/lib/email/templates.ts",
     "prisma/schema.prisma (EmailLog model)",
-    ".env.example (SES/EMAIL vars)"
+    "src/app/api/webhooks/resend/route.ts (new — verified delivery/bounce/complaint events)"
   ],
   "evidence": {
     "commands": [],
@@ -50,13 +50,16 @@
   },
   "comments": [],
   "acceptance": [
-    "SES sender verified in AWS Console (email or domain)",
+    "Resend sending domain verified and SPF/DKIM/DMARC checks pass",
+    "Nodemailer sends through Resend SMTP to a real external recipient",
+    "Receipt email retains bilingual content, admin BCC, and PDF attachment",
+    "Resend webhook signature is verified before delivery/bounce/complaint events are processed",
     "Email sending has retry logic (3 attempts with exponential backoff)",
-    "Bounce and complaint handling via SNS or webhook",
+    "Bounce and complaint handling via signed Resend webhooks",
     "EmailLog records every sent email with status",
-    "Rate limiting prevents exceeding SES quotas",
-    "SES failure does not block main user flow (graceful degradation)",
-    "All SES/email env vars documented in .env.example",
+    "Rate limiting respects the configured Resend plan and its published quotas",
+    "Resend failure does not block main user flow (graceful degradation)",
+    "Resend secrets are consumed only in server-side code and never exposed or logged",
     "Admin can view email logs from admin panel",
     "npm run typecheck && npm run lint pass"
   ],
@@ -70,7 +73,7 @@
     "src/dictionaries/zh-hk.json (update)",
     "src/dictionaries/zh-cn.json (update)",
     "src/dictionaries/types.ts (update — add email log dict keys)",
-    ".env.example (update — add SES/EMAIL vars)"
+    "src/app/api/webhooks/resend/route.ts (new — signed Resend event receiver)"
   ],
-  "verification": "npm run typecheck && npm run lint && curl POST email endpoint → EmailLog created. Admin page shows log. SES sandbox email arrives in inbox."
+  "verification": "npm run typecheck && npm run lint && send a receipt through Resend SMTP to an external test inbox; verify PDF + BCC; deliver signed Resend webhook fixtures for delivered/bounced/complaint; confirm EmailLog status changes and retry/plan limits behave as specified."
 }

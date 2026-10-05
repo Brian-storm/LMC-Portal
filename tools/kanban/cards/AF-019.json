@@ -1,12 +1,12 @@
 {
   "id": "AF-019",
   "title": "資料匯入匯出共用函式庫 — CSV + Excel 工具",
-  "content": "建立所有匯入匯出功能共用的底層工具庫。\n\n任務：\n1. CSV 工具 (src/lib/data/csv.ts)\n   - 匯出：array of objects → CSV string (支援 BOM for Excel 中文相容)\n   - 匯入：CSV string → array of objects（欄位對映 + 驗證）\n   - 預設 UTF-8 BOM、雙引號跳脫\n\n2. Excel 工具 (src/lib/data/excel.ts)\n   - 使用 exceljs 套件\n   - 匯出：worksheet → .xlsx buffer（支援合併欄、樣式）\n   - 匯入：.xlsx buffer → array of objects\n   - 支援多 sheet\n\n3. 共用型別 (src/lib/data/types.ts)\n   - ExportColumn: { key, header, width?, format? }\n   - ImportResult: { success: boolean, imported: number, errors: ImportError[] }\n   - DataExporter: interface for export implementations\n   - DataImporter: interface for import implementations\n\n4. 共用工具\n   - 欄位對映（資料庫欄位名稱 → 匯出標題）\n   - 日期格式化\n   - 檔案下載 helper（Response with Content-Disposition）\n   - 大檔案串流（避免記憶體爆掉）\n\n安裝依賴：npm install exceljs\n\n⚠️ 此卡僅建立工具庫，不包含具體業務功能的匯入/匯出。具體功能在後續卡片實作。",
+  "content": "建立並維護所有資料匯入匯出功能共用的 CSV / Excel 工具庫。此卡的 parser contract 包含一致的標題辨識：忽略開頭全空白列；第一個非空白列必須含有所有 ExportColumn.header（大小寫不敏感，欄位順序可變）；標題缺漏、錯誤或檔案無標題時回傳結構錯誤且不回傳可匯入資料列。不得越過非空白標題候選列猜測後面的列是 header。\n\nCSV 匯出使用 UTF-8 BOM 與正確的引號跳脫；Excel 匯出/匯入使用 exceljs。共用型別為 ExportColumn、ImportResult、ImportError、DataExporter、DataImporter；下載 helper 設定 Content-Type 與 Content-Disposition。此卡只維護格式工具，不處理業務欄位或 Prisma 存取；AF-021 消費此 parser contract。",
   "stage": "backlog",
-  "risk": "low",
+  "risk": "high",
   "owner": "",
   "agent": "",
-  "approvalRequired": false,
+  "approvalRequired": true,
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
   "userStory": "資料匯入匯出",
@@ -19,21 +19,21 @@
     "files_known": true,
     "scope_defined": true,
     "verification_contract": true,
-    "human_approval_recorded": false
+    "human_approval_recorded": true
   },
   "gates": {
-    "product": false,
+    "product": true,
     "ui": false,
-    "architecture": true,
+    "architecture": false,
     "security": false,
     "test": false,
-    "code_review": true
+    "code_review": false
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec.md",
     "screenSpec": "",
     "mockupDecision": "",
-    "taskCard": "",
+    "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-019.md",
     "verificationReport": "",
     "pr": ""
   },
@@ -56,23 +56,31 @@
       "Download response helper sets correct Content-Disposition header",
       "typecheck passes (0 errors), lint passes (0 new warnings)"
     ],
-    "residual": "Excel import (parseExcel) and Excel exporter/importer stubs (excelExporter, excelImporter) are provided but not runtime-tested in this card — they are for downstream consumers (AF-020, AF-021)."
+    "residual": "Excel import (parseExcel) was not runtime-tested in the original implementation. The approved follow-up header-detection contract is pending implementation and parser verification."
   },
-  "comments": [],
+  "comments": [
+    {
+      "name": "User",
+      "time": "2026-10-05",
+      "text": "Approved parser contract: skip leading blank rows, require all expected headers on the first nonblank row, and fail closed on structural mismatch."
+    }
+  ],
   "acceptance": [
     "CSV export produces valid UTF-8 BOM CSV with correct escaping",
-    "CSV import parses standard CSV files correctly",
+    "CSV import skips leading blank rows and rejects missing/mismatched headers without returning data rows",
     "Excel export produces valid .xlsx file that opens in Excel",
-    "Excel import parses .xlsx files correctly",
+    "Excel import skips leading blank rows and rejects missing/mismatched headers without returning data rows",
+    "Both parsers match all expected headers case-insensitively and support reordered columns",
+    "Files with only blank rows or a non-header first nonblank row return an explicit structural error",
     "ExportColumn[] → CSV string and Excel buffer both work",
     "ImportResult returns correct counts and error details",
-    "npm run typecheck && npm run lint pass"
+    "npm run typecheck && npm run lint pass",
+    "Parser tests cover leading blanks, reordered/missing headers, non-header first row, and empty files"
   ],
   "files": [
-    "src/lib/data/csv.ts (new — CSV export/import utilities)",
-    "src/lib/data/excel.ts (new — Excel export/import via exceljs)",
-    "src/lib/data/types.ts (new — shared data types for import/export)",
-    "package.json (update — add exceljs dependency)"
+    "src/lib/data/csv.ts (update — skip leading blank rows and fail closed on invalid headers)",
+    "src/lib/data/excel.ts (update — match CSV header behavior)",
+    "src/lib/data/types.ts (review ImportResult structural-error behavior if required)"
   ],
-  "verification": "npm install exceljs && npm run typecheck && Export test data to CSV + Excel → files open correctly. Import CSV + Excel → data parsed correctly."
+  "verification": "Test CSV and XLSX with leading blank rows, valid and reordered headers, missing headers, a non-header first nonblank row, and all-blank files. Structural failures return errors with zero data rows. Run npm run typecheck and npm run lint."
 }

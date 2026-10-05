@@ -69,13 +69,21 @@
 
 ### GET /api/admin/enrolments/export
 - Query params: `format` (csv|xlsx, default csv), `status`, `courseId`, `startDate`, `endDate`, `search`
-- 欄位：報名編號、學員姓名、Email、IA 牌照、課程名稱、課程編號、報名類型、付款方式、金額、狀態、報名日期、繳費日期
+- 欄位：Registrant ID、學員姓名、Email、IA 牌照、身份證件類型/號碼、課程名稱、課程參考編號、報名類型、團體 ID、付款方式、金額、付款狀態、提交日期、收據編號
 - 回傳：Content-Disposition: attachment 的檔案
 
 ### GET /api/admin/payments/export
 - Query params: `format` (csv|xlsx, default csv), `status`, `paymentMethod`, `startDate`, `endDate`
-- 欄位：交易編號、Alipay Trade No、學員、課程、金額、付款方式、狀態、交易時間、退款時間
+- 欄位：Registrant ID（作為匯出識別碼）、學員、Email、課程及課程參考編號、付款方式、金額、付款狀態、收據編號、提交日期、第三方付款標記、付款人姓名
 - 回傳：Content-Disposition: attachment 的檔案
+
+### Database mapping and source of truth
+
+- This is a denormalized reporting projection, not a raw table dump.
+- `Registrant` supplies enrolment/payment fields (`id`, `enrollmentType`, `groupId`, `paymentMethod`, `fee`, `paymentStatus`, `receiptNumber`, `submittedAt`, `isThirdPartyPay`, `payerFullName`). There is no separate Payment model in the current schema; the exported “transaction” identifier is `Registrant.id`.
+- `User` supplies canonical learner identity/profile fields (`nameZh` / `nameEn`, `email`, `iaLicense`, `idDocType`, `idDocNumber`). `User` is the source of truth for ID-document fields; same-named fields on `Registrant` are not used by these exports.
+- `Course` supplies course name and IA reference.
+- The current schema has no Alipay trade number, payment timestamp, or refund timestamp fields. Those are not part of this export contract; adding them requires a separate schema and API change.
 
 ## 安全性與隱私
 
@@ -88,12 +96,14 @@
 1. GET /api/admin/enrolments/export?format=csv downloads valid CSV file
 2. GET /api/admin/enrolments/export?format=xlsx downloads valid Excel file
 3. GET /api/admin/payments/export?format=csv downloads valid CSV file
-4. All filter params (status, courseId, date range) applied correctly in export
+4. All filter params (status, courseId, date range, and search where supported) applied correctly in export
 5. Admin Enrolments page has Export CSV + Export Excel buttons
 6. Admin Payments page has Export CSV + Export Excel buttons
 7. Download triggers immediate file download with correct filename
 8. Large dataset (>10000 rows) shows appropriate handling message
-9. npm run typecheck && npm run lint pass
+9. Identity-document fields in both exports come from `User`, not duplicate fields on `Registrant`
+10. Export documentation does not promise payment provider IDs or payment/refund timestamps absent from the schema
+11. npm run typecheck && npm run lint pass
 
 ## 驗證計畫
 

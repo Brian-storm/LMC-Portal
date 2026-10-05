@@ -205,7 +205,7 @@ async function main() {
       registrationStatus: RegistrationStatus.FEW_SEATS,
       deliveryMode: "Online / In-person",
       language: "Cantonese / English",
-      generalInstructorId: cyrus.id,
+      generalInstructor: { connect: { id: cyrus.id } },
       syllabusItems: {
         create: [
           {
@@ -426,7 +426,7 @@ async function main() {
       coOrganizerZh: "香港中文大學醫院",
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
-      generalInstructorId: cuhkSpecialist.id,
+      generalInstructor: { connect: { id: cuhkSpecialist.id } },
       cpdRulesZh:
         "必須通過身份驗證並全程出席方可獲得相應CPD時數",
       cpdRulesEn:
@@ -479,7 +479,7 @@ async function main() {
       coOrganizerZh: "香港中文大學醫院",
       coOrganizerEn: "CUHK Medical Centre",
       coOrganizerLogoUrl: "/CUHK-Medical-Centre/cuhk-medical-centre-logo.svg",
-      generalInstructorId: cuhkSpecialist.id,
+      generalInstructor: { connect: { id: cuhkSpecialist.id } },
       syllabusItems: {
         create: cpd26090103SyllabusItems,
       },

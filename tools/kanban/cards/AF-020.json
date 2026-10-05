@@ -1,7 +1,7 @@
 {
   "id": "AF-020",
   "title": "匯出學員報名資料 + 付款報表 — Admin CSV + Excel",
-  "content": "在 Admin 後台實作資料匯出功能。\n\n任務：\n1. 匯出報名資料 (GET /api/admin/enrolments/export)\n   - 格式：?format=csv | xlsx\n   - 參數：?status=, ?courseId=, ?startDate=, ?endDate=, ?search=\n   - 欄位：報名編號、學員姓名、Email、IA 牌照、課程名稱、課程編號、報名類型（個人/團體）、付款方式、金額、狀態、報名日期、繳費日期\n   - 回傳：檔案下載（Content-Disposition: attachment）\n\n2. 匯出付款報表 (GET /api/admin/payments/export)\n   - 格式：?format=csv | xlsx\n   - 參數：?status=, ?paymentMethod=, ?startDate=, ?endDate=\n   - 欄位：交易編號、Alipay Trade No、學員、課程、金額、付款方式、狀態、交易時間、退款時間\n   - 回傳：檔案下載\n\n3. Admin UI 匯出按鈕\n   - Enrolments 頁面：右上角「匯出 CSV」「匯出 Excel」按鈕\n   - Payments 頁面：同樣的匯出按鈕\n   - 點擊後直接下載檔案（不阻擋操作）\n   - Loading 狀態（大量資料時顯示進度）\n\n4. 大檔案處理\n   - 資料量大於 10000 筆時顯示「資料過大，將以背景方式產生並郵寄」\n   - 實作背景匯出 + email 通知機制（可選，MVP 可先限制最大值）\n\n⚠️ 依賴 AF-019 的工具庫。",
+  "content": "在 Admin 後台匯出報名與付款報表為 CSV / XLSX。這是由 Registrant、User、Course 組成的報表投影，不是資料表原樣匯出。\n\n資料來源：\n- Registrant：報名 ID、類型、團體 ID、付款方式、金額、狀態、收據、提交日期及付款人欄位。\n- User：姓名、Email、IA 牌照及身份證件欄位；User 是身份資料的唯一來源，Registrant 同名欄位不作為權威值。\n- Course：課程名稱與 IA 參考編號。\n\nGET /api/admin/enrolments/export 支援 format、status、courseId、startDate、endDate、search；GET /api/admin/payments/export 支援 format、status、paymentMethod、startDate、endDate。兩個 endpoint 均限 ADMIN 並提供 CSV / XLSX 下載。單一 Registrant ID 是付款匯出的識別碼；目前 schema 沒有獨立 Payment model、Alipay trade number、付款時間或退款時間，不得將這些欄位列為現有匯出承諾。超過 10,000 筆回傳錯誤要求縮小範圍，不提供背景 email 匯出。依賴 AF-019 工具庫。",
   "stage": "backlog",
   "risk": "low",
   "owner": "",
@@ -68,6 +68,8 @@
     "GET /api/admin/enrolments/export?format=xlsx downloads valid Excel file",
     "GET /api/admin/payments/export?format=csv downloads valid CSV file",
     "All filter params (status, courseId, date range) applied correctly in export",
+    "Identity-document fields in both exports are sourced from User, not Registrant duplicate fields",
+    "Payment report documents Registrant.id as its identifier and excludes payment/refund timestamps or provider IDs absent from schema",
     "Admin Enrolments page has Export CSV + Export Excel buttons",
     "Admin Payments page has Export CSV + Export Excel buttons",
     "Download triggers immediate file download with correct filename",

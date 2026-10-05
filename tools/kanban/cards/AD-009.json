@@ -1,0 +1,73 @@
+{
+  "id": "AD-009",
+  "title": "Resend 寄件服務 Repo 與帳戶預備",
+  "content": "為後續 AF-016 Resend 程式整合準備寄件網域、憑證與 repository 設定；本卡不切換現有 SES 發信，也不修改目前郵件程式碼。\n\n任務：\n1. Resend 帳戶與網域\n   - 使用 Resend 驗證專用寄件網域或子網域，依 Resend 提供的 DNS 記錄設定並確認 SPF、DKIM、DMARC 狀態\n   - 保留既有收信 MX 與其他郵件供應商設定；若 SPF 已存在，合併寄件來源到單一 SPF 記錄，不新增重複記錄\n   - 建立專用 server-side API key；不得提交、貼入文件或記錄實際 key\n   - 確認 Resend 的資料處理／儲存區域符合收據與註冊資料的使用要求，記錄決策\n\n2. Repository 設定準備\n   - 在 .env.example 加入空白範例與說明：APP_RESEND_API_KEY、APP_RESEND_WEBHOOK_SECRET、APP_EMAIL_FROM_ADDRESS、APP_EMAIL_FROM_NAME、APP_EMAIL_REPLY_TO\n   - 釐清管理員審計 BCC 的實際收件地址；若與寄件地址不同，加入可選 APP_EMAIL_AUDIT_BCC 設定，明確區分 From 與 BCC\n   - 建立 doc/resend-setup.md，記錄 SMTP host smtp.resend.com、username resend、TLS port 選項，以及本機／Amplify 透過 server-only 環境變數設定 secrets 的步驟\n   - 在本機 .env 與 Amplify 設定 Resend API key、寄件地址等值；APP_RESEND_WEBHOOK_SECRET 於 AF-016 建立 webhook 後再填入\n   - 此階段保留現有 SES 程式碼、APP_SES_* 設定與 AWS S3 設定；不要修改或提交 .env 機密檔案\n\n⚠️ AF-016 依賴本卡完成；本卡結束時仍由既有 SES sender 負責現有應用郵件。",
+  "stage": "backlog",
+  "risk": "high",
+  "owner": "",
+  "agent": "",
+  "approvalRequired": true,
+  "createdAt": "2026-10-05",
+  "epic": "管理員後台 Redesign",
+  "userStory": "Admin 功能補強",
+  "dependsOn": [],
+  "order": 9,
+  "readiness": {
+    "problem_clear": true,
+    "non_goals_clear": true,
+    "acceptance_testable": true,
+    "files_known": true,
+    "scope_defined": true,
+    "verification_contract": true,
+    "human_approval_recorded": false
+  },
+  "gates": {
+    "product": false,
+    "ui": false,
+    "architecture": true,
+    "security": true,
+    "test": true,
+    "code_review": true
+  },
+  "links": {
+    "featureSpec": "",
+    "screenSpec": "",
+    "mockupDecision": "",
+    "taskCard": "",
+    "verificationReport": "",
+    "pr": ""
+  },
+  "refs": [
+    ".env.example",
+    "README.md",
+    "AGENTS.md",
+    "doc/resend-setup.md (new)",
+    "Resend dashboard domain and API key settings",
+    "Amplify environment variables"
+  ],
+  "evidence": {
+    "commands": [],
+    "findings": [],
+    "residual": ""
+  },
+  "comments": [],
+  "acceptance": [
+    "Resend sending domain is verified; SPF/DKIM checks pass and DMARC policy remains valid",
+    "Existing MX and other provider records are preserved; SPF has no duplicate TXT policy",
+    "A dedicated Resend API key is configured only in local/Amplify server-side secrets and is absent from tracked files and logs",
+    ".env.example documents the Resend environment variable names with empty, non-secret placeholders",
+    "SMTP setup instructions and local/Amplify secret setup steps are recorded in doc/resend-setup.md",
+    "The intended audit BCC destination is documented separately when it differs from the From address; APP_EMAIL_AUDIT_BCC is added as an optional placeholder only when confirmed",
+    "Resend data-processing location has a recorded suitability decision for receipt data",
+    "Existing SES code/configuration and AWS S3 settings remain unchanged",
+    "npm run typecheck && npm run lint pass"
+  ],
+  "files": [
+    ".env.example (add Resend variables only; retain APP_SES_* for now)",
+    "doc/resend-setup.md (new — Resend SMTP and secret setup guide)",
+    "README.md (link to Resend setup guide)",
+    "AGENTS.md (update environment provider reference)",
+    "Amplify environment variables (manual; server-side secrets only)"
+  ],
+  "verification": "Verify Resend domain status and DNS records in Resend; confirm documented env names match local/Amplify server-side settings without exposing secret values; run npm run typecheck && npm run lint. Confirm current SES sender and S3 configuration remain untouched."
+}

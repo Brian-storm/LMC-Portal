@@ -33,11 +33,11 @@
     },
     {
       "name": "金流與收據",
-      "definition": "S3 upload, admin verification, PDF receipt generation, SES email delivery",
+      "definition": "S3 upload, admin verification, PDF receipt generation, Resend email delivery",
       "stories": [
         { "name": "管理員審核後台", "definition": "Real DB enrolments in admin table, payment proof image preview (presigned S3 URL), approve/reject actions" },
         { "name": "PDF 電子收據生成", "definition": "@react-pdf/renderer receipt template, generate + store in S3, pdf-lib password lock, auto receipt number" },
-        { "name": "SES 郵件自動發送", "definition": "nodemailer + SES transport, bilingual email template (ZH+EN), PDF attachment, triggered on admin approval" }
+        { "name": "Resend 郵件自動發送", "definition": "nodemailer + Resend SMTP transport, bilingual email template (ZH+EN), PDF attachment, triggered on admin approval" }
       ]
     },
     {
@@ -78,6 +78,13 @@
       ]
     },
     {
+      "name": "AWS 整合與遺留清理",
+      "definition": "Maintain AWS infrastructure while retiring SES-only application wiring after the Resend migration; preserve S3 configuration, permissions, and functionality.",
+      "stories": [
+        { "name": "SES 遺留程式與設定清理", "definition": "After Resend delivery is verified, remove SES-only code, package/configuration, health fields, labels, and unused permissions without affecting S3 or historical records." }
+      ]
+    },
+    {
       "name": "資訊安全",
       "definition": "Security audit and hardening for the entire platform: dependency vulnerabilities, auth boundary review, data encryption, API security, infrastructure security posture.",
       "stories": [
@@ -100,7 +107,7 @@
         { "name": "WhatsApp Business 聊天機器人", "definition": "Direct WhatsApp Business API integration, standalone channel, FAQ-based QnA → AI later" },
         { "name": "自動化證書", "definition": "Admin manually issues PDF certificate per registrant. Unique anti-forgery ID (TBC), S3 storage, PDF generation via @react-pdf/renderer" },
         { "name": "線上支付 (Alipay)", "definition": "Redirect-based Alipay integration: checkout → Alipay → callback → payment status update. Standard redirect flow." },
-        { "name": "自動電郵與收據強化", "definition": "Productionize existing SES code (sender verification, error handling) + add new automated email types (payment confirmations, course reminders)" },
+        { "name": "自動電郵與收據強化", "definition": "Migrate existing SES sender to Resend, verify sending domain, add delivery/error handling + new automated email types (payment confirmations, course reminders)" },
         { "name": "資料匯入匯出", "definition": "CSV + Excel: export enrolments, import registrants (preview-then-confirm), course data export, payment reports export. Additional data types TBC." },
         { "name": "管理員後台增強", "definition": "Advanced dashboard analytics (charts, trends, revenue stats) + bulk email campaigns (ad-hoc compose + template-based triggers)" }
       ]
