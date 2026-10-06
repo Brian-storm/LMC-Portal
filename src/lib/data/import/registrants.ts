@@ -6,10 +6,23 @@
  * - Validate each row (email format, required fields, check for duplicates in DB)
  * - Build the mapping between file columns and User model fields
  */
-import { type ExportColumn, type ImportError } from "@/lib/data/types";
-import { parseCsv } from "@/lib/data/csv";
-import { parseExcel } from "@/lib/data/excel";
+import { Prisma, type PrismaClient } from "@prisma/client";
+import {
+  type ExportColumn,
+  type ImportError,
+  type ImportTable,
+  type ImportTableColumn,
+  type ImportTableResult,
+} from "@/lib/data/types";
+import { parseCsvTable } from "@/lib/data/csv";
+import { parseExcelTable } from "@/lib/data/excel";
 import { prisma } from "@/lib/prisma";
+import {
+  suggestColumnMapping,
+  validateColumnMapping,
+  type SourceColumnMapping,
+  type TargetFieldDefinition,
+} from "./mapping";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -25,20 +38,24 @@ export interface RegistrantImportRow {
   organization: string;
 }
 
-/** A row after validation, with computed status. */
-export interface ValidatedRow extends RegistrantImportRow {
+/** A mapped roster record paired with its original physical source row number. */
+export interface SourceRegistrantImportRow extends RegistrantImportRow {
   rowNumber: number;
+}
+
+/** A row after validation, with computed status. */
+export interface ValidatedRow extends SourceRegistrantImportRow {
   errors: ImportError[];
   valid: boolean;
 }
 
 /** Preview result returned from the preview API. */
 export interface ImportPreview {
-  importId: string;
   totalRows: number;
   validCount: number;
   errorCount: number;
   rows: ValidatedRow[];
+  errors: ImportError[];
 }
 
 /** Confirm result returned from the confirm API. */
@@ -61,6 +78,42 @@ export const REGISTRANT_IMPORT_COLUMNS: ExportColumn<Record<string, unknown>>[] 
   { key: "iaLicense", header: "IA License (IA牌照)", width: 20 },
   { key: "organization", header: "Organization (機構)", width: 24 },
 ];
+
+/** Business destinations required to create a student profile. */
+export const REQUIRED_REGISTRANT_FIELDS = [
+  "nameZh",
+  "nameEn",
+  "email",
+  "phone",
+  "idDocNumber",
+] as const;
+
+/** Target metadata shared by auto-suggestions and untrusted mapping validation. */
+export const REGISTRANT_MAPPING_TARGETS: TargetFieldDefinition[] =
+  REGISTRANT_IMPORT_COLUMNS.map((column) => ({
+    key: column.key,
+    header: column.header,
+    required: REQUIRED_REGISTRANT_FIELDS.includes(
+      column.key as (typeof REQUIRED_REGISTRANT_FIELDS)[number],
+    ),
+  }));
+
+/** Suggest only unique, exact matches against the canonical student import headers. */
+export function suggestRegistrantColumnMapping(
+  sourceColumns: readonly ImportTableColumn[],
+): SourceColumnMapping[] {
+  // 1: Delegate normalization and duplicate-label handling to the pure mapping utility.
+  return suggestColumnMapping(sourceColumns, REGISTRANT_MAPPING_TARGETS);
+}
+
+/** Validate browser-provided mappings against the parsed file and student-field allowlist. */
+export function validateRegistrantColumnMapping(
+  sourceColumns: readonly ImportTableColumn[],
+  mapping: unknown,
+) {
+  // 1: Keep all source bounds, uniqueness, and required-field checks in one shared utility.
+  return validateColumnMapping(sourceColumns, mapping, REGISTRANT_MAPPING_TARGETS);
+}
 
 // ─── Validation ─────────────────────────────────────────────────────────────
 
@@ -104,10 +157,10 @@ export function validateRegistrantRow(
 
   // 2: Format validation (only if field has a value)
   if (row.email?.trim() && !EMAIL_RE.test(row.email.trim())) {
-    errors.push({ row: 0, field: "email", message: `Invalid email format: "${row.email}"` });
+    errors.push({ row: 0, field: "email", message: "Invalid email format" });
   }
   if (row.phone?.trim() && !PHONE_RE.test(row.phone.trim())) {
-    errors.push({ row: 0, field: "phone", message: `Invalid phone format: "${row.phone}"` });
+    errors.push({ row: 0, field: "phone", message: "Invalid phone format" });
   }
   if (row.idDocType?.trim()) {
     // Normalize to uppercase for comparison
@@ -118,7 +171,7 @@ export function validateRegistrantRow(
       errors.push({
         row: 0,
         field: "idDocType",
-        message: `Invalid ID doc type: "${row.idDocType}". Must be HKID, PASSPORT, PERMIT, or OTHER`,
+        message: "Invalid ID document type. Must be HKID, PASSPORT, PERMIT, or OTHER",
       });
     }
   }
@@ -129,7 +182,7 @@ export function validateRegistrantRow(
       errors.push({
         row: 0,
         field: "idDocNumber",
-        message: `Invalid HKID format: "${row.idDocNumber}". Expected format: A1234567`,
+        message: "Invalid HKID format. Expected format: A1234567",
       });
     }
   }
@@ -139,21 +192,21 @@ export function validateRegistrantRow(
     errors.push({
       row: 0,
       field: "email",
-      message: `Email already exists: "${row.email}"`,
+      message: "Email already exists in the system or this import",
     });
   }
-  if (row.idDocNumber?.trim() && existingIdDocs.has(row.idDocNumber.trim())) {
+  if (row.idDocNumber?.trim() && existingIdDocs.has(row.idDocNumber.trim().toUpperCase())) {
     errors.push({
       row: 0,
       field: "idDocNumber",
-      message: `ID document number already exists: "${row.idDocNumber}"`,
+      message: "ID document number already exists in the system or this import",
     });
   }
-  if (row.iaLicense?.trim() && existingLicenses.has(row.iaLicense.trim())) {
+  if (row.iaLicense?.trim() && existingLicenses.has(row.iaLicense.trim().toUpperCase())) {
     errors.push({
       row: 0,
       field: "iaLicense",
-      message: `IA license already exists: "${row.iaLicense}"`,
+      message: "IA license already exists in the system or this import",
     });
   }
 
@@ -184,37 +237,86 @@ function normalizeIdDocType(input: string): string | null {
 // ─── File Parsing ──────────────────────────────────────────────────────────
 
 /**
- * Parse an uploaded file buffer into an array of raw RegistrantImportRow objects.
- * Uses the shared CSV/Excel parsers from AF-019.
+ * Parse an uploaded CSV/XLSX file into the AF-019 raw source-table contract.
+ *
+ * @param buffer - Uploaded file bytes.
+ * @param filename - Original filename, used only to select the parser.
+ * @returns Raw source columns and rows without applying business-field mapping.
  */
 export async function parseRegistrantFile(
   buffer: Buffer,
   filename: string,
-): Promise<{ rows: RegistrantImportRow[]; errors: ImportError[] }> {
-  const isExcel = filename.endsWith(".xlsx");
-
-  let parsedResult: { data?: Record<string, unknown>[]; errors: ImportError[]; imported: number; success: boolean };
-
-  if (isExcel) {
-    parsedResult = await parseExcel<Record<string, unknown>>(new Uint8Array(buffer), REGISTRANT_IMPORT_COLUMNS);
-  } else {
-    const csv = buffer.toString("utf-8");
-    parsedResult = parseCsv<Record<string, unknown>>(csv, REGISTRANT_IMPORT_COLUMNS);
+): Promise<ImportTableResult> {
+  // 1: Select a parser from the normalized extension and reject unsupported names explicitly.
+  const normalizedFilename = filename.toLowerCase();
+  if (normalizedFilename.endsWith(".xlsx")) {
+    return parseExcelTable(new Uint8Array(buffer));
+  }
+  if (normalizedFilename.endsWith(".csv")) {
+    return parseCsvTable(buffer.toString("utf-8"));
   }
 
-  // Map the parsed records back to RegistrantImportRow
-  const rows: RegistrantImportRow[] = (parsedResult.data ?? []).map((r) => ({
-    nameZh: String(r.nameZh ?? ""),
-    nameEn: String(r.nameEn ?? ""),
-    email: String(r.email ?? ""),
-    phone: String(r.phone ?? ""),
-    idDocNumber: String(r.idDocNumber ?? ""),
-    idDocType: String(r.idDocType ?? ""),
-    iaLicense: String(r.iaLicense ?? ""),
-    organization: String(r.organization ?? ""),
-  }));
+  return {
+    success: false,
+    table: null,
+    errors: [{ row: 1, field: "_file", message: "Unsupported import file type" }],
+  };
+}
 
-  return { rows, errors: parsedResult.errors };
+/** Convert ExcelJS values to safe, displayable cell text without evaluating formulas. */
+export function formatRegistrantCellValue(value: unknown): string {
+  // 1: Normalize empty, date, and primitive values before handling ExcelJS rich cell objects.
+  if (value === null || value === undefined) return "";
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+
+  // 2: Read known ExcelJS display wrappers without exposing object internals.
+  if (typeof value === "object") {
+    const cellValue = value as {
+      text?: unknown;
+      result?: unknown;
+      error?: unknown;
+      richText?: Array<{ text?: unknown }>;
+    };
+    if (typeof cellValue.text === "string") return cellValue.text;
+    if (Array.isArray(cellValue.richText)) {
+      return cellValue.richText.map((part) => String(part.text ?? "")).join("");
+    }
+    if ("result" in cellValue) return formatRegistrantCellValue(cellValue.result);
+    if (typeof cellValue.error === "string") return cellValue.error;
+  }
+
+  return String(value);
+}
+
+/** Apply a validated source-index mapping to raw table rows and retain physical row numbers. */
+export function mapRegistrantTableRows(
+  table: ImportTable,
+  mapping: readonly SourceColumnMapping[],
+): SourceRegistrantImportRow[] {
+  // 1: Create an empty destination record for each source row.
+  return table.rows.map((sourceRow) => {
+    const row: RegistrantImportRow = {
+      nameZh: "",
+      nameEn: "",
+      email: "",
+      phone: "",
+      idDocNumber: "",
+      idDocType: "",
+      iaLicense: "",
+      organization: "",
+    };
+
+    // 2: Populate only the target fields explicitly selected by the admin.
+    for (const columnMapping of mapping) {
+      row[columnMapping.targetField as keyof RegistrantImportRow] = formatRegistrantCellValue(
+        sourceRow.values[columnMapping.sourceIndex],
+      );
+    }
+
+    return { ...row, rowNumber: sourceRow.rowNumber };
+  });
 }
 
 /**
@@ -234,48 +336,179 @@ export async function loadExistingUserValues(): Promise<{
   const licenses = new Set<string>();
 
   for (const user of users) {
-    emails.add(user.email.toLowerCase());
-    idDocs.add(user.idDocNumber);
-    if (user.iaLicense) licenses.add(user.iaLicense);
+    emails.add(user.email.trim().toLowerCase());
+    idDocs.add(user.idDocNumber.trim().toUpperCase());
+    if (user.iaLicense) licenses.add(user.iaLicense.trim().toUpperCase());
   }
 
   return { emails, idDocs, licenses };
 }
 
-/**
- * Validate all parsed rows against business rules and existing DB values.
- * Returns validated rows with per-row error lists.
- */
-export async function validateAllRows(
-  rows: RegistrantImportRow[],
-): Promise<ValidatedRow[]> {
-  // 1: Load existing values for duplicate detection
-  const { emails, idDocs, licenses } = await loadExistingUserValues();
+/** Existing unique-value indexes used during a complete import validation pass. */
+export interface ExistingRegistrantValues {
+  emails: Set<string>;
+  idDocs: Set<string>;
+  licenses: Set<string>;
+}
 
-  // 2: Validate each row
-  const validated: ValidatedRow[] = rows.map((row, index) => {
-    const errors = validateRegistrantRow(row, emails, idDocs, licenses);
-    return {
-      ...row,
-      rowNumber: index + 1,
-      errors,
-      valid: errors.length === 0,
-    };
-  });
+/** Validate rows in source order and detect duplicates within the same uploaded file. */
+export function validateRegistrantRows(
+  rows: readonly SourceRegistrantImportRow[],
+  existingValues: ExistingRegistrantValues,
+): ValidatedRow[] {
+  // 1: Copy database indexes so per-file duplicate tracking cannot mutate shared input sets.
+  const emails = new Set(existingValues.emails);
+  const idDocs = new Set(existingValues.idDocs);
+  const licenses = new Set(existingValues.licenses);
+  const validated: ValidatedRow[] = [];
 
-  // 3: Add duplicate rows within the import file to existing sets.
-  //    This prevents two rows in the same file with the same email from both passing.
-  for (const row of validated) {
-    if (row.email?.trim()) {
-      emails.add(row.email.trim().toLowerCase());
-    }
-    if (row.idDocNumber?.trim()) {
-      idDocs.add(row.idDocNumber.trim());
-    }
-    if (row.iaLicense?.trim()) {
-      licenses.add(row.iaLicense.trim());
-    }
+  // 2: Validate one row, retain its physical row number, then add keys for later rows.
+  for (const row of rows) {
+    const errors = validateRegistrantRow(row, emails, idDocs, licenses).map((error) => ({
+      ...error,
+      row: row.rowNumber,
+    }));
+    validated.push({ ...row, errors, valid: errors.length === 0 });
+
+    // 3: Normalize every populated unique value before the next source row is checked.
+    if (row.email?.trim()) emails.add(row.email.trim().toLowerCase());
+    if (row.idDocNumber?.trim()) idDocs.add(row.idDocNumber.trim().toUpperCase());
+    if (row.iaLicense?.trim()) licenses.add(row.iaLicense.trim().toUpperCase());
   }
 
   return validated;
+}
+
+/** Load current database values and validate every mapped row before preview or confirmation. */
+export async function validateAllRows(
+  rows: readonly SourceRegistrantImportRow[],
+): Promise<ValidatedRow[]> {
+  // 1: Load existing values for database duplicate detection.
+  const existingValues = await loadExistingUserValues();
+
+  // 2: Share the same ordered validation rules between preview and confirm.
+  return validateRegistrantRows(rows, existingValues);
+}
+
+/** A duplicate detected again during confirmation; all transaction writes are rolled back. */
+export class RegistrantImportConflictError extends Error {
+  constructor(readonly errors: ImportError[], readonly failedCount = errors.length) {
+    super("The import conflicts with existing student data");
+    this.name = "RegistrantImportConflictError";
+  }
+}
+
+/** Create valid student rows without catching individual database errors inside the transaction. */
+export async function createUsersAtomically(
+  rows: readonly ValidatedRow[],
+  database: Pick<PrismaClient, "$transaction"> = prisma,
+): Promise<void> {
+  // 1: Fail before opening a transaction if any input row is invalid or the batch is empty.
+  const invalidRows = rows.filter((row) => !row.valid || row.errors.length > 0);
+  if (invalidRows.length > 0) {
+    throw new RegistrantImportConflictError(
+      invalidRows.flatMap((row) => row.errors),
+      rows.length,
+    );
+  }
+  if (rows.length === 0) {
+    throw new RegistrantImportConflictError([
+      { row: 1, field: "_file", message: "No valid data rows are available to import" },
+    ]);
+  }
+
+  // 2: Re-check identities and create all Users in one serializable database transaction.
+  await database.$transaction(
+    async (transaction) => createUsersInTransaction(transaction, rows),
+    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+  );
+}
+
+/** Write the complete batch using an active transaction client; let any error abort the batch. */
+export async function createUsersInTransaction(
+  transaction: Prisma.TransactionClient,
+  rows: readonly ValidatedRow[],
+): Promise<void> {
+  // 1: Track the batch's identity keys as a second line of defense before each write.
+  const batchEmails = new Set<string>();
+  const batchIdDocs = new Set<string>();
+  const batchLicenses = new Set<string>();
+
+  // 2: Check both database and same-batch identities, then create only new STUDENT users.
+  for (const row of rows) {
+    const email = row.email.trim().toLowerCase();
+    const idDocNumber = row.idDocNumber.trim().toUpperCase();
+    const iaLicense = row.iaLicense.trim().toUpperCase();
+
+    if (batchEmails.has(email)) {
+      throw createImportConflict(row.rowNumber, "email", rows.length);
+    }
+    if (batchIdDocs.has(idDocNumber)) {
+      throw createImportConflict(row.rowNumber, "idDocNumber", rows.length);
+    }
+    if (iaLicense && batchLicenses.has(iaLicense)) {
+      throw createImportConflict(row.rowNumber, "iaLicense", rows.length);
+    }
+
+    // 3: Query all identity boundaries again inside the transaction to protect confirmation races.
+    const identityConditions: Prisma.UserWhereInput[] = [
+      { email: { equals: email, mode: "insensitive" } },
+      { idDocNumber: { equals: idDocNumber, mode: "insensitive" } },
+    ];
+    if (iaLicense) {
+      identityConditions.push({ iaLicense: { equals: iaLicense, mode: "insensitive" } });
+    }
+    const existingUser = await transaction.user.findFirst({
+      where: { OR: identityConditions },
+      select: { email: true, idDocNumber: true, iaLicense: true },
+    });
+    if (existingUser) {
+      const field =
+        existingUser.email.trim().toLowerCase() === email
+          ? "email"
+          : existingUser.idDocNumber.trim().toUpperCase() === idDocNumber
+            ? "idDocNumber"
+            : "iaLicense";
+      throw createImportConflict(row.rowNumber, field, rows.length);
+    }
+
+    // 4: Convert the already-validated document type to the database enum and create a new user.
+    const documentType = normalizeIdDocType(row.idDocType.trim().toUpperCase()) as
+      | "HKID"
+      | "PASSPORT"
+      | "PERMIT"
+      | "OTHER"
+      | null;
+    await transaction.user.create({
+      data: {
+        nameZh: row.nameZh.trim(),
+        nameEn: row.nameEn.trim(),
+        email,
+        phone: row.phone.trim(),
+        idDocNumber: row.idDocNumber.trim(),
+        idDocType: documentType,
+        iaLicense: row.iaLicense.trim() || null,
+        organization: row.organization.trim() || null,
+        role: "STUDENT",
+      },
+    });
+
+    // 5: Reserve this batch's values so any later repeated row aborts the transaction.
+    batchEmails.add(email);
+    batchIdDocs.add(idDocNumber);
+    if (iaLicense) batchLicenses.add(iaLicense);
+  }
+}
+
+/** Create a PII-free row error for identity conflicts. */
+function createImportConflict(
+  rowNumber: number,
+  field: string,
+  failedCount: number,
+): RegistrantImportConflictError {
+  // 1: Return only the source row and field, never the uploaded value itself.
+  return new RegistrantImportConflictError(
+    [{ row: rowNumber, field, message: "An existing or duplicate profile uses this value" }],
+    failedCount,
+  );
 }

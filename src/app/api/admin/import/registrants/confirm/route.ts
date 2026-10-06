@@ -1,29 +1,46 @@
 /**
- * POST /api/admin/import/registrants/confirm
+ * Re-parse, re-validate, and atomically create all student profiles from an uploaded roster.
  *
- * Confirm an import: write all valid rows from the preview session to the database
- * inside a Prisma transaction. Returns counts of imported/failed rows.
+ * The request must contain both the original `file` and its source-index `mapping`.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import { getImportSession, deleteImportSession } from "@/lib/data/import/temp-store";
-import type { ImportError } from "@/lib/data/types";
+import { isSameOriginRequest } from "@/lib/is-same-origin";
+import {
+  createUsersAtomically,
+  mapRegistrantTableRows,
+  parseRegistrantFile,
+  RegistrantImportConflictError,
+  validateAllRows,
+  validateRegistrantColumnMapping,
+} from "@/lib/data/import/registrants";
 
-// Prisma-generated IdDocType enum values
-type IdDocTypeValue = "HKID" | "PASSPORT" | "PERMIT" | "OTHER";
+const MAX_UPLOAD_SIZE = 10 * 1024 * 1024;
+const MAX_MAPPING_LENGTH = 4096;
 
-/** Map a normalized string to the Prisma IdDocType enum. */
-function toIdDocType(value: string | null): IdDocTypeValue | null {
-  if (value === "HKID" || value === "PASSPORT" || value === "PERMIT" || value === "OTHER") {
-    return value;
-  }
-  return null;
+/** Extract only a safe error name/code for server logs. */
+function safeErrorSummary(error: unknown): { name: string; code?: string } {
+  // 1: Avoid logging request bodies, file names, or identity values.
+  if (typeof error !== "object" || error === null) return { name: "UnknownError" };
+  const candidate = error as { name?: unknown; code?: unknown };
+  return {
+    name: typeof candidate.name === "string" ? candidate.name : "UnknownError",
+    ...(typeof candidate.code === "string" ? { code: candidate.code } : {}),
+  };
+}
+
+/** Read the Prisma error code without relying on a particular error subclass. */
+function getDatabaseErrorCode(error: unknown): string | null {
+  // 1: Inspect only the stable code field needed to distinguish concurrent conflicts.
+  if (typeof error !== "object" || error === null || !("code" in error)) return null;
+  return typeof error.code === "string" ? error.code : null;
 }
 
 export async function POST(request: NextRequest) {
+  // Keep batch count available for an all-or-nothing conflict response.
+  let totalRows = 0;
   try {
-    // 1: Auth check
+    // 1: Require an authenticated administrator and a trusted same-origin browser request.
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Authentication required" }, { status: 401 });
@@ -31,105 +48,140 @@ export async function POST(request: NextRequest) {
     if (session.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 });
     }
-
-    // 2: Parse request body
-    const body = await request.json();
-    const { importId } = body as { importId?: string };
-    if (!importId || typeof importId !== "string") {
-      return NextResponse.json({ error: "importId is required" }, { status: 400 });
+    if (!isSameOriginRequest(request.headers.get("origin"), process.env.NEXT_PUBLIC_SITE_URL)) {
+      return NextResponse.json({ error: "Cross-origin request blocked" }, { status: 403 });
     }
 
-    // 3: Retrieve preview session
-    const importSession = getImportSession(importId);
-    if (!importSession) {
-      return NextResponse.json(
-        { error: "Import session not found or expired. Please re-upload the file." },
-        { status: 404 },
-      );
+    // 2: Parse multipart fields and require the file plus its source-index mapping.
+    let formData: FormData;
+    try {
+      formData = await request.formData();
+    } catch {
+      return NextResponse.json({ error: "Expected multipart form data" }, { status: 400 });
+    }
+    const fileEntry = formData.get("file");
+    const mappingEntry = formData.get("mapping");
+    if (!fileEntry || typeof fileEntry === "string") {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+    if (typeof mappingEntry !== "string") {
+      return NextResponse.json({ error: "A source-column mapping is required" }, { status: 400 });
+    }
+    if (mappingEntry.length > MAX_MAPPING_LENGTH) {
+      return NextResponse.json({ error: "Mapping is too large" }, { status: 400 });
     }
 
-    // 4: Filter to valid rows only
-    const validRows = importSession.rows.filter((r) => r.valid);
-    if (validRows.length === 0) {
+    // 3: Enforce the current file type and 10MB limits on every confirmation request.
+    const filename = fileEntry.name.toLowerCase();
+    if (!filename.endsWith(".csv") && !filename.endsWith(".xlsx")) {
       return NextResponse.json(
-        { error: "No valid rows to import." },
+        { error: "Unsupported file format. Please upload a .csv or .xlsx file." },
         { status: 400 },
       );
     }
+    if (fileEntry.size > MAX_UPLOAD_SIZE) {
+      return NextResponse.json({ error: "File size exceeds the 10MB limit." }, { status: 400 });
+    }
 
-    // 5: Write valid rows to the database in a transaction
-    const confirmErrors: ImportError[] = [];
-    let imported = 0;
+    // 4: Parse the mapping JSON, rejecting malformed input before processing the file.
+    let rawMapping: unknown;
+    try {
+      rawMapping = JSON.parse(mappingEntry);
+    } catch {
+      return NextResponse.json({ error: "Mapping contains invalid JSON" }, { status: 400 });
+    }
 
-    await prisma.$transaction(async (tx) => {
-      for (const row of validRows) {
-        try {
-          // Normalize idDocType to the enum value
-          const idDocTypeUpper = row.idDocType?.trim().toUpperCase() || "";
-          const normalizedDocType = toIdDocType(
-            idDocTypeUpper === "HONG KONG ID" ? "HKID" : idDocTypeUpper,
-          );
+    // 5: Reparse the uploaded bytes; no preview/session state or client rows are trusted.
+    const buffer = Buffer.from(await fileEntry.arrayBuffer());
+    const parsed = await parseRegistrantFile(buffer, fileEntry.name);
+    if (!parsed.success || !parsed.table) {
+      return NextResponse.json(
+        {
+          error: "The file could not be read as a roster table; no profiles were imported.",
+          imported: 0,
+          failed: 0,
+          parseErrors: parsed.errors,
+        },
+        { status: 422 },
+      );
+    }
 
-          // Check if user with this email already exists (race condition guard)
-          const existing = await tx.user.findUnique({
-            where: { email: row.email.trim() },
-            select: { id: true },
-          });
+    // 6: Validate source bounds, target allowlist, uniqueness, and all required destinations.
+    const mappingResult = validateRegistrantColumnMapping(parsed.table.columns, rawMapping);
+    if (!mappingResult.valid) {
+      return NextResponse.json(
+        {
+          error: "Column mapping is invalid; no profiles were imported.",
+          imported: 0,
+          failed: parsed.table.rows.length,
+          mappingErrors: mappingResult.errors,
+        },
+        { status: 422 },
+      );
+    }
+    if (parsed.table.rows.length === 0) {
+      return NextResponse.json(
+        {
+          error: "No data rows were found below the source header; no profiles were imported.",
+          imported: 0,
+          failed: 0,
+          errors: [{ row: 1, field: "_file", message: "No data rows were found" }],
+        },
+        { status: 422 },
+      );
+    }
 
-          if (existing) {
-            // Update existing user instead of creating duplicate
-            await tx.user.update({
-              where: { id: existing.id },
-              data: {
-                nameZh: row.nameZh.trim(),
-                nameEn: row.nameEn.trim(),
-                phone: row.phone.trim(),
-                idDocNumber: row.idDocNumber.trim(),
-                idDocType: normalizedDocType,
-                iaLicense: row.iaLicense?.trim() || null,
-                organization: row.organization?.trim() || null,
-              },
-            });
-          } else {
-            await tx.user.create({
-              data: {
-                nameZh: row.nameZh.trim(),
-                nameEn: row.nameEn.trim(),
-                email: row.email.trim().toLowerCase(),
-                phone: row.phone.trim(),
-                idDocNumber: row.idDocNumber.trim(),
-                idDocType: normalizedDocType,
-                iaLicense: row.iaLicense?.trim() || null,
-                organization: row.organization?.trim() || null,
-                role: "STUDENT",
-              },
-            });
-          }
+    // 7: Reapply the validated mapping and all business/database duplicate checks.
+    const mappedRows = mapRegistrantTableRows(parsed.table, mappingResult.mapping);
+    const validatedRows = await validateAllRows(mappedRows);
+    totalRows = validatedRows.length;
+    const validationErrors = validatedRows.flatMap((row) => row.errors);
+    if (validationErrors.length > 0) {
+      return NextResponse.json(
+        {
+          error: "The roster contains invalid rows; no profiles were imported.",
+          imported: 0,
+          failed: validatedRows.filter((row) => !row.valid).length,
+          errors: validationErrors,
+        },
+        { status: 422 },
+      );
+    }
 
-          imported++;
-        } catch (err) {
-          // Log the specific error for debugging
-          console.error(`Failed to import row ${row.rowNumber} (${row.email}):`, err);
-          confirmErrors.push({
-            row: row.rowNumber,
-            field: "_row",
-            message: err instanceof Error ? err.message : "Unknown database error",
-          });
-        }
-      }
-    });
-
-    // 6: Clean up the temp session
-    deleteImportSession(importId);
-
-    // 7: Return result
-    return NextResponse.json({
-      imported,
-      failed: confirmErrors.length,
-      errors: confirmErrors,
-    });
+    // 8: Create every User atomically; any database error rolls back the complete batch.
+    await createUsersAtomically(validatedRows);
+    return NextResponse.json({ imported: validatedRows.length, failed: 0, errors: [] });
   } catch (error) {
-    console.error("POST /api/admin/import/registrants/confirm error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    // 9: Return a conflict for concurrent writes; never report partial success or log PII.
+    if (error instanceof RegistrantImportConflictError) {
+      return NextResponse.json(
+        {
+          error: "The roster conflicts with existing data; no profiles were imported.",
+          imported: 0,
+          failed: error.failedCount,
+          errors: error.errors,
+        },
+        { status: 409 },
+      );
+    }
+
+    const databaseCode = getDatabaseErrorCode(error);
+    if (databaseCode === "P2002" || databaseCode === "P2034") {
+      return NextResponse.json(
+        {
+          error: "The roster changed during confirmation; no profiles were imported. Review and retry.",
+          imported: 0,
+          failed: Math.max(totalRows, 1),
+          errors: [{ row: 1, field: "_row", message: "Concurrent database conflict" }],
+        },
+        { status: 409 },
+      );
+    }
+
+    console.error("POST /api/admin/import/registrants/confirm failed:", safeErrorSummary(error));
+    return NextResponse.json(
+      { error: "Import failed; no profiles were imported." },
+      { status: 500 },
+    );
   }
 }

@@ -2,7 +2,7 @@
   "id": "AF-028",
   "title": "學員匯入 — Stateless Mapping API 與原子寫入",
   "content": "為 AF-021 實作檔案檢視、mapping preview 與 confirm API。使用 AF-019 raw-table parser，依 zero-based source index 驗證管理員 mapping；preview/confirm 每次重新上傳與重驗，無 importId/server preview store。確認只建立新 User，整批單一 transaction，任一錯誤完整 rollback。移除 temp-store/importId 流程並保留 ADMIN、10MB、檔案類型檢查。",
-  "stage": "implementing",
+  "stage": "verify",
   "risk": "high",
   "owner": "",
   "agent": "OpenCode",
@@ -27,29 +27,44 @@
     "architecture": true,
     "security": true,
     "test": true,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
     "screenSpec": "",
     "mockupDecision": "",
     "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-028.md",
-    "verificationReport": "",
+    "verificationReport": "ai/artifacts/第二階段：進階功能/verification/AF-028.md",
     "pr": ""
   },
   "refs": [
     "src/lib/data/csv.ts",
     "src/lib/data/excel.ts",
+    "src/lib/data/import/mapping.ts",
     "src/lib/data/import/registrants.ts",
-    "src/lib/data/import/temp-store.ts",
+    "src/lib/is-same-origin.ts",
     "src/app/api/admin/import/registrants/preview/route.ts",
     "src/app/api/admin/import/registrants/confirm/route.ts",
     "prisma/schema.prisma"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npx --yes tsx --test src/lib/data/parser.test.mts src/lib/data/import/mapping.test.mts src/lib/data/import/registrants.test.mts src/lib/is-same-origin.test.mts",
+      "AF028_TEST_DATABASE_URL=<isolated loopback DB> npx --yes tsx --test src/lib/data/import/registrants.postgres.test.mts",
+      "DATABASE_URL=<isolated loopback DB> npx prisma migrate deploy",
+      "node tools/verify-af028-api.mjs",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build",
+      "git diff --check"
+    ],
+    "findings": [
+      "25 focused tests passed, including isolated PostgreSQL commit/rollback coverage",
+      "AF-028 API smoke passed authentication, origin validation, inspect, mapping rejection, read-only preview, confirmation, and duplicate replay",
+      "typecheck and production build pass; lint has 0 errors and 2 unrelated FAQ warnings",
+      "Disposable test database returned to zero AF-028 users and was stopped; existing lmc-postgres container was untouched"
+    ],
+    "residual": "AF-021's current UI still submits importId and must be integrated before the new API can be used end to end. XLSX parsing remains memory-backed behind the 10MB upload cap."
   },
   "comments": [
     {
@@ -64,16 +79,22 @@
     "Every request rechecks ADMIN, .csv/.xlsx, and 10MB constraints",
     "Preview is read-only; row, mapping, and structural errors block confirmation",
     "Confirm reparses/revalidates, rejects existing and intra-file duplicates, creates only new Users in one transaction, and rolls back all writes on failure",
-    "No importId or temp-store references remain after migration",
+    "No backend route or service depends on importId or temp-store; AF-021 removes the remaining client importId flow",
     "Unit/API/database tests cover mapping edge cases, authorization, statelessness, and atomic rollback",
     "npm run typecheck, npm run lint, and npm run build pass"
   ],
   "files": [
+    "src/lib/data/import/mapping.ts (new — suggestions and untrusted mapping validation)",
+    "src/lib/data/import/mapping.test.mts (new — mapping edge cases)",
     "src/lib/data/import/registrants.ts (update — apply source-index mapping and validate all rows)",
+    "src/lib/is-same-origin.ts (new — same-origin guard for stateful import requests)",
     "src/app/api/admin/import/registrants/preview/route.ts (update — inspect and mapped-preview modes)",
     "src/app/api/admin/import/registrants/confirm/route.ts (update — multipart file+mapping; atomic create-only transaction)",
     "src/lib/data/import/temp-store.ts (remove after all importId consumers are gone)",
-    "src/lib/data/import/registrants.test.mts (new/extend — mapping rules and API/service cases)"
+    "src/lib/data/import/registrants.test.mts (new/extend — row numbering, duplicates, and atomic create behavior)",
+    "src/lib/data/import/registrants.postgres.test.mts (new — isolated Postgres commit/rollback integration)",
+    "src/lib/is-same-origin.test.mts (new — trusted-origin validation)",
+    "tools/verify-af028-api.mjs (new — authenticated local API smoke test)"
   ],
-  "verification": "Test raw inspection, mapping valid/invalid indices and targets, required/optional fields, duplicate source/target assignments, auth and upload limits, no-write preview, confirm revalidation, duplicate rejection, all-row commit, and forced transaction rollback against a dedicated local test database. Run npm run lint, npm run typecheck, npm run build, and focused Node tests."
+  "verification": "Run focused Node tests, the dedicated local PostgreSQL transaction test, and tools/verify-af028-api.mjs against a local Next server configured only for the isolated test DB. Verify inspect, mapped preview, confirm/revalidation, invalid origin/mapping, duplicate replay, cleanup, then run lint/typecheck/build."
 }
