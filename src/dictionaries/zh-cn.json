@@ -918,6 +918,99 @@
       "mappingErrorTitle": "请检查列映射",
       "invalidMapping": "请为每个目标选择不同的来源列，并映射所有必填字段。",
       "requiredFieldError": "请为此必填字段选择来源列。"
+    },
+    "importRegistrants": {
+      "title": "导入学员资料",
+      "subtitle": "上传、映射并检查学员名单，然后通过单一事务导入全部资料。",
+      "backToUsers": "返回学员管理",
+      "steps": {
+        "ariaLabel": "导入进度",
+        "upload": "上传",
+        "map": "映射列",
+        "review": "检查资料",
+        "result": "结果"
+      },
+      "upload": {
+        "title": "上传名单文件",
+        "description": "选择 CSV 或 Excel 文件。创建任何学员资料前，系统会先检查文件。",
+        "downloadCsvTemplate": "下载 CSV 模板",
+        "downloadExcelTemplate": "下载 Excel 模板",
+        "downloadingTemplate": "正在准备模板...",
+        "inspectAction": "检查文件",
+        "inspecting": "正在读取文件列..."
+      },
+      "mapping": {
+        "title": "映射来源列",
+        "selectedFile": "已选文件：{file}",
+        "validating": "正在验证所有数据行...",
+        "requiredMappingHint": "请映射全部五个必填字段后继续。"
+      },
+      "review": {
+        "title": "检查已映射的学员资料",
+        "totalRows": "数据行总数",
+        "validRows": "有效",
+        "invalidRows": "有错误",
+        "showingRows": "显示 {total} 行中的 {visible} 行（最多 20 行）。",
+        "tableRegion": "已映射的学员资料",
+        "allValidTitle": "所有数据行均有效",
+        "allValidDescription": "全部 {count} 个学员资料均已通过验证，可以导入。",
+        "invalidRowsTitle": "名单中存在错误",
+        "invalidRowsDescription": "所有数据行均有效前，不会导入任何资料。请修正错误后重新上传文件。",
+        "status": "状态",
+        "noPreviewRows": "没有可预览的学员数据行。",
+        "emptyValue": "空白",
+        "validStatus": "有效",
+        "invalidStatus": "错误",
+        "errorDetailsTitle": "资料验证错误详情",
+        "errorDetailsDescription": "整个文件共发现 {count} 个错误。请下载报告查看每一行。",
+        "confirmBlocked": "只有所有数据行均有效时才可以确认导入。"
+      },
+      "result": {
+        "successTitle": "导入完成",
+        "failureTitle": "导入未能完成",
+        "successDescription": "已成功导入 {count} 个学员资料。",
+        "noProfilesCreated": "未创建任何学员资料。",
+        "confirmationUnknown": "连接在确认结果前中断。请先检查学员名单，再决定是否重新导入。",
+        "importedCount": "已导入",
+        "failedCount": "失败",
+        "errorDetailsTitle": "导入错误详情"
+      },
+      "actions": {
+        "changeFile": "更换文件",
+        "cancelAndChangeFile": "取消并选择其他文件",
+        "reviewMapping": "检查已映射资料",
+        "editMapping": "返回列映射",
+        "confirming": "正在导入所有资料...",
+        "confirmAll": "导入全部 {count} 个学员资料",
+        "downloadErrors": "下载错误 CSV",
+        "importAnother": "导入另一个文件"
+      },
+      "errors": {
+        "selectFileFirst": "请先选择文件。",
+        "invalidRequest": "文件或请求无法处理。请检查文件格式和大小后重试。",
+        "authenticationRequired": "登录会话已过期，请重新登录后继续。",
+        "adminRequired": "只有管理员可以导入学员资料。",
+        "conflict": "名单与现有学员资料冲突。未导入任何资料；请检查错误后重试。",
+        "validationFailed": "文件或列映射未通过验证。请检查详情后重试。",
+        "serverFailure": "导入服务发生错误。未导入任何资料，请稍后重试。",
+        "requestFailed": "无法完成请求。请检查网络连接后重试。",
+        "unexpectedResponse": "导入服务返回了意外响应，请重试。",
+        "fileDetailsTitle": "文件详情",
+        "noDataTitle": "未找到数据行",
+        "noDataDescription": "已识别来源列，但没有可供验证或导入的数据行。",
+        "mappingRequestTitle": "无法检查已映射的文件",
+        "templateDownloadTitle": "无法下载模板"
+      },
+      "errorDetails": {
+        "row": "行",
+        "field": "字段",
+        "message": "错误"
+      },
+      "errorCsvHeaders": {
+        "row": "行",
+        "field": "字段",
+        "message": "错误"
+      }
     }
   },
   "receipt": {

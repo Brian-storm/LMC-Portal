@@ -2,7 +2,7 @@
   "id": "AF-027",
   "title": "學員匯入 — Variant C 欄位對映 UI",
   "content": "建立 AF-021 Variant C 的 Presentational `RegistrantColumnMapper`：左側顯示 User 目標欄位與 mapping selector，右側顯示來源欄及少量樣本值。以 source index 區分重複標題；元件不處理 upload/fetch/API 或業務驗證。新增三語 dictionary labels，並登記新元件到 design-system inventory。",
-  "stage": "verify",
+  "stage": "done",
   "risk": "high",
   "owner": "",
   "agent": "OpenCode",
@@ -74,6 +74,11 @@
       "name": "User",
       "time": "2026-10-06",
       "text": "Approved AF-028 backend phase and authorized AF-027 frontend implementation."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-07",
+      "text": "Accepted AF-027 and its verification evidence so AF-021 integration can proceed."
     }
   ],
   "acceptance": [

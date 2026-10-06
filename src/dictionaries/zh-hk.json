@@ -918,6 +918,99 @@
       "mappingErrorTitle": "請檢查欄位對映",
       "invalidMapping": "請為每個目標選擇不同的來源欄位，並對映所有必填欄位。",
       "requiredFieldError": "請為此必填欄位選擇來源欄位。"
+    },
+    "importRegistrants": {
+      "title": "匯入學員資料",
+      "subtitle": "上載、對映及檢查學員名單，並以單一交易匯入全部資料。",
+      "backToUsers": "返回學員管理",
+      "steps": {
+        "ariaLabel": "匯入進度",
+        "upload": "上載",
+        "map": "對映欄位",
+        "review": "檢查資料",
+        "result": "結果"
+      },
+      "upload": {
+        "title": "上載名單檔案",
+        "description": "選擇 CSV 或 Excel 檔案。建立任何學員資料前，系統會先檢查檔案。",
+        "downloadCsvTemplate": "下載 CSV 範本",
+        "downloadExcelTemplate": "下載 Excel 範本",
+        "downloadingTemplate": "正在準備範本...",
+        "inspectAction": "檢視檔案",
+        "inspecting": "正在讀取檔案欄位..."
+      },
+      "mapping": {
+        "title": "對映來源欄位",
+        "selectedFile": "已選檔案：{file}",
+        "validating": "正在驗證所有資料列...",
+        "requiredMappingHint": "請對映所有五個必填欄位後繼續。"
+      },
+      "review": {
+        "title": "檢查已對映的學員資料",
+        "totalRows": "資料列總數",
+        "validRows": "有效",
+        "invalidRows": "有錯誤",
+        "showingRows": "顯示 {total} 列中的 {visible} 列（最多 20 列）。",
+        "tableRegion": "已對映的學員資料",
+        "allValidTitle": "所有資料列均有效",
+        "allValidDescription": "全部 {count} 個學員資料均已通過驗證，可以匯入。",
+        "invalidRowsTitle": "名單中有錯誤",
+        "invalidRowsDescription": "所有資料列均有效前，不會匯入任何資料。請修正錯誤後重新上載檔案。",
+        "status": "狀態",
+        "noPreviewRows": "沒有可供預覽的學員資料列。",
+        "emptyValue": "空白",
+        "validStatus": "有效",
+        "invalidStatus": "錯誤",
+        "errorDetailsTitle": "資料驗證錯誤詳情",
+        "errorDetailsDescription": "整份檔案共發現 {count} 個錯誤。請下載報告檢視每一列。",
+        "confirmBlocked": "只有所有資料列均有效時才可確認匯入。"
+      },
+      "result": {
+        "successTitle": "匯入完成",
+        "failureTitle": "匯入未能完成",
+        "successDescription": "已成功匯入 {count} 個學員資料。",
+        "noProfilesCreated": "沒有建立任何學員資料。",
+        "confirmationUnknown": "連線在確認結果前中斷。請先檢查學員名單，再決定是否重新匯入。",
+        "importedCount": "已匯入",
+        "failedCount": "失敗",
+        "errorDetailsTitle": "匯入錯誤詳情"
+      },
+      "actions": {
+        "changeFile": "更換檔案",
+        "cancelAndChangeFile": "取消並選擇其他檔案",
+        "reviewMapping": "檢查已對映資料",
+        "editMapping": "返回欄位對映",
+        "confirming": "正在匯入所有資料...",
+        "confirmAll": "匯入全部 {count} 個學員資料",
+        "downloadErrors": "下載錯誤 CSV",
+        "importAnother": "匯入另一個檔案"
+      },
+      "errors": {
+        "selectFileFirst": "請先選擇檔案。",
+        "invalidRequest": "檔案或請求未能處理。請檢查檔案格式及大小後再試。",
+        "authenticationRequired": "登入工作階段已過期，請重新登入後繼續。",
+        "adminRequired": "只有管理員可以匯入學員資料。",
+        "conflict": "名單與現有學員資料有衝突。沒有匯入任何資料；請檢查錯誤後重試。",
+        "validationFailed": "檔案或欄位對映未能通過驗證。請檢查詳情後再試。",
+        "serverFailure": "匯入服務發生錯誤。沒有匯入任何資料，請稍後重試。",
+        "requestFailed": "未能完成請求。請檢查網絡連線後再試。",
+        "unexpectedResponse": "匯入服務回傳了未預期的回應，請重試。",
+        "fileDetailsTitle": "檔案詳情",
+        "noDataTitle": "找不到資料列",
+        "noDataDescription": "已識別來源欄位，但沒有可供驗證或匯入的資料列。",
+        "mappingRequestTitle": "未能檢查已對映的檔案",
+        "templateDownloadTitle": "未能下載範本"
+      },
+      "errorDetails": {
+        "row": "列",
+        "field": "欄位",
+        "message": "錯誤"
+      },
+      "errorCsvHeaders": {
+        "row": "列",
+        "field": "欄位",
+        "message": "錯誤"
+      }
     }
   },
   "receipt": {

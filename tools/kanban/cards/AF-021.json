@@ -2,10 +2,10 @@
   "id": "AF-021",
   "title": "匯入學員資料 — Variant C Integration and E2E",
   "content": "AF-021 整合任務：將 AF-027 Variant C mapping component 與 AF-028 stateless API 串接成 Upload → Map columns → Review → Result 流程，完成 UI state 與端到端驗證。\n\nAF-019 先提供來源欄位 index、原始標題、資料列及列號；AF-027 owns the mapping UI component/dictionaries; AF-028 owns raw mapping validation, stateless inspect/mapped-preview/confirm APIs, and atomic User creation. AF-021 owns only the wizard page orchestration, API calls, visible loading/error/disabled states, and end-to-end screenshots.\n\nBrowser retains File and mapping state; every API stage re-uploads the file. No importId, server-side preview session, or client-trusted mapped records. Final confirm remains disabled until server validation succeeds for the complete file. The confirmed UI layout is Variant C, with a split target-field/sample-table workspace and a stacked mobile layout.",
-  "stage": "backlog",
+  "stage": "done",
   "risk": "high",
-  "owner": "",
-  "agent": "",
+  "owner": "OpenCode",
+  "agent": "OpenCode",
   "approvalRequired": true,
   "createdAt": "2026-09-18",
   "epic": "第二階段：進階功能",
@@ -27,25 +27,43 @@
     "architecture": true,
     "security": true,
     "test": true,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
     "screenSpec": "ai/artifacts/第二階段：進階功能/screen-spec-import-registrants.md",
     "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-mapping.md",
     "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-021.md",
-    "verificationReport": "",
+    "verificationReport": "ai/artifacts/第二階段：進階功能/verification/AF-021.md",
     "pr": ""
   },
   "refs": [
-    "src/app/[locale]/admin/import/registrants/",
+    "src/app/[locale]/admin/import/registrants/page.tsx",
     "src/app/api/admin/import/registrants/preview/route.ts",
-    "src/app/api/admin/import/registrants/confirm/route.ts"
+    "src/app/api/admin/import/registrants/confirm/route.ts",
+    "src/components/admin/RegistrantColumnMapper.tsx",
+    "src/dictionaries/en.json",
+    "src/dictionaries/zh-hk.json",
+    "src/dictionaries/zh-cn.json"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npx --yes tsx --test src/lib/data/parser.test.mts src/lib/data/import/mapping.test.mts src/lib/data/import/registrants.test.mts src/lib/is-same-origin.test.mts src/components/admin/RegistrantColumnMapper.test.tsx",
+      "AF028_TEST_DATABASE_URL=<isolated loopback lmc_af028_test> npx --yes tsx --test src/lib/data/import/registrants.postgres.test.mts",
+      "node tools/verify-af028-api.mjs",
+      "Authenticated browser E2E: inspect → map unfamiliar/duplicate headers → review → confirm on isolated local DB",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build",
+      "git diff --check"
+    ],
+    "findings": [
+      "29 focused tests passed; PostgreSQL transaction commit/rollback test passed",
+      "AF-028 API smoke and real AF-021 browser import passed against isolated lmc_af028_test; all synthetic users were removed",
+      "CSV/XLSX template endpoints returned non-empty downloads; three locale dictionary shapes match",
+      "Desktop/mobile screenshots cover mapping, loading, validation, and all-batch outcomes"
+    ],
+    "residual": "The reused FileDropZone copy and server-generated row-validation detail messages remain English-only; XLSX parsing is memory-backed behind the 10MB cap."
   },
   "comments": [
     {
@@ -57,6 +75,16 @@
       "name": "User",
       "time": "2026-10-06",
       "text": "Approved adding flexible source-header mapping; exact unique matches may auto-map, unmatched fields are resolved by the admin. Selected Variant C on 2026-10-06."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-07",
+      "text": "Approved AF-021 architecture, security, and test gates; accepted AF-027; approved adding page-level import wizard strings to all three locale dictionaries."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-07",
+      "text": "Accepted the completed AF-021 card and requested the implementation and workflow documentation changes be committed."
     }
   ],
   "acceptance": [
@@ -83,6 +111,9 @@
   ],
   "files": [
     "src/app/[locale]/admin/import/registrants/page.tsx (integrate Variant C component and stateless API calls)",
+    "src/dictionaries/en.json (add localized wizard states)",
+    "src/dictionaries/zh-hk.json (add localized wizard states)",
+    "src/dictionaries/zh-cn.json (add localized wizard states)",
     "ai/artifacts/第二階段：進階功能/verification/AF-021.md (new — E2E and visual evidence)"
   ],
   "verification": "After AF-019/027/028 are done, run the admin E2E flow with CSV and XLSX files using unfamiliar and duplicate header labels: upload → map → review → confirm. Verify inspect and mapped preview are read-only, confirm reuploads file+mapping, invalid mappings/rows cannot confirm, success creates all Users, and failure leaves no partial writes. Capture Variant C desktop/mobile and error-state screenshots; run npm run typecheck, npm run lint, and npm run build."
