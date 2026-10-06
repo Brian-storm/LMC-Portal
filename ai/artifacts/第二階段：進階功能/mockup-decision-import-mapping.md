@@ -19,7 +19,7 @@ Help an administrator map unfamiliar CSV/XLSX source columns to the eight studen
 - Reused components: `AdminPageHeader`, `AdminDataTable`, `FileDropZone`, Button, Select, Table, Form, Badge, toast, and existing Lucide icons.
 - New components to register: None proposed. All three options compose existing inventory components.
 - Depth: Flat surfaces and hard table/input boundaries; no new shadow treatment.
-- Privacy: At most 3 mapping sample rows; after a source is mapped to the identity-document target, mask its displayed values.
+- Privacy: At most 3 mapping sample rows; after a source is mapped to email, phone, or identity-document targets, mask its displayed values.
 
 ## Variants
 
@@ -47,7 +47,7 @@ Recommend **Variant A — Destination-first mapping table** because it makes req
 - Require exactly one source for each required target: Chinese name, English name, email, phone, and ID document number.
 - Allow ID document type, IA license, and organization to remain unmapped; show that they will be treated as blank.
 - A source column can map to at most one destination; extra source columns can remain unused.
-- Show at most 3 sample rows to the authorized admin. Before mapping, source values are unclassified; once a source column is mapped to `idDocNumber`, mask that column in the mapping/review display. Submit file + mapping back to the server for a full validation preview; do not trust browser-side values for confirmation.
+- Show at most 3 sample rows to the authorized admin. Before mapping, source values are unclassified; once a source column is mapped to `email`, `phone`, or `idDocNumber`, mask that column in the mapping/review display. Submit file + mapping back to the server for a full validation preview; do not trust browser-side values for confirmation.
 - Final confirmation happens only after the mapped data preview is valid; confirmation re-uploads the file and mapping for server-side revalidation.
 
 ## Design-Craft Review

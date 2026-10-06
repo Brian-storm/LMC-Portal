@@ -2,10 +2,10 @@
   "id": "AF-027",
   "title": "學員匯入 — Variant C 欄位對映 UI",
   "content": "建立 AF-021 Variant C 的 Presentational `RegistrantColumnMapper`：左側顯示 User 目標欄位與 mapping selector，右側顯示來源欄及少量樣本值。以 source index 區分重複標題；元件不處理 upload/fetch/API 或業務驗證。新增三語 dictionary labels，並登記新元件到 design-system inventory。",
-  "stage": "backlog",
+  "stage": "verify",
   "risk": "high",
   "owner": "",
-  "agent": "",
+  "agent": "OpenCode",
   "approvalRequired": true,
   "createdAt": "2026-10-06",
   "epic": "第二階段：進階功能",
@@ -27,14 +27,14 @@
     "architecture": true,
     "security": true,
     "test": true,
-    "code_review": false
+    "code_review": true
   },
   "links": {
     "featureSpec": "ai/artifacts/第二階段：進階功能/feature-spec-af021.md",
     "screenSpec": "ai/artifacts/第二階段：進階功能/screen-spec-import-registrants.md",
     "mockupDecision": "ai/artifacts/第二階段：進階功能/mockup-decision-import-mapping.md",
     "taskCard": "ai/artifacts/第二階段：進階功能/task-cards/AF-027.md",
-    "verificationReport": "",
+    "verificationReport": "ai/artifacts/第二階段：進階功能/verification/AF-027.md",
     "pr": ""
   },
   "refs": [
@@ -50,22 +50,37 @@
     "ai/context/design-system.md"
   ],
   "evidence": {
-    "commands": [],
-    "findings": [],
-    "residual": ""
+    "commands": [
+      "npx --yes tsx --test src/components/admin/RegistrantColumnMapper.test.tsx",
+      "npm run lint",
+      "npm run typecheck",
+      "npm run build",
+      "git diff --check"
+    ],
+    "findings": [
+      "5 component/helper tests passed; all three locale dictionaries parse and typecheck",
+      "Desktop/unresolved/mobile screenshots captured; mobile CDP metrics report documentWidth 390 for viewport 390",
+      "Component code review found no blocking functional or security issue"
+    ],
+    "residual": "The component is presentational only; AF-021 must wire it to the import API and complete end-to-end flow."
   },
   "comments": [
     {
       "name": "User",
       "time": "2026-10-06",
       "text": "Selected Variant C — split mapping workspace."
+    },
+    {
+      "name": "User",
+      "time": "2026-10-06",
+      "text": "Approved AF-028 backend phase and authorized AF-027 frontend implementation."
     }
   ],
   "acceptance": [
     "Variant C shows target fields and source samples side by side; narrow layouts stack panels and keep the table scrollable",
     "Source options use stable indices and duplicate labels are distinguished by index/column letter",
     "Each source index can map to at most one target; required/optional targets are visually clear",
-    "After mapping a source to idDocNumber, mask its displayed sample values",
+    "After mapping a source to email, phone, or idDocNumber, mask its displayed sample values",
     "Loading, empty, unresolved, duplicate, disabled, focus, and mobile states are covered",
     "All copy uses en, zh-hk, and zh-cn dictionaries",
     "New mapping component is added to design-system inventory",
@@ -73,11 +88,16 @@
   ],
   "files": [
     "src/components/admin/RegistrantColumnMapper.tsx (new — Variant C presentational mapping workspace)",
+    "src/components/admin/RegistrantColumnMapper.test.tsx (new — source labels, selection uniqueness, and sample masking)",
     "src/dictionaries/en.json (update — mapping UI copy)",
     "src/dictionaries/zh-hk.json (update)",
     "src/dictionaries/zh-cn.json (update)",
     "src/dictionaries/types.ts (update — use existing AdminDict slice)",
-    "ai/context/design-system.md (update — component inventory)"
+    "ai/context/design-system.md (update — component inventory)",
+    "ai/artifacts/第二階段：進階功能/verification/AF-027.md (new — visual and test evidence)",
+    "ai/artifacts/第二階段：進階功能/verification/AF-027-desktop.png",
+    "ai/artifacts/第二階段：進階功能/verification/AF-027-unresolved.png",
+    "ai/artifacts/第二階段：進階功能/verification/AF-027-mobile.png"
   ],
   "verification": "Review Variant C at desktop and mobile viewports; verify duplicate headers, mapping status, required/optional targets, ID masking after mapping, keyboard/focus/disabled/loading states, and all three locale dictionaries. Run npm run lint, npm run typecheck, and npm run build."
 }

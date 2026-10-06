@@ -528,6 +528,7 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 | 12 | **Form** | `ui/form.tsx` | label/input/error grouping, submit handling, required indicator | `--destructive`, `--foreground` |
 | 13 | **Navbar** | `components/Navbar.tsx` | default/sticky/mobile, dropdown menus, backdrop blur | `--navbar-bg`, `--navbar-brand-*`, `--accent`, `--primary` |
 | 14 | **FileDropZone** | `components/admin/FileDropZone.tsx` | default/hover/dragging/file-selected/error/disabled | `--border`, `--primary`, `--destructive`, `--muted`, `--foreground`, `--muted-foreground` |
+| 15 | **RegistrantColumnMapper** | `components/admin/RegistrantColumnMapper.tsx` | loading/empty/mapped/unresolved/duplicate/disabled/mobile | `--card`, `--muted`, `--border`, `--primary`, `--success`, `--warning`, `--destructive`, `--ring`, `--foreground`, `--muted-foreground` |
 
 ### Detailed Component Specifications
 
@@ -673,6 +674,16 @@ The `@theme inline` block in `globals.css` uses `--color-*` syntax: `--color-pri
 - **Tokens**: `--navbar-bg`, `--navbar-brand-start/mid/end`, `--navbar-accent-hover`, `--primary`, `--accent`, `--accent-foreground`, `--foreground`, `--secondary`
 - **States**: Sticky, mobile open/closed, nav link hover (border-bottom accent)
 - **Z-index**: 50
+
+#### 15. RegistrantColumnMapper
+
+- **Source**: `src/components/admin/RegistrantColumnMapper.tsx` (AF-027)
+- **Purpose**: Controlled Variant C workspace for mapping uploaded source-column indices to student-profile destinations.
+- **Composition**: Existing Card, Select, Badge, and Table primitives; no bespoke color or control variants.
+- **States**: loading source samples, empty columns/rows, unique auto-match, manual match, required field unresolved, duplicate source label, duplicate assignment disabled, server mapping error, narrow-screen stacked panes.
+- **Privacy**: Shows at most 3 sample rows to the authorized admin; masks mapped email, phone, and identity-document sample values.
+- **Responsive**: Target controls stack above the horizontally scrollable source table below the wide desktop breakpoint.
+- **Tokens**: `--card`, `--muted`, `--border`, `--primary`, `--success`, `--warning`, `--destructive`, `--ring`, `--foreground`, `--muted-foreground`.
 
 ---
 

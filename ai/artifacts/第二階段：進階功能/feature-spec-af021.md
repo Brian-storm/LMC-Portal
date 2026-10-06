@@ -85,7 +85,7 @@
 - 身分驗證：所有端點要求有效 session。
 - 權限：僅 ADMIN 可預覽、確認及下載範本。
 - 敏感資料：檔案包含姓名、email、電話及身份證件資料；只在請求處理期間使用，不寫入暫存檔或伺服器 session。
-- 樣本資料：只回傳最多 3 列供 ADMIN 辨識欄位；來源對映至 `idDocNumber` 後在畫面遮罩值。mapping/sample 均不作為最終業務驗證依據。
+- 樣本資料：只回傳最多 3 列供 ADMIN 辨識欄位；來源對映至 `email`、`phone` 或 `idDocNumber` 後在畫面遮罩值。mapping/sample 均不作為最終業務驗證依據。
 - 濫用情境：伺服器重新檢查副檔名、大小、欄位 index、target key、欄位對映唯一性及資料內容；不得信任瀏覽器 mapping/sample；confirm 必須重新解析及驗證。
 
 ## 驗收標準
@@ -94,7 +94,7 @@
 2. 唯一精確匹配的標題自動對映；未匹配/重複標題可按來源 index 手動選擇，duplicate source label 可區分。
 3. 所有必填目標欄位各自對映一個來源欄；來源欄不得重複對映，optional target fields 可留空，額外來源欄可以忽略。
 4. 缺欄、重複指派、未知 target key 或超出來源範圍的 index 阻止 mapped preview/confirm，並提供可讀錯誤。
-5. 欄位對映畫面最多顯示 3 列樣本；來源欄位對映至身份證件號碼後遮罩其值；資料預覽仍最多顯示 20 列。
+5. 欄位對映畫面最多顯示 3 列樣本；來源欄位對映至 email、phone 或身份證件號碼後遮罩其值；資料預覽仍最多顯示 20 列。
 6. 任一列無效時，整份檔案不可匯入；確認按鈕停用。
 7. mapping preview 與 confirm 都重新上傳、重新解析及重新驗證檔案，不依賴伺服器端 preview store 或 `importId`。
 8. 所有列有效時，所有 User 在單一交易中建立；任一寫入失敗時資料庫沒有任何本批新增記錄。

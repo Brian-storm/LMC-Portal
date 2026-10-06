@@ -72,7 +72,7 @@ Allow administrators to inspect, map, and validate CSV/XLSX columns before creat
 - Reused tokens: `--primary`, `--primary-hover`, `--destructive`, `--success`, `--warning`, `--background`, `--muted`, `--border`, `--foreground`, `--card`, `--ring`, and existing spacing/type scales.
 - Reused components: `FileDropZone`, `AdminPageHeader`, `AdminDataTable`, Button, Select, Table, Badge, Form, toast; Lucide `CheckCircle2`, `AlertCircle`, `AlertTriangle`, `Loader2`, `ArrowLeft`, `ChevronRight` icons.
 - New components: None proposed; compose existing inventory components. If mockup review reveals a missing reusable primitive, register it before frontend implementation.
-- Data minimization: Mapping inspection returns at most 3 sample rows to the authorized admin; mask the selected ID-document source column after mapping. Final validated preview remains capped at 20 rows per the existing feature contract.
+- Data minimization: Mapping inspection returns at most 3 sample rows to the authorized admin; mask selected email, phone, and ID-document source columns after mapping. Final validated preview remains capped at 20 rows per the existing feature contract.
 - Primary action hierarchy: resolve mappings → review validated data → confirm atomic import. Use the existing institutional slate/emerald tokens and 4px spacing scale.
 
 ## Mockup Variants
